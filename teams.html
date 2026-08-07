@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Pre-paint theme snippet — must stay inline here, before theme.css loads. Copied verbatim
+         from index.html; do not move this to theme.js. -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('xipl-theme');
+                if (saved) document.documentElement.setAttribute('data-theme', saved);
+            } catch (e) { /* localStorage unavailable — default theme will render */ }
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Teams — FREEFIRE XIPL Season 11</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        /* ============ PAGE HEAD ============ */
+        .page-head {
+            position: relative;
+            padding: 38px 20px 6px;
+            overflow: hidden;
+        }
+
+        .page-head::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
+            background-size: 26px 26px;
+            mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 20%, transparent 75%);
+        }
+
+        .page-head .sec-title {
+            position: relative;
+            font-size: 34px;
+            margin-top: 10px;
+        }
+
+        .page-head .sec-desc {
+            position: relative;
+            max-width: 420px;
+            font-size: 13.5px;
+        }
+
+        .updated-chip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 5px 11px;
+            border-radius: 100px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.04em;
+            color: var(--ink-faint);
+        }
+
+        /* ============ TEAM CARDS ============ */
+        .teams-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 22px 20px 6px;
+        }
+
+        .team-item {
+            border-radius: 20px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .team-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--team-color, var(--gold));
+        }
+
+        .team-head {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 15px 14px 19px;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .team-logo-slot {
+            flex: 0 0 auto;
+            width: 50px;
+            height: 50px;
+            border-radius: 13px;
+            background: linear-gradient(160deg, color-mix(in srgb, var(--team-color, var(--gold)) 20%, transparent), transparent), var(--surface-2);
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--team-color, var(--gold)) 40%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .team-logo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-abbr {
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            color: var(--team-color, var(--gold));
+            letter-spacing: 0.01em;
+        }
+
+        .team-head-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .team-name {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.2;
+        }
+
+        .team-cap-line {
+            margin-top: 3px;
+            font-size: 11.5px;
+            color: var(--ink-faint);
+        }
+
+        .team-cap-line b {
+            color: var(--ink-dim);
+        }
+
+        .champ-badge {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 100px;
+            background: rgba(var(--gold-rgb), 0.14);
+            color: var(--gold-pale);
+            border: 1px solid var(--gold-deep);
+            white-space: nowrap;
+        }
+
+        .team-chev {
+            flex: 0 0 auto;
+            color: var(--ink-faint);
+            font-size: 13px;
+            transition: transform 0.25s ease;
+        }
+
+        .team-item.open .team-chev {
+            transform: rotate(180deg);
+            color: var(--gold);
+        }
+
+        .team-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .team-body-inner {
+            padding: 2px 16px 16px 19px;
+        }
+
+        .roster-label {
+            font-size: 9.5px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 8px;
+        }
+
+        .roster-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .roster-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: var(--bg-alt);
+            border: 1px solid var(--line);
+        }
+
+        .roster-row.is-captain {
+            background: color-mix(in srgb, var(--team-color, var(--gold)) 10%, var(--bg-alt));
+            border-color: var(--team-color, var(--gold-deep));
+        }
+
+        .roster-avatar {
+            flex: 0 0 auto;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-dim);
+        }
+
+        .roster-row.is-captain .roster-avatar {
+            color: var(--team-color, var(--gold));
+            border-color: var(--team-color, var(--gold-deep));
+        }
+
+        .roster-name {
+            font-size: 12.5px;
+            color: var(--ink-dim);
+        }
+
+        .roster-row.is-captain .roster-name {
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .roster-cap-tag {
+            margin-left: auto;
+            font-size: 9px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--team-color, var(--gold));
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scroll-progress">
+        <div class="scroll-progress-fill" id="scrollFill"></div>
+    </div>
+
+    <!-- SPLASH -->
+    <div id="splash">
+        <div class="ignite-wrap">
+            <div class="ignite-ring r1"></div>
+            <div class="ignite-ring r2"></div>
+            <div class="ignite-ring r3"></div>
+            <div class="ignite-core"></div>
+        </div>
+        <div class="splash-word display">FREEFIREXIPL</div>
+        <div class="splash-sub">FREE FIRE CHAMPIONSHIP</div>
+        <div class="splash-bar">
+            <div class="splash-bar-fill"></div>
+        </div>
+    </div>
+
+    <div class="embers" id="embers"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="brand">
+            <div class="crest"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <div class="header-actions">
+            <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
+                aria-expanded="false">🎨</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        </div>
+    </header>
+
+    <!-- THEME SWITCHER -->
+    <div class="theme-overlay" id="themeOverlay"></div>
+    <div class="theme-panel" id="themePanel" role="menu" aria-label="Theme switcher">
+        <div class="theme-panel-head">
+            <span>🎨 Choose a Theme</span>
+            <button class="nav-close" id="themeClose" aria-label="Close theme menu">✕</button>
+        </div>
+        <div class="theme-grid" id="themeGrid">
+            <button class="theme-opt" data-theme="golden-fire" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i
+                        style="background:#b88f20"></i></span>
+                <span class="theme-opt-name">Golden Fire <em>🔥</em></span>
+            </button>
+            <button class="theme-opt" data-theme="og-bar" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i
+                        style="background:#49310d"></i></span>
+                <span class="theme-opt-name">Disco Blue <em>❤️</em></span>
+            </button>
+
+            <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i
+                        style="background:#49199b"></i></span>
+                <span class="theme-opt-name">Neon Cyber <em>💙</em></span>
+            </button>
+            <button class="theme-opt" data-theme="royal-purple" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i
+                        style="background:#911b73"></i></span>
+                <span class="theme-opt-name">Royal Purple <em>💜</em></span>
+            </button>
+            <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i
+                        style="background:#147749"></i></span>
+                <span class="theme-opt-name">Emerald Forest <em>💚</em></span>
+            </button>
+            <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i
+                        style="background:#824619"></i></span>
+                <span class="theme-opt-name">Sunset Orange <em>🧡</em></span>
+            </button>
+            <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i
+                        style="background:#147282"></i></span>
+                <span class="theme-opt-name">Ocean Blue <em>🌊</em></span>
+            </button>
+            <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i
+                        style="background:#97184f"></i></span>
+                <span class="theme-opt-name">Sakura Pink <em>🌸</em></span>
+            </button>
+            <button class="theme-opt" data-theme="midnight-black" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i
+                        style="background:#a22222"></i></span>
+                <span class="theme-opt-name">Midnight Black <em>⚫</em></span>
+            </button>
+            <button class="theme-opt" data-theme="crystal-light" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i
+                        style="background:#058ede"></i></span>
+                <span class="theme-opt-name">Crystal Light <em>☀️</em></span>
+            </button>
+            <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio">
+                <span class="theme-swatch">
+                    <i style="background:#1a0505"></i>
+                    <i style="background:#e0304a"></i>
+                    <i style="background:#ff8fa3"></i>
+                </span>
+                <span class="theme-opt-name">Crimson Blood <em>🩸</em></span>
+            </button>
+            <button class="theme-opt" data-theme="arena-pro" role="menuitemradio">
+                <span class="theme-swatch">
+                    <i style="background:#0b0b10"></i>
+                    <i style="background:#ff8c00"></i>
+                    <i style="background:#ffd36a"></i>
+                </span>
+                <span class="theme-opt-name">Arena Pro <em>⚔️</em></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- NAV DRAWER -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="nav-drawer" id="navDrawer">
+        <div class="nav-drawer-head">
+            <div class="brand">
+                <div class="crest" style="width:26px;height:26px;"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
+            <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
+        </div>
+        <div class="nav-links">
+            <a href="arena.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Enter Arena</a>
+
+            <a href="teams.html" class="nav-link" aria-current="page"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
+                Center</a>
+            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
+            <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+            <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
+            <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
+            <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
+            <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
+            <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+            <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
+        </div>
+        <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
+    </nav>
+
+    <!-- PAGE HEAD -->
+    <section class="page-head">
+        <div class="eyebrow fade-up">🛡️ SEASON 11 ROSTER</div>
+        <h1 class="sec-title display fade-up d1">Meet the <b>Teams</b></h1>
+        <p class="sec-desc fade-up d2">Eight franchises, seven players each. Tap a team to see the full roster
+            fighting for the Season 11 crown.</p>
+        <div class="updated-chip fade-up d3">🛡️ 8 FRANCHISES · 56 PLAYERS</div>
+    </section>
+
+    <!-- TEAMS LIST -->
+    <div class="teams-list" id="teamsList">
+
+        <!-- RR -->
+        <div class="team-item fade-up" style="--team-color:#e03db2;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">RR</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Rajasthan Rebels</div>
+                    <div class="team-cap-line">Captain <b>Raizen</b></div>
+                </div>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">R</div>
+                            <div class="roster-name">Raizen</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">N</div><div class="roster-name">Nova_Wraith</div></div>
+                        <div class="roster-row"><div class="roster-avatar">S</div><div class="roster-name">Sly_Reaper</div></div>
+                        <div class="roster-row"><div class="roster-avatar">P</div><div class="roster-name">Pyra</div></div>
+                        <div class="roster-row"><div class="roster-avatar">D</div><div class="roster-name">Dune_King</div></div>
+                        <div class="roster-row"><div class="roster-avatar">V</div><div class="roster-name">Vantablack</div></div>
+                        <div class="roster-row"><div class="roster-avatar">E</div><div class="roster-name">Echofang</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CSK -->
+        <div class="team-item fade-up" style="--team-color:#f5c518;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">CSK</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Chennai Strike Kings</div>
+                    <div class="team-cap-line">Captain <b>Thala_X</b></div>
+                </div>
+                <span class="champ-badge">🏆 3× Champions</span>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">T</div>
+                            <div class="roster-name">Thala_X</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">M</div><div class="roster-name">Maverick_9</div></div>
+                        <div class="roster-row"><div class="roster-avatar">A</div><div class="roster-name">Ashwyn</div></div>
+                        <div class="roster-row"><div class="roster-avatar">K</div><div class="roster-name">Kryptic</div></div>
+                        <div class="roster-row"><div class="roster-avatar">L</div><div class="roster-name">Lunar_Fox</div></div>
+                        <div class="roster-row"><div class="roster-avatar">H</div><div class="roster-name">Hexbolt</div></div>
+                        <div class="roster-row"><div class="roster-avatar">O</div><div class="roster-name">Obsidian</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PBKS -->
+        <div class="team-item fade-up" style="--team-color:#e2394a;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">PBKS</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Punjab Berserkers</div>
+                    <div class="team-cap-line">Captain <b>Sherdil</b></div>
+                </div>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">S</div>
+                            <div class="roster-name">Sherdil</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">G</div><div class="roster-name">Ghost_Rider</div></div>
+                        <div class="roster-row"><div class="roster-avatar">B</div><div class="roster-name">Blitzkrieg</div></div>
+                        <div class="roster-row"><div class="roster-avatar">T</div><div class="roster-name">Tundra</div></div>
+                        <div class="roster-row"><div class="roster-avatar">Z</div><div class="roster-name">Zephyrus</div></div>
+                        <div class="roster-row"><div class="roster-avatar">I</div><div class="roster-name">Ironclad</div></div>
+                        <div class="roster-row"><div class="roster-avatar">C</div><div class="roster-name">Crimzon</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KKR -->
+        <div class="team-item fade-up" style="--team-color:#7d4bb0;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">KKR</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Kolkata Kraken Riders</div>
+                    <div class="team-cap-line">Captain <b>Vortex</b></div>
+                </div>
+                <span class="champ-badge">🏆 2× Champions</span>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">V</div>
+                            <div class="roster-name">Vortex</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">N</div><div class="roster-name">Nightshade</div></div>
+                        <div class="roster-row"><div class="roster-avatar">F</div><div class="roster-name">Frostbyte</div></div>
+                        <div class="roster-row"><div class="roster-avatar">R</div><div class="roster-name">Ruinlord</div></div>
+                        <div class="roster-row"><div class="roster-avatar">A</div><div class="roster-name">Aetherix</div></div>
+                        <div class="roster-row"><div class="roster-avatar">M</div><div class="roster-name">Mirage_7</div></div>
+                        <div class="roster-row"><div class="roster-avatar">S</div><div class="roster-name">Solstice</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DC -->
+        <div class="team-item fade-up" style="--team-color:#1f5fc4;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">DC</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Delhi Chargers</div>
+                    <div class="team-cap-line">Captain <b>Rushil</b></div>
+                </div>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">R</div>
+                            <div class="roster-name">Rushil</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">J</div><div class="roster-name">Jetstream</div></div>
+                        <div class="roster-row"><div class="roster-avatar">V</div><div class="roster-name">Vex_Angel</div></div>
+                        <div class="roster-row"><div class="roster-avatar">B</div><div class="roster-name">Blackout</div></div>
+                        <div class="roster-row"><div class="roster-avatar">Q</div><div class="roster-name">Quicksilver</div></div>
+                        <div class="roster-row"><div class="roster-avatar">D</div><div class="roster-name">Deadlatch</div></div>
+                        <div class="roster-row"><div class="roster-avatar">W</div><div class="roster-name">Wraithlynx</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MI -->
+        <div class="team-item fade-up" style="--team-color:#045d9e;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">MI</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Mumbai Ironclads</div>
+                    <div class="team-cap-line">Captain <b>Kaizer</b></div>
+                </div>
+                <span class="champ-badge">🏆 3× Champions</span>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">K</div>
+                            <div class="roster-name">Kaizer</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">A</div><div class="roster-name">Alpha_Nyx</div></div>
+                        <div class="roster-row"><div class="roster-avatar">T</div><div class="roster-name">Talonstrike</div></div>
+                        <div class="roster-row"><div class="roster-avatar">G</div><div class="roster-name">Glacia</div></div>
+                        <div class="roster-row"><div class="roster-avatar">R</div><div class="roster-name">Ravenkill</div></div>
+                        <div class="roster-row"><div class="roster-avatar">S</div><div class="roster-name">Shockdrive</div></div>
+                        <div class="roster-row"><div class="roster-avatar">P</div><div class="roster-name">Phantasm</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RCB -->
+        <div class="team-item fade-up" style="--team-color:#9e0404;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">RCB</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Royal Cobra Battalion</div>
+                    <div class="team-cap-line">Captain <b>Ashen</b></div>
+                </div>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">A</div>
+                            <div class="roster-name">Ashen</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">C</div><div class="roster-name">Corvus</div></div>
+                        <div class="roster-row"><div class="roster-avatar">F</div><div class="roster-name">Firewhip</div></div>
+                        <div class="roster-row"><div class="roster-avatar">L</div><div class="roster-name">Lokisan</div></div>
+                        <div class="roster-row"><div class="roster-avatar">N</div><div class="roster-name">Nemesyx</div></div>
+                        <div class="roster-row"><div class="roster-avatar">H</div><div class="roster-name">Hollowpoint</div></div>
+                        <div class="roster-row"><div class="roster-avatar">B</div><div class="roster-name">Basilisk</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SRH -->
+        <div class="team-item fade-up" style="--team-color:#f26522;">
+            <button class="team-head">
+                <div class="team-logo-slot"><span class="team-abbr">SRH</span></div>
+                <div class="team-head-info">
+                    <div class="team-name">Sunrisers Hyderabad</div>
+                    <div class="team-cap-line">Captain <b>Blaze</b></div>
+                </div>
+                <span class="champ-badge">🏆 1× Champion</span>
+                <span class="team-chev">▾</span>
+            </button>
+            <div class="team-body">
+                <div class="team-body-inner">
+                    <div class="roster-label">Full Roster</div>
+                    <div class="roster-grid">
+                        <div class="roster-row is-captain">
+                            <div class="roster-avatar">B</div>
+                            <div class="roster-name">Blaze</div>
+                            <span class="roster-cap-tag">Captain</span>
+                        </div>
+                        <div class="roster-row"><div class="roster-avatar">E</div><div class="roster-name">Ember_Storm</div></div>
+                        <div class="roster-row"><div class="roster-avatar">X</div><div class="roster-name">Xandu</div></div>
+                        <div class="roster-row"><div class="roster-avatar">V</div><div class="roster-name">Viperia</div></div>
+                        <div class="roster-row"><div class="roster-avatar">S</div><div class="roster-name">Scorchmark</div></div>
+                        <div class="roster-row"><div class="roster-avatar">D</div><div class="roster-name">Duskrunner</div></div>
+                        <div class="roster-row"><div class="roster-avatar">Y</div><div class="roster-name">Ymir</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="cta-band fade-up" style="margin:32px 20px 0;">
+        <h3 class="display">SEE HOW THEY STACK UP</h3>
+        <p>Check the live standings to see who's leading the Season 11 race.</p>
+        <a class="btn btn-primary" href="leaderboard.html" style="display:block; text-decoration:none;">View
+            Leaderboard</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="foot-brand">
+            <div class="crest" style="width:26px;height:26px;"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch
+            moment of
+            the season.</p>
+        <div class="foot-social">
+            <div class="soc">✕</div>
+            <div class="soc">◎</div>
+            <div class="soc">▶</div>
+            <div class="soc">✈</div>
+        </div>
+        <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle class="btt-bg" cx="24" cy="24" r="21" />
+            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9"
+                stroke-dashoffset="131.9" />
+        </svg>
+        <span>↑</span>
+    </button>
+
+    <script src="theme.js"></script>
+    <script>
+        // ---------- Team roster accordion ----------
+        document.querySelectorAll('.team-item').forEach(item => {
+            const head = item.querySelector('.team-head');
+            const body = item.querySelector('.team-body');
+            head.addEventListener('click', () => {
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.team-item.open').forEach(open => {
+                    if (open !== item) {
+                        open.classList.remove('open');
+                        open.querySelector('.team-body').style.maxHeight = null;
+                    }
+                });
+                if (isOpen) {
+                    item.classList.remove('open');
+                    body.style.maxHeight = null;
+                } else {
+                    item.classList.add('open');
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

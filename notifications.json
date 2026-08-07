@@ -1,0 +1,17 @@
+{
+  "_readme": "This is the ONLY file you need to edit to push a new homepage announcement. Add a new object to the top of the 'notifications' array below (or edit the existing one). The site always shows whichever active entry has the newest 'date'. Save this file and re-upload it to your host — no other file needs to change. It shows up live on the homepage within about a minute, even for people already browsing — no page refresh needed. You can bold part of 'message' with <b>...</b>, e.g. '<b>Heads up.</b> Rest of the message.'. Delete this _readme key or leave it, it's ignored by the site.",
+
+  "notifications": [
+    {
+      "id": "a16",
+      "date": "2026-08-07",
+      "active": true,
+      "icon": "📢",
+      "eyebrow": "Official Announcement",
+      "title": "Welcome to<br>Season 11",
+      "message": "<b>Heads up, squads.</b> Registrations, auction and the full schedule are rolling out over the next few days — keep an eye on Announcements for every update.",
+      "link": "",
+      "linkText": ""
+    }
+  ]
+}

@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Pre-paint theme snippet — must stay inline here, before theme.css loads, so the saved
+         theme applies before first paint (avoids a flash of the default theme). Do not move
+         this to theme.js. Copy it verbatim onto every page. -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('xipl-theme');
+                if (saved) document.documentElement.setAttribute('data-theme', saved);
+            } catch (e) { /* localStorage unavailable — default theme will render */ }
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>FREEFIRE XIPL — Season 11</title>
+    <meta name="description"
+        content="The unofficial home of Free Fire XIPL Season 11 — fixtures, standings, team rosters, prize pool and every clutch moment of the season.">
+    <meta property="og:title" content="FREEFIRE XIPL — Season 11">
+    <meta property="og:description"
+        content="Eight franchises. One battleground. Follow every drop, every clutch and every crown chase of the season.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        /* ============ HERO ============ */
+        .hero {
+            position: relative;
+            padding: 38px 20px 30px;
+            background:
+                transparent;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
+            background-size: 26px 26px;
+            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
+            animation: gridDrift 14s linear infinite;
+        }
+
+        @keyframes gridDrift {
+            from {
+                background-position: 0 0, 0 0;
+            }
+
+            to {
+                background-position: 26px 26px, 26px 26px;
+            }
+        }
+
+
+        .season-tag {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border: 1px solid var(--gold-deep);
+            border-radius: 100px;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: var(--gold-pale);
+            background: rgba(var(--gold-rgb), 0.06);
+        }
+
+        .season-tag .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--live);
+            animation: blink 1.3s ease-in-out infinite;
+        }
+
+
+        .hero-trophy {
+            position: absolute;
+            top: 80px;
+            right: 45px;
+            width: 90px;
+            filter: drop-shadow(0 0 18px rgba(var(--gold-rgb), .6));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .hero-title {
+            position: relative;
+            margin-top: 16px;
+            font-size: 79px;
+            line-height: .97;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 6px 26px rgba(var(--gold-rgb), 0.22));
+        }
+
+        .hero-title span {
+            display: block;
+            font-size: 18px;
+            color: var(--ink);
+            -webkit-text-fill-color: var(--ink);
+            letter-spacing: 0.32em;
+            margin-top: 6px;
+        }
+
+        .hero-pre {
+            display: block;
+            font-size: 18px;
+            letter-spacing: 0.42em;
+            color: var(--gold-pale);
+            -webkit-text-fill-color: var(--gold-pale);
+            margin-bottom: 2px;
+        }
+
+        .hero-desc {
+            margin-top: 14px;
+            font-size: 14.5px;
+            line-height: 1.55;
+            color: var(--ink-dim);
+            max-width: 340px;
+        }
+
+        .ticker-wrap {
+            margin-top: 20px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--surface);
+        }
+
+        .ticker-head {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            font-size: 10.5px;
+            letter-spacing: 0.18em;
+            color: var(--live);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .ticker-head .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--live);
+            box-shadow: 0 0 8px var(--live);
+            animation: blink 1.1s ease-in-out infinite;
+        }
+
+        .ticker-track {
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 9px 0;
+        }
+
+        .ticker-track span {
+            display: inline-block;
+            padding-right: 48px;
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            animation: scrollTicker 16s linear infinite;
+        }
+
+        @keyframes scrollTicker {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .ticker-track span b {
+            color: var(--gold-pale);
+            font-weight: 600;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        /* ============ REGISTRATION ============ */
+        .reg-foil {
+            margin-top: 22px;
+            border-radius: 24px;
+        }
+
+        .reg-card {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 30px 22px 28px;
+            border-radius: 22px;
+            overflow: hidden;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+        }
+
+        .reg-embers {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .reg-embers span {
+            position: absolute;
+            bottom: -6px;
+            width: 2.5px;
+            height: 2.5px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 6px 1px rgba(var(--gold-rgb), 0.8);
+            opacity: 0;
+            animation-name: cdEmberFloat;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+        }
+
+        .reg-embers span:nth-child(1) {
+            left: 12%;
+            animation-duration: 5.4s;
+            animation-delay: 0s;
+        }
+
+        .reg-embers span:nth-child(2) {
+            left: 38%;
+            animation-duration: 6.2s;
+            animation-delay: 1.4s;
+        }
+
+        .reg-embers span:nth-child(3) {
+            left: 64%;
+            animation-duration: 5.8s;
+            animation-delay: 0.8s;
+        }
+
+        .reg-embers span:nth-child(4) {
+            left: 88%;
+            animation-duration: 6.6s;
+            animation-delay: 2.2s;
+        }
+
+        .reg-badge {
+            position: relative;
+            z-index: 2;
+        }
+
+        .reg-badge.closed {
+            border-color: var(--ink-faint);
+            color: var(--ink-dim);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .reg-badge.closed .dot {
+            background: var(--ink-faint);
+            box-shadow: none;
+            animation: none;
+        }
+
+        .reg-title {
+            position: relative;
+            z-index: 2;
+            margin-top: 16px;
+            font-size: 26px;
+            line-height: 1.05;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .reg-desc {
+            position: relative;
+            z-index: 2;
+            margin: 12px auto 0;
+            max-width: 290px;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--ink-dim);
+        }
+
+        .reg-slots {
+            position: relative;
+            z-index: 2;
+            margin: 20px auto 0;
+            max-width: 280px;
+        }
+
+        .reg-slots-track {
+            height: 6px;
+            border-radius: 6px;
+            background: rgba(var(--gold-rgb), 0.09);
+            overflow: hidden;
+        }
+
+        .reg-slots-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
+            transition: width 1.1s cubic-bezier(.2, .9, .25, 1);
+        }
+
+        .reg-slots-label {
+            margin-top: 8px;
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .reg-btn {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            width: 100%;
+            margin-top: 20px;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .reg-btn.disabled {
+            background: var(--surface-2);
+            color: var(--ink-faint);
+            box-shadow: none;
+            border: 1px solid var(--line);
+            pointer-events: none;
+        }
+
+        .reg-note {
+            position: relative;
+            z-index: 2;
+            margin-top: 12px;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.02em;
+        }
+
+        /* ============ STATS ============ */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            padding: 16px 8px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Anton', sans-serif;
+            font-size: 24px;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            margin-top: 4px;
+            font-size: 9.5px;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        /* ============ TEAMS (marquee + cards) ============ */
+        .teams-scroll {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            overflow-x: auto;
+            padding: 4px 0 6px;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+        }
+
+        .team-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            /* adjust size */
+            transform: translate(-50%, -50%);
+            opacity: 0.50;
+            /* makes it transparent */
+            pointer-events: none;
+            /* no click issue */
+        }
+
+        .teams-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .team-card {
+            touch-action: pan-x;
+            user-select: none;
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            background: var(--surface);
+            border-radius: 16.5px;
+            /*to change the team card size */
+            padding: 10px 8px;
+            overflow: hidden;
+        }
+
+        .team-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -70%;
+            width: 45%;
+            height: 100%;
+            z-index: 2;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+            animation: shimmerSweep 8s ease-in-out infinite;
+        }
+
+        .team-frame:nth-child(2) .team-card::after {
+            animation-delay: 0.6s;
+        }
+
+        .team-frame:nth-child(3) .team-card::after {
+            animation-delay: 1.2s;
+        }
+
+        .team-frame:nth-child(4) .team-card::after {
+            animation-delay: 1.8s;
+        }
+
+        .team-frame:nth-child(5) .team-card::after {
+            animation-delay: 2.4s;
+        }
+
+        .team-frame:nth-child(6) .team-card::after {
+            animation-delay: 3s;
+        }
+
+        .team-frame:nth-child(7) .team-card::after {
+            animation-delay: 3.6s;
+        }
+
+        .team-frame:nth-child(8) .team-card::after {
+            animation-delay: 4.2s;
+        }
+
+        .team-card .accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            z-index: 1;
+        }
+
+        .team-index {
+            position: absolute;
+            top: 14px;
+            right: 15px;
+            z-index: 3;
+            font-family: 'Space Mono', monospace;
+            font-size: 9.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.04em;
+        }
+
+        .team-crest {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            border-radius: 13px;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-crest::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 16px;
+            animation: crestPulse 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes crestPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(var(--gold-rgb), 0.0);
+            }
+
+            50% {
+                box-shadow: 0 0 16px 2px rgba(var(--gold-rgb), 0.22);
+            }
+        }
+
+        .team-abbr {
+            font-family: 'Anton', sans-serif;
+            font-size: 19px;
+            letter-spacing: 0.02em;
+        }
+
+        .team-full {
+            position: relative;
+            z-index: 3;
+            margin-top: 10px;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.04em;
+            line-height: 1.3;
+        }
+
+        .team-full,
+        .team-motto {
+            min-height: 14px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .scroll-indicator {
+            position: relative;
+            width: 60px;
+            height: 3px;
+            margin: 16px auto 0;
+            border-radius: 3px;
+            background: rgba(var(--gold-rgb), 0.1);
+            overflow: hidden;
+        }
+
+        .scroll-indicator-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+        }
+
+        .team-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--ink-dim);
+        }
+
+        .team-meta b {
+            color: var(--ink);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .team-motto {
+            position: relative;
+            z-index: 3;
+            margin-top: 14px;
+            font-size: 10.5px;
+            font-style: italic;
+            color: var(--ink-dim);
+            line-height: 1.45;
+            min-height: 42px;
+        }
+
+        .team-captain {
+            margin-top: 20px;
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--line);
+        }
+
+        .cap-avatar {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 10.5px;
+        }
+
+        .cap-info {
+            display: flex;
+            flex-direction: column;
+            font-size: 9px;
+            color: var(--ink-faint);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .cap-info b {
+            margin-top: 1px;
+            color: var(--gold-pale);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .pip {
+            width: 7px;
+            height: 7px;
+            border-radius: 2px;
+        }
+
+        .pip.w {
+            background: var(--gold);
+        }
+
+        .pip.l {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ============ ROADMAP ============ */
+        .roadmap {
+            margin-top: 26px;
+            position: relative;
+            padding-left: 26px;
+        }
+
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--gold-deep), rgba(var(--gold-rgb), 0.05));
+        }
+
+        .stage {
+            position: relative;
+            padding-bottom: 26px;
+        }
+
+        .stage:last-child {
+            padding-bottom: 0;
+        }
+
+        .stage::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--gold-deep);
+        }
+
+        .stage.active::before {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.15);
+        }
+
+        .stage.active::after {
+            content: '';
+            position: absolute;
+            left: -21px;
+            top: 7px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: blink 1.2s ease-in-out infinite;
+        }
+
+        .stage-name {
+            font-size: 15.5px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .stage-name.done {
+            color: var(--ink-faint);
+        }
+
+        .stage-tag {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 9.5px;
+            letter-spacing: 0.14em;
+            padding: 3px 9px;
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+
+        .stage-tag.live {
+            background: rgba(var(--live-rgb), 0.14);
+            color: var(--live);
+        }
+
+        .stage-tag.soon {
+            background: rgba(var(--gold-rgb), 0.12);
+            color: var(--gold-pale);
+            border: 1px solid var(--gold-deep);
+        }
+
+        .stage-tag.upcoming {
+            background: rgba(var(--gold-rgb), 0.08);
+            color: var(--ink-faint);
+            border: 1px solid var(--line);
+        }
+
+        .stage-tag.cleared {
+            background: rgba(var(--gold-rgb), 0.08);
+            color: var(--gold-deep);
+        }
+
+        .stage-desc {
+            margin-top: 6px;
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.5;
+        }
+
+        /* ============ FOIL FRAME (signature rotating gold border, reused across cards) ============ */
+
+        .team-foil {
+            transform: scale(1.6);
+        }
+
+
+        .foil-frame.cd-foil {
+            margin-top: 22px;
+        }
+
+        .foil-frame.mvp-foil {
+            margin-top: 22px;
+            border-radius: 22px;
+        }
+
+        .foil-frame.team-foil {
+            flex: 0 0 174px;
+            scroll-snap-align: start;
+            border-radius: 18px;
+            padding: 1.5px;
+        }
+
+        /* ============ COUNTDOWN (premium) ============ */
+        .countdown-card {
+            position: relative;
+            z-index: 1;
+            border-radius: 24px;
+            padding: 34px 22px 26px;
+            background: radial-gradient(ellipse 140% 90% at 50% -10%, rgba(var(--gold-rgb), 0.18), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 75%);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .countdown-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 35%;
+            height: 100%;
+            z-index: 2;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+            animation: shimmerSweep 6s ease-in-out infinite;
+        }
+
+        @keyframes shimmerSweep {
+            0% {
+                left: -60%;
+            }
+
+            55% {
+                left: 120%;
+            }
+
+            100% {
+                left: 120%;
+            }
+        }
+
+        .cd-glow {
+            position: absolute;
+            top: 6%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.24), transparent 70%);
+            filter: blur(4px);
+            animation: haloPulse 3s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes haloPulse {
+
+            0%,
+            100% {
+                opacity: 0.55;
+                transform: translateX(-50%) scale(0.92);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.05);
+            }
+        }
+
+        .cd-embers {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .cd-embers span {
+            position: absolute;
+            bottom: -6px;
+            width: 2.5px;
+            height: 2.5px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 6px 1px rgba(var(--gold-rgb), 0.8);
+            opacity: 0;
+            animation-name: cdEmberFloat;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+        }
+
+        .cd-embers span:nth-child(1) {
+            left: 8%;
+            animation-duration: 5s;
+            animation-delay: 0s;
+        }
+
+        .cd-embers span:nth-child(2) {
+            left: 22%;
+            animation-duration: 6.5s;
+            animation-delay: 1.2s;
+        }
+
+        .cd-embers span:nth-child(3) {
+            left: 40%;
+            animation-duration: 5.8s;
+            animation-delay: 2.4s;
+        }
+
+        .cd-embers span:nth-child(4) {
+            left: 62%;
+            animation-duration: 6.2s;
+            animation-delay: 0.6s;
+        }
+
+        .cd-embers span:nth-child(5) {
+            left: 80%;
+            animation-duration: 5.4s;
+            animation-delay: 1.8s;
+        }
+
+        .cd-embers span:nth-child(6) {
+            left: 92%;
+            animation-duration: 6.8s;
+            animation-delay: 3s;
+        }
+
+        @keyframes cdEmberFloat {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+
+            12% {
+                opacity: 0.9;
+            }
+
+            90% {
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: translateY(-260px);
+                opacity: 0;
+            }
+        }
+
+        .cd-badge {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cd-ring-wrap {
+            position: relative;
+            z-index: 2;
+            width: 140px;
+            height: 140px;
+            margin: 22px auto 4px;
+        }
+
+        .cd-ring-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 1px solid rgba(var(--gold-rgb), 0.14);
+        }
+
+        .cd-ring-wrap svg {
+            position: absolute;
+            inset: 0;
+            animation: ringRotate 10s linear infinite;
+            transform-origin: 50% 50%;
+        }
+
+        @keyframes ringRotate {
+            from {
+                transform: rotate(-90deg);
+            }
+
+            to {
+                transform: rotate(270deg);
+            }
+        }
+
+        .cd-ring-bg {
+            fill: none;
+            stroke: rgba(var(--gold-rgb), 0.09);
+            stroke-width: 3;
+        }
+
+        .cd-ring-fill {
+            fill: none;
+            stroke: url(#ringGrad);
+            stroke-width: 3.4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        .cd-ring-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .cd-ring-crest {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+            animation: coreGlow 2.2s ease-in-out infinite;
+        }
+
+        .cd-ring-tag {
+            font-size: 8px;
+            letter-spacing: 0.22em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .cd-season {
+            position: relative;
+            z-index: 2;
+            margin-top: 16px;
+            font-size: 32px;
+            letter-spacing: 0.03em;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .cd-title {
+            position: relative;
+            z-index: 2;
+            margin-top: 2px;
+            font-size: 11px;
+            letter-spacing: 0.28em;
+            color: var(--ink-faint);
+        }
+
+        .cd-divider {
+            position: relative;
+            z-index: 2;
+            margin: 24px auto 22px;
+            width: 76%;
+            border-top: 1px dashed rgba(var(--gold-rgb), 0.22);
+        }
+
+        .cd-divider::before,
+        .cd-divider::after {
+            content: '';
+            position: absolute;
+            top: -9px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--card-b);
+        }
+
+        .cd-divider::before {
+            left: -24px;
+        }
+
+        .cd-divider::after {
+            right: -24px;
+        }
+
+        .cd-digits {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .cd-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 56px;
+            padding: 11px 6px 9px;
+            border-radius: 13px;
+            background: linear-gradient(160deg, rgba(var(--gold-rgb), 0.11), rgba(var(--gold-rgb), 0.02));
+            border: 1px solid rgba(var(--gold-rgb), 0.24);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .cd-num {
+            font-family: 'Anton', sans-serif;
+            font-size: 28px;
+            line-height: 1;
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: transform 0.25s ease;
+            display: inline-block;
+        }
+
+        .cd-num.tick {
+            transform: scale(1.16);
+        }
+
+        .cd-chip-label {
+            margin-top: 5px;
+            font-size: 8px;
+            letter-spacing: 0.16em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .cd-colon {
+            font-family: 'Anton', sans-serif;
+            font-size: 20px;
+            color: var(--gold-deep);
+            animation: blink 1s steps(1) infinite;
+        }
+
+        .cd-caption {
+            position: relative;
+            z-index: 2;
+            margin-top: 24px;
+            font-size: 12px;
+            color: var(--ink-dim);
+        }
+
+        .cd-caption b {
+            color: var(--gold-pale);
+        }
+
+        /* ============ HIGHLIGHTS ============ */
+        .clip-scroll {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scroll-snap-type: x mandatory;
+            touch-action: pan-x;
+        }
+
+        .clip-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .clip-card {
+            flex: 0 0 200px;
+            scroll-snap-align: start;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+        }
+
+        .clip-thumb {
+            height: 112px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .clip-thumb .play {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(var(--bg-rgb), 0.55);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(var(--gold-rgb), 0.5);
+        }
+
+        .clip-info {
+            background: var(--surface);
+            padding: 10px 12px;
+        }
+
+        .clip-info .t {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .clip-info .s {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            margin-top: 2px;
+        }
+
+        /* ============ CTA BAND ============ */
+        /* ============ SCROLL PROGRESS ============ */
+
+        /* ============ MVP SPOTLIGHT ============ */
+        .mvp-card {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 26px 22px 26px;
+            border-radius: 20px;
+            background: radial-gradient(ellipse 120% 90% at 50% 0%, rgba(var(--gold-rgb), 0.10), transparent 65%), var(--surface);
+            overflow: hidden;
+        }
+
+        .mvp-card::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--mvp-glow-rgb), 0.16), rgba(var(--gold-rgb), 0.12) 55%, transparent 75%);
+            animation: haloPulse 3s ease-in-out infinite;
+        }
+
+        .mvp-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 35%;
+            height: 100%;
+            z-index: 2;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+            animation: shimmerSweep 6.5s ease-in-out infinite;
+        }
+
+        .mvp-badge {
+            position: relative;
+            z-index: 3;
+        }
+
+        .mvp-rating {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 3;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(var(--gold-rgb), 0.35);
+            background: linear-gradient(160deg, rgba(var(--gold-rgb), 0.14), transparent);
+        }
+
+        .mvp-rating b {
+            font-family: 'Anton', sans-serif;
+            font-size: 16px;
+            color: var(--gold-pale);
+            line-height: 1;
+        }
+
+        .mvp-rating span {
+            font-size: 6.5px;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
+            margin-top: 1px;
+        }
+
+        .mvp-kills {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 3;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(var(--gold-rgb), 0.35);
+            background: linear-gradient(200deg, rgba(var(--gold-rgb), 0.14), transparent);
+        }
+
+        .mvp-kills b {
+            font-family: 'Anton', sans-serif;
+            font-size: 16px;
+            color: var(--gold-pale);
+            line-height: 1;
+        }
+
+        .mvp-kills span {
+            font-size: 6.5px;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
+            margin-top: 1px;
+        }
+
+        .mvp-prize-chip {
+            position: relative;
+            z-index: 3;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 6px 12px;
+            border-radius: 100px;
+            border: 1px solid rgba(var(--gold-rgb), 0.35);
+            background: rgba(var(--gold-rgb), 0.1);
+            font-family: 'Space Mono', monospace;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--gold-pale);
+        }
+
+        .mvp-avatar-ring {
+            position: relative;
+            z-index: 3;
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            margin: 18px auto 0;
+            padding: 3px;
+            background: conic-gradient(from 0deg, var(--gold-pale), var(--gold-deep), var(--gold), var(--gold-pale));
+            animation: ringSpin 5s linear infinite;
+        }
+
+        @keyframes ringSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .mvp-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--surface-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 23px;
+            color: var(--gold-pale);
+            border: 2px solid var(--bg);
+        }
+
+        .mvp-name {
+            position: relative;
+            z-index: 3;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: 'Anton', sans-serif;
+            font-size: 20px;
+            letter-spacing: 0.02em;
+            color: var(--ink);
+        }
+
+        .mvp-verified {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: var(--on-accent);
+            flex-shrink: 0;
+        }
+
+        .mvp-team {
+            position: relative;
+            z-index: 3;
+            margin-top: 3px;
+            font-size: 11.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.04em;
+        }
+
+        .mvp-quote {
+            position: relative;
+            z-index: 3;
+            margin: 16px auto 0;
+            max-width: 280px;
+            font-size: 12px;
+            font-style: italic;
+            color: var(--ink-dim);
+            line-height: 1.55;
+        }
+
+        .mvp-quote::before {
+            content: '\201C';
+            color: var(--gold-deep);
+            font-family: 'Anton', sans-serif;
+            font-style: normal;
+            margin-right: 2px;
+        }
+
+        .mvp-quote::after {
+            content: '\201D';
+            color: var(--gold-deep);
+            font-family: 'Anton', sans-serif;
+            font-style: normal;
+            margin-left: 2px;
+        }
+
+        .mvp-divider {
+            position: relative;
+            z-index: 3;
+            margin: 20px auto 20px;
+            width: 70%;
+            border-top: 1px dashed rgba(var(--gold-rgb), 0.2);
+        }
+
+        .mvp-bars {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            text-align: left;
+        }
+
+        .mvp-bar-row {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .mvp-bar-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9.5px;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .mvp-bar-head b {
+            color: var(--gold-pale);
+            font-family: 'Space Mono', monospace;
+            font-size: 10.5px;
+        }
+
+        .mvp-bar-track {
+            height: 5px;
+            border-radius: 4px;
+            background: rgba(var(--gold-rgb), 0.08);
+            overflow: hidden;
+        }
+
+        .mvp-bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
+            transition: width 1.1s cubic-bezier(.2, .9, .25, 1);
+        }
+
+
+        /* ============ PRIZE PODIUM ============ */
+        .prize-total {
+            position: relative;
+            margin-top: 22px;
+            padding: 24px 16px;
+            text-align: center;
+            border-radius: 18px;
+            border: 1px solid var(--line);
+            overflow: hidden;
+            background: radial-gradient(ellipse 130% 100% at 50% 0%, rgba(var(--gold-rgb), 0.14), transparent 65%), var(--surface);
+        }
+
+        .prize-total-label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 0.26em;
+            color: var(--ink-faint);
+        }
+
+        .prize-total-amt {
+            display: block;
+            margin-top: 8px;
+            font-size: 38px;
+            letter-spacing: 0.02em;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 4px 18px rgba(var(--gold-rgb), 0.25));
+        }
+
+        .prize-total-sub {
+            display: block;
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--ink-dim);
+        }
+
+        .podium {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 26px;
+            padding: 0 4px;
+        }
+
+        .podium-col {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .podium-col.p1::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.35), transparent 72%);
+            filter: blur(2px);
+            animation: haloPulse 2.6s ease-in-out infinite;
+        }
+
+        @keyframes haloPulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: translateX(-50%) scale(0.94);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.06);
+            }
+        }
+
+        .medal {
+            font-size: 22px;
+            animation: medalBounce 2.4s ease-in-out infinite;
+        }
+
+        .podium-col.p2 .medal {
+            animation-delay: 0.25s;
+        }
+
+        .podium-col.p3 .medal {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes medalBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .podium-amt {
+            margin-top: 6px;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--gold-pale);
+        }
+
+        .podium-bar {
+            width: 100%;
+            margin-top: 10px;
+            height: 0;
+            border-radius: 10px 10px 0 0;
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            box-shadow: 0 -6px 20px rgba(var(--gold-rgb), 0.18);
+            transition: height 1.1s cubic-bezier(.2, .9, .25, 1);
+        }
+
+        .podium-col.p1 .podium-bar {
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+        }
+
+        .podium-col.p2 .podium-bar,
+        .podium-col.p3 .podium-bar {
+            opacity: 0.85;
+        }
+
+        .podium-tag {
+            margin-top: 10px;
+            font-size: 9.5px;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        /* ============ CHAMPIONS LEGACY ============ */
+        .legacy-scroll {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            overflow-x: auto;
+            padding: 4px 0 10px;
+            scroll-snap-type: x mandatory;
+            touch-action: pan-x;
+        }
+
+        .legacy-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .legacy-card {
+            position: relative;
+            flex: 0 0 128px;
+            scroll-snap-align: start;
+            text-align: center;
+            background: var(--surface);
+            border: 1px solid var(--gold-deep);
+            border-radius: 16px;
+            padding: 20px 10px 16px;
+        }
+
+        .legacy-trophy {
+            font-size: 20px;
+        }
+
+        .legacy-season {
+            margin-top: 6px;
+            font-family: 'Anton', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            color: var(--gold-deep);
+        }
+
+        .legacy-team {
+            margin-top: 6px;
+            font-family: 'Anton', sans-serif;
+            font-size: 22px;
+            color: var(--gold-pale);
+        }
+
+        .legacy-full {
+            margin-top: 2px;
+            font-size: 10px;
+            color: var(--ink-faint);
+        }
+
+        /* ============ SPONSOR MARQUEE ============ */
+        .sponsor-track-wrap {
+            margin-top: 18px;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+            mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+        }
+
+        .sponsor-track {
+            display: flex;
+            width: max-content;
+            animation: sponsorScroll 22s linear infinite;
+        }
+
+        .sponsor-track span {
+            padding: 0 26px;
+            font-size: 13px;
+            letter-spacing: 0.14em;
+            color: var(--ink-faint);
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .sponsor-track span::after {
+            content: '✦';
+            margin-left: 26px;
+            color: var(--gold-deep);
+            font-size: 10px;
+        }
+
+        @keyframes sponsorScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ============ FAQ ============ */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .faq-item {
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            overflow: hidden;
+        }
+
+        .faq-q {
+            all: unset;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 15px 16px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .faq-q span:first-child {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1.4;
+        }
+
+        .faq-chevron {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 7px;
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 12px;
+            transition: transform 0.35s cubic-bezier(.2, .9, .25, 1);
+        }
+
+        .faq-item.open .faq-chevron {
+            transform: rotate(180deg);
+        }
+
+        .faq-item.open {
+            border-color: rgba(var(--gold-rgb), 0.3);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(.2, .9, .25, 1);
+        }
+
+        .faq-a p {
+            padding: 0 16px 16px 16px;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--ink-dim);
+        }
+
+        .faq-a p a {
+            color: var(--gold-pale);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="scroll-progress">
+        <div class="scroll-progress-fill" id="scrollFill"></div>
+    </div>
+
+    <!-- SPLASH -->
+    <div id="splash">
+        <div class="ignite-wrap">
+            <div class="ignite-ring r1"></div>
+            <div class="ignite-ring r2"></div>
+            <div class="ignite-ring r3"></div>
+            <div class="ignite-core"></div>
+        </div>
+        <div class="splash-word display">FREEFIREXIPL</div>
+        <div class="splash-sub">FREE FIRE CHAMPIONSHIP</div>
+        <div class="splash-bar">
+            <div class="splash-bar-fill"></div>
+        </div>
+    </div>
+
+    <div class="embers" id="embers"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="brand">
+            <div class="crest"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <div class="header-actions">
+            <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
+                aria-expanded="false">🎨</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        </div>
+    </header>
+
+    <!-- THEME SWITCHER -->
+    <div class="theme-overlay" id="themeOverlay"></div>
+    <div class="theme-panel" id="themePanel" role="menu" aria-label="Theme switcher">
+        <div class="theme-panel-head">
+            <span>🎨 Choose a Theme</span>
+            <button class="nav-close" id="themeClose" aria-label="Close theme menu">✕</button>
+        </div>
+        <div class="theme-grid" id="themeGrid">
+            <button class="theme-opt" data-theme="golden-fire" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i
+                        style="background:#b88f20"></i></span>
+                <span class="theme-opt-name">Golden Fire <em>🔥</em></span>
+            </button>
+            <button class="theme-opt" data-theme="og-bar" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i
+                        style="background:#49310d"></i></span>
+                <span class="theme-opt-name">Disco Blue <em>❤️</em></span>
+            </button>
+
+            <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i
+                        style="background:#49199b"></i></span>
+                <span class="theme-opt-name">Neon Cyber <em>💙</em></span>
+            </button>
+            <button class="theme-opt" data-theme="royal-purple" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i
+                        style="background:#911b73"></i></span>
+                <span class="theme-opt-name">Royal Purple <em>💜</em></span>
+            </button>
+            <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i
+                        style="background:#147749"></i></span>
+                <span class="theme-opt-name">Emerald Forest <em>💚</em></span>
+            </button>
+            <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i
+                        style="background:#824619"></i></span>
+                <span class="theme-opt-name">Sunset Orange <em>🧡</em></span>
+            </button>
+            <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i
+                        style="background:#147282"></i></span>
+                <span class="theme-opt-name">Ocean Blue <em>🌊</em></span>
+            </button>
+            <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i
+                        style="background:#97184f"></i></span>
+                <span class="theme-opt-name">Sakura Pink <em>🌸</em></span>
+            </button>
+            <button class="theme-opt" data-theme="midnight-black" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i
+                        style="background:#a22222"></i></span>
+                <span class="theme-opt-name">Midnight Black <em>⚫</em></span>
+            </button>
+            <button class="theme-opt" data-theme="crystal-light" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i
+                        style="background:#058ede"></i></span>
+                <span class="theme-opt-name">Crystal Light <em>☀️</em></span>
+            </button>
+            <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio">
+                <span class="theme-swatch">
+                    <i style="background:#1a0505"></i>
+                    <i style="background:#e0304a"></i>
+                    <i style="background:#ff8fa3"></i>
+                </span>
+                <span class="theme-opt-name">Crimson Blood <em>🩸</em></span>
+            </button>
+            <button class="theme-opt" data-theme="arena-pro" role="menuitemradio">
+                <span class="theme-swatch">
+                    <i style="background:#0b0b10"></i>
+                    <i style="background:#ff8c00"></i>
+                    <i style="background:#ffd36a"></i>
+                </span>
+                <span class="theme-opt-name">Arena Pro <em>⚔️</em></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- NAV DRAWER -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="nav-drawer" id="navDrawer">
+        <div class="nav-drawer-head">
+            <div class="brand">
+                <div class="crest" style="width:26px;height:26px;"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
+            <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
+        </div>
+        <div class="nav-links">
+            <a href="arena.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Enter Arena</a>
+
+            <a href="#teams" class="nav-link" data-scroll="true"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
+                Center</a>
+            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
+            <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+            <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
+            <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
+            <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
+            <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
+            <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+            <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
+        </div>
+        <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" style="padding-top:34px;">
+        <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 11 · LIVE ARENA</div>
+        <h1 class="hero-title display fade-up d2"><span class="hero-pre">FREEFIRE</span>XIPL<span>ALL SQUADS. ONE
+                CROWN.</span></h1>
+        <p class="hero-desc fade-up d3">Eight franchises. One battleground. Follow every drop, every clutch and every
+            crown
+            chase of the season — built for fans who never miss a rotation.</p>
+        <img src="trophy.png" class="hero-trophy" alt="Championship Trophy">
+        <div class="ticker-wrap fade-up d4">
+            <div class="ticker-head"><span class="dot"></span> LIVE UPDATE</div>
+            <div class="ticker-track">
+                <span>
+                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
+                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
+                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
+                    Next drop begins in the arena shortly &nbsp;•&nbsp;
+                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
+                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
+                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
+                    Next drop begins in the arena shortly &nbsp;•&nbsp;
+                </span>
+            </div>
+        </div>
+
+        <div class="hero-cta fade-up d4">
+            <button class="btn btn-primary" id="ctaEnterArena">Enter Arena</button>
+            <button class="btn btn-ghost" id="ctaMeetSquads">Meet the Squads</button>
+        </div>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section id="countdown" style="padding-top:8px;">
+        <div class="eyebrow">NEXT UP</div>
+        <h2 class="sec-title">Season 12 <b>countdown</b></h2>
+        <div class="foil-frame cd-foil fade-up">
+            <div class="countdown-card">
+                <div class="cd-glow"></div>
+                <div class="cd-embers">
+                    <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span class="season-tag cd-badge"><span class="dot"></span> COUNTDOWN LIVE</span>
+
+                <div class="cd-ring-wrap">
+                    <svg width="140" height="140" viewBox="0 0 132 132">
+                        <defs>
+                            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:var(--gold-pale)" />
+                                <stop offset="55%" style="stop-color:var(--gold)" />
+                                <stop offset="100%" style="stop-color:var(--gold-deep)" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="cd-ring-bg" cx="66" cy="66" r="59" />
+                        <circle class="cd-ring-fill" id="cdRingFill" cx="66" cy="66" r="59" stroke-dasharray="371"
+                            stroke-dashoffset="371" />
+                    </svg>
+                    <div class="cd-ring-center">
+                        <div class="cd-ring-crest"></div>
+                        <div class="cd-ring-tag">SEASON</div>
+                    </div>
+                </div>
+
+                <h2 class="cd-season display">SEASON 12</h2>
+                <div class="cd-title">ARRIVING SOON</div>
+
+                <div class="cd-divider"></div>
+
+                <div class="cd-digits">
+                    <div class="cd-chip"><span class="cd-num" id="cd-d">00</span><span class="cd-chip-label">Days</span>
+                    </div>
+                    <span class="cd-colon">:</span>
+                    <div class="cd-chip"><span class="cd-num" id="cd-h">00</span><span class="cd-chip-label">Hrs</span>
+                    </div>
+                    <span class="cd-colon">:</span>
+                    <div class="cd-chip"><span class="cd-num" id="cd-m">00</span><span class="cd-chip-label">Min</span>
+                    </div>
+                    <span class="cd-colon">:</span>
+                    <div class="cd-chip"><span class="cd-num" id="cd-s">00</span><span class="cd-chip-label">Sec</span>
+                    </div>
+                </div>
+
+                <div class="cd-caption">Squad registrations open before <b>Season 12</b> kicks off</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REGISTRATION -->
+    <section id="register" style="padding-top:8px;">
+        <div class="foil-frame reg-foil fade-up" style="--foil:var(--gold);">
+            <div class="reg-card" id="regCard">
+                <div class="reg-embers">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="season-tag reg-badge" id="regBadge"><span class="dot"></span> REGISTRATIONS OPEN</span>
+                <h2 class="reg-title display">SQUAD UP FOR<br>SEASON 12</h2>
+                <p class="reg-desc" id="regDesc">Slots are filling fast — lock in your squad before the roster closes.
+                </p>
+
+                <div class="reg-slots" id="regSlots">
+                    <div class="reg-slots-track">
+                        <div class="reg-slots-fill" id="regSlotsFill" data-w="62"></div>
+                    </div>
+                    <div class="reg-slots-label"><span id="regSlotsText">5 of 8 slots filled</span></div>
+                </div>
+
+                <a href="./register.html" class="btn btn-primary reg-btn" id="regBtn">Register Your Squad →</a>
+                <div class="reg-note" id="regNote">Registrations close once all slots are filled</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="stats">
+        <div class="eyebrow">THE NUMBERS</div>
+        <h2 class="sec-title">Season <b>at a glance</b></h2>
+        <div class="stats-row">
+            <div class="stat-card fade-up">
+                <div class="stat-num" data-count="8">0</div>
+                <div class="stat-label">Squads</div>
+            </div>
+            <div class="stat-card fade-up d1">
+                <div class="stat-num" data-count="48">0</div>
+                <div class="stat-label">Matches</div>
+            </div>
+            <div class="stat-card fade-up d2">
+                <div class="stat-num" data-count="1000" data-prefix="₹">0</div>
+                <div class="stat-label">Prize Pool</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAMS -->
+    <section id="teams">
+        <div class="eyebrow">SEASON 11 ROSTER</div>
+        <h2 class="sec-title">Meet the <b>contenders</b></h2>
+        <p class="sec-desc">Eight franchises, one battleground — swipe to meet every squad chasing the Season 11 crown.
+        </p>
+        <div class="teams-scroll" id="teamsScroll">
+            <div class="foil-frame team-foil fade-up" style="--foil:#e03db2;">
+                <div class="team-card">
+                    <img src="rr.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#e03daf"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #7a026433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #c4098c66;">
+                        <div class="team-abbr display" style="color:#84077e">RR</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#8d316826; color:#e130a3;">R</div>
+                        <div class="cap-info">Captain<b>Raizen</b></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="foil-frame team-foil fade-up d1" style="--foil:#f5c518;">
+                <div class="team-card">
+                    <img src="csk.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#f5c518"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #f5c51833, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f5c51866;">
+                        <div class="team-abbr display" style="color:var(--gold)">CSK</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#f5c51826; color:var(--gold);">T</div>
+                        <div class="cap-info">Captain<b>Thala_X</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="foil-frame team-foil fade-up d2" style="--foil:#e2394a;">
+                <div class="team-card">
+                    <img src="pbks.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#e2394a"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #e2394a33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #e2394a66;">
+                        <div class="team-abbr display" style="color:#f07a86">PBKS</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#e2394a26; color:#f07a86;">S</div>
+                        <div class="cap-info">Captain<b>Sherdil</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="foil-frame team-foil fade-up d3" style="--foil:#7d4bb0;">
+                <div class="team-card">
+                    <img src="kkr.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#7d4bb0"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #7d4bb033, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #7d4bb066;">
+                        <div class="team-abbr display" style="color:#b98fe8">KKR</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#7d4bb026; color:#b98fe8;">V</div>
+                        <div class="cap-info">Captain<b>Vortex</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="foil-frame team-foil fade-up d4" style="--foil:#1f5fc4;">
+                <div class="team-card">
+                    <img src="dc.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#1f5fc4"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #1f5fc433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #1f5fc466;">
+                        <div class="team-abbr display" style="color:#6fa0ea">DC</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#1f5fc426; color:#6fa0ea;">R</div>
+                        <div class="cap-info">Captain<b>Rushil</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="foil-frame team-foil fade-up" style="--foil:#045d9e;">
+                <div class="team-card">
+                    <img src="mi.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#045d9e"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #045d9e33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #045d9e66;">
+                        <div class="team-abbr display" style="color:#6fc6ea">MI</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#045d9e26; color:#6fc6ea;">K</div>
+                        <div class="cap-info">Captain<b>Kaizer</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="foil-frame team-foil fade-up" style="--foil:#c31d1d;">
+                <div class="team-card">
+                    <img src="rcb.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#9e0404"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #9e040433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #9e040466;">
+                        <div class="team-abbr display" style="color:#ea6f6f">RCB</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#9e040426; color:#ea6f6f;">K</div>
+                        <div class="cap-info">Captain<b>Kaizer</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="foil-frame team-foil fade-up d2" style="--foil:#f26522;">
+                <div class="team-card">
+                    <img src="srh.png" class="team-logo">
+                    <span class="team-index"></span>
+                    <div class="accent" style="background:#f26522"></div>
+                    <div class="team-crest"
+                        style="background:linear-gradient(160deg, #f2652233, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f2652266;">
+                        <div class="team-abbr display" style="color:#ffab7a">SRH</div>
+                    </div>
+                    <div class="team-full"></div>
+                    <div class="team-motto"></div>
+                    <div class="team-captain">
+                        <div class="cap-avatar" style="background:#f2652226; color:#ffab7a;">B</div>
+                        <div class="cap-info">Captain<b>Blaze</b></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-indicator-fill" id="teamsScrollFill"></div>
+        </div>
+    </section>
+
+    <!-- PLAYER SPOTLIGHT -->
+  <section id="mvp">
+    <div class="eyebrow">ONE TO WATCH</div>
+    <h2 class="sec-title">Season 11 <b>breakout pick</b></h2>
+    <div class="foil-frame mvp-foil fade-up" style="--foil:#7d4bb0;">
+      <div class="mvp-card">
+        <span class="season-tag mvp-badge"><span class="dot"></span> PLAYER SPOTLIGHT</span>
+        <div class="mvp-kills"><b>187</b><span>KILLS</span></div>
+        <div class="mvp-rating"><b>94</b><span>RATING</span></div>
+        <div class="mvp-avatar-ring">
+          <div class="mvp-avatar">VX</div>
+        </div>
+        <div class="mvp-name">"Vortex" <span class="mvp-verified">✓</span></div>
+        <div class="mvp-team">Kolkata Knight Riders · Fragger</div>
+        <div class="mvp-prize-chip">🏆 ₹100 MVP AWARD · MOST KILLS THIS SEASON</div>
+        <div class="mvp-quote">"I don't wait for the zone to close in — I make sure I'm already there."</div>
+        <div class="mvp-divider"></div>
+        <div class="mvp-bars">
+          <div class="mvp-bar-row">
+            <div class="mvp-bar-head"><span>Fragging</span><b>96</b></div>
+            <div class="mvp-bar-track">
+              <div class="mvp-bar-fill" data-w="96"></div>
+            </div>
+          </div>
+          <div class="mvp-bar-row">
+            <div class="mvp-bar-head"><span>Zone IQ</span><b>91</b></div>
+            <div class="mvp-bar-track">
+              <div class="mvp-bar-fill" data-w="91"></div>
+            </div>
+          </div>
+          <div class="mvp-bar-row">
+            <div class="mvp-bar-head"><span>Clutch Factor</span><b>89</b></div>
+            <div class="mvp-bar-track">
+              <div class="mvp-bar-fill" data-w="89"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap">
+        <div class="eyebrow">SEASON PATH</div>
+        <h2 class="sec-title">Road to the <b>trophy</b></h2>
+        <div class="roadmap">
+            <div class="stage active fade-up">
+                <div class="stage-name">Group Stage</div>
+                <span class="stage-tag soon">Starts Soon</span>
+                <div class="stage-desc">Round-robin drops across all eight squads to set the table.</div>
+            </div>
+            <div class="stage fade-up d1">
+                <div class="stage-name">Super 6</div>
+                <span class="stage-tag upcoming">Upcoming</span>
+                <div class="stage-desc">Top six franchises battle for seeding into the knockouts.</div>
+            </div>
+            <div class="stage fade-up d2">
+                <div class="stage-name">Playoffs</div>
+                <span class="stage-tag upcoming">Upcoming</span>
+                <div class="stage-desc">Elimination bracket — one bad drop and the run ends.</div>
+            </div>
+            <div class="stage fade-up d3">
+                <div class="stage-name">Grand Finals</div>
+                <span class="stage-tag upcoming">Season Finale</span>
+                <div class="stage-desc">The last squad standing lifts the Season 11 crown.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIZE POOL -->
+    <section id="prizepool">
+        <div class="eyebrow">REWARDS</div>
+        <h2 class="sec-title">Prize pool <b>breakdown</b></h2>
+
+        <div class="prize-total fade-up">
+            <span class="prize-total-label">TOTAL PRIZE POOL</span>
+            <span class="prize-total-amt display" id="prizeTotalAmt" data-target="1000">₹0</span>
+            <span class="prize-total-sub">Champion, Runner-up &amp; Season MVP · Season 11</span>
+        </div>
+
+        <div class="podium fade-up">
+            <div class="podium-col p2">
+                <div class="medal">🥈</div>
+                <div class="podium-amt">₹300</div>
+                <div class="podium-bar" data-h="56"></div>
+                <div class="podium-tag">Runner-up</div>
+            </div>
+            <div class="podium-col p1">
+                <div class="medal">🥇</div>
+                <div class="podium-amt">₹600</div>
+                <div class="podium-bar" data-h="104"></div>
+                <div class="podium-tag">Champion</div>
+            </div>
+            <div class="podium-col p3">
+                <div class="medal">🎯</div>
+                <div class="podium-amt">₹100</div>
+                <div class="podium-bar" data-h="32"></div>
+                <div class="podium-tag">MVP · Most Kills</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section id="highlights">
+        <div class="eyebrow">MOMENTS</div>
+        <h2 class="sec-title">Season <b>highlights</b></h2>
+        <div class="clip-scroll">
+            <div class="clip-card fade-up">
+                <div class="clip-thumb" style="background:linear-gradient(150deg,#3d6fe0,var(--bg));">
+                    <div class="play">▶</div>
+                </div>
+                <div class="clip-info">
+                    <div class="t">Clutch 1v3 in the final zone</div>
+                    <div class="s">KKR · Match 09</div>
+                </div>
+            </div>
+            <div class="clip-card fade-up d1">
+                <div class="clip-thumb" style="background:linear-gradient(150deg,#f5c518,var(--bg));">
+                    <div class="play">▶</div>
+                </div>
+                <div class="clip-info">
+                    <div class="t">CSK's flawless zone read</div>
+                    <div class="s">CSK · Match 11</div>
+                </div>
+            </div>
+            <div class="clip-card fade-up d2">
+                <div class="clip-thumb" style="background:linear-gradient(150deg,#e2394a,var(--bg));">
+                    <div class="play">▶</div>
+                </div>
+                <div class="clip-info">
+                    <div class="t">PBKS opening drop mayhem</div>
+                    <div class="s">PBKS · Match 03</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHAMPIONS LEGACY -->
+    <section id="legacy">
+        <div class="eyebrow">HALL OF FAME</div>
+        <h2 class="sec-title">Champions <b>through the years</b></h2>
+        <div class="legacy-scroll">
+            <div class="legacy-card fade-up">
+                <div class="legacy-trophy">🏆</div>
+                <div class="legacy-season">SEASON 10</div>
+                <div class="legacy-team">CSK</div>
+                <div class="legacy-full">Chennai Super Kings</div>
+            </div>
+            <div class="legacy-card fade-up d1">
+                <div class="legacy-trophy">🏆</div>
+                <div class="legacy-season">SEASON 9</div>
+                <div class="legacy-team">MI</div>
+                <div class="legacy-full">Mumbai Indians</div>
+            </div>
+            <div class="legacy-card fade-up d2">
+                <div class="legacy-trophy">🏆</div>
+                <div class="legacy-season">SEASON 8</div>
+                <div class="legacy-team">RR</div>
+                <div class="legacy-full">Rajasthan Royals</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPONSORS -->
+    <section id="sponsors" style="padding-top:36px;">
+        <div class="eyebrow" style="justify-content:center;">POWERED BY</div>
+        <div class="sponsor-track-wrap">
+            <div class="sponsor-track">
+                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
+                    PERIPHERALS</span>
+                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
+                    PERIPHERALS</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="eyebrow">GOT QUESTIONS?</div>
+        <h2 class="sec-title">Frequently <b>asked</b></h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-q"><span>How do I register my team for Season 11?</span><span
+                        class="faq-chevron">⌄</span></button>
+                <div class="faq-a">
+                    <p>Head to the <a href="registration-center.html">Registration Center</a>, fill in your squad's
+                        details and lock in your roster before the auction opens.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q"><span>When does Season 11 kick off?</span><span
+                        class="faq-chevron">⌄</span></button>
+                <div class="faq-a">
+                    <p>Keep an eye on the countdown above and the <a href="schedule.html">Schedule</a> page — exact
+                        match times go live there as soon as fixtures are locked.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q"><span>How is the prize pool paid out?</span><span
+                        class="faq-chevron">⌄</span></button>
+                <div class="faq-a">
+                    <p>₹600 to the Champion, ₹300 to the Runner-up, and ₹100 to the Season MVP — the player with the
+                        most eliminations across the season.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q"><span>Can I substitute a player mid-season?</span><span
+                        class="faq-chevron">⌄</span></button>
+                <div class="faq-a">
+                    <p>Rosters lock once playoffs begin. Before that, substitutions need 24 hours' notice to the
+                        organizers — see the full <a href="rules.html">Rulebook</a> for details.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q"><span>Where can I watch the matches live?</span><span
+                        class="faq-chevron">⌄</span></button>
+                <div class="faq-a">
+                    <p>Follow the <a href="announcements.html">Announcements</a> page for stream links as each
+                        match day goes live.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-band fade-up">
+        <h3>Don't miss the next drop</h3>
+        <p>Full fixtures, live standings and results — all in one place.</p>
+        <a class="btn btn-primary" href="./schedule.html" style="display:block; text-decoration:none;">View Full
+            Schedule</a>
+    </div>
+
+    <!-- FOOTER -->
+
+    <footer>
+        <div class="foot-brand">
+            <div class="crest" style="width:26px;height:26px;"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch
+            moment of
+            the season.</p>
+        <div class="foot-social">
+            <div class="soc">✕</div>
+            <div class="soc">◎</div>
+            <div class="soc">▶</div>
+            <div class="soc">✈</div>
+        </div>
+        <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle class="btt-bg" cx="24" cy="24" r="21" />
+            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9"
+                stroke-dashoffset="131.9" />
+        </svg>
+        <span>↑</span>
+    </button>
+
+    <script src="theme.js"></script>
+    <script src="notify.js"></script>
+    <script>
+        // ====== REGISTRATION STATUS ======
+        // Flip this one flag when you open or close registrations for the season.
+        const REGISTRATIONS_OPEN = false;
+        const SLOTS_FILLED = 5;
+        const SLOTS_TOTAL = 8;
+
+        const regBadge = document.getElementById('regBadge');
+        const regDesc = document.getElementById('regDesc');
+        const regBtn = document.getElementById('regBtn');
+        const regSlots = document.getElementById('regSlots');
+        const regSlotsText = document.getElementById('regSlotsText');
+        const regSlotsFill = document.getElementById('regSlotsFill');
+        const regNote = document.getElementById('regNote');
+
+        if (REGISTRATIONS_OPEN) {
+            regSlotsText.textContent = `${SLOTS_FILLED} of ${SLOTS_TOTAL} slots filled`;
+            regSlotsFill.dataset.w = Math.round((SLOTS_FILLED / SLOTS_TOTAL) * 100);
+        } else {
+            regBadge.classList.add('closed');
+            regBadge.innerHTML = '<span class="dot"></span> REGISTRATIONS CLOSED';
+            regDesc.textContent = "Season 12 registrations haven't opened yet — check back soon or follow our socials for the announcement.";
+            regSlots.style.display = 'none';
+            regBtn.textContent = 'Registrations Closed';
+            regBtn.removeAttribute('href');
+            regBtn.classList.add('disabled');
+            regNote.textContent = "We'll open the roster as soon as Season 12 dates are locked in.";
+        }
+
+        // Registration slots bar grow in on scroll
+        const regFillIO = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (en.isIntersecting) {
+                    en.target.style.width = en.target.dataset.w + '%';
+                    regFillIO.unobserve(en.target);
+                }
+            });
+        }, { threshold: 0.4 });
+        if (REGISTRATIONS_OPEN) regFillIO.observe(regSlotsFill);
+
+        // Hero CTA buttons
+        document.getElementById('ctaEnterArena').addEventListener('click', () => {
+            document.getElementById('countdown').scrollIntoView({ behavior: 'smooth' });
+        });
+        document.getElementById('ctaMeetSquads').addEventListener('click', () => {
+            document.getElementById('teams').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Shuffle stats — random digits rattle before settling, replays every time it scrolls into view
+        const counters = document.querySelectorAll('.stat-num');
+        function runShuffle(el) {
+            if (el.dataset.animating === '1') return;
+            el.dataset.animating = '1';
+            const target = parseInt(el.dataset.count, 10);
+            const suffix = el.dataset.suffix || '';
+            const prefix = el.dataset.prefix || '';
+            const digits = String(target).length;
+            const shuffleMs = 650;
+            const start = performance.now();
+
+            function shuffleFrame(now) {
+                const elapsed = now - start;
+                if (elapsed < shuffleMs) {
+                    const rand = Math.floor(Math.random() * Math.pow(10, digits));
+                    el.textContent = prefix + rand + suffix;
+                    requestAnimationFrame(shuffleFrame);
+                } else {
+                    settleCount();
+                }
+            }
+            function settleCount() {
+                let cur = 0;
+                const step = Math.max(1, Math.ceil(target / 22));
+                const t = setInterval(() => {
+                    cur += step;
+                    if (cur >= target) { cur = target; clearInterval(t); el.dataset.animating = '0'; }
+                    el.textContent = prefix + cur.toLocaleString('en-IN') + suffix;
+                }, 28);
+            }
+            requestAnimationFrame(shuffleFrame);
+        }
+        const countIO = new IntersectionObserver((entries) => {
+            entries.forEach(en => { if (en.isIntersecting) runShuffle(en.target); });
+        }, { threshold: 0.5 });
+        counters.forEach(c => countIO.observe(c));
+
+        // Countdown timer — next season launch target, with a live progress ring
+        const cdTarget = new Date();
+        cdTarget.setMonth(cdTarget.getMonth() + 3);
+        cdTarget.setDate(15);
+        cdTarget.setHours(19, 30, 0, 0);
+        const cdStart = new Date();
+        const cdTotalMs = Math.max(1, cdTarget - cdStart);
+        const cdRingFill = document.getElementById('cdRingFill');
+        const RING_C = 371; // 2 * PI * 59, matches the SVG circle radius
+
+        function updateCountdown() {
+            const now = new Date();
+            let diff = Math.max(0, cdTarget - now);
+            const d = Math.floor(diff / 86400000); diff -= d * 86400000;
+            const h = Math.floor(diff / 3600000); diff -= h * 3600000;
+            const m = Math.floor(diff / 60000); diff -= m * 60000;
+            const s = Math.floor(diff / 1000);
+            document.getElementById('cd-d').textContent = String(d).padStart(2, '0');
+            document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
+            document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
+            const secEl = document.getElementById('cd-s');
+            secEl.textContent = String(s).padStart(2, '0');
+            secEl.classList.remove('tick');
+            void secEl.offsetWidth;
+            secEl.classList.add('tick');
+
+            const progress = 1 - (Math.max(0, cdTarget - now) / cdTotalMs);
+            cdRingFill.style.strokeDashoffset = RING_C * (1 - Math.min(1, Math.max(0, progress)));
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        // Prize podium bars grow in on scroll
+        const podiumBars = document.querySelectorAll('.podium-bar');
+        const podiumIO = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (en.isIntersecting) {
+                    en.target.style.height = en.target.dataset.h + 'px';
+                    podiumIO.unobserve(en.target);
+                }
+            });
+        }, { threshold: 0.4 });
+        podiumBars.forEach(b => podiumIO.observe(b));
+
+        // MVP stat bars grow in on scroll
+        const mvpBars = document.querySelectorAll('.mvp-bar-fill');
+        const mvpBarIO = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (en.isIntersecting) {
+                    en.target.style.width = en.target.dataset.w + '%';
+                    mvpBarIO.unobserve(en.target);
+                }
+            });
+        }, { threshold: 0.4 });
+        mvpBars.forEach(b => mvpBarIO.observe(b));
+
+        // Total prize pool count-up
+        const prizeEl = document.getElementById('prizeTotalAmt');
+        const prizeIO = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (en.isIntersecting) {
+                    const target = parseInt(prizeEl.dataset.target, 10);
+                    let cur = 0;
+                    const step = Math.ceil(target / 40);
+                    const t = setInterval(() => {
+                        cur += step;
+                        if (cur >= target) { cur = target; clearInterval(t); }
+                        prizeEl.textContent = '₹' + cur.toLocaleString('en-IN');
+                    }, 25);
+                    prizeIO.unobserve(prizeEl);
+                }
+            });
+        }, { threshold: 0.5 });
+        prizeIO.observe(prizeEl);
+        // Teams carousel mini scroll indicator
+        const teamsScroll = document.getElementById('teamsScroll');
+        const teamsFill = document.getElementById('teamsScrollFill');
+        function updateTeamsScrollbar() {
+            const max = teamsScroll.scrollWidth - teamsScroll.clientWidth;
+            const pct = max > 0 ? teamsScroll.scrollLeft / max : 0;
+            const trackW = 60;
+            const thumbW = Math.max(16, trackW * (teamsScroll.clientWidth / teamsScroll.scrollWidth));
+            teamsFill.style.width = thumbW + 'px';
+            teamsFill.style.transform = `translateX(${pct * (trackW - thumbW)}px)`;
+        }
+        teamsScroll.addEventListener('scroll', updateTeamsScrollbar, { passive: true });
+        window.addEventListener('load', updateTeamsScrollbar);
+        updateTeamsScrollbar();
+
+        // FAQ accordion — each item toggles independently
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const q = item.querySelector('.faq-q');
+            const a = item.querySelector('.faq-a');
+            q.addEventListener('click', () => {
+                const opening = !item.classList.contains('open');
+                if (opening) {
+                    item.classList.add('open');
+                    a.style.maxHeight = a.scrollHeight + 'px';
+                } else {
+                    item.classList.remove('open');
+                    a.style.maxHeight = '0px';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
