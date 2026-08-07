@@ -2629,6 +2629,42 @@
             });
         });
     </script>
+    <audio id="clickSound" src="sounds/click.mp3" preload="auto"></audio>
+<audio id="popSound" src="sounds/pop.mp3" preload="auto"></audio>
+<audio id="successSound" src="sounds/success.mp3" preload="auto"></audio>
+
+<script>
+const click = document.getElementById("clickSound");
+const pop = document.getElementById("popSound");
+const success = document.getElementById("successSound");
+
+function play(sound){
+    sound.currentTime = 0;
+    sound.volume = 0.3;
+    sound.play().catch(()=>{});
+}
+
+// All buttons
+document.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click",()=>play(click));
+});
+
+// Links
+document.querySelectorAll("a").forEach(link=>{
+    link.addEventListener("click",()=>play(pop));
+});
+
+// FAQ
+document.querySelectorAll(".faq-q").forEach(item=>{
+    item.addEventListener("click",()=>play(pop));
+});
+
+// Registration button
+const reg=document.querySelector(".reg-btn");
+if(reg){
+    reg.addEventListener("click",()=>play(success));
+}
+</script>
 </body>
 
 </html>
