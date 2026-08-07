@@ -2629,40 +2629,38 @@
             });
         });
     </script>
-    <audio id="clickSound" src="sounds/click.mp3" preload="auto"></audio>
-<audio id="popSound" src="sounds/pop.mp3" preload="auto"></audio>
-<audio id="successSound" src="sounds/success.mp3" preload="auto"></audio>
-
 <script>
-const click = document.getElementById("clickSound");
-const pop = document.getElementById("popSound");
-const success = document.getElementById("successSound");
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-function play(sound){
-    sound.currentTime = 0;
-    sound.volume = 0.3;
-    sound.play().catch(()=>{});
+function uiClick(type = "click") {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  if (type === "success") {
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+  } else {
+    osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.05);
+  }
+
+  gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.08);
 }
 
-// All buttons
-document.querySelectorAll("button").forEach(btn=>{
-    btn.addEventListener("click",()=>play(click));
+document.querySelectorAll("button, a").forEach(el => {
+  el.addEventListener("click", () => uiClick());
 });
 
-// Links
-document.querySelectorAll("a").forEach(link=>{
-    link.addEventListener("click",()=>play(pop));
-});
-
-// FAQ
-document.querySelectorAll(".faq-q").forEach(item=>{
-    item.addEventListener("click",()=>play(pop));
-});
-
-// Registration button
-const reg=document.querySelector(".reg-btn");
-if(reg){
-    reg.addEventListener("click",()=>play(success));
+const regBtn = document.querySelector(".reg-btn");
+if (regBtn) {
+  regBtn.addEventListener("click", () => uiClick("success"));
 }
 </script>
 </body>
