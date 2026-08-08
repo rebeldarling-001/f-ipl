@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>FREEFIRE XIPL — Season 11</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #070605;
+            --bg2: #100c07;
+            --gold: #f0b93d;
+            --gold2: #ffcf63;
+            --gold3: #8d6418;
+            --white: #fffaf0;
+            --muted: #a89e8b;
+            --line: rgba(240, 185, 61, .16);
+            --green: #42e58a;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            background: var(--bg);
+            color: var(--white);
+            font-family: Rajdhani, sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* =========================
+   BACKGROUND
+========================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+
+            background:
+                radial-gradient(circle at 50% 25%,
+                    rgba(240, 185, 61, .12),
+                    transparent 38%),
+                radial-gradient(circle at 10% 90%,
+                    rgba(255, 90, 20, .07),
+                    transparent 30%);
+
+            z-index: -2;
+        }
+
+        .grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .22;
+
+            background-image:
+                linear-gradient(rgba(240, 185, 61, .05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(240, 185, 61, .05) 1px, transparent 1px);
+
+            background-size: 28px 28px;
+
+            mask-image:
+                radial-gradient(ellipse at center,
+                    black 10%,
+                    transparent 75%);
+
+            z-index: -1;
+        }
+
+        /* =========================
+   TOP BAR
+========================= */
+
+        .topbar {
+            height: 62px;
+            padding: 0 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid var(--line);
+            background: rgba(7, 6, 5, .78);
+            backdrop-filter: blur(16px);
+
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .crest {
+            width: 34px;
+            height: 34px;
+
+            border: 1px solid var(--gold);
+            transform: rotate(45deg);
+
+            position: relative;
+        }
+
+        .crest::after {
+            content: "X";
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transform: rotate(-45deg);
+
+            font-family: Anton, sans-serif;
+            color: var(--gold);
+            font-size: 17px;
+        }
+
+        .brand-name {
+            font-family: Anton, sans-serif;
+            font-size: 19px;
+            letter-spacing: .03em;
+        }
+
+        .brand-name span {
+            color: var(--gold);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            font-family: "Space Mono", monospace;
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: .05em;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+
+            box-shadow: 0 0 10px rgba(66, 229, 138, .7);
+        }
+
+        /* =========================
+   HERO
+========================= */
+
+        .hero {
+            min-height: calc(100vh - 62px);
+
+            padding:
+                52px 20px 35px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            text-align: center;
+        }
+
+        /* Season badge */
+
+        .season {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 7px 13px;
+
+            border: 1px solid var(--line);
+            border-radius: 100px;
+
+            background: rgba(240, 185, 61, .055);
+
+            color: var(--gold2);
+
+            font-family: "Space Mono", monospace;
+            font-size: 10px;
+            letter-spacing: .08em;
+
+            animation: fadeUp .8s ease both;
+        }
+
+        .season::before,
+        .season::after {
+            content: "◆";
+            font-size: 6px;
+        }
+
+        /* Main logo */
+
+        .logo-area {
+            margin-top: 25px;
+
+            animation:
+                fadeUp .8s .1s ease both,
+                floatLogo 4s ease-in-out infinite;
+        }
+
+        .xipl {
+            font-family: Anton, sans-serif;
+
+            font-size: clamp(68px, 21vw, 108px);
+
+            line-height: .82;
+            letter-spacing: -.025em;
+
+            background:
+                linear-gradient(180deg,
+                    #fff4c9 0%,
+                    #f0b93d 45%,
+                    #8d6418 100%);
+
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+
+            filter:
+                drop-shadow(0 0 22px rgba(240, 185, 61, .18));
+        }
+
+        .freefire {
+            margin-top: 7px;
+
+            font-family: "Space Mono", monospace;
+            font-size: 11px;
+
+            letter-spacing: .45em;
+            text-indent: .45em;
+
+            color: var(--muted);
+        }
+
+        /* headline */
+
+        .headline {
+            margin-top: 38px;
+
+            font-family: Anton, sans-serif;
+            font-size: 35px;
+            line-height: 1.02;
+
+            letter-spacing: .015em;
+
+            animation: fadeUp .8s .25s ease both;
+        }
+
+        .headline span {
+            color: var(--gold);
+        }
+
+        /* description */
+
+        .description {
+            max-width: 330px;
+
+            margin-top: 14px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+            line-height: 1.55;
+
+            animation: fadeUp .8s .35s ease both;
+        }
+
+        /* =========================
+   LIVE PANEL
+========================= */
+
+        .live-panel {
+            width: 100%;
+            max-width: 390px;
+
+            margin-top: 27px;
+
+            padding: 14px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+
+            border: 1px solid var(--line);
+            border-radius: 17px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(240, 185, 61, .08),
+                    rgba(255, 255, 255, .015));
+
+            backdrop-filter: blur(10px);
+
+            animation: fadeUp .8s .45s ease both;
+        }
+
+        .stat {
+            padding: 8px 4px;
+        }
+
+        .stat:not(:last-child) {
+            border-right: 1px solid var(--line);
+        }
+
+        .stat-value {
+            font-family: Anton, sans-serif;
+            font-size: 20px;
+            color: var(--gold2);
+        }
+
+        .stat-label {
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 9px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        /* =========================
+   BUTTON
+========================= */
+
+        .enter-btn {
+            width: 100%;
+            max-width: 390px;
+
+            margin-top: 18px;
+
+            padding: 15px 20px;
+
+            border: none;
+            border-radius: 13px;
+
+            background:
+                linear-gradient(135deg,
+                    #ffe19a,
+                    #f0b93d 50%,
+                    #a87518);
+
+            color: #160f04;
+
+            font-family: Anton, sans-serif;
+            font-size: 17px;
+            letter-spacing: .04em;
+
+            box-shadow:
+                0 8px 30px rgba(240, 185, 61, .16);
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+
+            animation: fadeUp .8s .55s ease both;
+        }
+
+        .enter-btn:active {
+            transform: scale(.97);
+        }
+
+        .enter-btn:hover {
+            box-shadow:
+                0 10px 38px rgba(240, 185, 61, .28);
+        }
+
+        .enter-btn span {
+            margin-left: 7px;
+        }
+
+        /* =========================
+   QUICK ACCESS
+========================= */
+
+        .quick-title {
+            width: 100%;
+            max-width: 390px;
+
+            margin-top: 25px;
+            margin-bottom: 10px;
+
+            text-align: left;
+
+            font-family: "Space Mono", monospace;
+            font-size: 9px;
+
+            color: var(--gold3);
+            letter-spacing: .12em;
+        }
+
+        .quick-grid {
+            width: 100%;
+            max-width: 390px;
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 8px;
+
+            animation: fadeUp .8s .65s ease both;
+        }
+
+        .quick {
+            min-height: 52px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 11px;
+
+            border: 1px solid var(--line);
+            border-radius: 12px;
+
+            background: rgba(255, 255, 255, .018);
+
+            color: var(--white);
+
+            text-decoration: none;
+
+            transition:
+                background .2s ease,
+                border-color .2s ease,
+                transform .2s ease;
+        }
+
+        .quick:active {
+            transform: scale(.97);
+        }
+
+        .quick:hover {
+            background: rgba(240, 185, 61, .07);
+            border-color: rgba(240, 185, 61, .35);
+        }
+
+        .quick-icon {
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: rgba(240, 185, 61, .08);
+
+            font-size: 15px;
+        }
+
+        .quick-text {
+            text-align: left;
+        }
+
+        .quick-text b {
+            display: block;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .quick-text small {
+            display: block;
+
+            margin-top: 1px;
+
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        /* =========================
+   FOOTER
+========================= */
+
+        .footer {
+            margin-top: auto;
+            padding-top: 25px;
+
+            color: #5f594e;
+
+            font-family: "Space Mono", monospace;
+            font-size: 8px;
+
+            letter-spacing: .06em;
+        }
+
+        /* =========================
+   ANIMATIONS
+========================= */
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatLogo {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* =========================
+   SMALL DEVICES
+========================= */
+
+        @media(max-height: 700px) {
+
+            .hero {
+                padding-top: 32px;
+            }
+
+            .headline {
+                margin-top: 25px;
+            }
+
+            .description {
+                margin-top: 10px;
+            }
+
+            .live-panel {
+                margin-top: 18px;
+            }
+
+            .quick-title {
+                margin-top: 17px;
+            }
+
+            .footer {
+                padding-top: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="grid"></div>
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="crest"></div>
+
+            <div class="brand-name">
+                FREEFIRE<span>XIPL</span>
+            </div>
+
+        </div>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE
+        </div>
+
+    </header>
+
+
+    <main class="hero">
+
+        <div class="season">
+            SEASON 11
+        </div>
+
+
+        <div class="logo-area">
+
+            <div class="xipl">
+                XIPL
+            </div>
+
+            <div class="freefire">
+                FREEFIRE XIPL
+            </div>
+
+        </div>
+
+
+        <h1 class="headline">
+            THE NEXT<br>
+            <span>BATTLE</span> IS LOADING.
+        </h1>
+
+
+        <p class="description">
+            Welcome to FREEFIRE XIPL Season 11.
+            Follow the action, check the standings,
+            explore registered players and stay ready
+            for the battlefield.
+        </p>
+
+
+        <section class="live-panel">
+
+            <div class="stat">
+                <div class="stat-value">S11</div>
+                <div class="stat-label">Season</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-value">LIVE</div>
+                <div class="stat-label">Status</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-value">₹50</div>
+                <div class="stat-label">Prize</div>
+            </div>
+
+        </section>
+
+
+        <!-- CHANGE THIS LINK TO YOUR ACTUAL HOME PAGE -->
+        <a href="home.html" class="enter-btn" style="text-decoration:none; display:block;">
+            ENTER XIPL <span>→</span>
+        </a>
+
+
+        <div class="quick-title">
+            QUICK ACCESS
+        </div>
+
+
+        <div class="quick-grid">
+
+            <!-- CHANGE FILENAMES IF YOUR FILES HAVE DIFFERENT NAMES -->
+
+            <a href="points-table.html" class="quick">
+                <div class="quick-icon">🏆</div>
+
+                <div class="quick-text">
+                    <b>Points Table</b>
+                    <small>Season standings</small>
+                </div>
+            </a>
+
+
+            <a href="schedule.html" class="quick">
+                <div class="quick-icon">📅</div>
+
+                <div class="quick-text">
+                    <b>Schedule</b>
+                    <small>Upcoming matches</small>
+                </div>
+            </a>
+
+
+            <a href="registered-players.html" class="quick">
+                <div class="quick-icon">👤</div>
+
+                <div class="quick-text">
+                    <b>Players</b>
+                    <small>Registered players</small>
+                </div>
+            </a>
+
+
+            <a href="registered-franchises.html" class="quick">
+                <div class="quick-icon">🏢</div>
+
+                <div class="quick-text">
+                    <b>Franchises</b>
+                    <small>Registered teams</small>
+                </div>
+            </a>
+
+        </div>
+
+
+        <div class="footer">
+            FREEFIRE XIPL • SEASON 11 • PLAY. COMPETE. CONQUER.
+        </div>
+
+    </main>
+
+</body>
+
+</html>

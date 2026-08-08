@@ -1,2668 +1,1739 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Pre-paint theme snippet — must stay inline here, before theme.css loads, so the saved
-         theme applies before first paint (avoids a flash of the default theme). Do not move
-         this to theme.js. Copy it verbatim onto every page. -->
-    <script>
-        (function () {
-            try {
-                var saved = localStorage.getItem('xipl-theme');
-                if (saved) document.documentElement.setAttribute('data-theme', saved);
-            } catch (e) { /* localStorage unavailable — default theme will render */ }
-        })();
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>FREEFIRE XIPL — Season 11</title>
-    <meta name="description"
-        content="The unofficial home of Free Fire XIPL Season 11 — fixtures, standings, team rosters, prize pool and every clutch moment of the season.">
-    <meta property="og:title" content="FREEFIRE XIPL — Season 11">
-    <meta property="og:description"
-        content="Eight franchises. One battleground. Follow every drop, every clutch and every crown chase of the season.">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <link rel="icon"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="theme.css">
-    <style>
-        /* ============ HERO ============ */
-        .hero {
-            position: relative;
-            padding: 38px 20px 30px;
-            background:
-                transparent;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
-            background-size: 26px 26px;
-            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
-            animation: gridDrift 14s linear infinite;
-        }
-
-        @keyframes gridDrift {
-            from {
-                background-position: 0 0, 0 0;
-            }
-
-            to {
-                background-position: 26px 26px, 26px 26px;
-            }
-        }
-
-
-        .season-tag {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border: 1px solid var(--gold-deep);
-            border-radius: 100px;
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            color: var(--gold-pale);
-            background: rgba(var(--gold-rgb), 0.06);
-        }
-
-        .season-tag .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--live);
-            animation: blink 1.3s ease-in-out infinite;
-        }
-
-
-        .hero-trophy {
-            position: absolute;
-            top: 80px;
-            right: 45px;
-            width: 90px;
-            filter: drop-shadow(0 0 18px rgba(var(--gold-rgb), .6));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            50% {
-                transform: translateY(-6px);
-            }
-        }
-
-        .hero-title {
-            position: relative;
-            margin-top: 16px;
-            font-size: 79px;
-            line-height: .97;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(0 6px 26px rgba(var(--gold-rgb), 0.22));
-        }
-
-        .hero-title span {
-            display: block;
-            font-size: 18px;
-            color: var(--ink);
-            -webkit-text-fill-color: var(--ink);
-            letter-spacing: 0.32em;
-            margin-top: 6px;
-        }
-
-        .hero-pre {
-            display: block;
-            font-size: 18px;
-            letter-spacing: 0.42em;
-            color: var(--gold-pale);
-            -webkit-text-fill-color: var(--gold-pale);
-            margin-bottom: 2px;
-        }
-
-        .hero-desc {
-            margin-top: 14px;
-            font-size: 14.5px;
-            line-height: 1.55;
-            color: var(--ink-dim);
-            max-width: 340px;
-        }
-
-        .ticker-wrap {
-            margin-top: 20px;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            overflow: hidden;
-            background: var(--surface);
-        }
-
-        .ticker-head {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 12px;
-            font-size: 10.5px;
-            letter-spacing: 0.18em;
-            color: var(--live);
-            border-bottom: 1px solid var(--line);
-        }
-
-        .ticker-head .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--live);
-            box-shadow: 0 0 8px var(--live);
-            animation: blink 1.1s ease-in-out infinite;
-        }
-
-        .ticker-track {
-            white-space: nowrap;
-            overflow: hidden;
-            padding: 9px 0;
-        }
-
-        .ticker-track span {
-            display: inline-block;
-            padding-right: 48px;
-            font-size: 12.5px;
-            color: var(--ink-dim);
-            animation: scrollTicker 16s linear infinite;
-        }
-
-        @keyframes scrollTicker {
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-        .ticker-track span b {
-            color: var(--gold-pale);
-            font-weight: 600;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        /* ============ REGISTRATION ============ */
-        .reg-foil {
-            margin-top: 22px;
-            border-radius: 24px;
-        }
-
-        .reg-card {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 30px 22px 28px;
-            border-radius: 22px;
-            overflow: hidden;
-            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
-        }
-
-        .reg-embers {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .reg-embers span {
-            position: absolute;
-            bottom: -6px;
-            width: 2.5px;
-            height: 2.5px;
-            border-radius: 50%;
-            background: var(--gold);
-            box-shadow: 0 0 6px 1px rgba(var(--gold-rgb), 0.8);
-            opacity: 0;
-            animation-name: cdEmberFloat;
-            animation-timing-function: ease-in;
-            animation-iteration-count: infinite;
-        }
-
-        .reg-embers span:nth-child(1) {
-            left: 12%;
-            animation-duration: 5.4s;
-            animation-delay: 0s;
-        }
-
-        .reg-embers span:nth-child(2) {
-            left: 38%;
-            animation-duration: 6.2s;
-            animation-delay: 1.4s;
-        }
-
-        .reg-embers span:nth-child(3) {
-            left: 64%;
-            animation-duration: 5.8s;
-            animation-delay: 0.8s;
-        }
-
-        .reg-embers span:nth-child(4) {
-            left: 88%;
-            animation-duration: 6.6s;
-            animation-delay: 2.2s;
-        }
-
-        .reg-badge {
-            position: relative;
-            z-index: 2;
-        }
-
-        .reg-badge.closed {
-            border-color: var(--ink-faint);
-            color: var(--ink-dim);
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .reg-badge.closed .dot {
-            background: var(--ink-faint);
-            box-shadow: none;
-            animation: none;
-        }
-
-        .reg-title {
-            position: relative;
-            z-index: 2;
-            margin-top: 16px;
-            font-size: 26px;
-            line-height: 1.05;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .reg-desc {
-            position: relative;
-            z-index: 2;
-            margin: 12px auto 0;
-            max-width: 290px;
-            font-size: 12.5px;
-            line-height: 1.55;
-            color: var(--ink-dim);
-        }
-
-        .reg-slots {
-            position: relative;
-            z-index: 2;
-            margin: 20px auto 0;
-            max-width: 280px;
-        }
-
-        .reg-slots-track {
-            height: 6px;
-            border-radius: 6px;
-            background: rgba(var(--gold-rgb), 0.09);
-            overflow: hidden;
-        }
-
-        .reg-slots-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 6px;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            transition: width 1.1s cubic-bezier(.2, .9, .25, 1);
-        }
-
-        .reg-slots-label {
-            margin-top: 8px;
-            font-size: 10.5px;
-            letter-spacing: 0.08em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .reg-btn {
-            position: relative;
-            z-index: 2;
-            display: inline-block;
-            width: 100%;
-            margin-top: 20px;
-            text-decoration: none;
-            box-sizing: border-box;
-        }
-
-        .reg-btn.disabled {
-            background: var(--surface-2);
-            color: var(--ink-faint);
-            box-shadow: none;
-            border: 1px solid var(--line);
-            pointer-events: none;
-        }
-
-        .reg-note {
-            position: relative;
-            z-index: 2;
-            margin-top: 12px;
-            font-size: 10.5px;
-            color: var(--ink-faint);
-            letter-spacing: 0.02em;
-        }
-
-        /* ============ STATS ============ */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 13px;
-            padding: 16px 8px;
-            text-align: center;
-        }
-
-        .stat-num {
-            font-family: 'Anton', sans-serif;
-            font-size: 24px;
-            color: var(--gold);
-        }
-
-        .stat-label {
-            margin-top: 4px;
-            font-size: 9.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        /* ============ TEAMS (marquee + cards) ============ */
-        .teams-scroll {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            overflow-x: auto;
-            padding: 4px 0 6px;
-            overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
-            touch-action: pan-x;
-        }
-
-        .team-logo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 120px;
-            /* adjust size */
-            transform: translate(-50%, -50%);
-            opacity: 0.50;
-            /* makes it transparent */
-            pointer-events: none;
-            /* no click issue */
-        }
-
-        .teams-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .team-card {
-            touch-action: pan-x;
-            user-select: none;
-            position: relative;
-            z-index: 1;
-            height: 100%;
-            background: var(--surface);
-            border-radius: 16.5px;
-            /*to change the team card size */
-            padding: 10px 8px;
-            overflow: hidden;
-        }
-
-        .team-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -70%;
-            width: 45%;
-            height: 100%;
-            z-index: 2;
-            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
-            animation: shimmerSweep 8s ease-in-out infinite;
-        }
-
-        .team-frame:nth-child(2) .team-card::after {
-            animation-delay: 0.6s;
-        }
-
-        .team-frame:nth-child(3) .team-card::after {
-            animation-delay: 1.2s;
-        }
-
-        .team-frame:nth-child(4) .team-card::after {
-            animation-delay: 1.8s;
-        }
-
-        .team-frame:nth-child(5) .team-card::after {
-            animation-delay: 2.4s;
-        }
-
-        .team-frame:nth-child(6) .team-card::after {
-            animation-delay: 3s;
-        }
-
-        .team-frame:nth-child(7) .team-card::after {
-            animation-delay: 3.6s;
-        }
-
-        .team-frame:nth-child(8) .team-card::after {
-            animation-delay: 4.2s;
-        }
-
-        .team-card .accent {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            z-index: 1;
-        }
-
-        .team-index {
-            position: absolute;
-            top: 14px;
-            right: 15px;
-            z-index: 3;
-            font-family: 'Space Mono', monospace;
-            font-size: 9.5px;
-            color: var(--ink-faint);
-            letter-spacing: 0.04em;
-        }
-
-        .team-crest {
-            position: relative;
-            width: 52px;
-            height: 52px;
-            border-radius: 13px;
-            margin-top: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .team-crest::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 16px;
-            animation: crestPulse 3s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes crestPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(var(--gold-rgb), 0.0);
-            }
-
-            50% {
-                box-shadow: 0 0 16px 2px rgba(var(--gold-rgb), 0.22);
-            }
-        }
-
-        .team-abbr {
-            font-family: 'Anton', sans-serif;
-            font-size: 19px;
-            letter-spacing: 0.02em;
-        }
-
-        .team-full {
-            position: relative;
-            z-index: 3;
-            margin-top: 10px;
-            font-size: 10.5px;
-            color: var(--ink-faint);
-            letter-spacing: 0.04em;
-            line-height: 1.3;
-        }
-
-        .team-full,
-        .team-motto {
-            min-height: 14px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .scroll-indicator {
-            position: relative;
-            width: 60px;
-            height: 3px;
-            margin: 16px auto 0;
-            border-radius: 3px;
-            background: rgba(var(--gold-rgb), 0.1);
-            overflow: hidden;
-        }
-
-        .scroll-indicator-fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            border-radius: 3px;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold));
-        }
-
-        .team-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 16px;
-            font-size: 11px;
-            color: var(--ink-dim);
-        }
-
-        .team-meta b {
-            color: var(--ink);
-            font-family: 'Space Mono', monospace;
-        }
-
-        .team-motto {
-            position: relative;
-            z-index: 3;
-            margin-top: 14px;
-            font-size: 10.5px;
-            font-style: italic;
-            color: var(--ink-dim);
-            line-height: 1.45;
-            min-height: 42px;
-        }
-
-        .team-captain {
-            margin-top: 20px;
-            position: relative;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid var(--line);
-        }
-
-        .cap-avatar {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 10.5px;
-        }
-
-        .cap-info {
-            display: flex;
-            flex-direction: column;
-            font-size: 9px;
-            color: var(--ink-faint);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .cap-info b {
-            margin-top: 1px;
-            color: var(--gold-pale);
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            font-size: 11px;
-            letter-spacing: 0;
-            text-transform: none;
-        }
-
-        .pip {
-            width: 7px;
-            height: 7px;
-            border-radius: 2px;
-        }
-
-        .pip.w {
-            background: var(--gold);
-        }
-
-        .pip.l {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* ============ ROADMAP ============ */
-        .roadmap {
-            margin-top: 26px;
-            position: relative;
-            padding-left: 26px;
-        }
-
-        .roadmap::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 6px;
-            bottom: 6px;
-            width: 2px;
-            background: linear-gradient(180deg, var(--gold-deep), rgba(var(--gold-rgb), 0.05));
-        }
-
-        .stage {
-            position: relative;
-            padding-bottom: 26px;
-        }
-
-        .stage:last-child {
-            padding-bottom: 0;
-        }
-
-        .stage::before {
-            content: '';
-            position: absolute;
-            left: -26px;
-            top: 2px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--bg);
-            border: 2px solid var(--gold-deep);
-        }
-
-        .stage.active::before {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.15);
-        }
-
-        .stage.active::after {
-            content: '';
-            position: absolute;
-            left: -21px;
-            top: 7px;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--gold);
-            animation: blink 1.2s ease-in-out infinite;
-        }
-
-        .stage-name {
-            font-size: 15.5px;
-            font-weight: 600;
-            color: var(--ink);
-        }
-
-        .stage-name.done {
-            color: var(--ink-faint);
-        }
-
-        .stage-tag {
-            display: inline-block;
-            margin-top: 5px;
-            font-size: 9.5px;
-            letter-spacing: 0.14em;
-            padding: 3px 9px;
-            border-radius: 100px;
-            text-transform: uppercase;
-        }
-
-        .stage-tag.live {
-            background: rgba(var(--live-rgb), 0.14);
-            color: var(--live);
-        }
-
-        .stage-tag.soon {
-            background: rgba(var(--gold-rgb), 0.12);
-            color: var(--gold-pale);
-            border: 1px solid var(--gold-deep);
-        }
-
-        .stage-tag.upcoming {
-            background: rgba(var(--gold-rgb), 0.08);
-            color: var(--ink-faint);
-            border: 1px solid var(--line);
-        }
-
-        .stage-tag.cleared {
-            background: rgba(var(--gold-rgb), 0.08);
-            color: var(--gold-deep);
-        }
-
-        .stage-desc {
-            margin-top: 6px;
-            font-size: 12.5px;
-            color: var(--ink-dim);
-            line-height: 1.5;
-        }
-
-        /* ============ FOIL FRAME (signature rotating gold border, reused across cards) ============ */
-
-        .team-foil {
-            transform: scale(1.6);
-        }
-
-
-        .foil-frame.cd-foil {
-            margin-top: 22px;
-        }
-
-        .foil-frame.mvp-foil {
-            margin-top: 22px;
-            border-radius: 22px;
-        }
-
-        .foil-frame.team-foil {
-            flex: 0 0 174px;
-            scroll-snap-align: start;
-            border-radius: 18px;
-            padding: 1.5px;
-        }
-
-        /* ============ COUNTDOWN (premium) ============ */
-        .countdown-card {
-            position: relative;
-            z-index: 1;
-            border-radius: 24px;
-            padding: 34px 22px 26px;
-            background: radial-gradient(ellipse 140% 90% at 50% -10%, rgba(var(--gold-rgb), 0.18), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 75%);
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .countdown-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -60%;
-            width: 35%;
-            height: 100%;
-            z-index: 2;
-            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
-            animation: shimmerSweep 6s ease-in-out infinite;
-        }
-
-        @keyframes shimmerSweep {
-            0% {
-                left: -60%;
-            }
-
-            55% {
-                left: 120%;
-            }
-
-            100% {
-                left: 120%;
-            }
-        }
-
-        .cd-glow {
-            position: absolute;
-            top: 6%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 230px;
-            height: 230px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.24), transparent 70%);
-            filter: blur(4px);
-            animation: haloPulse 3s ease-in-out infinite;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        @keyframes haloPulse {
-
-            0%,
-            100% {
-                opacity: 0.55;
-                transform: translateX(-50%) scale(0.92);
-            }
-
-            50% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1.05);
-            }
-        }
-
-        .cd-embers {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .cd-embers span {
-            position: absolute;
-            bottom: -6px;
-            width: 2.5px;
-            height: 2.5px;
-            border-radius: 50%;
-            background: var(--gold);
-            box-shadow: 0 0 6px 1px rgba(var(--gold-rgb), 0.8);
-            opacity: 0;
-            animation-name: cdEmberFloat;
-            animation-timing-function: ease-in;
-            animation-iteration-count: infinite;
-        }
-
-        .cd-embers span:nth-child(1) {
-            left: 8%;
-            animation-duration: 5s;
-            animation-delay: 0s;
-        }
-
-        .cd-embers span:nth-child(2) {
-            left: 22%;
-            animation-duration: 6.5s;
-            animation-delay: 1.2s;
-        }
-
-        .cd-embers span:nth-child(3) {
-            left: 40%;
-            animation-duration: 5.8s;
-            animation-delay: 2.4s;
-        }
-
-        .cd-embers span:nth-child(4) {
-            left: 62%;
-            animation-duration: 6.2s;
-            animation-delay: 0.6s;
-        }
-
-        .cd-embers span:nth-child(5) {
-            left: 80%;
-            animation-duration: 5.4s;
-            animation-delay: 1.8s;
-        }
-
-        .cd-embers span:nth-child(6) {
-            left: 92%;
-            animation-duration: 6.8s;
-            animation-delay: 3s;
-        }
-
-        @keyframes cdEmberFloat {
-            0% {
-                transform: translateY(0);
-                opacity: 0;
-            }
-
-            12% {
-                opacity: 0.9;
-            }
-
-            90% {
-                opacity: 0.2;
-            }
-
-            100% {
-                transform: translateY(-260px);
-                opacity: 0;
-            }
-        }
-
-        .cd-badge {
-            position: relative;
-            z-index: 2;
-        }
-
-        .cd-ring-wrap {
-            position: relative;
-            z-index: 2;
-            width: 140px;
-            height: 140px;
-            margin: 22px auto 4px;
-        }
-
-        .cd-ring-wrap::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 1px solid rgba(var(--gold-rgb), 0.14);
-        }
-
-        .cd-ring-wrap svg {
-            position: absolute;
-            inset: 0;
-            animation: ringRotate 10s linear infinite;
-            transform-origin: 50% 50%;
-        }
-
-        @keyframes ringRotate {
-            from {
-                transform: rotate(-90deg);
-            }
-
-            to {
-                transform: rotate(270deg);
-            }
-        }
-
-        .cd-ring-bg {
-            fill: none;
-            stroke: rgba(var(--gold-rgb), 0.09);
-            stroke-width: 3;
-        }
-
-        .cd-ring-fill {
-            fill: none;
-            stroke: url(#ringGrad);
-            stroke-width: 3.4;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.6s ease;
-        }
-
-        .cd-ring-center {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .cd-ring-crest {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
-            animation: coreGlow 2.2s ease-in-out infinite;
-        }
-
-        .cd-ring-tag {
-            font-size: 8px;
-            letter-spacing: 0.22em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .cd-season {
-            position: relative;
-            z-index: 2;
-            margin-top: 16px;
-            font-size: 32px;
-            letter-spacing: 0.03em;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .cd-title {
-            position: relative;
-            z-index: 2;
-            margin-top: 2px;
-            font-size: 11px;
-            letter-spacing: 0.28em;
-            color: var(--ink-faint);
-        }
-
-        .cd-divider {
-            position: relative;
-            z-index: 2;
-            margin: 24px auto 22px;
-            width: 76%;
-            border-top: 1px dashed rgba(var(--gold-rgb), 0.22);
-        }
-
-        .cd-divider::before,
-        .cd-divider::after {
-            content: '';
-            position: absolute;
-            top: -9px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--card-b);
-        }
-
-        .cd-divider::before {
-            left: -24px;
-        }
-
-        .cd-divider::after {
-            right: -24px;
-        }
-
-        .cd-digits {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-        }
-
-        .cd-chip {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-width: 56px;
-            padding: 11px 6px 9px;
-            border-radius: 13px;
-            background: linear-gradient(160deg, rgba(var(--gold-rgb), 0.11), rgba(var(--gold-rgb), 0.02));
-            border: 1px solid rgba(var(--gold-rgb), 0.24);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 18px rgba(0, 0, 0, 0.35);
-        }
-
-        .cd-num {
-            font-family: 'Anton', sans-serif;
-            font-size: 28px;
-            line-height: 1;
-            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            transition: transform 0.25s ease;
-            display: inline-block;
-        }
-
-        .cd-num.tick {
-            transform: scale(1.16);
-        }
-
-        .cd-chip-label {
-            margin-top: 5px;
-            font-size: 8px;
-            letter-spacing: 0.16em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .cd-colon {
-            font-family: 'Anton', sans-serif;
-            font-size: 20px;
-            color: var(--gold-deep);
-            animation: blink 1s steps(1) infinite;
-        }
-
-        .cd-caption {
-            position: relative;
-            z-index: 2;
-            margin-top: 24px;
-            font-size: 12px;
-            color: var(--ink-dim);
-        }
-
-        .cd-caption b {
-            color: var(--gold-pale);
-        }
-
-        /* ============ HIGHLIGHTS ============ */
-        .clip-scroll {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            overflow-x: auto;
-            padding-bottom: 6px;
-            scroll-snap-type: x mandatory;
-            touch-action: pan-x;
-        }
-
-        .clip-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .clip-card {
-            flex: 0 0 200px;
-            scroll-snap-align: start;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid var(--line);
-        }
-
-        .clip-thumb {
-            height: 112px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .clip-thumb .play {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(var(--bg-rgb), 0.55);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(var(--gold-rgb), 0.5);
-        }
-
-        .clip-info {
-            background: var(--surface);
-            padding: 10px 12px;
-        }
-
-        .clip-info .t {
-            font-size: 12.5px;
-            font-weight: 600;
-            color: var(--ink);
-        }
-
-        .clip-info .s {
-            font-size: 10.5px;
-            color: var(--ink-faint);
-            margin-top: 2px;
-        }
-
-        /* ============ CTA BAND ============ */
-        /* ============ SCROLL PROGRESS ============ */
-
-        /* ============ MVP SPOTLIGHT ============ */
-        .mvp-card {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 26px 22px 26px;
-            border-radius: 20px;
-            background: radial-gradient(ellipse 120% 90% at 50% 0%, rgba(var(--gold-rgb), 0.10), transparent 65%), var(--surface);
-            overflow: hidden;
-        }
-
-        .mvp-card::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--mvp-glow-rgb), 0.16), rgba(var(--gold-rgb), 0.12) 55%, transparent 75%);
-            animation: haloPulse 3s ease-in-out infinite;
-        }
-
-        .mvp-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -60%;
-            width: 35%;
-            height: 100%;
-            z-index: 2;
-            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
-            animation: shimmerSweep 6.5s ease-in-out infinite;
-        }
-
-        .mvp-badge {
-            position: relative;
-            z-index: 3;
-        }
-
-        .mvp-rating {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            z-index: 3;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            border: 1px solid rgba(var(--gold-rgb), 0.35);
-            background: linear-gradient(160deg, rgba(var(--gold-rgb), 0.14), transparent);
-        }
-
-        .mvp-rating b {
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            color: var(--gold-pale);
-            line-height: 1;
-        }
-
-        .mvp-rating span {
-            font-size: 6.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            margin-top: 1px;
-        }
-
-        .mvp-kills {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            z-index: 3;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            border: 1px solid rgba(var(--gold-rgb), 0.35);
-            background: linear-gradient(200deg, rgba(var(--gold-rgb), 0.14), transparent);
-        }
-
-        .mvp-kills b {
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            color: var(--gold-pale);
-            line-height: 1;
-        }
-
-        .mvp-kills span {
-            font-size: 6.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            margin-top: 1px;
-        }
-
-        .mvp-prize-chip {
-            position: relative;
-            z-index: 3;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 10px;
-            padding: 6px 12px;
-            border-radius: 100px;
-            border: 1px solid rgba(var(--gold-rgb), 0.35);
-            background: rgba(var(--gold-rgb), 0.1);
-            font-family: 'Space Mono', monospace;
-            font-size: 10.5px;
-            font-weight: 700;
-            color: var(--gold-pale);
-        }
-
-        .mvp-avatar-ring {
-            position: relative;
-            z-index: 3;
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            margin: 18px auto 0;
-            padding: 3px;
-            background: conic-gradient(from 0deg, var(--gold-pale), var(--gold-deep), var(--gold), var(--gold-pale));
-            animation: ringSpin 5s linear infinite;
-        }
-
-        @keyframes ringSpin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .mvp-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--surface-2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 23px;
-            color: var(--gold-pale);
-            border: 2px solid var(--bg);
-        }
-
-        .mvp-name {
-            position: relative;
-            z-index: 3;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-family: 'Anton', sans-serif;
-            font-size: 20px;
-            letter-spacing: 0.02em;
-            color: var(--ink);
-        }
-
-        .mvp-verified {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep));
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            color: var(--on-accent);
-            flex-shrink: 0;
-        }
-
-        .mvp-team {
-            position: relative;
-            z-index: 3;
-            margin-top: 3px;
-            font-size: 11.5px;
-            color: var(--ink-faint);
-            letter-spacing: 0.04em;
-        }
-
-        .mvp-quote {
-            position: relative;
-            z-index: 3;
-            margin: 16px auto 0;
-            max-width: 280px;
-            font-size: 12px;
-            font-style: italic;
-            color: var(--ink-dim);
-            line-height: 1.55;
-        }
-
-        .mvp-quote::before {
-            content: '\201C';
-            color: var(--gold-deep);
-            font-family: 'Anton', sans-serif;
-            font-style: normal;
-            margin-right: 2px;
-        }
-
-        .mvp-quote::after {
-            content: '\201D';
-            color: var(--gold-deep);
-            font-family: 'Anton', sans-serif;
-            font-style: normal;
-            margin-left: 2px;
-        }
-
-        .mvp-divider {
-            position: relative;
-            z-index: 3;
-            margin: 20px auto 20px;
-            width: 70%;
-            border-top: 1px dashed rgba(var(--gold-rgb), 0.2);
-        }
-
-        .mvp-bars {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            text-align: left;
-        }
-
-        .mvp-bar-row {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .mvp-bar-head {
-            display: flex;
-            justify-content: space-between;
-            font-size: 9.5px;
-            letter-spacing: 0.08em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .mvp-bar-head b {
-            color: var(--gold-pale);
-            font-family: 'Space Mono', monospace;
-            font-size: 10.5px;
-        }
-
-        .mvp-bar-track {
-            height: 5px;
-            border-radius: 4px;
-            background: rgba(var(--gold-rgb), 0.08);
-            overflow: hidden;
-        }
-
-        .mvp-bar-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            transition: width 1.1s cubic-bezier(.2, .9, .25, 1);
-        }
-
-
-        /* ============ PRIZE PODIUM ============ */
-        .prize-total {
-            position: relative;
-            margin-top: 22px;
-            padding: 24px 16px;
-            text-align: center;
-            border-radius: 18px;
-            border: 1px solid var(--line);
-            overflow: hidden;
-            background: radial-gradient(ellipse 130% 100% at 50% 0%, rgba(var(--gold-rgb), 0.14), transparent 65%), var(--surface);
-        }
-
-        .prize-total-label {
-            display: block;
-            font-size: 10px;
-            letter-spacing: 0.26em;
-            color: var(--ink-faint);
-        }
-
-        .prize-total-amt {
-            display: block;
-            margin-top: 8px;
-            font-size: 38px;
-            letter-spacing: 0.02em;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(0 4px 18px rgba(var(--gold-rgb), 0.25));
-        }
-
-        .prize-total-sub {
-            display: block;
-            margin-top: 6px;
-            font-size: 11px;
-            color: var(--ink-dim);
-        }
-
-        .podium {
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 26px;
-            padding: 0 4px;
-        }
-
-        .podium-col {
-            flex: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .podium-col.p1::before {
-            content: '';
-            position: absolute;
-            top: -18px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            z-index: -1;
-            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.35), transparent 72%);
-            filter: blur(2px);
-            animation: haloPulse 2.6s ease-in-out infinite;
-        }
-
-        @keyframes haloPulse {
-
-            0%,
-            100% {
-                opacity: 0.6;
-                transform: translateX(-50%) scale(0.94);
-            }
-
-            50% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1.06);
-            }
-        }
-
-        .medal {
-            font-size: 22px;
-            animation: medalBounce 2.4s ease-in-out infinite;
-        }
-
-        .podium-col.p2 .medal {
-            animation-delay: 0.25s;
-        }
-
-        .podium-col.p3 .medal {
-            animation-delay: 0.5s;
-        }
-
-        @keyframes medalBounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-4px);
-            }
-        }
-
-        .podium-amt {
-            margin-top: 6px;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--gold-pale);
-        }
-
-        .podium-bar {
-            width: 100%;
-            margin-top: 10px;
-            height: 0;
-            border-radius: 10px 10px 0 0;
-            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
-            box-shadow: 0 -6px 20px rgba(var(--gold-rgb), 0.18);
-            transition: height 1.1s cubic-bezier(.2, .9, .25, 1);
-        }
-
-        .podium-col.p1 .podium-bar {
-            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
-        }
-
-        .podium-col.p2 .podium-bar,
-        .podium-col.p3 .podium-bar {
-            opacity: 0.85;
-        }
-
-        .podium-tag {
-            margin-top: 10px;
-            font-size: 9.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        /* ============ CHAMPIONS LEGACY ============ */
-        .legacy-scroll {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            overflow-x: auto;
-            padding: 4px 0 10px;
-            scroll-snap-type: x mandatory;
-            touch-action: pan-x;
-        }
-
-        .legacy-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .legacy-card {
-            position: relative;
-            flex: 0 0 128px;
-            scroll-snap-align: start;
-            text-align: center;
-            background: var(--surface);
-            border: 1px solid var(--gold-deep);
-            border-radius: 16px;
-            padding: 20px 10px 16px;
-        }
-
-        .legacy-trophy {
-            font-size: 20px;
-        }
-
-        .legacy-season {
-            margin-top: 6px;
-            font-family: 'Anton', sans-serif;
-            font-size: 12px;
-            letter-spacing: 0.1em;
-            color: var(--gold-deep);
-        }
-
-        .legacy-team {
-            margin-top: 6px;
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            color: var(--gold-pale);
-        }
-
-        .legacy-full {
-            margin-top: 2px;
-            font-size: 10px;
-            color: var(--ink-faint);
-        }
-
-        /* ============ SPONSOR MARQUEE ============ */
-        .sponsor-track-wrap {
-            margin-top: 18px;
-            overflow: hidden;
-            -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
-            mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
-        }
-
-        .sponsor-track {
-            display: flex;
-            width: max-content;
-            animation: sponsorScroll 22s linear infinite;
-        }
-
-        .sponsor-track span {
-            padding: 0 26px;
-            font-size: 13px;
-            letter-spacing: 0.14em;
-            color: var(--ink-faint);
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-        }
-
-        .sponsor-track span::after {
-            content: '✦';
-            margin-left: 26px;
-            color: var(--gold-deep);
-            font-size: 10px;
-        }
-
-        @keyframes sponsorScroll {
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* ============ FAQ ============ */
-        .faq-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .faq-item {
-            border-radius: 16px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            overflow: hidden;
-        }
-
-        .faq-q {
-            all: unset;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            padding: 15px 16px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .faq-q span:first-child {
-            flex: 1;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--ink);
-            line-height: 1.4;
-        }
-
-        .faq-chevron {
-            flex-shrink: 0;
-            width: 24px;
-            height: 24px;
-            border-radius: 7px;
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            font-size: 12px;
-            transition: transform 0.35s cubic-bezier(.2, .9, .25, 1);
-        }
-
-        .faq-item.open .faq-chevron {
-            transform: rotate(180deg);
-        }
-
-        .faq-item.open {
-            border-color: rgba(var(--gold-rgb), 0.3);
-        }
-
-        .faq-a {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(.2, .9, .25, 1);
-        }
-
-        .faq-a p {
-            padding: 0 16px 16px 16px;
-            font-size: 12.5px;
-            line-height: 1.55;
-            color: var(--ink-dim);
-        }
-
-        .faq-a p a {
-            color: var(--gold-pale);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FREEFIREXIPL — Battle Up</title>
+<meta name="description" content="FREEFIREXIPL — the tournament battleground for Free Fire players. Join daily squad & solo tournaments, climb the leaderboard, and battle up for real rewards.">
+<meta name="theme-color" content="#0a0705">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="FREEFIREXIPL — Battle Up">
+<meta property="og:description" content="The tournament battleground for Free Fire players. Squad up. Battle up. Rise to the top.">
+<meta property="og:image" content="https://freefirexipl.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FREEFIREXIPL — Battle Up">
+<meta name="twitter:description" content="The tournament battleground for Free Fire players. Squad up. Battle up. Rise to the top.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0705'/%3E%3Ctext x='50' y='68' font-family='Arial, sans-serif' font-size='58' font-weight='900' fill='%23f0b93d' text-anchor='middle'%3EX%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0705;
+    --surface:#17110a;
+    --surface-2:#221909;
+    --gold:#f0b93d;
+    --gold-rgb:240,185,61;
+    --gold-deep:#b3811f;
+    --gold-pale:#fbe4a6;
+    --ink:#f4ecd8;
+    --ink-dim:#a9997d;
+    --ink-faint:#6b5f4c;
+    --live:#ff4433;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{min-height:100%;}
+  body{
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, rgba(240,185,61,.08), transparent 65%),
+      var(--bg);
+    font-family:'Rajdhani',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .stage{position:relative;width:100vw;min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:90px 24px 60px;text-align:center;overflow:hidden;}
+
+  /* ambient embers — run continuously, forever */
+  .embers{position:fixed;inset:0;pointer-events:none;z-index:0;}
+  .ember{position:absolute;bottom:-20px;width:3px;height:3px;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 8px 2px rgba(240,185,61,.55);
+    opacity:0;animation:rise 9s infinite ease-in;}
+  @keyframes rise{
+    0%{transform:translateY(0) scale(.8);opacity:0;}
+    12%{opacity:.7;}
+    82%{opacity:.4;}
+    100%{transform:translateY(-104vh) scale(1.3);opacity:0;}
+  }
+
+  /* phase 1: camera-zoom title splash, overlays everything on first paint only */
+  /* ============ SURPRISE REVEAL — a locked golden box that can't be opened until the timer
+     hits zero. Ticks every second while counting down; once unlocked it glows and waits for
+     a tap, which blasts it open with particles before dissolving into Enter. ============ */
+  .surprise-gate{
+    position:fixed;inset:0;z-index:6;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    background:var(--bg);
+  }
+  .surprise-gate.hide{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;}
+
+  .surprise-box{position:relative;width:150px;height:132px;margin-bottom:8px;cursor:not-allowed;}
+  .surprise-box.locked{animation:boxIdle 3.2s ease-in-out infinite;}
+  .surprise-box.locked.shake{animation:boxShake .4s ease;}
+  .surprise-box.unlocked{cursor:pointer;animation:boxReady 1.15s ease-in-out infinite;}
+  @keyframes boxIdle{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-3px) rotate(-1deg);}}
+  @keyframes boxReady{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-7px) scale(1.035);}}
+  @keyframes boxShake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-7px) rotate(-3deg);}
+    40%{transform:translateX(6px) rotate(3deg);}
+    60%{transform:translateX(-5px) rotate(-2deg);}
+    80%{transform:translateX(4px) rotate(2deg);}
+  }
+
+  .box-glow{position:absolute;inset:-34px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle, rgba(var(--gold-rgb),.4), transparent 70%);opacity:0;}
+  .surprise-box.unlocked .box-glow{animation:glowPulse 1.5s ease-in-out infinite;}
+  @keyframes glowPulse{0%,100%{opacity:.45;transform:scale(1);}50%{opacity:1;transform:scale(1.18);}}
+
+  .box-body{position:absolute;left:6px;right:6px;bottom:0;height:80px;border-radius:6px 6px 16px 16px;
+    background:linear-gradient(160deg,var(--gold-deep),#6e5010 75%);
+    box-shadow:0 16px 40px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);}
+  .box-body::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:15px;transform:translateX(-50%);
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold));}
+  .surprise-box.unlocked .box-body{box-shadow:0 16px 40px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08), 0 0 26px rgba(var(--gold-rgb),.35);}
+
+  .box-lid{position:absolute;left:0;right:0;top:8px;height:48px;border-radius:10px;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));
+    box-shadow:0 10px 22px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.18);
+    transform-origin:8% 100%;
+    transition:transform .55s cubic-bezier(.34,1.56,.64,1), opacity .5s ease;
+  }
+  .box-lid::before{content:'';position:absolute;left:50%;top:-11px;transform:translateX(-50%);
+    width:26px;height:20px;border-radius:50% 50% 40% 40%;
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold));box-shadow:0 3px 8px rgba(0,0,0,.4);}
+  .box-lock{font-size:19px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));
+    transition:opacity .3s ease, transform .3s ease;}
+  .surprise-box.unlocked .box-lock{opacity:0;transform:scale(.4) rotate(-25deg);}
+
+  .surprise-box.blasting .box-lid{transform:rotate(-120deg) translate(-10px,-16px);opacity:0;}
+  .surprise-box.blasting .box-body{animation:boxShrink .4s ease forwards .15s;}
+  @keyframes boxShrink{to{transform:scale(.85);opacity:0;}}
+  .surprise-box.blasting .box-glow{animation:blastFlash .6s ease forwards;}
+  @keyframes blastFlash{0%{opacity:1;transform:scale(1);}55%{opacity:1;transform:scale(2.8);}100%{opacity:0;transform:scale(3.4);}}
+
+  .box-eyebrow{
+    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--ink-faint);
+  }
+  .box-timer{
+    font-family:'Anton',sans-serif;font-weight:400;font-size:32px;letter-spacing:.03em;
+    color:var(--gold-pale);text-shadow:0 0 20px rgba(240,185,61,.3);font-variant-numeric:tabular-nums;
+  }
+  .box-hint{
+    margin-top:2px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold);opacity:0;transform:translateY(4px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .box-hint.show{opacity:1;transform:translateY(0);animation:hintPulse 1.6s ease-in-out infinite;}
+  @keyframes hintPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+
+  /* HYPED UP BUZZER — a real press-down game-show buzzer, shows only during countdown */
+  .hyped-btn{
+    position:fixed;bottom:118px;right:20px;z-index:7;
+    display:none;flex-direction:column;align-items:center;gap:6px;
+    background:none;border:none;padding:0;margin:0;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;user-select:none;
+    animation:hypedFloat 3.6s ease-in-out infinite;
+  }
+  @keyframes hypedFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+  .buzzer-base{
+    position:relative;width:84px;height:84px;border-radius:50%;
+    background:radial-gradient(circle at 34% 30%, #3c2d13, #150f08 72%);
+    box-shadow:0 16px 28px rgba(0,0,0,.6), inset 0 2px 4px rgba(255,255,255,.06), inset 0 -7px 12px rgba(0,0,0,.65);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .buzzer-ring-glow{
+    position:absolute;inset:-4px;border-radius:50%;pointer-events:none;
+    box-shadow:0 0 0 0 rgba(var(--gold-rgb),.6);
+    animation:buzzerIdle 2.6s ease-in-out infinite;
+  }
+  @keyframes buzzerIdle{
+    0%,100%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),.35);}
+    50%{box-shadow:0 0 0 6px rgba(var(--gold-rgb),0);}
+  }
+  .hyped-btn.glow .buzzer-ring-glow{animation:buzzPulse .6s ease-out;}
+  @keyframes buzzPulse{
+    0%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),.7);}
+    100%{box-shadow:0 0 0 28px rgba(var(--gold-rgb),0);}
+  }
+  .buzzer-dome{
+    position:relative;width:68px;height:68px;border-radius:50%;
+    background:radial-gradient(circle at 32% 26%, var(--gold-pale), var(--gold) 45%, var(--gold-deep) 88%);
+    box-shadow:0 9px 15px rgba(0,0,0,.5), inset 0 3px 6px rgba(255,255,255,.55), inset 0 -9px 15px rgba(0,0,0,.4);
+    display:flex;align-items:center;justify-content:center;
+    transform:translateY(0) scale(1);
+    transition:transform .1s cubic-bezier(.3,0,.6,1), box-shadow .1s ease;
+  }
+  .buzzer-dome .buzzer-label{
+    width:100%;padding:0 4px;text-align:center;
+    font-family:'Anton',sans-serif;font-weight:400;font-size:9px;line-height:1.15;
+    letter-spacing:.02em;text-transform:uppercase;color:var(--bg);
+    text-shadow:0 1px 0 rgba(255,255,255,.25);
+  }
+  .hyped-btn:active .buzzer-dome{
+    transform:translateY(6px) scale(.93);
+    box-shadow:0 2px 5px rgba(0,0,0,.45), inset 0 3px 6px rgba(255,255,255,.4), inset 0 -3px 6px rgba(0,0,0,.4);
+  }
+  .hyped-btn-count{
+    font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;color:var(--bg);
+    background:linear-gradient(160deg,var(--gold-pale),var(--gold));
+    padding:3px 9px;border-radius:999px;min-width:22px;text-align:center;
+    box-shadow:inset 0 1px 2px rgba(255,255,255,.55), 0 3px 8px rgba(0,0,0,.4);
+    font-variant-numeric:tabular-nums;
+  }
+  .mini-hyped{
+    position:fixed;z-index:8;pointer-events:none;
+    width:48px;height:48px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:50%;padding:2px;text-align:center;
+    background:radial-gradient(circle at 32% 26%, var(--gold-pale), var(--gold) 45%, var(--gold-deep) 88%);
+    box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 2px 3px rgba(255,255,255,.5), 0 0 14px rgba(var(--gold-rgb),.55);
+    font-family:'Anton',sans-serif;font-weight:400;font-size:8px;letter-spacing:.02em;text-transform:uppercase;
+    color:var(--bg);line-height:1.05;
+    animation:floatUp 2.4s cubic-bezier(.2,.75,.4,1) forwards;
+  }
+  @keyframes floatUp{
+    0%{transform:translate(0,0) scale(.5);opacity:0;}
+    10%{opacity:1;transform:translate(calc(var(--tx) * .2), calc(var(--ty) * .2)) scale(1);}
+    70%{opacity:1;transform:translate(calc(var(--tx) * .85), calc(var(--ty) * .85)) scale(1);}
+    100%{transform:translate(var(--tx), var(--ty)) scale(.8);opacity:0;}
+  }
+
+  .blast-particle{position:fixed;z-index:8;border-radius:2px;pointer-events:none;will-change:transform,opacity;}
+
+  /* ============ ENTER GATE — must tap to begin; everything else waits for body.started ============ */
+  .enter-gate{
+    position:fixed;inset:0;z-index:5;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+    background:var(--bg);
+  }
+  .enter-gate.hide{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;}
+  .enter-brand{
+    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--gold-pale);opacity:.85;
+  }
+  .enter-btn{
+    position:relative;font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--ink);background:transparent;
+    border:1px solid rgba(var(--gold-rgb),.55);
+    padding:17px 50px;border-radius:999px;cursor:pointer;
+    box-shadow:0 0 0 0 rgba(var(--gold-rgb),.35);
+    animation:enterPulse 2.4s ease-in-out infinite;
+    transition:background .25s ease, color .25s ease, transform .2s ease, box-shadow .25s ease;
+  }
+  .enter-btn:hover, .enter-btn:active{
+    background:var(--gold);color:var(--bg);transform:scale(1.04);
+    animation-play-state:paused;box-shadow:0 0 30px 4px rgba(var(--gold-rgb),.4);
+  }
+  @keyframes enterPulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),.28);}
+    50%{box-shadow:0 0 0 10px rgba(var(--gold-rgb),0);}
+  }
+
+  .splash{
+    position:fixed;inset:0;z-index:3;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--bg);
+  }
+  body.started .splash{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.65s;}
+  @keyframes splashOut{to{opacity:0;transform:scale(1.06);pointer-events:none;}}
+  .splash-inner{
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    transform:scale(.1);opacity:0;filter:blur(16px);
+    will-change:transform,opacity,filter;
+  }
+  body.started .splash-inner{animation:cameraZoom 1.7s cubic-bezier(.22,.75,.25,1) forwards;}
+  @keyframes cameraZoom{
+    0%{transform:scale(.1);opacity:0;filter:blur(16px);}
+    10%{opacity:1;}
+    72%{transform:scale(1);filter:blur(0px);opacity:1;}
+    100%{transform:scale(1.45);filter:blur(1px);opacity:0;}
+  }
+  .splash-headline{
+    margin-top:0;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    font-size:clamp(64px,19vw,160px);line-height:.9;color:var(--ink);
+    text-shadow:0 0 70px rgba(240,185,61,.3);
+  }
+  .splash-headline span{display:block;}
+  .splash-headline .gold{
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold-deep));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* ============ PUZZLE GATE — 6 pieces, must be arranged correctly before content reveals ============ */
+  .puzzle-gate{
+    position:fixed;inset:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    background:var(--bg);
+    opacity:0;
+  }
+  body.started .puzzle-gate{animation:fadeUp .6s ease forwards;animation-delay:1.75s;}
+  body.started .puzzle-gate.solved{animation:puzzleOut .6s cubic-bezier(.16,1,.3,1) forwards;}
+  @keyframes puzzleOut{to{opacity:0;transform:scale(.96);pointer-events:none;}}
+  .puzzle-caption{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--gold-pale);text-shadow:0 0 18px rgba(240,185,61,.25);}
+  .puzzle-hint{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-faint);}
+  .puzzle-board{
+    display:grid;grid-template-columns:repeat(3,90px);grid-template-rows:repeat(2,90px);gap:4px;
+    padding:4px;border-radius:14px;background:var(--surface-2);
+    box-shadow:0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(var(--gold-rgb),.2);
+  }
+  .ptile{
+    width:90px;height:90px;border-radius:8px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%2317110a'/%3E%3Crect width='300' height='200' fill='none'/%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='38%25' r='75%25'%3E%3Cstop offset='0%25' stop-color='%23fbe4a6'/%3E%3Cstop offset='45%25' stop-color='%23f0b93d'/%3E%3Cstop offset='100%25' stop-color='%23b3811f'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='150' cy='100' r='96' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Ctext x='150' y='68' font-family='Arial, sans-serif' font-size='24' font-weight='700' fill='%23fbe4a6' text-anchor='middle' letter-spacing='8'%3ESEASON%3C/text%3E%3Ctext x='150' y='165' font-family='Arial, sans-serif' font-size='118' font-weight='900' fill='url(%23g)' text-anchor='middle'%3E12%3C/text%3E%3C/svg%3E");
+    background-size:300% 200%;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.45);
+    transition:transform .15s ease, box-shadow .2s ease, filter .3s ease;
+  }
+  .ptile.selected{transform:scale(.9);box-shadow:0 0 0 3px var(--gold), inset 0 0 0 1px rgba(0,0,0,.45);}
+  .ptile.correct{filter:saturate(1.25) brightness(1.05);}
+  @media (max-width:420px){
+    .puzzle-board{grid-template-columns:repeat(3,72px);grid-template-rows:repeat(2,72px);}
+    .ptile{width:72px;height:72px;}
+  }
+
+  /* ============ SEASON 12 — huge translucent gradient watermark behind the content ============ */
+  .bg-emblem{
+    position:absolute;left:0;right:0;top:0;z-index:-1;pointer-events:none;
+    display:flex;flex-direction:column;align-items:center;
+    padding-top:0;
+    user-select:none;text-align:center;
+    opacity:0;
+  }
+  body.revealed .bg-emblem{animation:fadeUp 1.4s ease forwards;animation-delay:1.5s;}
+  .bg-emblem .bg-season{
+    font-family:'Space Mono',monospace;font-size:clamp(13px,2.4vw,18px);
+    letter-spacing:.4em;color:rgba(240,185,61,.18);
+  }
+  .bg-emblem .bg-12{
+    margin-top:-.1em;font-family:'Anton',sans-serif;font-weight:400;
+    font-size:clamp(110px,24vw,240px);line-height:.85;
+    background:linear-gradient(180deg, rgba(251,228,166,.24), rgba(179,129,31,.06));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:blur(1.5px);
+  }
+
+  /* phase 2: the reveal — now gated behind the puzzle. Hidden until body.revealed is added by JS. */
+  .reveal{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+  .eyebrow{
+    font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold);
+    opacity:0;
+  }
+  body.revealed .eyebrow{animation:fadeUp .7s ease forwards;animation-delay:.05s;}
+  .headline{
+    margin-top:6px;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    font-size:clamp(56px,17vw,140px);line-height:.88;color:var(--ink);
+    text-shadow:0 0 60px rgba(240,185,61,.18);
+  }
+  .line{display:block;overflow:hidden;white-space:nowrap;}
+  .line-in{
+    display:block;transform:translateY(115%);opacity:0;
+  }
+  body.revealed .line:nth-child(1) .line-in{animation:lineUp .95s cubic-bezier(.16,1,.3,1) forwards;animation-delay:.15s;}
+  body.revealed .line:nth-child(2) .line-in{animation:lineUp .95s cubic-bezier(.16,1,.3,1) forwards;animation-delay:.32s;}
+  .line:nth-child(2) .line-in{
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold-deep));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  @keyframes lineUp{to{transform:translateY(0);opacity:1;}}
+
+  .tease{
+    margin-top:18px;font-size:clamp(14px,3vw,17px);color:var(--ink-dim);
+    opacity:0;
+  }
+  body.revealed .tease{animation:fadeUp .7s ease forwards;animation-delay:.75s;}
+  .tuned{
+    margin-top:24px;display:inline-flex;align-items:center;gap:8px;
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-faint);
+    opacity:0;
+  }
+  body.revealed .tuned{animation:fadeUp .7s ease forwards;animation-delay:1s;}
+  .tuned .dot{width:6px;height:6px;border-radius:50%;background:var(--live);
+    box-shadow:0 0 8px 2px rgba(255,68,51,.7);}
+  body.revealed .tuned .dot{animation:pulse 1.6s infinite ease-in-out;animation-delay:1s;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  /* ============ COUNTDOWN — added below the reveal, numbers only ============ */
+  .cd-wrap{
+    margin-top:34px;opacity:0;transform:translateY(16px);
+  }
+  body.revealed .cd-wrap{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.3s;}
+  .cd-card{
+    position:relative;border-radius:22px;padding:26px 22px 22px;
+    background:radial-gradient(ellipse 90% 70% at 50% 0%, rgba(var(--gold-rgb),.1), transparent 70%), var(--surface);
+    box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.2), 0 20px 60px rgba(0,0,0,.55);
+  }
+  .cd-caption{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--ink-faint);
+    letter-spacing:.18em;text-transform:uppercase;}
+  .board{margin-top:16px;display:flex;justify-content:center;gap:12px;perspective:1000px;}
+  .unit{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .unit-label{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-faint);}
+  .flap-pair{display:flex;gap:3px;}
+  .flap{position:relative;width:40px;height:56px;background:linear-gradient(180deg,var(--surface-2),#0e0a06);
+    border-radius:7px;box-shadow:0 4px 14px rgba(0,0,0,.5), inset 0 0 0 1px rgba(var(--gold-rgb),.15);overflow:hidden;}
+  .flap::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.55);z-index:5;}
+  .flap-digit{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'Anton',sans-serif;font-size:29px;color:var(--gold-pale);line-height:1;}
+  .flap-digit.next{opacity:0;}
+  .flap.flipping .flap-digit.current{animation:flipOutTop .3s ease-in forwards;}
+  .flap.flipping .flap-digit.next{animation:flipInBottom .3s ease-out .3s forwards;}
+  @keyframes flipOutTop{to{transform:rotateX(-90deg);opacity:0;}}
+  @keyframes flipInBottom{from{transform:rotateX(90deg);opacity:0;}to{transform:rotateX(0deg);opacity:1;}}
+
+  /* ============ DYNAMIC SMOKE — colorful puffs on touch/scroll, only once revealed ============ */
+  .smoke-puff{
+    position:fixed;z-index:15;pointer-events:none;
+    width:130px;height:130px;border-radius:50%;
+    transform:translate(-50%,-50%) scale(.35);
+    opacity:.6;filter:blur(16px);
+    animation:smokeRise 1.15s ease-out forwards;
+  }
+  @keyframes smokeRise{
+    0%{transform:translate(-50%,-50%) scale(.35);opacity:.6;}
+    100%{transform:translate(-50%,-65%) scale(1.7);opacity:0;}
+  }
+
+  /* ============ SOUND TOGGLE — music syncs with splash automatically; this hint + button just control mute ============ */
+  .sound-hint{
+    position:fixed;bottom:24px;right:64px;z-index:20;
+    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;
+    opacity:0;transform:translateX(6px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .sound-hint.show{opacity:1;transform:translateX(0);}
+  .sound-toggle{
+    position:fixed;bottom:18px;right:18px;z-index:20;width:40px;height:40px;border-radius:50%;
+    border:1px solid rgba(var(--gold-rgb),.35);background:rgba(23,17,10,.85);backdrop-filter:blur(6px);
+    color:var(--gold-pale);font-size:16px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;opacity:0;transform:scale(.85);
+    transition:opacity .6s ease, transform .6s ease, border-color .25s ease;
+    animation-delay:2.4s;
+  }
+  .sound-toggle.show{opacity:1;transform:scale(1);}
+  .sound-toggle:hover{border-color:var(--gold);}
+
+  /* ============ SCROLL CUE ============ */
+  .scroll-cue{
+    position:absolute;left:50%;bottom:28px;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    text-decoration:none;opacity:0;z-index:1;
+  }
+  body.revealed .scroll-cue{animation:fadeUp .7s ease forwards;animation-delay:1.6s;}
+  .scroll-cue-line{width:1px;height:34px;background:linear-gradient(180deg,rgba(var(--gold-rgb),.7),transparent);
+    animation:scrollLine 1.8s ease-in-out infinite;}
+  @keyframes scrollLine{0%{transform:scaleY(.3);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}100%{transform:scaleY(.3);transform-origin:bottom;}}
+  .scroll-cue-text{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--ink-faint);}
+
+  /* ============ LANDING SECTIONS — below the hero, revealed on scroll ============ */
+  .site-section{position:relative;z-index:1;padding:90px 24px;display:flex;justify-content:center;}
+  .section-inner{width:100%;max-width:920px;text-align:center;}
+  .section-eyebrow{
+    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--gold);opacity:0;transform:translateY(16px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .section-title{
+    margin-top:10px;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    font-size:clamp(32px,6.5vw,58px);line-height:1.05;color:var(--ink);
+    opacity:0;transform:translateY(16px);
+    transition:opacity .7s ease .08s, transform .7s ease .08s;
+  }
+  .gold-text{
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold-deep));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .section-body{
+    margin:18px auto 0;max-width:620px;font-size:clamp(14.5px,2.6vw,17px);
+    line-height:1.65;color:var(--ink-dim);
+    opacity:0;transform:translateY(16px);
+    transition:opacity .7s ease .16s, transform .7s ease .16s;
+  }
+  .site-section.in-view .section-eyebrow,
+  .site-section.in-view .section-title,
+  .site-section.in-view .section-body{opacity:1;transform:translateY(0);}
+
+  .about-section{background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(var(--gold-rgb),.05), transparent 70%);}
+
+  /* ============ LIVE REVEAL — takes the exact place of the countdown card, the instant
+     the countdown hits zero. .pre-launch-hero (headline + countdown) and .live-hero
+     (the announcement) are swapped via body.launched — never both visible at once. ============ */
+  .pre-launch-hero{display:flex;flex-direction:column;align-items:center;}
+  body.launched .pre-launch-hero{display:none;}
+  .live-hero{display:none;flex-direction:column;align-items:center;}
+  body.launched .live-hero{display:flex;}
+  .live-badge{
+    display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;
+    border:1px solid rgba(var(--gold-rgb),.4);
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gold-pale);
+    opacity:0;
+  }
+  body.launched .live-badge{animation:fadeUp .7s ease forwards;animation-delay:.1s;}
+  .live-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--live);
+    box-shadow:0 0 8px 2px rgba(255,68,51,.7);animation:pulse 1.6s infinite ease-in-out;}
+  .live-title{
+    margin-top:16px;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    font-size:clamp(38px,10vw,104px);line-height:.95;color:var(--ink);
+    text-shadow:0 0 70px rgba(240,185,61,.25);
+    opacity:0;
+  }
+  body.launched .live-title{animation:fadeUp .7s ease forwards;animation-delay:.22s;}
+  .live-sub{
+    margin-top:16px;font-size:clamp(15px,3vw,18px);color:var(--ink-dim);max-width:480px;
+    opacity:0;
+  }
+  body.launched .live-sub{animation:fadeUp .7s ease forwards;animation-delay:.36s;}
+  .live-chips{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:520px;
+    opacity:0;
+  }
+  body.launched .live-chips{animation:fadeUp .7s ease forwards;animation-delay:.5s;}
+  .live-chip{
+    font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--gold-pale);
+    border:1px solid rgba(var(--gold-rgb),.3);padding:9px 16px;border-radius:999px;
+    background:rgba(var(--gold-rgb),.06);
+  }
+  .live-cta{
+    margin-top:32px;display:inline-block;font-family:'Space Mono',monospace;font-size:13px;
+    letter-spacing:.24em;text-transform:uppercase;color:var(--bg);background:var(--gold);
+    padding:16px 42px;border-radius:999px;text-decoration:none;
+    box-shadow:0 10px 30px rgba(var(--gold-rgb),.35);
+    transition:transform .2s ease, box-shadow .25s ease;
+    opacity:0;
+  }
+  body.launched .live-cta{animation:fadeUp .7s ease forwards;animation-delay:.64s;}
+  .live-cta:hover{transform:scale(1.04);box-shadow:0 14px 36px rgba(var(--gold-rgb),.45);}
+
+  .features-grid{
+    margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:left;
+  }
+  .feature-card{
+    padding:26px 22px;border-radius:16px;background:var(--surface);
+    box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.14);
+    --entrance-y:20px;opacity:0;
+    transform:translateY(var(--entrance-y)) perspective(700px) rotateX(var(--ty,0deg)) rotateY(var(--tx,0deg));
+    transition:opacity .6s ease, transform .35s ease, box-shadow .25s ease;
+  }
+  .site-section.in-view .feature-card{opacity:1;--entrance-y:0px;}
+  .site-section.in-view .feature-card:nth-child(1){transition-delay:.05s;}
+  .site-section.in-view .feature-card:nth-child(2){transition-delay:.11s;}
+  .site-section.in-view .feature-card:nth-child(3){transition-delay:.17s;}
+  .site-section.in-view .feature-card:nth-child(4){transition-delay:.23s;}
+  .site-section.in-view .feature-card:nth-child(5){transition-delay:.29s;}
+  .site-section.in-view .feature-card:nth-child(6){transition-delay:.35s;}
+  .feature-card:hover{box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.4), 0 14px 34px rgba(0,0,0,.4);}
+  .feature-icon{font-size:26px;display:block;}
+  .feature-card h3{
+    margin-top:14px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:18px;
+    letter-spacing:.01em;color:var(--ink);
+  }
+  .feature-card p{margin-top:8px;font-size:14px;line-height:1.55;color:var(--ink-dim);}
+
+  .socials-section .section-inner{max-width:560px;}
+  .social-links{margin-top:38px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;
+    opacity:0;transform:translateY(16px);transition:opacity .7s ease .2s, transform .7s ease .2s;}
+  .site-section.in-view .social-links{opacity:1;transform:translateY(0);}
+  .social-link{
+    width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(var(--gold-rgb),.3);color:var(--gold-pale);
+    transition:border-color .25s ease, transform .2s ease, box-shadow .25s ease, background .25s ease;
+  }
+  .social-link svg{width:20px;height:20px;fill:currentColor;}
+  .social-link:hover{border-color:var(--gold);background:rgba(var(--gold-rgb),.1);
+    transform:translateY(-3px);box-shadow:0 10px 24px rgba(var(--gold-rgb),.25);}
+  .socials-note{margin-top:16px;font-family:'Space Mono',monospace;font-size:10.5px;
+    letter-spacing:.08em;color:var(--ink-faint);}
+
+  .site-footer{
+    position:relative;z-index:1;padding:50px 24px 40px;text-align:center;
+    border-top:1px solid rgba(var(--gold-rgb),.14);
+  }
+  .footer-brand{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.04em;color:var(--ink);}
+  .footer-tagline{margin-top:4px;font-family:'Space Mono',monospace;font-size:11px;
+    letter-spacing:.24em;text-transform:uppercase;color:var(--gold);}
+  .footer-fine{margin-top:18px;font-size:11.5px;color:var(--ink-faint);max-width:480px;
+    margin-left:auto;margin-right:auto;line-height:1.6;}
+
+  @media (max-width:820px){
+    .features-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media (max-width:520px){
+    .features-grid{grid-template-columns:1fr;}
+    .site-section{padding:64px 20px;}
+  }
+
+  @media (max-width:420px){
+    .flap{width:31px;height:44px;}
+    .flap-digit{font-size:22px;}
+    .board{gap:7px;}
+  }
+
+  /* ============ MOBILE FIXES — the buzzer and sound controls are fixed-position and were
+     designed for taller/wider screens; on phones the hero content runs tall enough that they
+     land on top of the countdown card and the scroll cue. Move them out of the way. ============ */
+  @media (max-width:480px){
+    .hyped-btn{
+      bottom:64px;top:auto;right:14px;
+    }
+    .buzzer-base{width:58px;height:58px;}
+    .buzzer-dome{width:46px;height:46px;}
+    .buzzer-dome .buzzer-label{font-size:7px;}
+    .hyped-btn-count{font-size:9px;padding:2px 7px;}
+    .sound-toggle{bottom:14px;right:14px;width:36px;height:36px;font-size:14px;}
+    .sound-hint{display:none;} /* icon alone is enough at this width; avoids colliding with scroll cue */
+    .scroll-cue{bottom:16px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .splash{display:none;}
+    .line-in,.eyebrow,.tease,.tuned,.cd-wrap,.tagline,.scroll-cue{animation:none!important;opacity:1!important;transform:none!important;}
+    .ember{display:none;}
+    .tuned .dot{animation:none;}
+    .flap.flipping .flap-digit.current,.flap.flipping .flap-digit.next{animation:none!important;opacity:1!important;transform:none!important;}
+    .section-eyebrow,.section-title,.section-body,.feature-card,.social-links{
+      transition:none!important;opacity:1!important;transform:none!important;
+    }
+  }
+  /* ============ PREMIUM LAYER — scroll progress, cursor glow, grain, shine effects ============ */
+  .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0%;z-index:50;
+    background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-pale));
+    box-shadow:0 0 10px 1px rgba(var(--gold-rgb),.6);transition:width .1s linear;}
+
+  .cursor-glow{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(var(--gold-rgb),.07), transparent 70%);
+    transition:opacity .4s ease;}
+  body.started .cursor-glow{opacity:1;}
+  @media (pointer:coarse){.cursor-glow{display:none;}}
+
+  .grain-overlay{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  /* rotating shimmer ring behind the countdown card — reads as a subtle energy field */
+  .cd-wrap{position:relative;}
+  .cd-wrap::before{
+    content:'';position:absolute;inset:-2px;border-radius:24px;z-index:-1;
+    background:conic-gradient(from 0deg, transparent 0%, rgba(var(--gold-rgb),.55) 8%, transparent 22%, transparent 78%, rgba(var(--gold-rgb),.4) 92%, transparent 100%);
+    animation:ringSpin 6s linear infinite;opacity:.8;
+  }
+  @keyframes ringSpin{to{transform:rotate(360deg);}}
+
+  /* small floating emblem badge beside the eyebrow — premium accent, not text content */
+  .hero-badge{
+    display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+    margin-bottom:10px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),.4);
+    background:radial-gradient(circle,rgba(var(--gold-rgb),.16),transparent 70%);
+    font-size:15px;animation:badgeFloat 3.4s ease-in-out infinite;
+    box-shadow:0 0 18px rgba(var(--gold-rgb),.25);
+  }
+  @keyframes badgeFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-5px) rotate(6deg);}}
+
+  /* feature cards: shine sweep + gentle 3D tilt, driven by --tx/--ty set in JS (see base .feature-card rule) */
+  .feature-card{position:relative;overflow:hidden;}
+  .feature-card::after{
+    content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
+    background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(var(--gold-rgb),.14), transparent 60%);
+    transition:opacity .3s ease;
+  }
+  .feature-card:hover::after{opacity:1;}
+
+  /* launch particle burst — spawned once, when the countdown hits zero */
+  .launch-particle{position:fixed;z-index:9;border-radius:50%;pointer-events:none;will-change:transform,opacity;}
+
+  /* ============ HYPE CAPTURE — private interest counter, phone saved to Supabase ============ */
+  .hype-wrap{margin-top:28px;opacity:0;transform:translateY(16px);}
+  body.revealed .hype-wrap{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.5s;}
+  .hype-card{
+    position:relative;border-radius:20px;padding:22px 22px 20px;max-width:340px;
+    background:radial-gradient(ellipse 90% 70% at 50% 0%, rgba(var(--gold-rgb),.08), transparent 70%), var(--surface);
+    box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.18), 0 16px 44px rgba(0,0,0,.5);
+  }
+  .hype-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-faint);}
+  .hype-title{margin-top:6px;font-family:'Anton',sans-serif;font-weight:400;font-size:22px;
+    letter-spacing:.02em;color:var(--ink);text-transform:uppercase;}
+  .hype-sub{margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--ink-dim);}
+  .hype-form{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
+  .hype-input{
+    width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(var(--gold-rgb),.25);
+    background:var(--surface-2);color:var(--ink);font-family:'Rajdhani',sans-serif;font-size:15px;
+    outline:none;transition:border-color .2s ease;
+  }
+  .hype-input:focus{border-color:var(--gold);}
+  .hype-btn{
+    padding:12px 18px;border-radius:10px;border:none;cursor:pointer;
+    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--bg);background:var(--gold);transition:transform .2s ease, box-shadow .25s ease, opacity .2s ease;
+  }
+  .hype-btn:hover{transform:scale(1.02);box-shadow:0 10px 26px rgba(var(--gold-rgb),.35);}
+  .hype-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none;}
+  .hype-status{margin-top:10px;font-family:'Space Mono',monospace;font-size:11px;
+    letter-spacing:.06em;color:var(--gold-pale);min-height:14px;}
+  .hype-status.error{color:var(--live);}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
-
 <body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <button id="hypedBtn" class="hyped-btn" type="button" aria-label="Hype up FREEFIREXIPL">
+    <span class="buzzer-base">
+      <span class="buzzer-ring-glow" aria-hidden="true"></span>
+      <span class="buzzer-dome"><span class="buzzer-label">HYPED UP</span></span>
+    </span>
+    <span class="hyped-btn-count" id="hypeCount">0</span>
+  </button>
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="embers" aria-hidden="true">
+    <span class="ember" style="left:5%;animation-delay:0s;animation-duration:8s;"></span>
+    <span class="ember" style="left:12%;animation-delay:1.1s;animation-duration:9.5s;"></span>
+    <span class="ember" style="left:20%;animation-delay:2.4s;animation-duration:7.5s;"></span>
+    <span class="ember" style="left:28%;animation-delay:.6s;animation-duration:10s;"></span>
+    <span class="ember" style="left:36%;animation-delay:3.2s;animation-duration:8.5s;"></span>
+    <span class="ember" style="left:44%;animation-delay:1.8s;animation-duration:9s;"></span>
+    <span class="ember" style="left:52%;animation-delay:4s;animation-duration:7s;"></span>
+    <span class="ember" style="left:60%;animation-delay:.3s;animation-duration:10.5s;"></span>
+    <span class="ember" style="left:68%;animation-delay:2.7s;animation-duration:8s;"></span>
+    <span class="ember" style="left:76%;animation-delay:1.4s;animation-duration:9.2s;"></span>
+    <span class="ember" style="left:84%;animation-delay:3.6s;animation-duration:7.8s;"></span>
+    <span class="ember" style="left:90%;animation-delay:.9s;animation-duration:10.2s;"></span>
+    <span class="ember" style="left:95%;animation-delay:2.1s;animation-duration:8.6s;"></span>
+    <span class="ember" style="left:8%;animation-delay:4.4s;animation-duration:9.7s;"></span>
+  </div>
 
-    <div class="scroll-progress">
-        <div class="scroll-progress-fill" id="scrollFill"></div>
+  <div class="surprise-gate" id="surpriseGate">
+    <div class="surprise-box locked" id="surpriseBox" role="button" aria-label="Surprise box, locked until the timer ends">
+      <div class="box-glow"></div>
+      <div class="box-lid"><span class="box-lock" id="boxLock">🔒</span></div>
+      <div class="box-body"></div>
+    </div>
+    <span class="box-eyebrow" id="boxEyebrow">Unlocks in</span>
+    <span class="box-timer" id="surpriseTimer">00:00</span>
+    <span class="box-hint" id="boxHint">Tap to open</span>
+  </div>
+
+  <div class="enter-gate" id="enterGate">
+    <p class="enter-brand">FreeFire XIPL — Season 12</p>
+    <button class="enter-btn" id="enterBtn">Enter</button>
+  </div>
+
+  <div class="splash" aria-hidden="true">
+    <div class="splash-inner">
+      <h1 class="splash-headline">
+        <span>What's up</span>
+        <span class="gold">Survivors?</span>
+      </h1>
+    </div>
+  </div>
+
+  <div class="puzzle-gate" id="puzzleGate">
+    <p class="puzzle-caption">Piece the Season 12 emblem together</p>
+    <div class="puzzle-board" id="puzzleBoard"></div>
+    <p class="puzzle-hint">tap two pieces to swap</p>
+  </div>
+
+  <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
+  <span class="sound-hint" id="soundHint">tap for sound</span>
+  <audio id="bgAudio" loop preload="auto"></audio>
+
+  <div class="stage">
+    <div class="bg-emblem" aria-hidden="true">
+      <span class="bg-season">SEASON</span>
+      <span class="bg-12">12</span>
+    </div>
+    <div class="reveal">
+      <div class="pre-launch-hero" id="preLaunchHero">
+        <span class="hero-badge" aria-hidden="true">🔥</span>
+        <p class="eyebrow">FreeFire XIPL</p>
+        <h1 class="headline">
+          <span class="line"><span class="line-in">Coming</span></span>
+          <span class="line"><span class="line-in">Soon</span></span>
+        </h1>
+        <p class="tease">The next chapter is loading.</p>
+        <div class="tuned"><span class="dot"></span>Stay tuned</div>
+
+        <div class="cd-wrap">
+          <div class="cd-card">
+            <p class="cd-caption" id="cdCaption">Time remaining</p>
+            <div class="board" id="board"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-hero" id="liveHero">
+        <span class="live-badge"><span class="dot"></span>Now Live</span>
+        <h1 class="live-title">FREEFIREXIPL Goes<span class="gold-text"> Live Now</span></h1>
+        <p class="live-sub">The wait's over. Gear up, drop in, battle up — the platform is officially open.</p>
+        <div class="live-chips">
+          <span class="live-chip">🏆 Season 12 tournaments open</span>
+          <span class="live-chip">👥 Squad up now</span>
+          <span class="live-chip">💰 Real rewards await</span>
+        </div>
+        <a href="home.html" class="live-cta">Check Out The Platform</a>
+      </div>
     </div>
 
-    <!-- SPLASH -->
-    <div id="splash">
-        <div class="ignite-wrap">
-            <div class="ignite-ring r1"></div>
-            <div class="ignite-ring r2"></div>
-            <div class="ignite-ring r3"></div>
-            <div class="ignite-core"></div>
-        </div>
-        <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">FREE FIRE CHAMPIONSHIP</div>
-        <div class="splash-bar">
-            <div class="splash-bar-fill"></div>
-        </div>
+    <a href="#about" class="scroll-cue" aria-label="Scroll to learn more">
+      <span class="scroll-cue-line"></span>
+      <span class="scroll-cue-text">Scroll</span>
+    </a>
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="site-section about-section" id="about">
+    <div class="section-inner">
+      <p class="section-eyebrow">Who we are</p>
+      <h2 class="section-title">FREEFIREXIPL — The Battleground for <span class="gold-text">Free Fire</span> Players</h2>
+      <p class="section-body">FREEFIREXIPL is a tournament platform built for players who want more than casual matches. Squad up, drop into verified fair-play rooms, and battle up the leaderboard for real rewards — every day.</p>
     </div>
+  </section>
 
-    <div class="embers" id="embers"></div>
-
-    <!-- HEADER -->
-    <header>
-        <div class="brand">
-            <div class="crest"></div>
-            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+  <!-- ============ FEATURES ============ -->
+  <section class="site-section features-section" id="features">
+    <div class="section-inner">
+      <p class="section-eyebrow">What you get</p>
+      <h2 class="section-title">Built for <span class="gold-text">Competitors</span></h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🏆</span>
+          <h3>Seasonal Tournaments</h3>
+          <p>Champions will rise. 11 chapters completed, with every new season raising the stakes.</p>
         </div>
-        <div class="header-actions">
-            <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
-                aria-expanded="false">🎨</button>
-            <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="feature-card">
+          <span class="feature-icon">🎯</span>
+          <h3>Verified Fair Play</h3>
+          <p>We keep checking everything, so every match stays clean and every win is earned.</p>
         </div>
-    </header>
-
-    <!-- THEME SWITCHER -->
-    <div class="theme-overlay" id="themeOverlay"></div>
-    <div class="theme-panel" id="themePanel" role="menu" aria-label="Theme switcher">
-        <div class="theme-panel-head">
-            <span>🎨 Choose a Theme</span>
-            <button class="nav-close" id="themeClose" aria-label="Close theme menu">✕</button>
+        <div class="feature-card">
+          <span class="feature-icon">💰</span>
+          <h3>Real Rewards</h3>
+          <p>Climb the leaderboard and cash out real prizes for real skill.</p>
         </div>
-        <div class="theme-grid" id="themeGrid">
-            <button class="theme-opt" data-theme="golden-fire" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i
-                        style="background:#b88f20"></i></span>
-                <span class="theme-opt-name">Golden Fire <em>🔥</em></span>
-            </button>
-            <button class="theme-opt" data-theme="og-bar" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i
-                        style="background:#49310d"></i></span>
-                <span class="theme-opt-name">Disco Blue <em>❤️</em></span>
-            </button>
-
-            <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i
-                        style="background:#49199b"></i></span>
-                <span class="theme-opt-name">Neon Cyber <em>💙</em></span>
-            </button>
-            <button class="theme-opt" data-theme="royal-purple" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i
-                        style="background:#911b73"></i></span>
-                <span class="theme-opt-name">Royal Purple <em>💜</em></span>
-            </button>
-            <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i
-                        style="background:#147749"></i></span>
-                <span class="theme-opt-name">Emerald Forest <em>💚</em></span>
-            </button>
-            <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i
-                        style="background:#824619"></i></span>
-                <span class="theme-opt-name">Sunset Orange <em>🧡</em></span>
-            </button>
-            <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i
-                        style="background:#147282"></i></span>
-                <span class="theme-opt-name">Ocean Blue <em>🌊</em></span>
-            </button>
-            <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i
-                        style="background:#97184f"></i></span>
-                <span class="theme-opt-name">Sakura Pink <em>🌸</em></span>
-            </button>
-            <button class="theme-opt" data-theme="midnight-black" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i
-                        style="background:#a22222"></i></span>
-                <span class="theme-opt-name">Midnight Black <em>⚫</em></span>
-            </button>
-            <button class="theme-opt" data-theme="crystal-light" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i
-                        style="background:#058ede"></i></span>
-                <span class="theme-opt-name">Crystal Light <em>☀️</em></span>
-            </button>
-            <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio">
-                <span class="theme-swatch">
-                    <i style="background:#1a0505"></i>
-                    <i style="background:#e0304a"></i>
-                    <i style="background:#ff8fa3"></i>
-                </span>
-                <span class="theme-opt-name">Crimson Blood <em>🩸</em></span>
-            </button>
-            <button class="theme-opt" data-theme="arena-pro" role="menuitemradio">
-                <span class="theme-swatch">
-                    <i style="background:#0b0b10"></i>
-                    <i style="background:#ff8c00"></i>
-                    <i style="background:#ffd36a"></i>
-                </span>
-                <span class="theme-opt-name">Arena Pro <em>⚔️</em></span>
-            </button>
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <h3>Live Leaderboards</h3>
+          <p>Track your rank, your squad, and your season stats in real time.</p>
         </div>
-    </div>
-
-    <!-- NAV DRAWER -->
-    <div class="nav-overlay" id="navOverlay"></div>
-    <nav class="nav-drawer" id="navDrawer">
-        <div class="nav-drawer-head">
-            <div class="brand">
-                <div class="crest" style="width:26px;height:26px;"></div>
-                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
-            </div>
-            <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <h3>Proper Registration</h3>
+          <p>Join squads and play tournaments in a proper, structured format.</p>
         </div>
-        <div class="nav-links">
-            <a href="arena.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Enter Arena</a>
-            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
-                Center</a>
-            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
-            <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
-            <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
-            <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
-            <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
-            <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
-            <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
-            <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
-        </div>
-        <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
-    </nav>
-
-    <!-- HERO -->
-    <section class="hero" style="padding-top:34px;">
-        <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 11 · LIVE ARENA</div>
-        <h1 class="hero-title display fade-up d2"><span class="hero-pre">FREEFIRE</span>XIPL<span>ALL SQUADS. ONE
-                CROWN.</span></h1>
-        <p class="hero-desc fade-up d3">Eight franchises. One battleground. Follow every drop, every clutch and every
-            crown
-            chase of the season — built for fans who never miss a rotation.</p>
-        <img src="trophy.png" class="hero-trophy" alt="Championship Trophy">
-        <div class="ticker-wrap fade-up d4">
-            <div class="ticker-head"><span class="dot"></span> LIVE UPDATE</div>
-            <div class="ticker-track">
-                <span>
-                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
-                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
-                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
-                    Next drop begins in the arena shortly &nbsp;•&nbsp;
-                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
-                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
-                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
-                    Next drop begins in the arena shortly &nbsp;•&nbsp;
-                </span>
-            </div>
-        </div>
-
-        <div class="hero-cta fade-up d4">
-            <button class="btn btn-primary" id="ctaEnterArena">Enter Arena</button>
-            <button class="btn btn-ghost" id="ctaMeetSquads">Meet the Squads</button>
-        </div>
-    </section>
-
-    <!-- COUNTDOWN -->
-    <section id="countdown" style="padding-top:8px;">
-        <div class="eyebrow">NEXT UP</div>
-        <h2 class="sec-title">Season 12 <b>countdown</b></h2>
-        <div class="foil-frame cd-foil fade-up">
-            <div class="countdown-card">
-                <div class="cd-glow"></div>
-                <div class="cd-embers">
-                    <span></span><span></span><span></span><span></span><span></span><span></span>
-                </div>
-                <span class="season-tag cd-badge"><span class="dot"></span> COUNTDOWN LIVE</span>
-
-                <div class="cd-ring-wrap">
-                    <svg width="140" height="140" viewBox="0 0 132 132">
-                        <defs>
-                            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:var(--gold-pale)" />
-                                <stop offset="55%" style="stop-color:var(--gold)" />
-                                <stop offset="100%" style="stop-color:var(--gold-deep)" />
-                            </linearGradient>
-                        </defs>
-                        <circle class="cd-ring-bg" cx="66" cy="66" r="59" />
-                        <circle class="cd-ring-fill" id="cdRingFill" cx="66" cy="66" r="59" stroke-dasharray="371"
-                            stroke-dashoffset="371" />
-                    </svg>
-                    <div class="cd-ring-center">
-                        <div class="cd-ring-crest"></div>
-                        <div class="cd-ring-tag">SEASON</div>
-                    </div>
-                </div>
-
-                <h2 class="cd-season display">SEASON 12</h2>
-                <div class="cd-title">ARRIVING SOON</div>
-
-                <div class="cd-divider"></div>
-
-                <div class="cd-digits">
-                    <div class="cd-chip"><span class="cd-num" id="cd-d">00</span><span class="cd-chip-label">Days</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-h">00</span><span class="cd-chip-label">Hrs</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-m">00</span><span class="cd-chip-label">Min</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-s">00</span><span class="cd-chip-label">Sec</span>
-                    </div>
-                </div>
-
-                <div class="cd-caption">Squad registrations open before <b>Season 12</b> kicks off</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- REGISTRATION -->
-    <section id="register" style="padding-top:8px;">
-        <div class="foil-frame reg-foil fade-up" style="--foil:var(--gold);">
-            <div class="reg-card" id="regCard">
-                <div class="reg-embers">
-                    <span></span><span></span><span></span><span></span>
-                </div>
-                <span class="season-tag reg-badge" id="regBadge"><span class="dot"></span> REGISTRATIONS OPEN</span>
-                <h2 class="reg-title display">SQUAD UP FOR<br>SEASON 12</h2>
-                <p class="reg-desc" id="regDesc">Slots are filling fast — lock in your squad before the roster closes.
-                </p>
-
-                <div class="reg-slots" id="regSlots">
-                    <div class="reg-slots-track">
-                        <div class="reg-slots-fill" id="regSlotsFill" data-w="62"></div>
-                    </div>
-                    <div class="reg-slots-label"><span id="regSlotsText">5 of 8 slots filled</span></div>
-                </div>
-
-                <a href="./register.html" class="btn btn-primary reg-btn" id="regBtn">Register Your Squad →</a>
-                <div class="reg-note" id="regNote">Registrations close once all slots are filled</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- STATS -->
-    <section id="stats">
-        <div class="eyebrow">THE NUMBERS</div>
-        <h2 class="sec-title">Season <b>at a glance</b></h2>
-        <div class="stats-row">
-            <div class="stat-card fade-up">
-                <div class="stat-num" data-count="8">0</div>
-                <div class="stat-label">Squads</div>
-            </div>
-            <div class="stat-card fade-up d1">
-                <div class="stat-num" data-count="48">0</div>
-                <div class="stat-label">Matches</div>
-            </div>
-            <div class="stat-card fade-up d2">
-                <div class="stat-num" data-count="1000" data-prefix="₹">0</div>
-                <div class="stat-label">Prize Pool</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TEAMS -->
-    <section id="teams">
-        <div class="eyebrow">SEASON 11 ROSTER</div>
-        <h2 class="sec-title">Meet the <b>contenders</b></h2>
-        <p class="sec-desc">Eight franchises, one battleground — swipe to meet every squad chasing the Season 11 crown.
-        </p>
-        <div class="teams-scroll" id="teamsScroll">
-            <div class="foil-frame team-foil fade-up" style="--foil:#e03db2;">
-                <div class="team-card">
-                    <img src="rr.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#e03daf"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #7a026433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #c4098c66;">
-                        <div class="team-abbr display" style="color:#84077e">RR</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#8d316826; color:#e130a3;">R</div>
-                        <div class="cap-info">Captain<b>Raizen</b></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="foil-frame team-foil fade-up d1" style="--foil:#f5c518;">
-                <div class="team-card">
-                    <img src="csk.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#f5c518"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #f5c51833, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f5c51866;">
-                        <div class="team-abbr display" style="color:var(--gold)">CSK</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#f5c51826; color:var(--gold);">T</div>
-                        <div class="cap-info">Captain<b>Thala_X</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d2" style="--foil:#e2394a;">
-                <div class="team-card">
-                    <img src="pbks.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#e2394a"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #e2394a33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #e2394a66;">
-                        <div class="team-abbr display" style="color:#f07a86">PBKS</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#e2394a26; color:#f07a86;">S</div>
-                        <div class="cap-info">Captain<b>Sherdil</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d3" style="--foil:#7d4bb0;">
-                <div class="team-card">
-                    <img src="kkr.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#7d4bb0"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #7d4bb033, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #7d4bb066;">
-                        <div class="team-abbr display" style="color:#b98fe8">KKR</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#7d4bb026; color:#b98fe8;">V</div>
-                        <div class="cap-info">Captain<b>Vortex</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d4" style="--foil:#1f5fc4;">
-                <div class="team-card">
-                    <img src="dc.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#1f5fc4"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #1f5fc433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #1f5fc466;">
-                        <div class="team-abbr display" style="color:#6fa0ea">DC</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#1f5fc426; color:#6fa0ea;">R</div>
-                        <div class="cap-info">Captain<b>Rushil</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up" style="--foil:#045d9e;">
-                <div class="team-card">
-                    <img src="mi.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#045d9e"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #045d9e33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #045d9e66;">
-                        <div class="team-abbr display" style="color:#6fc6ea">MI</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#045d9e26; color:#6fc6ea;">K</div>
-                        <div class="cap-info">Captain<b>Kaizer</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up" style="--foil:#c31d1d;">
-                <div class="team-card">
-                    <img src="rcb.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#9e0404"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #9e040433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #9e040466;">
-                        <div class="team-abbr display" style="color:#ea6f6f">RCB</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#9e040426; color:#ea6f6f;">K</div>
-                        <div class="cap-info">Captain<b>Kaizer</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d2" style="--foil:#f26522;">
-                <div class="team-card">
-                    <img src="srh.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#f26522"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #f2652233, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f2652266;">
-                        <div class="team-abbr display" style="color:#ffab7a">SRH</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#f2652226; color:#ffab7a;">B</div>
-                        <div class="cap-info">Captain<b>Blaze</b></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="scroll-indicator-fill" id="teamsScrollFill"></div>
-        </div>
-    </section>
-
-    <!-- PLAYER SPOTLIGHT -->
-  <section id="mvp">
-    <div class="eyebrow">ONE TO WATCH</div>
-    <h2 class="sec-title">Season 11 <b>breakout pick</b></h2>
-    <div class="foil-frame mvp-foil fade-up" style="--foil:#7d4bb0;">
-      <div class="mvp-card">
-        <span class="season-tag mvp-badge"><span class="dot"></span> PLAYER SPOTLIGHT</span>
-        <div class="mvp-kills"><b>187</b><span>KILLS</span></div>
-        <div class="mvp-rating"><b>94</b><span>RATING</span></div>
-        <div class="mvp-avatar-ring">
-          <div class="mvp-avatar">VX</div>
-        </div>
-        <div class="mvp-name">"Vortex" <span class="mvp-verified">✓</span></div>
-        <div class="mvp-team">Kolkata Knight Riders · Fragger</div>
-        <div class="mvp-prize-chip">🏆 ₹100 MVP AWARD · MOST KILLS THIS SEASON</div>
-        <div class="mvp-quote">"I don't wait for the zone to close in — I make sure I'm already there."</div>
-        <div class="mvp-divider"></div>
-        <div class="mvp-bars">
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Fragging</span><b>96</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="96"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Zone IQ</span><b>91</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="91"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Clutch Factor</span><b>89</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="89"></div>
-            </div>
-          </div>
+        <div class="feature-card">
+          <span class="feature-icon">🛡️</span>
+          <h3>24/7 Support</h3>
+          <p>Room issues, disputes, payouts — our team's always on.</p>
         </div>
       </div>
     </div>
   </section>
 
-    <!-- ROADMAP -->
-    <section id="roadmap">
-        <div class="eyebrow">SEASON PATH</div>
-        <h2 class="sec-title">Road to the <b>trophy</b></h2>
-        <div class="roadmap">
-            <div class="stage active fade-up">
-                <div class="stage-name">Group Stage</div>
-                <span class="stage-tag soon">Starts Soon</span>
-                <div class="stage-desc">Round-robin drops across all eight squads to set the table.</div>
-            </div>
-            <div class="stage fade-up d1">
-                <div class="stage-name">Super 6</div>
-                <span class="stage-tag upcoming">Upcoming</span>
-                <div class="stage-desc">Top six franchises battle for seeding into the knockouts.</div>
-            </div>
-            <div class="stage fade-up d2">
-                <div class="stage-name">Playoffs</div>
-                <span class="stage-tag upcoming">Upcoming</span>
-                <div class="stage-desc">Elimination bracket — one bad drop and the run ends.</div>
-            </div>
-            <div class="stage fade-up d3">
-                <div class="stage-name">Grand Finals</div>
-                <span class="stage-tag upcoming">Season Finale</span>
-                <div class="stage-desc">The last squad standing lifts the Season 11 crown.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRIZE POOL -->
-    <section id="prizepool">
-        <div class="eyebrow">REWARDS</div>
-        <h2 class="sec-title">Prize pool <b>breakdown</b></h2>
-
-        <div class="prize-total fade-up">
-            <span class="prize-total-label">TOTAL PRIZE POOL</span>
-            <span class="prize-total-amt display" id="prizeTotalAmt" data-target="1000">₹0</span>
-            <span class="prize-total-sub">Champion, Runner-up &amp; Season MVP · Season 11</span>
-        </div>
-
-        <div class="podium fade-up">
-            <div class="podium-col p2">
-                <div class="medal">🥈</div>
-                <div class="podium-amt">₹300</div>
-                <div class="podium-bar" data-h="56"></div>
-                <div class="podium-tag">Runner-up</div>
-            </div>
-            <div class="podium-col p1">
-                <div class="medal">🥇</div>
-                <div class="podium-amt">₹600</div>
-                <div class="podium-bar" data-h="104"></div>
-                <div class="podium-tag">Champion</div>
-            </div>
-            <div class="podium-col p3">
-                <div class="medal">🎯</div>
-                <div class="podium-amt">₹100</div>
-                <div class="podium-bar" data-h="32"></div>
-                <div class="podium-tag">MVP · Most Kills</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- HIGHLIGHTS -->
-    <section id="highlights">
-        <div class="eyebrow">MOMENTS</div>
-        <h2 class="sec-title">Season <b>highlights</b></h2>
-        <div class="clip-scroll">
-            <div class="clip-card fade-up">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#3d6fe0,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">Clutch 1v3 in the final zone</div>
-                    <div class="s">KKR · Match 09</div>
-                </div>
-            </div>
-            <div class="clip-card fade-up d1">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#f5c518,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">CSK's flawless zone read</div>
-                    <div class="s">CSK · Match 11</div>
-                </div>
-            </div>
-            <div class="clip-card fade-up d2">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#e2394a,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">PBKS opening drop mayhem</div>
-                    <div class="s">PBKS · Match 03</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CHAMPIONS LEGACY -->
-    <section id="legacy">
-        <div class="eyebrow">HALL OF FAME</div>
-        <h2 class="sec-title">Champions <b>through the years</b></h2>
-        <div class="legacy-scroll">
-            <div class="legacy-card fade-up">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 10</div>
-                <div class="legacy-team">CSK</div>
-                <div class="legacy-full">Chennai Super Kings</div>
-            </div>
-            <div class="legacy-card fade-up d1">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 9</div>
-                <div class="legacy-team">MI</div>
-                <div class="legacy-full">Mumbai Indians</div>
-            </div>
-            <div class="legacy-card fade-up d2">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 8</div>
-                <div class="legacy-team">RR</div>
-                <div class="legacy-full">Rajasthan Royals</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SPONSORS -->
-    <section id="sponsors" style="padding-top:36px;">
-        <div class="eyebrow" style="justify-content:center;">POWERED BY</div>
-        <div class="sponsor-track-wrap">
-            <div class="sponsor-track">
-                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
-                    PERIPHERALS</span>
-                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
-                    PERIPHERALS</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq">
-        <div class="eyebrow">GOT QUESTIONS?</div>
-        <h2 class="sec-title">Frequently <b>asked</b></h2>
-        <div class="faq-list">
-            <div class="faq-item">
-                <button class="faq-q"><span>How do I register my team for Season 11?</span><span
-                        class="faq-chevron">⌄</span></button>
-                <div class="faq-a">
-                    <p>Head to the <a href="registration-center.html">Registration Center</a>, fill in your squad's
-                        details and lock in your roster before the auction opens.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-q"><span>When does Season 11 kick off?</span><span
-                        class="faq-chevron">⌄</span></button>
-                <div class="faq-a">
-                    <p>Keep an eye on the countdown above and the <a href="schedule.html">Schedule</a> page — exact
-                        match times go live there as soon as fixtures are locked.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-q"><span>How is the prize pool paid out?</span><span
-                        class="faq-chevron">⌄</span></button>
-                <div class="faq-a">
-                    <p>₹600 to the Champion, ₹300 to the Runner-up, and ₹100 to the Season MVP — the player with the
-                        most eliminations across the season.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-q"><span>Can I substitute a player mid-season?</span><span
-                        class="faq-chevron">⌄</span></button>
-                <div class="faq-a">
-                    <p>Rosters lock once playoffs begin. Before that, substitutions need 24 hours' notice to the
-                        organizers — see the full <a href="rules.html">Rulebook</a> for details.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-q"><span>Where can I watch the matches live?</span><span
-                        class="faq-chevron">⌄</span></button>
-                <div class="faq-a">
-                    <p>Follow the <a href="announcements.html">Announcements</a> page for stream links as each
-                        match day goes live.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <div class="cta-band fade-up">
-        <h3>Don't miss the next drop</h3>
-        <p>Full fixtures, live standings and results — all in one place.</p>
-        <a class="btn btn-primary" href="./schedule.html" style="display:block; text-decoration:none;">View Full
-            Schedule</a>
+  <!-- ============ SOCIALS ============ -->
+  <section class="site-section socials-section" id="socials">
+    <div class="section-inner">
+      <p class="section-eyebrow">Stay in the loop</p>
+      <h2 class="section-title">Follow the <span class="gold-text">Squad</span></h2>
+      <div class="social-links">
+        <a href="#" class="social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33m0 1.8c-3.15 0-3.5.01-4.73.07-1.03.05-1.6.22-1.97.36-.5.19-.85.42-1.22.79-.37.37-.6.72-.79 1.22-.14.37-.31.94-.36 1.97C2.87 9.5 2.86 9.85 2.86 13s.01 3.5.07 4.73c.05 1.03.22 1.6.36 1.97.19.5.42.85.79 1.22.37.37.72.6 1.22.79.37.14.94.31 1.97.36 1.12.05 1.46.06 4.53.06s3.41-.01 4.53-.06c1.03-.05 1.6-.22 1.97-.36.5-.19.85-.42 1.22-.79.37-.37.6-.72.79-1.22.14-.37.31-.94.36-1.97.06-1.23.07-1.58.07-4.73s-.01-3.5-.07-4.73c-.05-1.03-.22-1.6-.36-1.97a3.1 3.1 0 0 0-.79-1.22 3.1 3.1 0 0 0-1.22-.79c-.37-.14-.94-.31-1.97-.36C15.5 4.01 15.15 4 12 4m0 3.85a5.15 5.15 0 1 1 0 10.3 5.15 5.15 0 0 1 0-10.3m0 1.8a3.35 3.35 0 1 0 0 6.7 3.35 3.35 0 0 0 0-6.7m5.35-2a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 4 12 4 12 4s-7.5 0-9.4.4A3 3 0 0 0 .5 6.5 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.5 3 3 0 0 0 2.1 2.1C4.5 20 12 20 12 20s7.5 0 9.4-.4a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.5M9.6 15.6V8.4l6.3 3.6z"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="Discord">
+          <svg viewBox="0 0 24 24"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.24.44a13.6 13.6 0 0 1 4.28 1.75 17.6 17.6 0 0 0-14.9 0A13.6 13.6 0 0 1 8.8 3.44L8.56 3a19.8 19.8 0 0 0-4.87 1.4C1.1 8 .4 11.6.6 15.1a19.6 19.6 0 0 0 5.55 2.8l.75-1.28a13 13 0 0 1-1.98-.94c.17-.12.33-.25.49-.38a14 14 0 0 0 12.18 0c.16.13.32.26.49.38-.63.36-1.29.68-1.98.94l.75 1.28a19.6 19.6 0 0 0 5.55-2.8c.25-4.1-.72-7.66-1.9-10.7M8.6 12.9c-.9 0-1.63-.83-1.63-1.85s.72-1.85 1.63-1.85 1.65.84 1.63 1.85c0 1.02-.72 1.85-1.63 1.85m6.8 0c-.9 0-1.63-.83-1.63-1.85s.72-1.85 1.63-1.85 1.65.84 1.63 1.85c0 1.02-.72 1.85-1.63 1.85"/></svg>
+        </a>
+        <a href="#" class="social-link" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.78.97-.96 1.17-.17.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5a9.1 9.1 0 0 1-1.68-2.08c-.17-.3-.02-.47.13-.62.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.63-.93-2.24-.24-.58-.5-.5-.68-.51h-.58c-.2 0-.52.08-.8.37-.27.3-1.04 1.02-1.04 2.47s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35M12 2C6.5 2 2 6.5 2 12c0 1.9.53 3.68 1.45 5.2L2 22l4.94-1.4A9.95 9.95 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2"/></svg>
+        </a>
+      </div>
+      <p class="socials-note">handles coming soon — links update at launch</p>
     </div>
+  </section>
 
-    <!-- FOOTER -->
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <p class="footer-brand">FREEFIRE<span class="gold-text">XIPL</span></p>
+    <p class="footer-tagline">Battle Up.</p>
+    <p class="footer-fine">Fan-run Free Fire tournament platform. Not affiliated with or endorsed by Garena. © 2026 FREEFIREXIPL.</p>
+  </footer>
 
-    <footer>
-        <div class="foot-brand">
-            <div class="crest" style="width:26px;height:26px;"></div>
-            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
-        </div>
-        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch
-            moment of
-            the season.</p>
-        <div class="foot-social">
-            <div class="soc">✕</div>
-            <div class="soc">◎</div>
-            <div class="soc">▶</div>
-            <div class="soc">✈</div>
-        </div>
-        <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
-    </footer>
-
-    <!-- BACK TO TOP -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">
-        <svg width="48" height="48" viewBox="0 0 48 48">
-            <circle class="btt-bg" cx="24" cy="24" r="21" />
-            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9"
-                stroke-dashoffset="131.9" />
-        </svg>
-        <span>↑</span>
-    </button>
-
-    <script src="theme.js"></script>
-    <script src="notify.js"></script>
-    <script>
-        // ====== REGISTRATION STATUS ======
-        // Flip this one flag when you open or close registrations for the season.
-        const REGISTRATIONS_OPEN = false;
-        const SLOTS_FILLED = 5;
-        const SLOTS_TOTAL = 8;
-
-        const regBadge = document.getElementById('regBadge');
-        const regDesc = document.getElementById('regDesc');
-        const regBtn = document.getElementById('regBtn');
-        const regSlots = document.getElementById('regSlots');
-        const regSlotsText = document.getElementById('regSlotsText');
-        const regSlotsFill = document.getElementById('regSlotsFill');
-        const regNote = document.getElementById('regNote');
-
-        if (REGISTRATIONS_OPEN) {
-            regSlotsText.textContent = `${SLOTS_FILLED} of ${SLOTS_TOTAL} slots filled`;
-            regSlotsFill.dataset.w = Math.round((SLOTS_FILLED / SLOTS_TOTAL) * 100);
-        } else {
-            regBadge.classList.add('closed');
-            regBadge.innerHTML = '<span class="dot"></span> REGISTRATIONS CLOSED';
-            regDesc.textContent = "Season 12 registrations haven't opened yet — check back soon or follow our socials for the announcement.";
-            regSlots.style.display = 'none';
-            regBtn.textContent = 'Registrations Closed';
-            regBtn.removeAttribute('href');
-            regBtn.classList.add('disabled');
-            regNote.textContent = "We'll open the roster as soon as Season 12 dates are locked in.";
-        }
-
-        // Registration slots bar grow in on scroll
-        const regFillIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.width = en.target.dataset.w + '%';
-                    regFillIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        if (REGISTRATIONS_OPEN) regFillIO.observe(regSlotsFill);
-
-        // Hero CTA buttons
-        document.getElementById('ctaEnterArena').addEventListener('click', () => {
-            document.getElementById('countdown').scrollIntoView({ behavior: 'smooth' });
-        });
-        document.getElementById('ctaMeetSquads').addEventListener('click', () => {
-            document.getElementById('teams').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Shuffle stats — random digits rattle before settling, replays every time it scrolls into view
-        const counters = document.querySelectorAll('.stat-num');
-        function runShuffle(el) {
-            if (el.dataset.animating === '1') return;
-            el.dataset.animating = '1';
-            const target = parseInt(el.dataset.count, 10);
-            const suffix = el.dataset.suffix || '';
-            const prefix = el.dataset.prefix || '';
-            const digits = String(target).length;
-            const shuffleMs = 650;
-            const start = performance.now();
-
-            function shuffleFrame(now) {
-                const elapsed = now - start;
-                if (elapsed < shuffleMs) {
-                    const rand = Math.floor(Math.random() * Math.pow(10, digits));
-                    el.textContent = prefix + rand + suffix;
-                    requestAnimationFrame(shuffleFrame);
-                } else {
-                    settleCount();
-                }
-            }
-            function settleCount() {
-                let cur = 0;
-                const step = Math.max(1, Math.ceil(target / 22));
-                const t = setInterval(() => {
-                    cur += step;
-                    if (cur >= target) { cur = target; clearInterval(t); el.dataset.animating = '0'; }
-                    el.textContent = prefix + cur.toLocaleString('en-IN') + suffix;
-                }, 28);
-            }
-            requestAnimationFrame(shuffleFrame);
-        }
-        const countIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => { if (en.isIntersecting) runShuffle(en.target); });
-        }, { threshold: 0.5 });
-        counters.forEach(c => countIO.observe(c));
-
-        // Countdown timer — next season launch target, with a live progress ring
-        const cdTarget = new Date();
-        cdTarget.setMonth(cdTarget.getMonth() + 3);
-        cdTarget.setDate(15);
-        cdTarget.setHours(19, 30, 0, 0);
-        const cdStart = new Date();
-        const cdTotalMs = Math.max(1, cdTarget - cdStart);
-        const cdRingFill = document.getElementById('cdRingFill');
-        const RING_C = 371; // 2 * PI * 59, matches the SVG circle radius
-
-        function updateCountdown() {
-            const now = new Date();
-            let diff = Math.max(0, cdTarget - now);
-            const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-            const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-            const m = Math.floor(diff / 60000); diff -= m * 60000;
-            const s = Math.floor(diff / 1000);
-            document.getElementById('cd-d').textContent = String(d).padStart(2, '0');
-            document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
-            document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
-            const secEl = document.getElementById('cd-s');
-            secEl.textContent = String(s).padStart(2, '0');
-            secEl.classList.remove('tick');
-            void secEl.offsetWidth;
-            secEl.classList.add('tick');
-
-            const progress = 1 - (Math.max(0, cdTarget - now) / cdTotalMs);
-            cdRingFill.style.strokeDashoffset = RING_C * (1 - Math.min(1, Math.max(0, progress)));
-        }
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        // Prize podium bars grow in on scroll
-        const podiumBars = document.querySelectorAll('.podium-bar');
-        const podiumIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.height = en.target.dataset.h + 'px';
-                    podiumIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        podiumBars.forEach(b => podiumIO.observe(b));
-
-        // MVP stat bars grow in on scroll
-        const mvpBars = document.querySelectorAll('.mvp-bar-fill');
-        const mvpBarIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.width = en.target.dataset.w + '%';
-                    mvpBarIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        mvpBars.forEach(b => mvpBarIO.observe(b));
-
-        // Total prize pool count-up
-        const prizeEl = document.getElementById('prizeTotalAmt');
-        const prizeIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    const target = parseInt(prizeEl.dataset.target, 10);
-                    let cur = 0;
-                    const step = Math.ceil(target / 40);
-                    const t = setInterval(() => {
-                        cur += step;
-                        if (cur >= target) { cur = target; clearInterval(t); }
-                        prizeEl.textContent = '₹' + cur.toLocaleString('en-IN');
-                    }, 25);
-                    prizeIO.unobserve(prizeEl);
-                }
-            });
-        }, { threshold: 0.5 });
-        prizeIO.observe(prizeEl);
-        // Teams carousel mini scroll indicator
-        const teamsScroll = document.getElementById('teamsScroll');
-        const teamsFill = document.getElementById('teamsScrollFill');
-        function updateTeamsScrollbar() {
-            const max = teamsScroll.scrollWidth - teamsScroll.clientWidth;
-            const pct = max > 0 ? teamsScroll.scrollLeft / max : 0;
-            const trackW = 60;
-            const thumbW = Math.max(16, trackW * (teamsScroll.clientWidth / teamsScroll.scrollWidth));
-            teamsFill.style.width = thumbW + 'px';
-            teamsFill.style.transform = `translateX(${pct * (trackW - thumbW)}px)`;
-        }
-        teamsScroll.addEventListener('scroll', updateTeamsScrollbar, { passive: true });
-        window.addEventListener('load', updateTeamsScrollbar);
-        updateTeamsScrollbar();
-
-        // FAQ accordion — each item toggles independently
-        document.querySelectorAll('.faq-item').forEach(item => {
-            const q = item.querySelector('.faq-q');
-            const a = item.querySelector('.faq-a');
-            q.addEventListener('click', () => {
-                const opening = !item.classList.contains('open');
-                if (opening) {
-                    item.classList.add('open');
-                    a.style.maxHeight = a.scrollHeight + 'px';
-                } else {
-                    item.classList.remove('open');
-                    a.style.maxHeight = '0px';
-                }
-            });
-        });
-    </script>
 <script>
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  /* audio state declared FIRST — the surprise-box timer below ticks immediately on
+     page load and needs these to already exist (a `let` referenced before its own
+     declaration throws and silently kills the rest of the script) */
+  let audioCtx = null, masterGain = null, muted = false;
+  let musicTimer = null, musicStep = 0, usingFileMusic = false, audioStarted = false;
 
-function uiClick(type = "click") {
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
+  /* ================= MAIN CONTENT COUNTDOWN — the one real target this whole page counts
+     toward (this is the "Coming Soon" flip-clock, NOT the surprise-box game above).
+     OFFICIAL: fixed to a real calendar date/time in REAL_TARGET_DATE — the exact same
+     moment for every visitor, on every device, everywhere. Once real time reaches it,
+     this and every future visit skips the whole intro (Enter, surprise box, puzzle)
+     and lands straight on the live content — no game, ever again, for anyone.
+     To test again later, set MAIN_TEST_SECONDS to a number of seconds instead. ================= */
+  const MAIN_TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real date below
+  const REAL_TARGET_DATE = '2026-08-08T12:08:00+05:30';
+  const MAIN_TARGET_KEY = 'ffx_main_target_v1';
 
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  if (type === "success") {
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+  let target;
+  if(MAIN_TEST_SECONDS !== null){
+    const savedTarget = localStorage.getItem(MAIN_TARGET_KEY);
+    if(savedTarget){
+      target = new Date(parseInt(savedTarget, 10));
+    } else {
+      target = new Date(Date.now() + MAIN_TEST_SECONDS * 1000);
+      try{ localStorage.setItem(MAIN_TARGET_KEY, String(target.getTime())); }catch(e){ /* private mode etc */ }
+    }
   } else {
-    osc.frequency.setValueAtTime(350, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.05);
+    target = new Date(REAL_TARGET_DATE);
   }
 
-  gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+  // Past the target already? Skip the whole intro experience (Enter tap, surprise box,
+  // puzzle) and drop the visitor straight onto the live content — no game, ever again.
+  const skipIntro = new Date() >= target;
+  if(skipIntro){
+    document.body.classList.add('started', 'revealed', 'launched');
+  }
 
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.08);
-}
+  /* ============================================================
+     🎵 EDIT YOUR MUSIC HERE
+     Paste a direct link to an mp3/ogg file, or the filename of an
+     audio file sitting in the same folder as this HTML page
+     (e.g. "theme.mp3"). Leave MUSIC_URL as "" to keep the
+     built-in synthesized loop instead — no file needed.
+     MUSIC_VOLUME goes from 0 (silent) to 1 (full volume).
+  ============================================================ */
+  const MUSIC_URL = "";
+  const MUSIC_VOLUME = 0.55;
 
-document.querySelectorAll("button, a").forEach(el => {
-  el.addEventListener("click", () => uiClick());
-});
+  /* ================= SURPRISE REVEAL — sealed ring fills as the timer counts down ================= *
+     OFFICIAL: unlocks today at 11:15 AM local time, for everyone — same moment,
+     no matter who opens the page or when. To test again later, set TEST_SECONDS
+     back to a number of seconds from page load.                              */
+  const surpriseGate = document.getElementById('surpriseGate');
+  const surpriseBox = document.getElementById('surpriseBox');
+  const boxEyebrow = document.getElementById('boxEyebrow');
+  const surpriseTimer = document.getElementById('surpriseTimer');
+  const boxHint = document.getElementById('boxHint');
 
-const regBtn = document.querySelector(".reg-btn");
-if (regBtn) {
-  regBtn.addEventListener("click", () => uiClick("success"));
-}
+  const TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real time below
+  const UNLOCK_HOUR = 11;
+  const UNLOCK_MINUTE = 15;
+
+  const unlockTarget = TEST_SECONDS !== null
+    ? new Date(Date.now() + TEST_SECONDS * 1000)
+    : (() => { const d = new Date(); d.setHours(UNLOCK_HOUR, UNLOCK_MINUTE, 0, 0); return d; })();
+
+  function pad2(n){ return String(n).padStart(2, '0'); }
+
+  // dissolve the whole gate into the Enter flow, once the box has finished blasting open
+  function openReveal(){
+    surpriseGate.classList.add('hide');
+    setTimeout(() => surpriseGate.remove(), 550);
+  }
+
+  // box goes from locked -> unlocked the instant the timer hits zero; it will NOT open
+  // itself — it just starts glowing and waits for the player to tap it
+  function unlockBox(){
+    surpriseBox.classList.remove('locked');
+    surpriseBox.classList.add('unlocked');
+    boxEyebrow.textContent = 'Ready';
+    surpriseTimer.textContent = '00:00';
+    boxHint.classList.add('show');
+  }
+
+  let surpriseInterval = null;
+  function tickSurprise(){
+    const now = new Date();
+    const diff = unlockTarget - now;
+    if(diff <= 0){
+      clearInterval(surpriseInterval);
+      unlockBox();
+      return;
+    }
+    const totalSec = Math.ceil(diff / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    surpriseTimer.textContent = pad2(m) + ':' + pad2(s);
+    playTick();
+  }
+
+  if(skipIntro){
+    surpriseGate.remove(); // main countdown already finished — skip the game entirely
+  } else if(unlockTarget - new Date() <= 0){
+    unlockBox(); // reveal time already passed — show the box unlocked and ready to tap
+                 // (stays this way for anyone opening the page right up until the main
+                 // countdown ends, instead of being skipped)
+  } else {
+    tickSurprise();
+    surpriseInterval = setInterval(tickSurprise, 1000);
+  }
+
+  // tapping the box while it's still locked just rattles it (with a denied blip) —
+  // only a tap AFTER unlockBox() actually blasts it open
+  surpriseBox.addEventListener('click', () => {
+    if(surpriseBox.classList.contains('locked')){
+      surpriseBox.classList.remove('shake');
+      void surpriseBox.offsetWidth;
+      surpriseBox.classList.add('shake');
+      playDenied();
+      return;
+    }
+    if(!surpriseBox.classList.contains('unlocked')) return; // already blasting
+    surpriseBox.classList.remove('unlocked');
+    surpriseBox.classList.add('blasting');
+    boxHint.classList.remove('show');
+    ensureAudio();
+    playBoxBlast();
+    const rect = surpriseBox.getBoundingClientRect();
+    spawnBlastParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    setTimeout(openReveal, 550);
+  });
+
+  /* ================= ENTER GATE — tap to begin; everything else (splash, puzzle) waits for this ================= */
+  const enterGate = document.getElementById('enterGate');
+  const enterBtn = document.getElementById('enterBtn');
+  const soundToggle = document.getElementById('soundToggle');
+  const soundHint = document.getElementById('soundHint');
+
+  if(skipIntro){
+    // main countdown already finished — skip the tap-to-begin splash entirely
+    enterGate.remove();
+    const splashEl = document.querySelector('.splash');
+    if(splashEl) splashEl.remove();
+    soundToggle.classList.add('show'); // let the visitor turn music on manually if they want
+  } else {
+    enterBtn.addEventListener('click', () => {
+      document.body.classList.add('started');
+      enterGate.classList.add('hide');
+      setTimeout(() => enterGate.remove(), 550);
+      // this tap is a real user gesture — use it to unlock audio and play a whoosh
+      // synced with the camera-zoom splash. Background music starts later, after the game.
+      ensureAudio();
+      playSplashWhoosh();
+    }, { once: true });
+  }
+
+  /* ================= COUNTDOWN HELPERS =================
+     `target` and `skipIntro` are already computed at the top of this script. ================= */
+  const units = [
+    { key: 'd', label: 'Days' },
+    { key: 'h', label: 'Hrs' },
+    { key: 'm', label: 'Min' },
+    { key: 's', label: 'Sec' }
+  ];
+  const allBoards = []; // one digit-map per rendered board (hero + every echo)
+
+  function buildBoard(boardEl){
+    const digitEls = {};
+    units.forEach(u => {
+      const unitEl = document.createElement('div');
+      unitEl.className = 'unit';
+      const pair = document.createElement('div');
+      pair.className = 'flap-pair';
+
+      const makeFlap = () => {
+        const flap = document.createElement('div');
+        flap.className = 'flap';
+        const cur = document.createElement('div');
+        cur.className = 'flap-digit current';
+        cur.textContent = '0';
+        const nxt = document.createElement('div');
+        nxt.className = 'flap-digit next';
+        nxt.textContent = '0';
+        flap.appendChild(cur); flap.appendChild(nxt);
+        pair.appendChild(flap);
+        return { flap, cur, nxt, value: '0' };
+      };
+      const tens = makeFlap();
+      const ones = makeFlap();
+      digitEls[u.key] = [tens, ones];
+
+      const label = document.createElement('div');
+      label.className = 'unit-label';
+      label.textContent = u.label;
+
+      unitEl.appendChild(pair);
+      unitEl.appendChild(label);
+      boardEl.appendChild(unitEl);
+    });
+    return digitEls;
+  }
+
+  function setFlap(obj, newDigit){
+    if(obj.value === newDigit) return;
+    obj.nxt.textContent = newDigit;
+    obj.flap.classList.remove('flipping');
+    void obj.flap.offsetWidth;
+    obj.flap.classList.add('flipping');
+    setTimeout(() => {
+      obj.cur.textContent = newDigit;
+      obj.flap.classList.remove('flipping');
+      obj.value = newDigit;
+    }, 600);
+  }
+
+  allBoards.push(buildBoard(document.getElementById('board'))); // the hero's own countdown
+
+  /* ================= PUZZLE GATE — arrange 6 pieces correctly to unlock the content ================= */
+  const PCOLS = 3, PROWS = 2;
+  const puzzleBoard = document.getElementById('puzzleBoard');
+  const puzzleGate = document.getElementById('puzzleGate');
+
+  if(skipIntro){
+    // main countdown already finished — skip the puzzle entirely, scroll stays unlocked
+    puzzleGate.remove();
+  } else {
+  document.body.style.overflow = 'hidden'; // lock scroll until solved
+
+  function shuffled(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  let order = [0,1,2,3,4,5];
+  do { order = shuffled([0,1,2,3,4,5]); } while(order.every((v,i) => v === i));
+
+  order.forEach(origin => {
+    const tile = document.createElement('div');
+    tile.className = 'ptile';
+    tile.dataset.origin = origin;
+    const col = origin % PCOLS, row = Math.floor(origin / PCOLS);
+    const posX = (col / (PCOLS - 1)) * 100;
+    const posY = (row / (PROWS - 1)) * 100;
+    tile.style.backgroundPosition = posX + '% ' + posY + '%';
+    puzzleBoard.appendChild(tile);
+  });
+
+  let selectedTile = null;
+  puzzleBoard.addEventListener('click', (e) => {
+    const tile = e.target.closest('.ptile');
+    if(!tile || puzzleGate.classList.contains('solved')) return;
+    playTapClick();
+
+    if(selectedTile === tile){
+      tile.classList.remove('selected');
+      selectedTile = null;
+      return;
+    }
+    if(!selectedTile){
+      selectedTile = tile;
+      tile.classList.add('selected');
+      return;
+    }
+    // swap the two tiles' positions in the grid
+    const a = selectedTile, b = tile;
+    const aNext = a.nextSibling;
+    const bNext = b.nextSibling;
+    if(aNext === b){
+      puzzleBoard.insertBefore(b, a);
+    } else if(bNext === a){
+      puzzleBoard.insertBefore(a, b);
+    } else {
+      puzzleBoard.insertBefore(b, aNext);
+      puzzleBoard.insertBefore(a, bNext);
+    }
+    a.classList.remove('selected');
+    selectedTile = null;
+
+    const solved = [...puzzleBoard.children].every((el, i) => Number(el.dataset.origin) === i);
+    if(solved){
+      [...puzzleBoard.children].forEach(el => el.classList.add('correct'));
+      playSuccessChime();
+      setTimeout(() => {
+        puzzleGate.classList.add('solved');
+        document.body.classList.add('revealed');
+        document.body.style.overflow = '';
+        audioStarted = true;
+        ensureAudio();
+        startAmbient();
+        startMusic();
+        soundToggle.textContent = '🔊';
+        soundToggle.classList.add('show');
+        soundHint.classList.add('show');
+      }, 550);
+    }
+  });
+  } // end if(!skipIntro) puzzle gate block
+
+  /* ================= AUDIO ENGINE — fully synthesized, no external files ================= */
+  function initAudio(){
+    if(audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.9;
+    masterGain.connect(audioCtx.destination);
+  }
+
+  function ensureAudio(){
+    if(!audioCtx) initAudio();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  // A whoosh tied to the actual splash timeline: it builds as the title zooms in
+  // and hits its "impact" at 72% — the exact keyframe where cameraZoom locks to
+  // full scale and clears its blur — then tails off as the title overshoots and fades.
+  function playSplashWhoosh(){
+    ensureAudio();
+    const now = audioCtx.currentTime;
+    const dur = 1.7;
+    const impactAt = dur * 0.72; // matches the cameraZoom keyframe's 72% mark
+
+    // rising sweep — builds toward the impact, not just a flat fade
+    const bufferSize = Math.floor(audioCtx.sampleRate * dur);
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let i = 0; i < bufferSize; i++){ data[i] = Math.random() * 2 - 1; }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.Q.value = 1.1;
+    filter.frequency.setValueAtTime(140, now);
+    filter.frequency.exponentialRampToValueAtTime(4200, now + impactAt);
+    filter.frequency.exponentialRampToValueAtTime(500, now + dur);
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0.0001, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.5, now + impactAt);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+    noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(masterGain);
+    noise.start(now); noise.stop(now + dur);
+
+    // low impact thud — lands exactly when the title snaps into full focus
+    const thump = audioCtx.createOscillator();
+    thump.type = 'sine';
+    thump.frequency.setValueAtTime(150, now + impactAt);
+    thump.frequency.exponentialRampToValueAtTime(42, now + impactAt + 0.35);
+    const thumpGain = audioCtx.createGain();
+    thumpGain.gain.setValueAtTime(0.0001, now + impactAt);
+    thumpGain.gain.exponentialRampToValueAtTime(0.55, now + impactAt + 0.02);
+    thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + impactAt + 0.4);
+    thump.connect(thumpGain); thumpGain.connect(masterGain);
+    thump.start(now + impactAt); thump.stop(now + impactAt + 0.42);
+
+    // bright shimmer tail — settles alongside the title as it overshoots and fades
+    const shimmer = audioCtx.createOscillator();
+    shimmer.type = 'triangle';
+    shimmer.frequency.setValueAtTime(1800, now + impactAt);
+    shimmer.frequency.exponentialRampToValueAtTime(2600, now + impactAt + 0.5);
+    const shimmerGain = audioCtx.createGain();
+    shimmerGain.gain.setValueAtTime(0.0001, now + impactAt);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.06, now + impactAt + 0.05);
+    shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + impactAt + 0.6);
+    shimmer.connect(shimmerGain); shimmerGain.connect(masterGain);
+    shimmer.start(now + impactAt); shimmer.stop(now + impactAt + 0.65);
+  }
+
+  // a soft clock-tick, used by both the surprise-box ring and the real countdown
+  function playTick(){
+    ensureAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1050, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.045, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 0.045);
+    osc.connect(gain); gain.connect(masterGain);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+  }
+
+  // short low "denied" blip — played when the box is tapped while still locked
+  function playDenied(){
+    ensureAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.09, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 0.14);
+    osc.connect(gain); gain.connect(masterGain);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+  }
+
+  // the box-opening "blast" — a noise pop + low thud + a bright sparkle chime tail
+  function playBoxBlast(){
+    ensureAudio();
+    const now = audioCtx.currentTime;
+    const bufferSize = Math.floor(audioCtx.sampleRate * 0.25);
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass'; filter.Q.value = .9;
+    filter.frequency.setValueAtTime(2200, now);
+    filter.frequency.exponentialRampToValueAtTime(300, now + 0.25);
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(0.5, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0008, now + 0.25);
+    noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(masterGain);
+    noise.start(now); noise.stop(now + 0.25);
+
+    playBass();
+
+    const notes = [659.3, 880.0, 1046.5, 1318.5]; // sparkly ascending chime
+    notes.forEach((f, i) => setTimeout(() => playArp(f, 0.07), 60 + i * 70));
+  }
+
+  // the "we're live" launch stinger — a bright rising chord, distinct from the box blast
+  function playLaunchFanfare(){
+    ensureAudio();
+    const now = audioCtx.currentTime;
+    const chord = [523.3, 659.3, 784.0, 1046.5]; // C major-ish, triumphant
+    chord.forEach((f, i) => setTimeout(() => playArp(f, 0.09), i * 90));
+    setTimeout(() => { playBass(); playHat(); }, 260);
+  }
+
+  // scatters a handful of blast-particle bursts across the top of the viewport,
+  // used once for the "we're live" reveal
+  function spawnLaunchBurst(){
+    const w = window.innerWidth;
+    const points = [w * 0.5, w * 0.25, w * 0.75];
+    points.forEach((x, i) => setTimeout(() => spawnBlastParticles(x, window.innerHeight * 0.35), i * 120));
+  }
+
+
+  // confetti-style particles bursting outward from (x, y) in fixed viewport coordinates
+  function spawnBlastParticles(x, y){
+    const COLORS = ['#f0b93d', '#fbe4a6', '#b3811f', '#ff4433', '#f4ecd8'];
+    const COUNT = 28;
+    for(let i = 0; i < COUNT; i++){
+      const p = document.createElement('div');
+      p.className = 'blast-particle';
+      const size = 4 + Math.random() * 7;
+      p.style.width = size + 'px';
+      p.style.height = (size * (0.5 + Math.random() * 0.7)) + 'px';
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      p.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+      p.style.opacity = '1';
+      document.body.appendChild(p);
+
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 90 + Math.random() * 170;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist - 40; // bias upward like it's launched
+      const spin = (Math.random() * 720 - 360).toFixed(0);
+      const dur = 700 + Math.random() * 500;
+
+      const anim = p.animate([
+        { transform: 'translate(-50%,-50%) rotate(0deg)', opacity: 1 },
+        { transform: `translate(${dx - size/2}px, ${dy - size/2}px) rotate(${spin}deg)`, opacity: 0 }
+      ], { duration: dur, easing: 'cubic-bezier(.16,.7,.3,1)' });
+      anim.onfinish = () => p.remove();
+    }
+  }
+
+  function playTapClick(){
+    ensureAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(720, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(340, audioCtx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
+    osc.connect(gain); gain.connect(masterGain);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.09);
+  }
+
+  function playSuccessChime(){
+    ensureAudio();
+    const notes = [523.3, 659.3, 784.0, 1046.5]; // C5 E5 G5 C6
+    notes.forEach((f, i) => setTimeout(() => playArp(f, 0.09), i * 90));
+  }
+
+  function playBass(){
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(58, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.28);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    osc.connect(gain); gain.connect(masterGain);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  }
+  function playArp(freq, vol){
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.value = freq;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = 1300; filter.Q.value = 1.1;
+    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(vol, audioCtx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.22);
+    osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.22);
+  }
+  function playHat(){
+    const bufferSize = audioCtx.sampleRate * 0.05;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    const src = audioCtx.createBufferSource();
+    src.buffer = buffer;
+    const hp = audioCtx.createBiquadFilter();
+    hp.type = 'highpass'; hp.frequency.value = 6000;
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+    src.connect(hp); hp.connect(gain); gain.connect(masterGain);
+    src.start();
+  }
+
+  const bassPattern = [1,0,0,1, 0,0,1,0];
+  const arpNotes = [220.0,261.6,293.7,329.6, 392.0,329.6,293.7,261.6]; // A minor feel
+  function startSynthLoop(){
+    if(musicTimer) return;
+    const stepMs = (60 / 96 / 2) * 1000; // 96bpm eighth notes, loops forever
+    musicTimer = setInterval(() => {
+      if(!audioCtx) return;
+      if(bassPattern[musicStep % bassPattern.length]) playBass();
+      playArp(arpNotes[musicStep % arpNotes.length], 0.035);
+      if(musicStep % 4 === 2) playHat();
+      musicStep++;
+    }, stepMs);
+  }
+
+  // Uses your MUSIC_URL above if set; otherwise falls back to the synth loop
+  // automatically (including if the file link fails to load).
+  function startMusic(){
+    if(MUSIC_URL){
+      const audioEl = document.getElementById('bgAudio');
+      audioEl.src = MUSIC_URL;
+      audioEl.loop = true;
+      audioEl.volume = MUSIC_VOLUME;
+      audioEl.play().then(() => { usingFileMusic = true; }).catch(() => { startSynthLoop(); });
+      audioEl.onerror = () => { if(!usingFileMusic) startSynthLoop(); };
+      return;
+    }
+    startSynthLoop();
+  }
+
+  let ambientNodes = null;
+  function startAmbient(){
+    if(!audioCtx || ambientNodes) return;
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sine'; osc.frequency.value = 50;
+    const lfo = audioCtx.createOscillator();
+    lfo.type = 'sine'; lfo.frequency.value = 0.1;
+    const lfoGain = audioCtx.createGain();
+    lfoGain.gain.value = 6;
+    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+    const gain = audioCtx.createGain();
+    gain.gain.value = 0.014;
+    osc.connect(gain); gain.connect(masterGain);
+    osc.start(); lfo.start();
+    ambientNodes = { osc, lfo, gain };
+  }
+
+  soundToggle.addEventListener('click', () => {
+    if(!audioStarted){
+      audioStarted = true;
+      initAudio();
+      if(audioCtx.state === 'suspended') audioCtx.resume();
+      startAmbient();
+      startMusic();
+      soundToggle.textContent = '🔊';
+      return;
+    }
+    muted = !muted;
+    if(masterGain){
+      masterGain.gain.setTargetAtTime(muted ? 0 : 0.9, audioCtx.currentTime, 0.1);
+    }
+    if(usingFileMusic){
+      document.getElementById('bgAudio').muted = muted;
+    }
+    soundToggle.textContent = muted ? '🔇' : '🔊';
+  });
+
+  /* ================= COUNTDOWN TICK — drives the hero board AND every echoed board at once,
+     so they all always show the exact same numbers, forever. Also the single source of truth
+     for the real "launch": only when this target date is reached does body.launched get added,
+     which is what reveals the LIVE banner and every section below it. ================= */
+  const cdCaption = document.getElementById('cdCaption');
+  function update(){
+    const now = new Date();
+    const rawDiff = target - now;
+    let diff = Math.max(0, rawDiff);
+    const d = Math.floor(diff / 86400000); diff -= d * 86400000;
+    const h = Math.floor(diff / 3600000); diff -= h * 3600000;
+    const m = Math.floor(diff / 60000); diff -= m * 60000;
+    const s = Math.floor(diff / 1000);
+    const vals = {
+      d: String(Math.min(d, 99)).padStart(2, '0'),
+      h: String(h).padStart(2, '0'),
+      m: String(m).padStart(2, '0'),
+      s: String(s).padStart(2, '0')
+    };
+    allBoards.forEach(digitEls => {
+      units.forEach(u => {
+        const [tens, ones] = digitEls[u.key];
+        const val = vals[u.key];
+        setFlap(tens, val[0]);
+        setFlap(ones, val[1]);
+      });
+    });
+    if(document.body.classList.contains('revealed') && !document.body.classList.contains('launched')) playTick();
+
+    // Update hyped button visibility (safe check)
+    setTimeout(() => {
+      const btn = document.getElementById('hypedBtn');
+      if(btn){
+        if(document.body.classList.contains('revealed') && rawDiff > 0){
+          btn.style.display = 'flex';
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+    }, 0);
+
+    if(rawDiff <= 0 && !document.body.classList.contains('launched')){
+      document.body.classList.add('launched');
+      if(cdCaption) cdCaption.textContent = "We're live!";
+      if(audioStarted){ playLaunchFanfare(); }
+      spawnLaunchBurst();
+    }
+  }
+  update();
+  setInterval(update, 1000);
+
+  /* ================= DYNAMIC SMOKE — colorful puffs on touch/scroll, only after splash + puzzle ================= */
+  const SMOKE_COLORS = [
+    'radial-gradient(circle, rgba(240,185,61,.6), transparent 70%)',
+    'radial-gradient(circle, rgba(255,68,51,.5), transparent 70%)',
+    'radial-gradient(circle, rgba(251,228,166,.55), transparent 70%)',
+    'radial-gradient(circle, rgba(179,129,31,.55), transparent 70%)',
+    'radial-gradient(circle, rgba(244,236,216,.4), transparent 70%)'
+  ];
+  function spawnSmoke(x, y){
+    if(!document.body.classList.contains('revealed')) return;
+    const puff = document.createElement('div');
+    puff.className = 'smoke-puff';
+    puff.style.left = x + 'px';
+    puff.style.top = y + 'px';
+    puff.style.background = SMOKE_COLORS[Math.floor(Math.random() * SMOKE_COLORS.length)];
+    document.body.appendChild(puff);
+    setTimeout(() => puff.remove(), 1200);
+  }
+
+  document.addEventListener('pointerdown', (e) => spawnSmoke(e.clientX, e.clientY));
+
+  /* ================= SCROLL REVEAL — landing sections fade up into view as the user scrolls ================= */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.site-section').forEach(sec => revealObserver.observe(sec));
+
+  // constant ambient smoke — not tied to scrolling, just keeps puffing on its own
+  setInterval(() => {
+    if(!document.body.classList.contains('revealed')) return;
+    const x = window.innerWidth * (0.15 + Math.random() * 0.7);
+    const y = window.innerHeight * (0.15 + Math.random() * 0.7);
+    spawnSmoke(x, y);
+  }, 650);
+
+  const scrollProgress = document.getElementById('scrollProgress');
+  function updateScrollProgress(){
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    scrollProgress.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', updateScrollProgress, { passive: true });
+  updateScrollProgress();
+
+  const cursorGlow = document.getElementById('cursorGlow');
+  if(window.matchMedia('(pointer:fine)').matches){
+    document.addEventListener('pointermove', (e) => {
+      cursorGlow.style.setProperty('--mx', e.clientX + 'px');
+      cursorGlow.style.setProperty('--my', e.clientY + 'px');
+    }, { passive: true });
+  }
+
+  // gentle 3D tilt + spotlight shine on feature cards, desktop only
+  if(window.matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = e.clientX - rect.left, py = e.clientY - rect.top;
+        card.style.setProperty('--mx', px + 'px');
+        card.style.setProperty('--my', py + 'px');
+        card.style.setProperty('--tx', ((px / rect.width - 0.5) * 6).toFixed(2) + 'deg');
+        card.style.setProperty('--ty', ((0.5 - py / rect.height) * 6).toFixed(2) + 'deg');
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--tx', '0deg');
+        card.style.setProperty('--ty', '0deg');
+      });
+    });
+  }
+
+  /* ================= HYPED UP BUZZER — a real, once-per-visitor tally, backed by Supabase =================
+     Every press always fires a mini fire-badge burst (purely for feel, repeats forever, every click).
+     The actual count, shown in the pill under the buzzer, only moves the FIRST time a given browser
+     presses it — a flag goes into localStorage so this device can never add a second hype. The number
+     itself lives in a Supabase table (hype_counter), incremented atomically through a Postgres function,
+     so it reflects everyone who has hyped — not just this device. ================= */
+  /* ================= HYPED UP BUZZER — a real, once-per-visitor tally, backed by Supabase =================
+     Every press always fires one mini badge (purely for feel, repeats forever, every click).
+     The actual count, shown in the pill under the buzzer, starts at 0 and only moves the FIRST time a
+     given browser presses it — a flag goes into localStorage so this device can never add a second hype.
+     The number itself lives in a Supabase table (hype_counter), incremented atomically (+10 per unique
+     visitor) through a Postgres function, so it reflects everyone who has hyped — not just this device. ================= */
+  const hypedBtn = document.getElementById('hypedBtn');
+  const hypeCountEl = document.getElementById('hypeCount');
+  /* "Already hyped" now resets AUTOMATICALLY whenever you change REAL_TARGET_DATE up above —
+     the key below is built from that date, so changing the countdown time changes the key,
+     and every visitor's browser (even ones who already hyped before) looks brand new and can
+     hype again. No extra step needed for this part.
+     HYPE_CAMPAIGN_VERSION is a manual backup — bump it if you ever want to force a reset
+     WITHOUT changing the date. */
+  const HYPE_CAMPAIGN_VERSION = 1;   // <- change this number to force a reset without changing the date
+  const HYPE_STORE_KEY = 'ffx_hyped_' + REAL_TARGET_DATE + '_v' + HYPE_CAMPAIGN_VERSION;
+
+  // ---- Supabase project credentials — paste yours in from Project Settings → API ----
+  const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+  const hypeDB = (SUPABASE_URL.startsWith('http') && window.supabase)
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
+
+  function formatHypeCount(n){
+    if(typeof n !== 'number' || isNaN(n)) return '0';
+    if(n >= 1000) return (Math.floor(n / 100) / 10) + 'k';
+    return String(n);
+  }
+
+  // Tracks the actual raw number currently on screen (not the "1.2k" formatted string),
+  // so animateHypeCount always knows the true starting point to count up from.
+  let currentHypeCount = 0;
+
+  // Rolls the visible number up from its current value to the new total, one step at a
+  // time — e.g. 10 -> 11 -> 12 ... -> 20 — instead of just jumping straight to the new
+  // number. Small jumps count every single integer; big jumps cap the number of visual
+  // steps so the animation never drags on too long.
+  function animateHypeCount(toValue){
+    if(!hypeCountEl) return;
+    const fromValue = currentHypeCount;
+    const diff = toValue - fromValue;
+    if(diff <= 0){
+      hypeCountEl.textContent = formatHypeCount(toValue);
+      currentHypeCount = toValue;
+      return;
+    }
+    const STEP_MS = 90;      // time between each tick
+    const MAX_STEPS = 40;    // cap so huge jumps still animate quickly
+    const steps = Math.min(diff, MAX_STEPS);
+    let stepCount = 0;
+    const timer = setInterval(() => {
+      stepCount++;
+      const value = Math.round(fromValue + (diff * stepCount) / steps);
+      hypeCountEl.textContent = formatHypeCount(value);
+      if(stepCount >= steps){
+        clearInterval(timer);
+        hypeCountEl.textContent = formatHypeCount(toValue);
+        currentHypeCount = toValue;
+      }
+    }, STEP_MS);
+  }
+
+  function alreadyHyped(){
+    try{ return localStorage.getItem(HYPE_STORE_KEY) === '1'; }catch(e){ return false; }
+  }
+  function markHyped(){
+    try{ localStorage.setItem(HYPE_STORE_KEY, '1'); }catch(e){ /* private mode etc — burst still works */ }
+  }
+
+  // Load the current shared total once on page load, without counting this visit as a hype.
+  // The hype_counter row starts at 0 (from supabase_setup.sql), so a fresh project shows 0 here.
+  if(hypeDB){
+    hypeDB.from('hype_counter').select('count').eq('id', 1).single()
+      .then(({ data, error }) => {
+        const startCount = error ? 0 : data.count;
+        currentHypeCount = startCount;
+        if(hypeCountEl) hypeCountEl.textContent = formatHypeCount(startCount);
+      });
+  }
+
+  function spawnHypeBurst(){
+    if(!hypedBtn || getComputedStyle(hypedBtn).display === 'none') return;
+    hypedBtn.classList.remove('glow');
+    void hypedBtn.offsetWidth;
+    hypedBtn.classList.add('glow');
+
+    const rect = hypedBtn.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6; // mostly straight up, slight drift
+    const distance = 90 + Math.random() * 20;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
+
+    const mini = document.createElement('div');
+    mini.className = 'mini-hyped';
+    mini.textContent = 'HYPED';
+    mini.style.left = centerX + 'px';
+    mini.style.top = centerY + 'px';
+    mini.style.setProperty('--tx', tx + 'px');
+    mini.style.setProperty('--ty', ty + 'px');
+    document.body.appendChild(mini);
+    setTimeout(() => mini.remove(), 2400);
+  }
+
+  hypedBtn.addEventListener('click', () => {
+    spawnHypeBurst(); // always plays — exactly one mini button per tap
+
+    if(!alreadyHyped() && hypeDB){
+      markHyped();
+      hypeDB.rpc('increment_hype').then(({ data, error }) => {
+        if(!error) animateHypeCount(data);
+      });
+    }
+  });
+
+  // Update button visibility
+  setInterval(() => {
+    if(!hypedBtn) return;
+    const now = new Date();
+    const rawDiff = target - now;
+    if(document.body.classList.contains('revealed') && rawDiff > 0){
+      hypedBtn.style.display = 'flex';
+    } else {
+      hypedBtn.style.display = 'none';
+    }
+  }, 100);
+
+
 </script>
 </body>
-
 </html>
