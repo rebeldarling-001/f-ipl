@@ -889,8 +889,10 @@
 
         .splash-sub {
             margin-top: 6px;
-            font-size: 11px;
-            letter-spacing: 0.45em;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
             color: var(--ink-faint);
             opacity: 0;
             animation: wordIn 0.8s ease forwards 0.9s;
