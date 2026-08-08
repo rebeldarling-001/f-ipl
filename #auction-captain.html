@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('xipl-theme');
+                if (saved) document.documentElement.setAttribute('data-theme', saved);
+            } catch (e) { }
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Captain Bidding — FREEFIRE XIPL Season 11</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        :root { --cap-color: var(--gold); }
+
+        .page-head {
+            position: relative;
+            padding: 30px 20px 6px;
+        }
+
+        .page-head .sec-title {
+            font-size: 26px;
+            margin-top: 8px;
+        }
+
+        /* ---------- LOGIN GATE ---------- */
+        .login-wrap {
+            padding: 30px 20px;
+        }
+
+        .login-card {
+            border-radius: 22px;
+            background: linear-gradient(150deg, var(--card-a), var(--card-b) 70%);
+            border: 1px solid var(--line);
+            padding: 26px 20px;
+        }
+
+        .login-card p {
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .login-card .field {
+            margin-top: 14px;
+        }
+
+        .login-card .field:first-child {
+            margin-top: 0;
+        }
+
+        .login-card label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gold-pale);
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--bg-alt);
+            color: var(--ink);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .login-card input:focus {
+            border-color: var(--gold-deep);
+        }
+
+        .login-card .btn {
+            margin-top: 18px;
+        }
+
+        .login-err {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(var(--live-rgb), 0.1);
+            border: 1px solid rgba(var(--live-rgb), 0.3);
+            color: var(--live);
+            font-size: 12px;
+            display: none;
+        }
+
+        .login-err.show {
+            display: block;
+        }
+
+        /* ---------- CAPTAIN SHELL (colour-personalized) ---------- */
+        #captainShell {
+            display: none;
+        }
+
+        .team-banner {
+            margin: 0 20px;
+            padding: 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, color-mix(in srgb, var(--cap-color) 22%, var(--surface)), var(--surface));
+            border: 1px solid color-mix(in srgb, var(--cap-color) 45%, var(--line));
+        }
+
+        .team-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--cap-color);
+        }
+
+        .team-name {
+            font-family: 'Anton', sans-serif;
+            font-size: 16px;
+            color: var(--ink);
+        }
+
+        .purse-row {
+            margin-top: 3px;
+            font-size: 11px;
+            color: var(--ink-dim);
+        }
+
+        .purse-row b {
+            color: var(--cap-color);
+        }
+
+        .stat-strip {
+            padding: 0 20px;
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .stat-chip {
+            flex: 1;
+            padding: 10px 8px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .stat-chip .n {
+            font-family: 'Anton', sans-serif;
+            font-size: 16px;
+            color: var(--cap-color);
+        }
+
+        .stat-chip .l {
+            margin-top: 2px;
+            font-size: 9px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        .lot-wrap {
+            padding: 16px 20px 6px;
+        }
+
+        .idle-card, .finished-card {
+            text-align: center;
+            padding: 50px 20px;
+            border-radius: 20px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            color: var(--ink-dim);
+            font-size: 13.5px;
+        }
+
+        .idle-card .big-icon, .finished-card .big-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .lot-card {
+            display: none;
+            border-radius: 22px;
+            background: linear-gradient(150deg, var(--card-a), var(--card-b) 70%);
+            border: 1px solid color-mix(in srgb, var(--cap-color) 35%, var(--line));
+            overflow: hidden;
+        }
+
+        .lot-card.show {
+            display: block;
+        }
+
+        .lot-photo-wrap {
+            padding: 18px 18px 0;
+            text-align: center;
+        }
+
+        .lot-photo {
+            width: 130px;
+            height: 130px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 2px solid var(--cap-color);
+            cursor: zoom-in;
+        }
+
+        .lot-name {
+            margin-top: 12px;
+            font-family: 'Anton', sans-serif;
+            font-size: 20px;
+            text-align: center;
+            color: var(--ink);
+        }
+
+        .lot-sub {
+            margin-top: 4px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--ink-dim);
+        }
+
+        .bid-panel {
+            margin: 16px 16px 12px;
+            padding: 16px;
+            border-radius: 16px;
+            background: var(--bg-alt);
+            border: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .bid-label {
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        .bid-amount {
+            margin-top: 6px;
+            font-family: 'Anton', sans-serif;
+            font-size: 30px;
+            color: var(--cap-color);
+        }
+
+        .bid-team {
+            margin-top: 6px;
+            font-size: 12.5px;
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .bid-team.leading {
+            color: #4ade80;
+        }
+
+        .bid-team.empty {
+            color: var(--ink-faint);
+            font-weight: 400;
+        }
+
+        .quick-bids {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px;
+        }
+
+        .quick-bid-btn {
+            flex: 1;
+            padding: 12px 4px;
+            border-radius: 10px;
+            border: 1px solid color-mix(in srgb, var(--cap-color) 45%, var(--line));
+            background: transparent;
+            color: var(--cap-color);
+            font-weight: 700;
+            font-size: 12.5px;
+        }
+
+        .custom-bid-row {
+            display: flex;
+            gap: 8px;
+            padding: 10px 16px 0;
+        }
+
+        .custom-bid-row input {
+            flex: 1;
+            padding: 12px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: var(--bg-alt);
+            color: var(--ink);
+            font-size: 14px;
+        }
+
+        .custom-bid-row button {
+            padding: 0 16px;
+            border-radius: 10px;
+            border: none;
+            background: var(--cap-color);
+            color: var(--on-accent);
+            font-weight: 700;
+            font-size: 12.5px;
+        }
+
+        .pass-btn-row {
+            padding: 14px 16px 18px;
+        }
+
+        .pass-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--ink-dim);
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        .pass-btn.active {
+            border-color: var(--live);
+            color: var(--live);
+            background: rgba(var(--live-rgb), 0.08);
+        }
+
+        .bid-msg {
+            margin: 0 16px 16px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .bid-msg.show {
+            display: block;
+        }
+
+        .bid-msg.error {
+            background: rgba(var(--live-rgb), 0.1);
+            border: 1px solid rgba(var(--live-rgb), 0.3);
+            color: var(--live);
+        }
+
+        .bid-msg.ok {
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.3);
+            color: #4ade80;
+        }
+
+        .squad-title {
+            padding: 20px 20px 8px;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--cap-color);
+        }
+
+        .squad-list {
+            padding: 0 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .squad-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            font-size: 12px;
+        }
+
+        .squad-empty {
+            padding: 0 20px 20px;
+            color: var(--ink-faint);
+            font-size: 12px;
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .lightbox.show {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scroll-progress">
+        <div class="scroll-progress-fill" id="scrollFill"></div>
+    </div>
+
+    <div id="splash">
+        <div class="ignite-wrap">
+            <div class="ignite-ring r1"></div>
+            <div class="ignite-ring r2"></div>
+            <div class="ignite-ring r3"></div>
+            <div class="ignite-core"></div>
+        </div>
+        <div class="splash-word display">FREEFIREXIPL</div>
+        <div class="splash-sub">REGISTERED PLAYERS</div>
+        <div class="splash-bar">
+            <div class="splash-bar-fill"></div>
+        </div>
+    </div>
+
+    <div class="embers" id="embers"></div>
+
+    <header>
+        <div class="brand">
+            <div class="crest"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <div class="header-actions">
+            <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
+                aria-expanded="false">🎨</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        </div>
+    </header>
+
+    <div class="theme-overlay" id="themeOverlay"></div>
+    <div class="theme-panel" id="themePanel" role="menu" aria-label="Theme switcher">
+        <div class="theme-panel-head">
+            <span>🎨 Choose a Theme</span>
+            <button class="nav-close" id="themeClose" aria-label="Close theme menu">✕</button>
+        </div>
+        <div class="theme-grid" id="themeGrid">
+            <button class="theme-opt" data-theme="golden-fire" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i
+                        style="background:#b88f20"></i></span>
+                <span class="theme-opt-name">Golden Fire <em>🔥</em></span>
+            </button>
+            <button class="theme-opt" data-theme="og-bar" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i
+                        style="background:#49310d"></i></span>
+                <span class="theme-opt-name">Disco Blue <em>❤️</em></span>
+            </button>
+            <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i
+                        style="background:#49199b"></i></span>
+                <span class="theme-opt-name">Neon Cyber <em>💙</em></span>
+            </button>
+            <button class="theme-opt" data-theme="royal-purple" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i
+                        style="background:#911b73"></i></span>
+                <span class="theme-opt-name">Royal Purple <em>💜</em></span>
+            </button>
+            <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i
+                        style="background:#147749"></i></span>
+                <span class="theme-opt-name">Emerald Forest <em>💚</em></span>
+            </button>
+            <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i
+                        style="background:#824619"></i></span>
+                <span class="theme-opt-name">Sunset Orange <em>🧡</em></span>
+            </button>
+            <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i
+                        style="background:#147282"></i></span>
+                <span class="theme-opt-name">Ocean Blue <em>🌊</em></span>
+            </button>
+            <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i
+                        style="background:#97184f"></i></span>
+                <span class="theme-opt-name">Sakura Pink <em>🌸</em></span>
+            </button>
+            <button class="theme-opt" data-theme="midnight-black" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i
+                        style="background:#a22222"></i></span>
+                <span class="theme-opt-name">Midnight Black <em>⚫</em></span>
+            </button>
+            <button class="theme-opt" data-theme="crystal-light" role="menuitemradio">
+                <span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i
+                        style="background:#058ede"></i></span>
+                <span class="theme-opt-name">Crystal Light <em>☀️</em></span>
+            </button>
+            <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio">
+                <span class="theme-swatch">
+                    <i style="background:#1a0505"></i>
+                    <i style="background:#e0304a"></i>
+                    <i style="background:#ff8fa3"></i>
+                </span>
+                <span class="theme-opt-name">Crimson Blood <em>🩸</em></span>
+            </button>
+            <button class="theme-opt" data-theme="arena-pro" role="menuitemradio">
+                <span class="theme-swatch">
+                    <i style="background:#0b0b10"></i>
+                    <i style="background:#ff8c00"></i>
+                    <i style="background:#ffd36a"></i>
+                </span>
+                <span class="theme-opt-name">Arena Pro <em>⚔️</em></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="nav-drawer" id="navDrawer">
+        <div class="nav-drawer-head">
+            <div class="brand">
+                <div class="crest" style="width:26px;height:26px;"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
+            <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
+        </div>
+        <div class="nav-links">
+            <a href="arena.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Enter Arena</a>
+            <a href="index.html#teams" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="registration-center.html" class="nav-link"><span
+                    class="nav-link-icon">👤</span> Registration
+                Center</a>
+            <a href="auction-center.html" class="nav-link" aria-current="page"><span class="nav-link-icon">🔨</span> Auction</a>
+            <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+            <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
+            <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
+            <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
+            <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
+            <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+            <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
+        </div>
+        <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
+    </nav>
+    <section class="page-head">
+        <div class="eyebrow fade-up">🎯 CAPTAIN LOGIN</div>
+        <h1 class="sec-title display fade-up d1">Place Your <b>Bids</b></h1>
+    </section>
+
+    <!-- LOGIN -->
+    <div class="login-wrap" id="loginWrap">
+        <div class="login-card fade-up d2">
+            <p>Use the private link your organizer sent you — it should already fill this in. If not, paste your
+                Franchise ID and Access Code below.</p>
+            <form id="loginForm">
+                <div class="field">
+                    <label for="fidInput">Franchise ID</label>
+                    <input type="text" id="fidInput" autocomplete="off" required>
+                </div>
+                <div class="field">
+                    <label for="codeInput">Access Code</label>
+                    <input type="text" id="codeInput" autocomplete="off" required>
+                </div>
+                <div class="login-err" id="loginErr"></div>
+                <button type="submit" class="btn btn-primary" id="loginBtn">Enter</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CAPTAIN SHELL -->
+    <div id="captainShell">
+        <div class="team-banner fade-up">
+            <img class="team-logo" id="teamLogo" src="" alt="">
+            <div>
+                <div class="team-name" id="teamName">—</div>
+                <div class="purse-row">Purse remaining: <b id="pursePill">— Cr</b></div>
+            </div>
+        </div>
+
+        <div class="stat-strip fade-up">
+            <div class="stat-chip"><div class="n" id="squadCount">0</div><div class="l">Players Won</div></div>
+            <div class="stat-chip"><div class="n" id="viewerCount">0</div><div class="l">Watching</div></div>
+            <div class="stat-chip"><div class="n" id="lotProgress">—</div><div class="l">Status</div></div>
+        </div>
+
+        <section class="lot-wrap fade-up">
+            <div class="idle-card" id="idleCard">
+                <div class="big-icon">⏳</div>
+                Waiting for the organizer to start the auction...
+            </div>
+            <div class="finished-card" id="finishedCard">
+                <div class="big-icon">🏁</div>
+                The auction has finished — check <a href="auction-results.html" style="color:var(--cap-color);">Results</a>.
+            </div>
+
+            <div class="lot-card" id="lotCard">
+                <div class="lot-photo-wrap">
+                    <img class="lot-photo" id="lotPhoto" data-zoom="" src="" alt="Player">
+                </div>
+                <div class="lot-name" id="lotName">—</div>
+                <div class="lot-sub" id="lotSub">—</div>
+
+                <div class="bid-panel">
+                    <div class="bid-label">Current Bid</div>
+                    <div class="bid-amount" id="bidAmount">—</div>
+                    <div class="bid-team empty" id="bidTeam">No bids yet</div>
+                </div>
+
+                <div class="quick-bids" id="quickBids"></div>
+                <div class="custom-bid-row">
+                    <input type="number" id="customBidInput" placeholder="Custom amount (Cr)" step="0.1" min="0">
+                    <button id="customBidBtn">Bid</button>
+                </div>
+
+                <div class="bid-msg" id="bidMsg"></div>
+
+                <div class="pass-btn-row">
+                    <button class="pass-btn" id="passBtn">🚫 Not Interested — Pass on this player</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="squad-title fade-up">Your Squad</div>
+        <div class="squad-list" id="squadList"></div>
+        <div class="squad-empty" id="squadEmpty" style="display:none;">No players won yet.</div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <img id="lightboxImg" src="" alt="">
+    </div>
+
+<footer>
+        <div class="foot-brand">
+            <div class="crest" style="width:26px;height:26px;"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch
+            moment of the season.</p>
+        <div class="foot-social">
+            <div class="soc">✕</div>
+            <div class="soc">◎</div>
+            <div class="soc">▶</div>
+            <div class="soc">✈</div>
+        </div>
+        <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <img id="lightboxImg" src="" alt="">
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle class="btt-bg" cx="24" cy="24" r="21" />
+            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9"
+                stroke-dashoffset="131.9" />
+        </svg>
+        <span>↑</span>
+    </button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="xhub-client.js"></script>
+    <script src="xauc-client.js"></script>
+    <script>
+/* =========================================================================
+   FREEFIRE XIPL — SHARED THEME BEHAVIOR (inlined directly on this page)
+   ========================================================================= */
+    try {
+    console.log('[XIPL-THEME] script started');
+
+// ---------- Always feel like a fresh visit ----------
+        // Always feel like a fresh visit: reset scroll and defeat back/forward cache restores
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) { window.location.reload(); }
+        });
+
+// ---------- Splash screen removal ----------
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+
+            splash.animate([
+                { transform: "scale(1)", opacity: 1 },
+                { transform: "scale(2.5)", opacity: 0 }
+            ], {
+                duration: 1600,
+                easing: "cubic-bezier(.2,.8,.2,1)"
+            });
+
+            setTimeout(() => splash.style.display = "none", 600);
+        }, 2100);
+
+// ---------- Nav drawer ----------
+        // Nav drawer
+        const menuBtn = document.getElementById('menuBtn');
+        const navDrawer = document.getElementById('navDrawer');
+        const navOverlay = document.getElementById('navOverlay');
+        const navClose = document.getElementById('navClose');
+        function openNav() { closeTheme(); navDrawer.classList.add('show'); navOverlay.classList.add('show'); }
+        function closeNav() { navDrawer.classList.remove('show'); navOverlay.classList.remove('show'); }
+        menuBtn.addEventListener('click', openNav);
+        navClose.addEventListener('click', closeNav);
+        navOverlay.addEventListener('click', closeNav);
+        document.querySelectorAll('.nav-link[data-scroll]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeNav();
+                const targetEl = document.querySelector(link.getAttribute('href'));
+                if (targetEl) setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 200);
+            });
+        });
+
+// ---------- Theme switcher ----------
+        // ====== THEME SWITCHER ======
+        const THEME_KEY = 'xipl-theme';
+        const DEFAULT_THEME = 'golden-fire';
+        const themeBtn = document.getElementById('themeBtn');
+        const themePanel = document.getElementById('themePanel');
+        const themeOverlay = document.getElementById('themeOverlay');
+        const themeClose = document.getElementById('themeClose');
+        const themeOpts = document.querySelectorAll('.theme-opt');
+
+        function getSavedTheme() {
+            try { return localStorage.getItem(THEME_KEY) || DEFAULT_THEME; }
+            catch (e) { return DEFAULT_THEME; }
+        }
+
+        function markActiveTheme(theme) {
+            themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme));
+        }
+
+        function applyTheme(theme, persist) {
+            document.documentElement.classList.add('theme-transitioning');
+            document.documentElement.setAttribute('data-theme', theme);
+            markActiveTheme(theme);
+            if (persist) {
+                try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable, theme still applies for this session */ }
+            }
+            window.clearTimeout(applyTheme._t);
+            applyTheme._t = window.setTimeout(() => {
+                document.documentElement.classList.remove('theme-transitioning');
+            }, 650);
+        }
+
+        function openTheme() {
+            themePanel.classList.add('show');
+            themeOverlay.classList.add('show');
+            themeBtn.setAttribute('aria-expanded', 'true');
+        }
+        function closeTheme() {
+            themePanel.classList.remove('show');
+            themeOverlay.classList.remove('show');
+            themeBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            if (themePanel.classList.contains('show')) closeTheme(); else { closeNav(); openTheme(); }
+        });
+        themeClose.addEventListener('click', closeTheme);
+        themeOverlay.addEventListener('click', closeTheme);
+        themeOpts.forEach(opt => {
+            opt.addEventListener('click', () => {
+                applyTheme(opt.dataset.theme, true);
+                closeTheme();
+            });
+        });
+
+        // Initialize active swatch to whatever theme is currently applied (set pre-paint above, or default)
+        markActiveTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
+
+
+// ---------- Ambient ember particles ----------
+        // Embers
+        const emberField = document.getElementById('embers');
+        for (let i = 0; i < 22; i++) {
+            const e = document.createElement('div');
+            e.className = 'ember';
+            e.style.left = Math.random() * 100 + '%';
+            e.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+            e.style.animationDuration = (6 + Math.random() * 6) + 's';
+            e.style.animationDelay = (Math.random() * 8) + 's';
+            emberField.appendChild(e);
+        }
+
+// ---------- Scroll-reveal (.fade-up elements) ----------
+        // Scroll reveal
+        const revealEls = document.querySelectorAll('.fade-up');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+        }, { threshold: 0.15 });
+        revealEls.forEach(el => io.observe(el));
+
+// ---------- Scroll progress bar + back-to-top button ----------
+// (wired up here — shared chrome, so it belongs in every page automatically)
+const scrollFillEl = document.getElementById('scrollFill');
+const backToTopBtn = document.getElementById('backToTop');
+const bttFillEl = document.getElementById('bttFill');
+const BTT_C = 131.9; // 2 * PI * 21, matches the SVG circle radius
+
+function updateScrollChrome() {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
+    if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
+    if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
+}
+window.addEventListener('scroll', updateScrollChrome, { passive: true });
+window.addEventListener('load', updateScrollChrome);
+updateScrollChrome();
+
+if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+    console.log('[XIPL-THEME] script finished OK — nav/theme/embers/splash all wired');
+    } catch (xhubThemeErr) {
+        console.error('[XIPL-THEME ERROR] theme script crashed:', xhubThemeErr);
+    }
+    </script>
+    <script>
+        let myFid = null, myCode = null, myColor = '#f0b93d';
+        let currentLotId = null, currentPhase = 'idle', currentBid = 0, myFranchiseName = '';
+
+        function setPhaseView(phase) {
+            document.getElementById('idleCard').style.display = (phase === 'idle') ? 'block' : 'none';
+            document.getElementById('finishedCard').style.display = (phase === 'finished') ? 'block' : 'none';
+            document.getElementById('lotCard').classList.toggle('show', phase === 'live' || phase === 'sold' || phase === 'unsold');
+        }
+
+        function showBidMsg(text, ok) {
+            const el = document.getElementById('bidMsg');
+            el.textContent = text;
+            el.className = 'bid-msg show ' + (ok ? 'ok' : 'error');
+            setTimeout(() => el.classList.remove('show'), 3500);
+        }
+
+        async function enterCaptain(fid, code) {
+            const loginErr = document.getElementById('loginErr');
+            loginErr.classList.remove('show');
+            const { data, error } = await xhub.rpc('xauc_verify_captain', { p_franchise_id: fid, p_access_code: code });
+            if (error || !data || data.length === 0) {
+                loginErr.textContent = 'Invalid Franchise ID or Access Code. Double check your private link.';
+                loginErr.classList.add('show');
+                return false;
+            }
+            const info = data[0];
+            myFid = fid; myCode = code; myColor = info.color_hex || '#f0b93d';
+            myFranchiseName = info.franchise_name;
+            document.documentElement.style.setProperty('--cap-color', myColor);
+            document.getElementById('teamLogo').src = info.logo_url || '';
+            document.getElementById('teamName').textContent = info.franchise_name;
+            sessionStorage.setItem('xauc_captain_session', JSON.stringify({ fid, code }));
+            document.getElementById('loginWrap').style.display = 'none';
+            document.getElementById('captainShell').style.display = 'block';
+
+            xaucJoinPresence('captain', info.franchise_name, (counts) => {
+                document.getElementById('viewerCount').textContent = counts.viewer;
+            });
+            xaucSubscribeRealtime(() => refreshCaptainView());
+            refreshCaptainView();
+            return true;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fid = document.getElementById('fidInput').value.trim();
+            const code = document.getElementById('codeInput').value.trim();
+            await enterCaptain(fid, code);
+        });
+
+        (function autoLoginFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            let fid = params.get('fid');
+            let code = params.get('code');
+            if (!fid || !code) {
+                try {
+                    const saved = JSON.parse(sessionStorage.getItem('xauc_captain_session') || 'null');
+                    if (saved) { fid = saved.fid; code = saved.code; }
+                } catch (e) { }
+            }
+            if (fid) document.getElementById('fidInput').value = fid;
+            if (code) document.getElementById('codeInput').value = code;
+            if (fid && code) enterCaptain(fid, code);
+        })();
+
+        async function refreshCaptainView() {
+            const state = await xaucGetState();
+            if (!state) return;
+            currentPhase = state.phase;
+            currentBid = state.current_bid;
+            setPhaseView(state.phase);
+            document.getElementById('lotProgress').textContent = state.phase === 'idle' ? 'Waiting' : state.phase.toUpperCase();
+
+            // purse + squad
+            const { data: spentRows } = await xhub.from('xauc_lots').select('sold_price').eq('sold_to_franchise_id', myFid).eq('status', 'sold');
+            const spent = (spentRows || []).reduce((s, r) => s + Number(r.sold_price || 0), 0);
+            const { data: verifyRow } = await xhub.rpc('xauc_verify_captain', { p_franchise_id: myFid, p_access_code: myCode });
+            const purseTotal = verifyRow && verifyRow[0] ? Number(verifyRow[0].purse_total) : 100;
+            document.getElementById('pursePill').textContent = xaucFormatCr(purseTotal - spent);
+
+            const { data: mySquad } = await xhub.from('xauc_lots')
+                .select('sold_price, xhub_players(ff_name)')
+                .eq('sold_to_franchise_id', myFid).eq('status', 'sold')
+                .order('created_at', { ascending: false });
+            document.getElementById('squadCount').textContent = (mySquad || []).length;
+            const squadList = document.getElementById('squadList');
+            const squadEmpty = document.getElementById('squadEmpty');
+            if (mySquad && mySquad.length) {
+                squadEmpty.style.display = 'none';
+                squadList.innerHTML = mySquad.map(s => `
+                    <div class="squad-item"><span>${xhubEscape(s.xhub_players ? s.xhub_players.ff_name : '')}</span><span>${xaucFormatCr(s.sold_price)}</span></div>
+                `).join('');
+            } else {
+                squadList.innerHTML = '';
+                squadEmpty.style.display = 'block';
+            }
+
+            if (state.phase === 'idle' || !state.current_lot_id) return;
+            currentLotId = state.current_lot_id;
+
+            const lot = await xaucGetLotWithPlayer(state.current_lot_id);
+            if (!lot || !lot.xhub_players) return;
+            const p = lot.xhub_players;
+            document.getElementById('lotPhoto').src = p.photo_url;
+            document.getElementById('lotPhoto').dataset.zoom = p.photo_url;
+            document.getElementById('lotName').textContent = p.ff_name;
+            document.getElementById('lotSub').textContent = `${p.real_name} · UID ${p.ff_uid} · LVL ${p.ff_level} · Base ${xaucFormatCr(lot.base_price)}`;
+
+            const displayBid = state.current_bid > 0 ? state.current_bid : lot.base_price;
+            document.getElementById('bidAmount').textContent = xaucFormatCr(displayBid);
+            const bidTeamEl = document.getElementById('bidTeam');
+            if (state.current_bid_franchise_id) {
+                const fr = await xaucGetLeadingFranchiseName(state.current_bid_franchise_id);
+                const iAmLeading = state.current_bid_franchise_id === myFid;
+                bidTeamEl.textContent = (fr ? fr.franchise_name : 'Unknown') + (iAmLeading ? ' (You!)' : '');
+                bidTeamEl.classList.toggle('leading', iAmLeading);
+                bidTeamEl.classList.remove('empty');
+            } else {
+                bidTeamEl.textContent = 'No bids yet';
+                bidTeamEl.classList.remove('leading');
+                bidTeamEl.classList.add('empty');
+            }
+
+            // quick bid buttons
+            const base = state.current_bid > 0 ? state.current_bid : lot.base_price;
+            const increments = state.current_bid > 0 ? [0.5, 1, 2] : [0, 0.5, 1]; // first bid can be exactly base price
+            const quickBidsEl = document.getElementById('quickBids');
+            quickBidsEl.innerHTML = increments.map(inc => {
+                const amt = Math.round((base + inc) * 100) / 100;
+                return `<button class="quick-bid-btn" data-amt="${amt}">+${inc} → ${xaucFormatCr(amt)}</button>`;
+            }).join('');
+            quickBidsEl.querySelectorAll('[data-amt]').forEach(btn => {
+                btn.addEventListener('click', () => submitBid(parseFloat(btn.dataset.amt)));
+            });
+
+            const iAmPassingCheck = await xhub.from('xauc_passes').select('id').eq('lot_id', state.current_lot_id).eq('franchise_id', myFid).maybeSingle();
+            document.getElementById('passBtn').classList.toggle('active', !!(iAmPassingCheck.data));
+
+            const disableActions = state.phase !== 'live';
+            document.getElementById('customBidBtn').disabled = disableActions;
+            document.getElementById('passBtn').disabled = disableActions;
+            quickBidsEl.querySelectorAll('button').forEach(b => b.disabled = disableActions);
+        }
+
+        async function submitBid(amount) {
+            if (!currentLotId) return;
+            const { error } = await xhub.rpc('xauc_place_bid', {
+                p_lot_id: currentLotId, p_franchise_id: myFid, p_access_code: myCode, p_amount: amount
+            });
+            if (error) {
+                showBidMsg(error.message || 'Could not place bid.', false);
+            } else {
+                showBidMsg(`Bid placed: ${xaucFormatCr(amount)}`, true);
+            }
+        }
+
+        document.getElementById('customBidBtn').addEventListener('click', () => {
+            const val = parseFloat(document.getElementById('customBidInput').value);
+            if (!val || val <= 0) { showBidMsg('Enter a valid bid amount.', false); return; }
+            submitBid(val);
+        });
+
+        document.getElementById('passBtn').addEventListener('click', async () => {
+            if (!currentLotId) return;
+            const { error } = await xhub.rpc('xauc_pass_lot', {
+                p_lot_id: currentLotId, p_franchise_id: myFid, p_access_code: myCode
+            });
+            if (error) showBidMsg(error.message || 'Could not pass.', false);
+            else { showBidMsg('Marked as not interested for this player.', true); refreshCaptainView(); }
+        });
+
+        // lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        document.getElementById('lotPhoto').addEventListener('click', (e) => {
+            if (!e.target.src) return;
+            lightboxImg.src = e.target.src;
+            lightbox.classList.add('show');
+        });
+        lightbox.addEventListener('click', () => lightbox.classList.remove('show'));
+    </script>
+</body>
+
+</html>
