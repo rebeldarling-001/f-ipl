@@ -17,8 +17,21 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Hall of Fame — FREEFIRE XIPL Season 11</title>
+    <title>Rulebook — FREEFIRE XIPL Season 12</title>
+    <meta name="description" content="Official rulebook for FREEFIRE XIPL Season 12 — format, scoring, fair play and match regulations.">
+    <meta property="og:title" content="Rulebook — FREEFIRE XIPL Season 12">
+    <meta property="og:description" content="Official rulebook for FREEFIRE XIPL Season 12 — format, scoring, fair play and match regulations.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
+    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/rules.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/rules.html">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
@@ -1881,14 +1894,14 @@
         }
     </style>
     <style>
-        /* ============ PAGE HEAD ============ */
-        .page-head {
+        /* ============ INTRO ============ */
+        .intro {
             position: relative;
-            padding: 38px 20px 6px;
+            padding: 34px 20px 8px;
             overflow: hidden;
         }
 
-        .page-head::before {
+        .intro::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -1896,236 +1909,414 @@
                 linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
             background-size: 26px 26px;
-            mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 20%, transparent 75%);
+            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
         }
 
-        .page-head .sec-title {
+        .intro-title {
             position: relative;
-            font-size: 34px;
-            margin-top: 10px;
+            margin-top: 12px;
+            font-size: 36px;
+            line-height: 0.98;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 100% 300%;
+            animation: titleSheen 5s ease-in-out infinite;
         }
 
-        .page-head .sec-desc {
-            position: relative;
-            max-width: 420px;
-            font-size: 13.5px;
-        }
-
-        .updated-chip {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 16px;
-            padding: 5px 11px;
-            border-radius: 100px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.04em;
-            color: var(--ink-faint);
-        }
-
-        /* ============ STAT STRIP ============ */
-        .hof-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            padding: 0 20px;
-            margin-top: 26px;
-        }
-
-        .hof-stat {
-            border-radius: 16px;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            padding: 14px 10px;
-            text-align: center;
-        }
-
-        .hof-stat .num {
-            font-family: 'Space Mono', monospace;
-            font-size: 20px;
-            color: var(--gold);
-            font-weight: 700;
-        }
-
-        .hof-stat .lbl {
-            margin-top: 4px;
-            font-size: 9.5px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--ink-faint);
-        }
-
-        /* ============ TIMELINE ============ */
-        .timeline-wrap {
-            position: relative;
-            padding: 30px 20px 6px;
-        }
-
-        .timeline-rail {
-            position: absolute;
-            left: 46px;
-            top: 30px;
-            bottom: 30px;
-            width: 2px;
-            background: linear-gradient(180deg, var(--gold-deep), var(--line) 90%);
-        }
-
-        .timeline-list {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .tl-item {
-            position: relative;
-            display: flex;
-            gap: 16px;
-        }
-
-        .tl-node {
-            flex: 0 0 auto;
-            position: relative;
-            width: 52px;
-            display: flex;
-            justify-content: center;
-            padding-top: 6px;
-        }
-
-        .tl-dot {
-            position: relative;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--surface);
-            border: 2px solid var(--gold-deep);
-            z-index: 1;
-        }
-
-        .tl-item.champion-season .tl-dot {
-            width: 18px;
-            height: 18px;
-            background: var(--gold);
-            border-color: var(--gold-pale);
-            box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.18), 0 0 16px rgba(var(--gold-rgb), 0.7);
-            animation: champDotPulse 2.2s ease-in-out infinite;
-        }
-
-        @keyframes champDotPulse {
+        @keyframes titleSheen {
 
             0%,
             100% {
-                box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.18), 0 0 16px rgba(var(--gold-rgb), 0.7);
+                background-position: 0 0%;
             }
 
             50% {
-                box-shadow: 0 0 0 7px rgba(var(--gold-rgb), 0.1), 0 0 22px rgba(var(--gold-rgb), 0.9);
+                background-position: 0 100%;
             }
         }
 
-        .tl-card {
+        .intro-desc {
+            position: relative;
+            margin-top: 12px;
+            font-size: 13.5px;
+            line-height: 1.55;
+            color: var(--ink-dim);
+            max-width: 320px;
+        }
+
+        .intro-stats {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .intro-stat {
             flex: 1;
-            border-radius: 20px;
             background: var(--surface);
             border: 1px solid var(--line);
-            padding: 16px 16px;
-            overflow: hidden;
-            position: relative;
+            border-radius: 13px;
+            padding: 14px 8px;
+            text-align: center;
         }
 
-        /* ---- Champion spotlight treatment ---- */
-        .tl-item.champion-season .tl-card {
-            padding: 2px;
-            border: none;
-            background: conic-gradient(from 0deg, var(--gold-deep), var(--gold-pale) 25%, var(--gold) 50%, var(--gold-deep) 75%, var(--gold-pale) 100%);
-            animation: champFrameSpin 6s linear infinite;
-            box-shadow: 0 0 30px rgba(var(--gold-rgb), 0.35);
+        .intro-stat b {
+            display: block;
+            font-family: 'Anton', sans-serif;
+            font-size: 20px;
+            color: var(--gold);
         }
 
-       
-
-        .tl-item.champion-season .tl-card-inner {
-            position: relative;
-            border-radius: 18px;
-            padding: 18px 16px;
-            background: linear-gradient(150deg, var(--cta-a), var(--cta-b) 65%);
-            overflow: hidden;
-        }
-
-        .tl-item.champion-season .tl-card-inner::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at top right, rgba(var(--gold-rgb), 0.22), transparent 60%);
-            pointer-events: none;
-        }
-
-        .champ-ribbon {
-            position: absolute;
-            top: 12px;
-            right: -2px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 12px 5px 14px;
-            border-radius: 100px 0 0 100px;
-            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
-            color: var(--on-accent);
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
+        .intro-stat span {
+            display: block;
+            margin-top: 3px;
+            font-size: 8.5px;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
             text-transform: uppercase;
-            box-shadow: 0 4px 14px rgba(var(--gold-rgb), 0.4);
-            z-index: 2;
         }
 
-        .tl-season-row {
+        .intro-stat.alert b {
+            color: var(--live);
+        }
+
+        .intro-stat.alert {
+            border-color: rgba(var(--live-rgb), 0.3);
+            animation: alertPulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes alertPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 rgba(var(--live-rgb), 0);
+            }
+
+            50% {
+                box-shadow: 0 0 14px rgba(var(--live-rgb), 0.35);
+            }
+        }
+
+        /* ============ COUNTER STRIP ============ */
+        .counter-strip {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            margin-top: 12px;
+        }
+
+        .counter-box {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px 8px;
+            text-align: center;
+        }
+
+        .counter-num {
+            font-family: 'Anton', sans-serif;
+            font-size: 24px;
+            color: var(--gold);
+            text-shadow: 0 0 16px rgba(var(--gold-rgb), 0.4);
+        }
+
+        .counter-label {
+            display: block;
+            margin-top: 4px;
+            font-size: 8px;
+            letter-spacing: 0.09em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        /* ============ JUMP CHIPS ============ */
+        .rule-jump {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 0 20px 4px;
+            margin-top: 22px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rule-jump::-webkit-scrollbar {
+            display: none;
+        }
+
+        .jump-chip {
+            flex-shrink: 0;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 8px;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink-dim);
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .jump-chip::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--foil, var(--gold));
+        }
+
+        .jump-chip:active {
+            background: var(--surface-2);
+            color: var(--ink);
+        }
+
+        /* ============ CHAPTER CARDS ============ */
+        .rule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 16px 20px 6px;
+        }
+
+        /* Chapter cards use .foil-frame only as a positioning wrapper here — the spinning
+           conic-gradient border is switched off in favor of a quiet static border with a
+           thin top accent in the chapter's color. */
+        .rule-list>.foil-frame {
+            padding: 0;
+            background: none;
+        }
+
+        .rule-list>.foil-frame::before {
+            content: none;
+        }
+
+        .rule-list .rule-card {
             position: relative;
             z-index: 1;
+            border-radius: 20px;
+            padding: 20px 18px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-top: 2px solid var(--foil, var(--gold-deep));
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.10), transparent 60%), var(--surface);
         }
 
-        .tl-season {
+        .rule-head {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .rule-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            background: color-mix(in srgb, var(--foil, var(--gold)) 16%, var(--surface));
+            border: 1px solid color-mix(in srgb, var(--foil, var(--gold)) 30%, var(--line));
+        }
+
+        .rule-head-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rule-num {
             font-family: 'Space Mono', monospace;
-            font-size: 10.5px;
-            letter-spacing: 0.1em;
+            font-size: 9.5px;
+            letter-spacing: 0.14em;
             color: var(--gold-deep);
-            text-transform: uppercase;
         }
 
-        .tl-item.champion-season .tl-season {
+        .rule-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 16.5px;
+            letter-spacing: 0.01em;
+            margin-top: 2px;
+        }
+
+        .rule-chevron {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--foil, var(--gold));
+            font-size: 13px;
+            transition: transform 0.4s cubic-bezier(.2, .9, .25, 1);
+        }
+
+        .rule-card.open .rule-chevron {
+            transform: rotate(180deg);
+        }
+
+        .rule-card.open {
+            box-shadow: 0 16px 44px rgba(var(--gold-rgb), 0.20);
+        }
+
+        .rule-items,
+        .penalty-list {
+            position: relative;
+            z-index: 2;
+            margin-top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(.2, .9, .25, 1), opacity 0.4s ease, margin-top 0.5s ease;
+        }
+
+        .rule-card.open .rule-items,
+        .rule-card.open .penalty-list {
+            opacity: 1;
+            margin-top: 16px;
+        }
+
+        .rule-item {
+            display: flex;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            background: rgba(var(--gold-rgb), 0.045);
+            border: 1px solid var(--line);
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .rule-item.in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .rule-item b {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            background: rgba(var(--gold-rgb), 0.15);
+            color: var(--gold);
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1px;
+        }
+
+        .rule-item p {
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: var(--ink-dim);
+        }
+
+        .rule-item p em {
             color: var(--gold-pale);
+            font-style: normal;
+            font-weight: 600;
         }
 
-        .tl-current-tag {
-            font-size: 9px;
+        .rule-item.pinned {
+            border-color: rgba(var(--gold-rgb), 0.4);
+            background: rgba(var(--gold-rgb), 0.09);
+        }
+
+        /* ============ SCORING TABLE (chapter 03) ============ */
+        .score-table-wrap {
+            margin-top: 6px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+        }
+
+        table.score-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .score-table th {
+            background: var(--surface-2);
+            color: var(--gold-pale);
+            text-align: left;
+            padding: 9px 12px;
+            font-size: 10.5px;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            padding: 3px 8px;
-            border-radius: 100px;
-            background: rgba(var(--live-rgb), 0.14);
-            color: var(--live);
-            font-weight: 700;
-            display: inline-flex;
+        }
+
+        .score-table td {
+            padding: 9px 12px;
+            border-top: 1px solid var(--line);
+            color: var(--ink-dim);
+        }
+
+        .score-table td.num,
+        .score-table th.num {
+            font-family: 'Space Mono', monospace;
+            color: var(--gold);
+            text-align: right;
+        }
+
+        /* ============ PENALTY LIST ============ */
+        .penalty-row {
+            display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            background: rgba(var(--gold-rgb), 0.04);
+            border: 1px solid var(--line);
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .tl-current-tag .live-blip {
-            width: 6px;
-            height: 6px;
+        .penalty-row.in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .penalty-sev {
+            flex-shrink: 0;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: var(--live);
-            animation: liveBlink 1.4s ease-in-out infinite;
         }
 
-        @keyframes liveBlink {
+        .penalty-sev.low {
+            background: #5fd97e;
+        }
+
+        .penalty-sev.mid {
+            background: var(--gold);
+            animation: sevBlink 1.6s ease-in-out infinite;
+        }
+
+        .penalty-sev.high {
+            background: var(--live);
+            animation: sevBlink 0.9s ease-in-out infinite;
+        }
+
+        @keyframes sevBlink {
 
             0%,
             100% {
@@ -2133,155 +2324,110 @@
             }
 
             50% {
-                opacity: 0.25;
+                opacity: 0.4;
             }
         }
 
-        .tl-champ-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 10px;
-            position: relative;
-            z-index: 1;
+        .penalty-text {
+            flex: 1;
+            min-width: 0;
         }
 
-        .tl-crest {
-            flex: 0 0 auto;
-            width: 42px;
-            height: 42px;
-            border-radius: 11px;
-            background: var(--surface-2);
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-        }
-
-        .tl-item.champion-season .tl-crest {
-            width: 52px;
-            height: 52px;
-            font-size: 25px;
-            border: 1px solid var(--gold-deep);
-            background: radial-gradient(circle at 35% 30%, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
-            box-shadow: 0 0 20px rgba(var(--gold-rgb), 0.5);
-        }
-
-        .tl-champ-name {
-            font-size: 15px;
-            font-weight: 700;
+        .penalty-foul {
+            font-size: 12.5px;
             color: var(--ink);
-            line-height: 1.2;
+            font-weight: 600;
         }
 
-        .tl-item.champion-season .tl-champ-name {
-            font-family: 'Anton', sans-serif;
-            font-size: 19px;
-            letter-spacing: 0.01em;
-            color: var(--gold-pale);
-        }
-
-        /* ---- Live / in-progress season (not a champion — no trophy treatment) ---- */
-        .tl-item.live-season .tl-dot {
-            background: var(--live);
-            border-color: var(--live);
-            box-shadow: 0 0 0 4px rgba(var(--live-rgb), 0.16), 0 0 14px rgba(var(--live-rgb), 0.6);
-            animation: liveDotPulse 1.4s ease-in-out infinite;
-        }
-
-        @keyframes liveDotPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 4px rgba(var(--live-rgb), 0.16), 0 0 14px rgba(var(--live-rgb), 0.6);
-            }
-
-            50% {
-                box-shadow: 0 0 0 7px rgba(var(--live-rgb), 0.08), 0 0 18px rgba(var(--live-rgb), 0.8);
-            }
-        }
-
-        .tl-item.live-season .tl-card {
-            border-style: dashed;
-            border-color: rgba(var(--live-rgb), 0.4);
-            background: var(--bg-alt);
-        }
-
-        .tl-live-icon {
-            flex: 0 0 auto;
-            width: 42px;
-            height: 42px;
-            border-radius: 11px;
-            border: 1px dashed rgba(var(--live-rgb), 0.5);
-            background: rgba(var(--live-rgb), 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .tl-item.live-season .tl-champ-name {
-            font-size: 14px;
-            color: var(--ink-dim);
-            font-weight: 700;
-        }
-
-        .tl-champ-sub {
-            margin-top: 2px;
-            font-size: 11px;
+        .penalty-action {
+            font-size: 10.5px;
             color: var(--ink-faint);
+            margin-top: 1px;
         }
 
-        .tl-item.champion-season .tl-champ-sub {
-            color: var(--ink-dim);
-        }
-
-        .champ-ribbon {
-            max-width: 62%;
+        .penalty-tag {
+            flex-shrink: 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.06em;
+            padding: 4px 8px;
+            border-radius: 100px;
+            text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .tl-stat-row {
-            margin-top: 12px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
+        .penalty-tag.low {
+            background: rgba(95, 217, 126, 0.12);
+            color: #5fd97e;
         }
 
-        .tl-mini-stat {
-            font-size: 10.5px;
-            color: var(--ink-dim);
-            background: var(--bg-alt);
-            border: 1px solid var(--line);
-            border-radius: 100px;
-            padding: 4px 10px;
-        }
-
-        .tl-item.champion-season .tl-mini-stat {
+        .penalty-tag.mid {
             background: rgba(var(--gold-rgb), 0.14);
-            border-color: var(--gold-deep);
-            color: var(--gold-pale);
-        }
-
-        .tl-mini-stat b {
             color: var(--gold);
-            font-family: 'Space Mono', monospace;
         }
 
-        .tl-item.champion-season .tl-mini-stat b {
-            color: var(--gold-pale);
+        .penalty-tag.high {
+            background: rgba(var(--live-rgb), 0.14);
+            color: var(--live);
         }
 
-        .tl-blurb {
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--ink-dim);
-            line-height: 1.55;
+        /* ============ SIREN BAND ============ */
+        .siren-band {
             position: relative;
-            z-index: 1;
+            margin: 6px 20px 20px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(90deg, rgba(var(--live-rgb), 0.14), rgba(var(--live-rgb), 0.03), rgba(var(--live-rgb), 0.14));
+            background-size: 200% 100%;
+            animation: sirenSweep 3s linear infinite;
+            border: 1px solid rgba(var(--live-rgb), 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @keyframes sirenSweep {
+            to {
+                background-position: 200% 0;
+            }
+        }
+
+        .siren-icon {
+            font-size: 20px;
+            animation: sirenShake 1.2s ease-in-out infinite;
+        }
+
+        @keyframes sirenShake {
+
+            0%,
+            100% {
+                transform: rotate(0);
+            }
+
+            25% {
+                transform: rotate(-10deg);
+            }
+
+            75% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .siren-text b {
+            display: block;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            color: var(--live);
+            letter-spacing: 0.02em;
+        }
+
+        .siren-text span {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            color: var(--ink-dim);
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -2301,7 +2447,7 @@
             <div class="ignite-core"></div>
         </div>
         <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">FREE FIRE CHAMPIONSHIP</div>
+        <div class="splash-sub">THE RULEBOOK</div>
         <div class="splash-bar">
             <div class="splash-bar-fill"></div>
         </div>
@@ -2311,9 +2457,12 @@
 
     <!-- HEADER -->
     <header>
-        <div class="brand">
-            <div class="crest"></div>
-            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        <div class="header-flex">
+            
+            <div class="brand">
+                <div class="crest"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
         </div>
         <div class="header-actions">
             <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
@@ -2413,328 +2562,491 @@
         <div class="nav-links">
             <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
 
-            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+           <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
             <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
             <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
-            <a href="hall-of-fame.html" class="nav-link" aria-current="page"><span class="nav-link-icon">👑</span> Hall of Fame</a>
+            <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
             <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
-            <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+            <a href="rules.html" class="nav-link" aria-current="page"><span class="nav-link-icon">📖</span> Rules</a>
             <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
         </div>
-        <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
+        <div class="nav-drawer-foot">FREEFIREXIPL · Season 12</div>
     </nav>
 
-    <!-- PAGE HEAD -->
-    <section class="page-head">
-        <div class="eyebrow fade-up">👑 LEGACY</div>
-        <h1 class="sec-title display fade-up d1">Hall of <b>Fame</b></h1>
-        <p class="sec-desc fade-up d2">Eleven seasons, eleven champions. Every franchise that lifted the trophy and
-            wrote its name into XIPL history.</p>
-        <div class="updated-chip fade-up d3">🕒 THROUGH SEASON 11</div>
-    </section>
-
-    <!-- STAT STRIP -->
-    <section class="hof-stats fade-up d3">
-        <div class="hof-stat">
-            <div class="num">11</div>
-            <div class="lbl">Seasons</div>
-        </div>
-        <div class="hof-stat">
-            <div class="num">8</div>
-            <div class="lbl">Franchises Crowned</div>
-        </div>
-        <div class="hof-stat">
-            <div class="num">2</div>
-            <div class="lbl">Back-to-Back Titles</div>
+    <!-- INTRO -->
+    <section class="intro">
+        <div class="eyebrow fade-up">📖 OFFICIAL RULEBOOK</div>
+        <h1 class="intro-title display fade-up d1">Read It.<br>Or Get Burned.</h1>
+        <p class="intro-desc fade-up d2">Every rule that governs Season 12 — registration, Play-Ins, the auction,
+            match format, scoring, playoffs, conduct and the penalties waiting for anyone who steps out of
+            line.</p>
+        <div class="intro-stats fade-up d3">
+            <div class="intro-stat"><b>10</b><span>Chapters</span></div>
+            <div class="intro-stat"><b>49</b><span>Clauses</span></div>
+            <div class="intro-stat alert"><b>0</b><span>Mercy</span></div>
         </div>
     </section>
 
-    <!-- TIMELINE -->
-    <section class="timeline-wrap">
-        <div class="timeline-rail"></div>
-        <div class="timeline-list">
+    <!-- COUNTER STRIP -->
+    <div class="counter-strip fade-up d4">
+        <div class="counter-box"><span class="counter-num" data-count="8">0</span><span
+                class="counter-label">Franchises</span></div>
+        <div class="counter-box"><span class="counter-num" data-count="56">0</span><span
+                class="counter-label">Matches</span></div>
+        <div class="counter-box"><span class="counter-num" data-count="1">0</span><span class="counter-label">Pt Per
+                Kill</span></div>
+    </div>
 
-            <div class="tl-item live-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-season-row">
-                        <span class="tl-season">Season 11</span>
-                        <span class="tl-current-tag"><span class="live-blip"></span> Live Now</span>
+    <!-- JUMP NAV -->
+    <div class="rule-jump fade-up">
+        <a href="#gen" class="jump-chip" style="--foil:var(--gold);">General</a>
+        <a href="#playin" class="jump-chip" style="--foil:#3d6fe0;">Play-Ins</a>
+        <a href="#auction" class="jump-chip" style="--foil:#f5a623;">Auction</a>
+        <a href="#format" class="jump-chip" style="--foil:#5fd97e;">Format</a>
+        <a href="#scoring" class="jump-chip" style="--foil:#29c4a9;">Scoring</a>
+        <a href="#playoffs" class="jump-chip" style="--foil:#ff4d94;">Playoffs</a>
+        <a href="#prizes" class="jump-chip" style="--foil:#ffd23d;">Prizes</a>
+        <a href="#conduct" class="jump-chip" style="--foil:#e2394a;">Conduct</a>
+        <a href="#penalty" class="jump-chip" style="--foil:#ff4433;">Penalties</a>
+        <a href="#dispute" class="jump-chip" style="--foil:#9d5c99;">Disputes</a>
+    </div>
+
+    <!-- RULE SECTIONS -->
+    <div class="rule-list">
+
+        <!-- 01 GENERAL & ELIGIBILITY -->
+        <div class="foil-frame fade-up" id="gen" style="--foil:var(--gold);">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">📜</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 01</div>
+                        <div class="rule-title display">General &amp; Eligibility</div>
                     </div>
-                    <div class="tl-champ-row">
-                        <div class="tl-live-icon">⏳</div>
-                        <div>
-                            <div class="tl-champ-name">Trophy Not Yet Decided</div>
-                            <div class="tl-champ-sub">Group stage underway</div>
-                        </div>
-                    </div>
-                    <p class="tl-blurb">This season's story is still being written on the battleground — check the
-                        Leaderboard for live standings. This spot lights up gold the moment a champion is crowned.</p>
+                    <div class="rule-chevron">⌄</div>
                 </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 10</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">🐉</div>
-                            <div>
-                                <div class="tl-champ-name">Dragon Kings</div>
-                                <div class="tl-champ-sub">Back-to-back champions</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>91</b> pts</span>
-                            <span class="tl-mini-stat"><b>4</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Defended their crown with a dominant playoff run, sealing the title in
-                            the Grand Finale's final zone against Phantom Reapers.</p>
+                <div class="rule-items">
+                    <div class="rule-item pinned"><b>1</b>
+                        <p><em>The admin decision is final.</em> Tournament admins reserve the right to take any
+                            decision — on gameplay, penalties, disputes or eligibility — as they see fit, and no
+                            further discussion will be entertained once a ruling is made.</p>
                     </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 9</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">🐉</div>
-                            <div>
-                                <div class="tl-champ-name">Dragon Kings</div>
-                                <div class="tl-champ-sub">First title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>84</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Rode a red-hot Grand Finale to their maiden championship, breaking
-                            through after two consecutive semi-final exits.</p>
+                    <div class="rule-item"><b>2</b>
+                        <p>Minimum Free Fire level to register is <em>50</em>. Players below level 50 cannot submit a
+                            registration.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>Registration requires: real name, Free Fire IGN, Free Fire UID, Free Fire level, a profile
+                            screenshot, WhatsApp number and a payment screenshot.</p>
+                    </div>
+                    <div class="rule-item"><b>4</b>
+                        <p>Registration fee is <em>₹12 per player</em>. Pay via the official QR, upload the payment
+                            screenshot, then submit.</p>
+                    </div>
+                    <div class="rule-item"><b>5</b>
+                        <p>Every submitted registration starts as <em>Pending</em>. A player is not eligible for
+                            Play-Ins until the admin panel marks their registration <em>Approved</em>.</p>
+                    </div>
+                    <div class="rule-item"><b>6</b>
+                        <p>Only approved players appear on the Registered Players page and automatically become
+                            available for the Play-Ins.</p>
                     </div>
                 </div>
             </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 8</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">🦂</div>
-                            <div>
-                                <div class="tl-champ-name">Venom Vipers</div>
-                                <div class="tl-champ-sub">Franchise's second title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>79</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">A late playoff surge carried the Vipers past the top seed, closing the
-                            season on a six-match unbeaten streak.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 7</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">👑</div>
-                            <div>
-                                <div class="tl-champ-name">Royal Reapers</div>
-                                <div class="tl-champ-sub">Debut title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>76</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Entered the playoffs as the #4 seed and knocked out three straight
-                            top-half franchises to claim an underdog crown.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 6</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">🦂</div>
-                            <div>
-                                <div class="tl-champ-name">Venom Vipers</div>
-                                <div class="tl-champ-sub">First title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>81</b> pts</span>
-                            <span class="tl-mini-stat"><b>4</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Topped the group stage wire-to-wire and carried that form straight
-                            through to a commanding Grand Finale win.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 5</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">⚔️</div>
-                            <div>
-                                <div class="tl-champ-name">Iron Titans</div>
-                                <div class="tl-champ-sub">Franchise's second title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>73</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Won a tightly contested finale decided by elimination count after both
-                            finalists finished level on points.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 4</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">🌊</div>
-                            <div>
-                                <div class="tl-champ-name">Storm Riders</div>
-                                <div class="tl-champ-sub">Debut title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>70</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">A consistency-driven campaign — no single dominant match, but the fewest
-                            bottom-half finishes of any franchise that season.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 3</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">⚔️</div>
-                            <div>
-                                <div class="tl-champ-name">Iron Titans</div>
-                                <div class="tl-champ-sub">First title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>68</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">The franchise's inaugural championship, sealed with a dominant
-                            18-elimination performance in the deciding match.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 2</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">🛡️</div>
-                            <div>
-                                <div class="tl-champ-name">Phantom Reapers</div>
-                                <div class="tl-champ-sub">First title</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>65</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Went back-to-back in the Grand Finale's opening two matches and never
-                            relinquished the lead.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tl-item champion-season fade-up">
-                <div class="tl-node"><div class="tl-dot"></div></div>
-                <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Founding Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 1</span>
-                        </div>
-                        <div class="tl-champ-row">
-                            <div class="tl-crest">🏆</div>
-                            <div>
-                                <div class="tl-champ-name">Blaze Battalion</div>
-                                <div class="tl-champ-sub">Inaugural champions</div>
-                            </div>
-                        </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>61</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">The franchise that started it all — the very first name etched onto the
-                            XIPL trophy.</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
-    </section>
+
+        <!-- 02 PLAY-INS -->
+        <div class="foil-frame fade-up" id="playin" style="--foil:#3d6fe0;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">🎮</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 02</div>
+                        <div class="rule-title display">Play-Ins</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item"><b>1</b>
+                        <p>Play-Ins run for <em>3 days</em>, with <em>3 BR matches per day</em> — 9 matches total —
+                            open to all 40 approved players.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p>Room ID and Room Password for every match are published on the Play-Ins page, alongside
+                            the match number, day and scheduled time.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>Play-In scoring: <em>1 kill = 1 point</em>, <em>Booyah = +3 bonus points</em>. Match
+                            points = kills + Booyah bonus.</p>
+                    </div>
+                    <div class="rule-item"><b>4</b>
+                        <p>Example: 7 kills + a Booyah = <em>10 points</em> for that match.</p>
+                    </div>
+                    <div class="rule-item"><b>5</b>
+                        <p>A player's total Play-In points accumulate across all 9 matches. This total determines
+                            their minimum/base bidding price for the auction.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 03 AUCTION -->
+        <div class="foil-frame fade-up" id="auction" style="--foil:#f5a623;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">💰</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 03</div>
+                        <div class="rule-title display">Auction</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item"><b>1</b>
+                        <p>Every franchise gets a <em>₹100 crore</em> purse, controlled by that team's captain.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p>Minimum bid per player is <em>₹2 crore</em>. Bids can only be placed in even-numbered
+                            crore values — ₹2, ₹4, ₹6, ₹8 Cr and so on. Odd-numbered bids (₹3 Cr, ₹5 Cr, ₹7 Cr) are
+                            not allowed.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>Each franchise must acquire <em>exactly 5 players</em> — no more, no less.</p>
+                    </div>
+                    <div class="rule-item"><b>4</b>
+                        <p>A team cannot spend beyond its ₹100 Cr purse, cannot buy more than 5 players, and cannot
+                            place an invalid odd-numbered bid.</p>
+                    </div>
+                    <div class="rule-item"><b>5</b>
+                        <p>The purchased player receives <em>50% of the final auction bid</em> as payout. Example:
+                            a player bought for ₹50 Cr receives a ₹25 payout.</p>
+                    </div>
+                    <div class="rule-item"><b>6</b>
+                        <p>The moment a player is purchased, they're automatically assigned to that franchise —
+                            reflected on the Teams page, the player database and the leaderboard.</p>
+                    </div>
+                    <div class="rule-item"><b>7</b>
+                        <p>Franchise ownership itself can be purchased separately from the player auction — minimum
+                            ₹100, no maximum.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 04 MAIN SEASON FORMAT -->
+        <div class="foil-frame fade-up" id="format" style="--foil:#5fd97e;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">🗺️</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 04</div>
+                        <div class="rule-title display">Main Season Format</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item"><b>1</b>
+                        <p>Once the auction ends and all 8 franchises are locked, Season 12 begins.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p>Each of the 8 franchises plays <em>14 matches</em> — 56 matches across the season.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>Match results feed directly into the Points Table, Schedule page and every team's live
+                            statistics automatically.</p>
+                    </div>
+                    <div class="rule-item"><b>4</b>
+                        <p>A match must start within <em>5 minutes</em> of its scheduled time. No additional time is
+                            granted after that window closes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05 SCORING & POINTS TABLE -->
+        <div class="foil-frame fade-up" id="scoring" style="--foil:#29c4a9;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">🎯</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 05</div>
+                        <div class="rule-title display">Scoring &amp; Points Table</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item" style="display:block;">
+                        <div class="score-table-wrap">
+                            <table class="score-table">
+                                <thead>
+                                    <tr>
+                                        <th>Result</th>
+                                        <th class="num">Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Win</td>
+                                        <td class="num">2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Loss</td>
+                                        <td class="num">0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="rule-item"><b>1</b>
+                        <p>The Points Table ranks teams by total points first.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p>Ties are broken by <em>Round Difference</em> — Rounds Won minus Rounds Lost.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>The Points Table tracks Matches Played, Wins, Losses, Points, Rounds Won, Rounds Lost and
+                            Round Difference for every team.</p>
+                    </div>
+                    <div class="rule-item"><b>4</b>
+                        <p>The <em>top 5 teams</em> by this table qualify for the Playoffs.</p>
+                    </div>
+                    <div class="rule-item"><b>5</b>
+                        <p>Player statistics — kills, Booyahs and total points — feed the Leaderboard automatically
+                            as match results are entered.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06 PLAYOFFS -->
+        <div class="foil-frame fade-up" id="playoffs" style="--foil:#ff4d94;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">🏆</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 06</div>
+                        <div class="rule-title display">Playoffs</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item"><b>1</b>
+                        <p><em>Qualifier 1</em> — #1 vs #2. Winner advances straight to the Final; loser drops to
+                            Qualifier 2.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p><em>Eliminator 1</em> — #4 vs #5. Winner advances to Eliminator 2.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p><em>Eliminator 2</em> — Winner of Eliminator 1 vs #3. Winner advances to Qualifier 2.</p>
+                    </div>
+                    <div class="rule-item"><b>4</b>
+                        <p><em>Qualifier 2</em> — Winner of Eliminator 2 vs loser of Qualifier 1. Winner advances to
+                            the Final.</p>
+                    </div>
+                    <div class="rule-item"><b>5</b>
+                        <p><em>Final</em> — Winner of Qualifier 1 vs winner of Qualifier 2. The winner is crowned
+                            FREEFIREXIPL Season 12 Champion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 07 PRIZES & MVP -->
+        <div class="foil-frame fade-up" id="prizes" style="--foil:#ffd23d;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">💵</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 07</div>
+                        <div class="rule-title display">Prizes &amp; MVP</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item" style="display:block;">
+                        <div class="score-table-wrap">
+                            <table class="score-table">
+                                <thead>
+                                    <tr>
+                                        <th>Award</th>
+                                        <th class="num">Prize</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Champion</td>
+                                        <td class="num">₹600</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Runner-up</td>
+                                        <td class="num">₹300</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Season MVP</td>
+                                        <td class="num">₹100</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="rule-item"><b>1</b>
+                        <p>Total prize pool for Season 12 is <em>₹1,000+</em>.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p>Season MVP is awarded to the player with the <em>most kills</em> across the season.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>This is separate from a player's auction payout, which is calculated at 50% of their
+                            final auction bid.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 08 FAIR PLAY & CONDUCT -->
+        <div class="foil-frame fade-up" id="conduct" style="--foil:#e2394a;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">🤝</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 08</div>
+                        <div class="rule-title display">Fair Play &amp; Conduct</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item"><b>1</b>
+                        <p>Zero tolerance for hacks, macros, aimbots, or any third-party software that alters
+                            gameplay.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p>No teaming or exchanging kills with rival squads — every match is played to win.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>Exploiting map or matchmaking bugs to gain an unfair advantage is prohibited.</p>
+                    </div>
+                    <div class="rule-item"><b>4</b>
+                        <p>A match must start within <em>5 minutes</em> of the scheduled time — no exceptions once
+                            that window closes.</p>
+                    </div>
+                    <div class="rule-item"><b>5</b>
+                        <p>Harassment, hate speech or toxicity in voice or text chat is grounds for immediate
+                            review.</p>
+                    </div>
+                    <div class="rule-item"><b>6</b>
+                        <p>Organizers may require a screen-share or spectator check on any player, at any time,
+                            without prior notice.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SIREN -->
+    <div class="siren-band fade-up">
+        <div class="siren-icon">🚨</div>
+        <div class="siren-text"><b>Zero-Tolerance Notice</b><span>Confirmed cheating results in an instant
+                season-long ban for the player and a points deduction for the whole squad.</span></div>
+    </div>
+
+    <!-- 09 PENALTIES -->
+    <div class="rule-list" style="padding-top:0;">
+        <div class="foil-frame fade-up" id="penalty" style="--foil:#ff4433;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">⚖️</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 09</div>
+                        <div class="rule-title display">Penalties</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="penalty-list">
+                    <div class="penalty-row">
+                        <div class="penalty-sev low"></div>
+                        <div class="penalty-text">
+                            <div class="penalty-foul">Late lobby check-in</div>
+                            <div class="penalty-action">Warning + lobby queue priority loss</div>
+                        </div>
+                        <div class="penalty-tag low">Minor</div>
+                    </div>
+                    <div class="penalty-row">
+                        <div class="penalty-sev mid"></div>
+                        <div class="penalty-text">
+                            <div class="penalty-foul">Unregistered substitute played</div>
+                            <div class="penalty-action">Match points voided for that game</div>
+                        </div>
+                        <div class="penalty-tag mid">Moderate</div>
+                    </div>
+                    <div class="penalty-row">
+                        <div class="penalty-sev mid"></div>
+                        <div class="penalty-text">
+                            <div class="penalty-foul">Teaming with a rival squad</div>
+                            <div class="penalty-action">Full match forfeit + 10 pt deduction</div>
+                        </div>
+                        <div class="penalty-tag mid">Moderate</div>
+                    </div>
+                    <div class="penalty-row">
+                        <div class="penalty-sev high"></div>
+                        <div class="penalty-text">
+                            <div class="penalty-foul">Hacking / third-party software</div>
+                            <div class="penalty-action">Immediate season-long player ban</div>
+                        </div>
+                        <div class="penalty-tag high">Severe</div>
+                    </div>
+                    <div class="penalty-row">
+                        <div class="penalty-sev high"></div>
+                        <div class="penalty-text">
+                            <div class="penalty-foul">Match fixing or bribery</div>
+                            <div class="penalty-action">Franchise disqualified from Season 12</div>
+                        </div>
+                        <div class="penalty-tag high">Severe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10 DISPUTES -->
+        <div class="foil-frame fade-up" id="dispute" style="--foil:#9d5c99;">
+            <div class="rule-card">
+                <div class="rule-head">
+                    <div class="rule-icon">🛡️</div>
+                    <div class="rule-head-text">
+                        <div class="rule-num">CHAPTER 10</div>
+                        <div class="rule-title display">Disputes &amp; Appeals</div>
+                    </div>
+                    <div class="rule-chevron">⌄</div>
+                </div>
+                <div class="rule-items">
+                    <div class="rule-item"><b>1</b>
+                        <p>Disputes must be filed via the official Discord within <em>1 hour</em> of the match
+                            ending.</p>
+                    </div>
+                    <div class="rule-item"><b>2</b>
+                        <p>The admin panel reviews recorded footage and match logs within 24 hours. Their decision
+                            is <em>final and binding</em>.</p>
+                    </div>
+                    <div class="rule-item"><b>3</b>
+                        <p>Franchises may appeal a ban once per season with supporting evidence, reviewed by a
+                            neutral panel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="cta-band fade-up" style="margin:32px 20px 0;">
-        <h3 class="display">WRITE THE NEXT CHAPTER</h3>
-        <p>Season 11 is still being decided — follow the live standings as the story unfolds.</p>
-        <a class="btn btn-primary" href="leaderboard.html" style="display:block; text-decoration:none;">View
-            Leaderboard</a>
+        <h3 class="display">KNOW THE RULES. OWN THE ARENA.</h3>
+        <p>Every squad agrees to this rulebook the moment they register. Check the schedule and see who you're up
+            against first.</p>
+        <a class="btn btn-primary" href="schedule.html" style="display:block; text-decoration:none;">View Full
+            Schedule</a>
     </div>
 
     <!-- FOOTER -->
@@ -2743,7 +3055,7 @@
             <div class="crest" style="width:26px;height:26px;"></div>
             <div class="brand-text">FREEFIRE<b>XIPL</b></div>
         </div>
-        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch
+        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 12 — fixtures, standings and every clutch
             moment of
             the season.</p>
         <div class="foot-social">
@@ -2928,6 +3240,67 @@ if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
+    </script>
+    <script>
+        // ====== RULEBOOK CHAPTER ACCORDION (each card toggles independently) ======
+        document.querySelectorAll('.rule-card').forEach(card => {
+            const head = card.querySelector('.rule-head');
+            const body = card.querySelector('.rule-items, .penalty-list');
+            if (!head || !body) return;
+
+            function revealItems() {
+                const items = body.querySelectorAll('.rule-item, .penalty-row');
+                items.forEach((it, i) => {
+                    it.classList.remove('in');
+                    setTimeout(() => it.classList.add('in'), i * 70);
+                });
+            }
+
+            head.addEventListener('click', () => {
+                const opening = !card.classList.contains('open');
+                if (opening) {
+                    card.classList.add('open');
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                    revealItems();
+                } else {
+                    card.classList.remove('open');
+                    body.style.maxHeight = '0px';
+                }
+            });
+        });
+
+        // ====== ANIMATED COUNTERS ======
+        const counters = document.querySelectorAll('.counter-num');
+        const counterIo = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (!en.isIntersecting) return;
+                const el = en.target;
+                const target = parseInt(el.dataset.count, 10);
+                const duration = 1100;
+                const start = performance.now();
+                function tick(now) {
+                    const p = Math.min(1, (now - start) / duration);
+                    const eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = Math.round(eased * target);
+                    if (p < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+                counterIo.unobserve(el);
+            });
+        }, { threshold: 0.4 });
+        counters.forEach(c => counterIo.observe(c));
+
+        // ====== JUMP CHIPS: smooth scroll with offset for sticky header ======
+        document.querySelectorAll('.jump-chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetEl = document.querySelector(chip.getAttribute('href'));
+                if (targetEl) {
+                    const y = targetEl.getBoundingClientRect().top + window.scrollY - 66;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            });
+        });
     </script>
 </body>
 

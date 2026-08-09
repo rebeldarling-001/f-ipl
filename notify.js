@@ -22,10 +22,11 @@
        right away, on any check.
      - The SAME notice re-appears every RESHOW_DAYS days as a reminder,
        even if it was dismissed before.
-     - The popup cannot be dismissed manually — no ✕, no click-outside, no
-       Esc key. It closes on its own after AUTO_CLOSE_MS, guaranteed.
-       If a notice has a link+linkText, that link still works as a normal
-       clickable action (it navigates away, it's not a "close").
+     - A visible countdown ("Closing in 10...", "9...", etc.) replaces the
+       old "tap outside to dismiss" line, and counts down for AUTO_CLOSE_MS.
+     - When there's no link, an "Okay, Got It" button lets people close it
+       early. Either way, it always closes on its own once the countdown
+       reaches zero.
    ========================================================================= */
 
 (function () {
@@ -96,22 +97,39 @@
                 <div class="notify-footer">
                     ${hasLink
                 ? `<a href="${notice.link}" class="notify-cta">${notice.linkText}</a>`
-                : ``}
+                : `<button class="notify-cta" data-dismiss>Okay, Got It</button>`}
+                    <div class="notify-timer" aria-live="polite"></div>
                 </div>
             </div>
         `;
         document.body.appendChild(overlay);
 
+        const timerEl = overlay.querySelector('.notify-timer');
+        let secondsLeft = Math.round(AUTO_CLOSE_MS / 1000);
+        function renderTimer() {
+            if (timerEl) timerEl.textContent = secondsLeft > 0 ? `Closing in ${secondsLeft}...` : 'Closing...';
+        }
+        renderTimer();
+        const countdownInterval = setInterval(() => {
+            secondsLeft -= 1;
+            renderTimer();
+            if (secondsLeft <= 0) clearInterval(countdownInterval);
+        }, 1000);
+
         function close() {
             overlay.classList.remove('show');
             setTimeout(() => overlay.remove(), 450);
             if (activeOverlay === overlay) activeOverlay = null;
+            clearInterval(countdownInterval);
+            clearTimeout(autoCloseTimer);
         }
+
+        overlay.querySelectorAll('[data-dismiss]').forEach(el => el.addEventListener('click', close));
 
         requestAnimationFrame(() => overlay.classList.add('show'));
         setSeenState({ lastId: notice.id, lastShownAt: Date.now() });
 
-        // Auto-close after AUTO_CLOSE_MS if the user hasn't dismissed it already
+        // Auto-close after exactly AUTO_CLOSE_MS — happens either way, "Okay, Got It" just closes early
         const autoCloseTimer = setTimeout(close, AUTO_CLOSE_MS);
     }
 
