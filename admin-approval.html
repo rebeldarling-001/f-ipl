@@ -17,18 +17,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Player Registration — FREEFIRE XIPL Season 12</title>
-    <meta name="description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
-    <meta property="og:title" content="Player Registration — FREEFIRE XIPL Season 12">
-    <meta property="og:description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
-    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
-    <meta name="robots" content="index, follow">
+    <title>Admin Approval — FREEFIRE XIPL Season 12</title>
+    <meta name="description" content="FREEFIRE XIPL Season 12 admin panel — review and approve or reject player registrations.">
+    <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#0a0a0a">
-    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
+    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/admin-approval.html">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1895,89 +1888,67 @@
         }
     </style>
     <style>
-        /* ============ REG HERO ============ */
-        .reghero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
-        .reghero::before {
-            content: ''; position: absolute; inset: 0;
-            background-image: linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
-            background-size: 26px 26px;
-            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
-        }
-        .reghero-title {
-            position: relative; margin-top: 12px; font-size: 34px; line-height: 1;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-        }
-        .reghero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
-
-        .fee-strip { display: flex; gap: 10px; padding: 0 20px; margin-top: 18px; }
-        .fee-box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; text-align: center; }
-        .fee-box b { display: block; font-family: 'Anton', sans-serif; font-size: 19px; color: var(--gold); }
-        .fee-box span { display: block; margin-top: 4px; font-size: 8.5px; letter-spacing: 0.09em; color: var(--ink-faint); text-transform: uppercase; }
-
-        /* ============ LEVEL GATE ============ */
-        .level-gate {
-            margin: 18px 20px 0; padding: 14px 16px; border-radius: 16px;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
-            background: rgba(var(--live-rgb), 0.08);
-            display: none; align-items: center; gap: 10px;
-        }
-        .level-gate.show { display: flex; }
-        .level-gate .ico { font-size: 18px; flex-shrink: 0; }
-        .level-gate .txt { font-size: 12px; line-height: 1.45; color: var(--ink); }
-        .level-gate .txt b { color: var(--live); }
-
-        /* ============ FORM ============ */
-        .reg-form { display: flex; flex-direction: column; gap: 16px; padding: 22px 20px 6px; }
-        .f-group { display: flex; flex-direction: column; gap: 6px; }
-        .f-label { font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); text-transform: uppercase; display: flex; justify-content: space-between; }
-        .f-label .req { color: var(--live); }
-        .f-input, .f-select {
-            width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line);
-            background: var(--surface); color: var(--ink); font-size: 14px; font-family: inherit;
-            -webkit-appearance: none; appearance: none;
-        }
-        .f-input:focus, .f-select:focus { outline: none; border-color: var(--gold-deep); box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.12); }
-        .f-hint { font-size: 10.5px; color: var(--ink-faint); }
-        .f-hint.err { color: var(--live); }
-
-        .upload-box {
-            border: 1.5px dashed var(--line); border-radius: 14px; padding: 18px 14px; text-align: center;
-            background: var(--surface); cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease;
-            position: relative; overflow: hidden;
-        }
-        .upload-box.has-file { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.06); }
-        .upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .upload-ico { font-size: 22px; }
-        .upload-txt { margin-top: 6px; font-size: 11.5px; color: var(--ink-dim); }
-        .upload-txt b { color: var(--gold-pale); }
-        .upload-filename { margin-top: 6px; font-size: 10.5px; color: var(--gold-pale); font-family: 'Space Mono', monospace; word-break: break-all; }
-
-        /* ============ QR / PAYMENT ============ */
-        .pay-card {
-            margin: 6px 20px 0; padding: 22px 18px 20px; border-radius: 20px; text-align: center;
+        /* ============ LOGIN GATE ============ */
+        .login-wrap { min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+        .login-card {
+            width: 100%; max-width: 340px; padding: 28px 22px; border-radius: 22px; text-align: center;
             background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.14), transparent 62%), var(--surface);
             border: 1px solid var(--line);
         }
-        .pay-amt { font-family: 'Anton', sans-serif; font-size: 30px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .pay-sub { margin-top: 4px; font-size: 11px; color: var(--ink-faint); }
-        .qr-wrap { width: 168px; height: 168px; margin: 16px auto 0; border-radius: 16px; background: #fff; padding: 10px; display: flex; align-items: center; justify-content: center; }
-        .qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
-        .pay-link { display: inline-block; margin-top: 14px; font-size: 11.5px; color: var(--gold-pale); text-decoration: none; border-bottom: 1px dashed var(--gold-deep); padding-bottom: 1px; }
+        .login-ico { font-size: 30px; }
+        .login-title { margin-top: 10px; font-family: 'Anton', sans-serif; font-size: 22px; color: var(--gold-pale); }
+        .login-sub { margin-top: 6px; font-size: 12px; color: var(--ink-dim); }
+        .login-card .f-group { text-align: left; margin-top: 16px; }
+        .login-msg { margin-top: 12px; font-size: 12px; color: var(--live); min-height: 16px; }
 
-        /* ============ SUBMIT / STATUS ============ */
-        .reg-submit-btn { width: 100%; margin-top: 4px; }
-        .reg-submit-btn:disabled { opacity: 0.5; pointer-events: none; }
-        .form-msg { margin: 10px 20px 0; padding: 12px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5; display: none; }
-        .form-msg.show { display: block; }
-        .form-msg.ok { background: rgba(95, 217, 126, 0.12); border: 1px solid rgba(95, 217, 126, 0.35); color: #5fd97e; }
-        .form-msg.bad { background: rgba(var(--live-rgb), 0.12); border: 1px solid rgba(var(--live-rgb), 0.35); color: var(--live); }
+        /* ============ ADMIN SHELL ============ */
+        .admin-hidden { display: none !important; }
+        .admin-hero { padding: 26px 20px 6px; }
+        .admin-title { font-family: 'Anton', sans-serif; font-size: 26px; color: var(--ink); }
+        .admin-title b { color: var(--gold); }
+        .admin-who { margin-top: 4px; font-size: 11.5px; color: var(--ink-faint); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .logout-btn { all: unset; cursor: pointer; color: var(--gold-pale); font-size: 11px; border-bottom: 1px dashed var(--gold-deep); padding-bottom: 1px; }
 
-        .flow-strip { display: flex; align-items: center; gap: 6px; padding: 0 20px; margin-top: 22px; overflow-x: auto; }
-        .flow-strip::-webkit-scrollbar { display: none; }
-        .flow-step { flex-shrink: 0; font-size: 9.5px; letter-spacing: 0.06em; padding: 7px 11px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-faint); background: var(--surface); white-space: nowrap; }
-        .flow-step.now { border-color: var(--gold-deep); color: var(--gold-pale); background: rgba(var(--gold-rgb), 0.1); }
-        .flow-arrow { color: var(--ink-faint); font-size: 11px; flex-shrink: 0; }
+        .admin-tabs { display: flex; gap: 8px; padding: 16px 20px 0; }
+        .admin-tab {
+            flex: 1; text-align: center; padding: 10px 6px; border-radius: 12px; border: 1px solid var(--line);
+            background: var(--surface); font-size: 11.5px; letter-spacing: 0.04em; color: var(--ink-dim); cursor: pointer;
+            display: flex; flex-direction: column; gap: 2px;
+        }
+        .admin-tab b { font-family: 'Anton', sans-serif; font-size: 16px; color: var(--ink); }
+        .admin-tab.active { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.1); color: var(--gold-pale); }
+        .admin-tab.active b { color: var(--gold); }
+
+        .admin-search { padding: 14px 20px 0; }
+
+        .player-list { display: flex; flex-direction: column; gap: 12px; padding: 16px 20px 6px; }
+        .player-card { border-radius: 18px; border: 1px solid var(--line); background: var(--surface); padding: 16px; }
+        .pc-head { display: flex; align-items: center; gap: 10px; }
+        .pc-avatar { width: 40px; height: 40px; border-radius: 12px; background: rgba(var(--gold-rgb), 0.12); display: flex; align-items: center; justify-content: center; font-family: 'Anton', sans-serif; font-size: 15px; color: var(--gold-pale); flex-shrink: 0; }
+        .pc-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+        .pc-ign { font-size: 11px; color: var(--ink-faint); margin-top: 1px; }
+        .pc-status { margin-left: auto; font-size: 9px; letter-spacing: 0.08em; padding: 4px 9px; border-radius: 100px; text-transform: uppercase; white-space: nowrap; }
+        .pc-status.pending { background: rgba(var(--gold-rgb), 0.12); color: var(--gold-pale); border: 1px solid var(--gold-deep); }
+        .pc-status.approved { background: rgba(95, 217, 126, 0.12); color: #5fd97e; }
+        .pc-status.rejected { background: rgba(var(--live-rgb), 0.12); color: var(--live); }
+
+        .pc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; font-size: 11px; }
+        .pc-field { background: rgba(var(--gold-rgb), 0.04); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+        .pc-field span { display: block; font-size: 8.5px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+        .pc-field b { display: block; margin-top: 2px; color: var(--ink); font-family: 'Space Mono', monospace; font-size: 11.5px; word-break: break-word; }
+
+        .pc-shots { display: flex; gap: 8px; margin-top: 10px; }
+        .pc-shot { flex: 1; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); position: relative; }
+        .pc-shot img { width: 100%; height: 84px; object-fit: cover; display: block; }
+        .pc-shot span { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); font-size: 8.5px; letter-spacing: 0.05em; color: #fff; padding: 3px 6px; text-transform: uppercase; }
+
+        .pc-actions { display: flex; gap: 8px; margin-top: 12px; }
+        .pc-btn { flex: 1; padding: 10px 0; border-radius: 10px; border: none; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+        .pc-btn.approve { background: linear-gradient(135deg, #7fe89b, #5fd97e); color: #06170f; }
+        .pc-btn.reject { background: rgba(var(--live-rgb), 0.14); color: var(--live); border: 1px solid rgba(var(--live-rgb), 0.35); }
+        .pc-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--ink-faint); font-size: 12.5px; }
 
         /* legacy intro rules below kept for other pages, unused here */
         .intro {
@@ -2532,7 +2503,7 @@
             <div class="ignite-core"></div>
         </div>
         <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">PLAYER REGISTRATION</div>
+        <div class="splash-sub">ADMIN PANEL</div>
         <div class="splash-bar">
             <div class="splash-bar-fill"></div>
         </div>
@@ -2648,7 +2619,7 @@
             <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
 
            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link" aria-current="page"><span class="nav-link-icon">👤</span> Registration
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
@@ -2663,97 +2634,45 @@
     </nav>
 
 
-    <!-- REG HERO -->
-    <section class="reghero">
-        <div class="eyebrow fade-up">👤 SEASON 12 · PLAY-INS</div>
-        <h1 class="reghero-title display fade-up d1">Register For<br>The Play-Ins</h1>
-        <p class="reghero-desc fade-up d2">Fill in your details, pay the entry fee and upload your screenshots. Your registration goes to the admin panel for approval before you're eligible for the Play-Ins.</p>
-        <div class="fee-strip fade-up d3">
-            <div class="fee-box"><b>₹12</b><span>Entry Fee</span></div>
-            <div class="fee-box"><b>Lvl 50+</b><span>Minimum Level</span></div>
-            <div class="fee-box"><b>9</b><span>Play-In Matches</span></div>
+    <!-- LOGIN GATE -->
+    <div class="login-wrap" id="loginWrap">
+        <div class="login-card fade-up">
+            <div class="login-ico">🔒</div>
+            <div class="login-title">Admin Login</div>
+            <div class="login-sub">Sign in with your FREEFIREXIPL admin account to review registrations.</div>
+            <form id="loginForm">
+                <div class="f-group"><input class="f-input" type="email" id="adminEmail" placeholder="Admin email" required autocomplete="username"></div>
+                <div class="f-group" style="margin-top:10px;"><input class="f-input" type="password" id="adminPass" placeholder="Password" required autocomplete="current-password"></div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:16px;" id="loginBtn">Sign In</button>
+                <div class="login-msg" id="loginMsg"></div>
+            </form>
         </div>
-        <div class="flow-strip fade-up d4">
-            <span class="flow-step now">1. REGISTER</span><span class="flow-arrow">→</span>
-            <span class="flow-step">2. APPROVAL</span><span class="flow-arrow">→</span>
-            <span class="flow-step">3. PLAY-INS</span><span class="flow-arrow">→</span>
-            <span class="flow-step">4. AUCTION</span><span class="flow-arrow">→</span>
-            <span class="flow-step">5. TEAM</span>
-        </div>
-    </section>
-
-    <!-- LEVEL GATE WARNING -->
-    <div class="level-gate" id="levelGate">
-        <div class="ico">⚠️</div>
-        <div class="txt"><b>Minimum Free Fire Level is 50.</b> You cannot register below Level 50.</div>
     </div>
 
-    <!-- REGISTRATION FORM -->
-    <form class="reg-form fade-up" id="regForm" novalidate>
-        <div class="f-group">
-            <label class="f-label" for="realName">Real Name <span class="req">*</span></label>
-            <input class="f-input" type="text" id="realName" name="realName" placeholder="Your full name" required>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label" for="ign">Free Fire IGN <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ign" name="ign" placeholder="In-game name" required>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label" for="ffUid">Free Fire UID <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ffUid" name="ffUid" inputmode="numeric" placeholder="e.g. 123456789" required>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label" for="ffLevel">Free Fire Level <span class="req">*</span></label>
-            <input class="f-input" type="number" id="ffLevel" name="ffLevel" min="1" max="90" placeholder="e.g. 62" required>
-            <span class="f-hint" id="levelHint">Minimum level to register is 50.</span>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label" for="whatsapp">WhatsApp Number <span class="req">*</span></label>
-            <input class="f-input" type="tel" id="whatsapp" name="whatsapp" placeholder="+91 XXXXX XXXXX" required>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label">Free Fire Profile Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="profileBox">
-                <input type="file" id="profileShot" name="profileShot" accept="image/*" required>
-                <div class="upload-ico">🖼️</div>
-                <div class="upload-txt"><b>Tap to upload</b> your in-game profile screenshot</div>
-                <div class="upload-filename" id="profileFileName"></div>
+    <!-- ADMIN DASHBOARD (hidden until authenticated) -->
+    <div id="adminShell" class="admin-hidden">
+        <section class="admin-hero">
+            <div class="eyebrow fade-up">🛡️ ADMIN PANEL</div>
+            <h1 class="admin-title display fade-up d1">Registration <b>Approvals</b></h1>
+            <div class="admin-who fade-up d2">
+                <span id="whoami">Signed in</span>
+                <button class="logout-btn" id="logoutBtn">Sign out</button>
             </div>
+        </section>
+
+        <div class="admin-tabs fade-up">
+            <div class="admin-tab active" data-status="pending"><b id="countPending">0</b>Pending</div>
+            <div class="admin-tab" data-status="approved"><b id="countApproved">0</b>Approved</div>
+            <div class="admin-tab" data-status="rejected"><b id="countRejected">0</b>Rejected</div>
         </div>
 
-        <!-- PAYMENT -->
-        <div class="pay-card">
-            <div class="pay-amt display">₹12</div>
-            <div class="pay-sub">Scan, pay, upload the screenshot below</div>
-            <div class="qr-wrap">
-                <img src="payment-qr.png" alt="FREEFIREXIPL payment QR code" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-size:11px;color:#888;&quot;>QR image not found<br>(payment-qr.png)</span>'">
-            </div>
-            <a class="pay-link" id="upiLink" href="upi://pay?pa=ffxipl@upi&pn=FREEFIREXIPL&am=12&cu=INR&tn=Season12Registration">Or pay via UPI app →</a>
+        <div class="admin-search fade-up">
+            <input class="f-input" type="text" id="searchInput" placeholder="Search by name, IGN or UID…">
         </div>
 
-        <div class="f-group">
-            <label class="f-label">Payment Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="paymentBox">
-                <input type="file" id="paymentShot" name="paymentShot" accept="image/*" required>
-                <div class="upload-ico">🧾</div>
-                <div class="upload-txt"><b>Tap to upload</b> your ₹12 payment confirmation</div>
-                <div class="upload-filename" id="paymentFileName"></div>
-            </div>
+        <div class="player-list" id="playerList">
+            <div class="empty-state" id="loadingState">Loading registrations…</div>
         </div>
-
-        <button type="submit" class="btn btn-primary reg-submit-btn" id="submitBtn">Submit Registration →</button>
-        <div class="form-msg" id="formMsg"></div>
-    </form>
-
-    <div class="cta-band fade-up" style="margin:8px 20px 0;">
-        <h3 class="display">ALREADY REGISTERED?</h3>
-        <p>Check the Registered Players page to see if your registration has been approved yet.</p>
-        <a class="btn btn-primary" href="players.html" style="display:block; text-decoration:none;">View Registered Players</a>
     </div>
 
     <!-- FOOTER -->
@@ -2950,15 +2869,11 @@ if (backToTopBtn) {
     </script>
     <script>
         // ====================================================================
-        // FREEFIREXIPL — SUPABASE CONFIG
-        // Fill these in with your project's values (Project Settings > API).
-        // Table + bucket names are prefixed "ffxipl_" / "ffxipl-" on purpose
-        // so this project never collides with other Supabase projects.
+        // FREEFIREXIPL — SUPABASE CONFIG (same project as registration-center.html)
         // ====================================================================
-         const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+        const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
         const FFXIPL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
         const FFXIPL_SEASON_NUMBER = 12;
-        const FFXIPL_BUCKET = 'ffxipl-uploads';
 
         let ffxiplClient = null;
         try {
@@ -2967,124 +2882,191 @@ if (backToTopBtn) {
             }
         } catch (e) { console.warn('Supabase client not initialized:', e); }
 
-        // ---------- Level gate (min level 50) ----------
-        const levelInput = document.getElementById('ffLevel');
-        const levelGate = document.getElementById('levelGate');
-        const levelHint = document.getElementById('levelHint');
-        const submitBtn = document.getElementById('submitBtn');
+        const loginWrap = document.getElementById('loginWrap');
+        const adminShell = document.getElementById('adminShell');
+        const loginForm = document.getElementById('loginForm');
+        const loginMsg = document.getElementById('loginMsg');
+        const loginBtn = document.getElementById('loginBtn');
+        const whoami = document.getElementById('whoami');
+        const playerList = document.getElementById('playerList');
+        const loadingState = document.getElementById('loadingState');
+        const searchInput = document.getElementById('searchInput');
+        const tabs = document.querySelectorAll('.admin-tab');
 
-        function checkLevel() {
-            const v = parseInt(levelInput.value, 10);
-            const invalid = levelInput.value !== '' && (isNaN(v) || v < 50);
-            levelGate.classList.toggle('show', invalid);
-            levelHint.classList.toggle('err', invalid);
-            levelHint.textContent = invalid
-                ? 'Minimum Free Fire Level is 50. You cannot register below Level 50.'
-                : 'Minimum level to register is 50.';
-            return !invalid && levelInput.value !== '';
-        }
-        levelInput.addEventListener('input', checkLevel);
+        let currentStatus = 'pending';
+        let allPlayersCache = { pending: [], approved: [], rejected: [] };
 
-        // ---------- File upload previews ----------
-        function wireUpload(inputId, boxId, nameId) {
-            const input = document.getElementById(inputId);
-            const box = document.getElementById(boxId);
-            const nameEl = document.getElementById(nameId);
-            input.addEventListener('change', () => {
-                if (input.files && input.files[0]) {
-                    box.classList.add('has-file');
-                    nameEl.textContent = '✓ ' + input.files[0].name;
+        // ---------- Auth ----------
+        async function checkAdminSession() {
+            if (!ffxiplClient) {
+                loginMsg.textContent = 'This page isn\u2019t connected to Supabase yet — add your project URL and anon key in the script config.';
+                return;
+            }
+            const { data: { session } } = await ffxiplClient.auth.getSession();
+            if (session) {
+                const isAdmin = await verifyAdmin(session.user.id);
+                if (isAdmin) {
+                    whoami.textContent = 'Signed in as ' + session.user.email;
+                    loginWrap.classList.add('admin-hidden');
+                    adminShell.classList.remove('admin-hidden');
+                    loadAllPlayers();
                 } else {
-                    box.classList.remove('has-file');
-                    nameEl.textContent = '';
+                    loginMsg.textContent = 'This account is not registered as an FFXIPL admin.';
+                    await ffxiplClient.auth.signOut();
                 }
+            }
+        }
+
+        async function verifyAdmin(userId) {
+            const { data, error } = await ffxiplClient.from('ffxipl_admins').select('id').eq('id', userId).maybeSingle();
+            return !error && !!data;
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!ffxiplClient) { loginMsg.textContent = 'Supabase is not configured on this page yet.'; return; }
+            loginBtn.disabled = true; loginBtn.textContent = 'Signing in…';
+            loginMsg.textContent = '';
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPass').value;
+            const { data, error } = await ffxiplClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                loginMsg.textContent = error.message;
+            } else {
+                const isAdmin = await verifyAdmin(data.user.id);
+                if (!isAdmin) {
+                    loginMsg.textContent = 'This account is not registered as an FFXIPL admin.';
+                    await ffxiplClient.auth.signOut();
+                } else {
+                    whoami.textContent = 'Signed in as ' + data.user.email;
+                    loginWrap.classList.add('admin-hidden');
+                    adminShell.classList.remove('admin-hidden');
+                    loadAllPlayers();
+                }
+            }
+            loginBtn.disabled = false; loginBtn.textContent = 'Sign In';
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            if (ffxiplClient) await ffxiplClient.auth.signOut();
+            adminShell.classList.add('admin-hidden');
+            loginWrap.classList.remove('admin-hidden');
+        });
+
+        // ---------- Data ----------
+        async function loadAllPlayers() {
+            loadingState.textContent = 'Loading registrations…';
+            const { data, error } = await ffxiplClient
+                .from('ffxipl_players')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                loadingState.textContent = 'Error loading registrations: ' + error.message;
+                return;
+            }
+
+            allPlayersCache = { pending: [], approved: [], rejected: [] };
+            (data || []).forEach(p => { if (allPlayersCache[p.status]) allPlayersCache[p.status].push(p); });
+
+            document.getElementById('countPending').textContent = allPlayersCache.pending.length;
+            document.getElementById('countApproved').textContent = allPlayersCache.approved.length;
+            document.getElementById('countRejected').textContent = allPlayersCache.rejected.length;
+
+            renderList();
+        }
+
+        function renderList() {
+            const query = searchInput.value.trim().toLowerCase();
+            let list = allPlayersCache[currentStatus] || [];
+            if (query) {
+                list = list.filter(p =>
+                    (p.real_name || '').toLowerCase().includes(query) ||
+                    (p.ign || '').toLowerCase().includes(query) ||
+                    (p.ff_uid || '').toLowerCase().includes(query)
+                );
+            }
+
+            if (list.length === 0) {
+                playerList.innerHTML = '<div class="empty-state">No ' + currentStatus + ' registrations found.</div>';
+                return;
+            }
+
+            playerList.innerHTML = list.map(p => renderCard(p)).join('');
+
+            list.forEach(p => {
+                const approveBtn = document.getElementById('approve-' + p.id);
+                const rejectBtn = document.getElementById('reject-' + p.id);
+                if (approveBtn) approveBtn.addEventListener('click', () => updateStatus(p.id, 'approved'));
+                if (rejectBtn) rejectBtn.addEventListener('click', () => updateStatus(p.id, 'rejected'));
             });
         }
-        wireUpload('profileShot', 'profileBox', 'profileFileName');
-        wireUpload('paymentShot', 'paymentBox', 'paymentFileName');
 
-        // ---------- Form message helper ----------
-        const formMsg = document.getElementById('formMsg');
-        function showMsg(text, ok) {
-            formMsg.textContent = text;
-            formMsg.className = 'form-msg show ' + (ok ? 'ok' : 'bad');
+        function renderCard(p) {
+            const initials = (p.ign || p.real_name || '?').slice(0, 2).toUpperCase();
+            const actions = p.status === 'pending'
+                ? `<div class="pc-actions">
+                     <button class="pc-btn approve" id="approve-${p.id}">✓ Approve</button>
+                     <button class="pc-btn reject" id="reject-${p.id}">✕ Reject</button>
+                   </div>`
+                : `<div class="pc-actions">
+                     <button class="pc-btn approve" id="approve-${p.id}" ${p.status === 'approved' ? 'disabled' : ''}>${p.status === 'approved' ? '✓ Approved' : 'Approve'}</button>
+                     <button class="pc-btn reject" id="reject-${p.id}" ${p.status === 'rejected' ? 'disabled' : ''}>${p.status === 'rejected' ? '✕ Rejected' : 'Reject'}</button>
+                   </div>`;
+
+            return `
+            <div class="player-card">
+                <div class="pc-head">
+                    <div class="pc-avatar">${initials}</div>
+                    <div>
+                        <div class="pc-name">${escapeHtml(p.real_name)}</div>
+                        <div class="pc-ign">${escapeHtml(p.ign)}</div>
+                    </div>
+                    <div class="pc-status ${p.status}">${p.status}</div>
+                </div>
+                <div class="pc-grid">
+                    <div class="pc-field"><span>UID</span><b>${escapeHtml(p.ff_uid)}</b></div>
+                    <div class="pc-field"><span>Level</span><b>${p.ff_level}</b></div>
+                    <div class="pc-field"><span>WhatsApp</span><b>${escapeHtml(p.whatsapp)}</b></div>
+                    <div class="pc-field"><span>Submitted</span><b>${new Date(p.created_at).toLocaleDateString()}</b></div>
+                </div>
+                <div class="pc-shots">
+                    <a class="pc-shot" href="${p.profile_screenshot_url}" target="_blank" rel="noopener">
+                        <img src="${p.profile_screenshot_url}" alt="Profile screenshot" loading="lazy"><span>Profile</span>
+                    </a>
+                    <a class="pc-shot" href="${p.payment_screenshot_url}" target="_blank" rel="noopener">
+                        <img src="${p.payment_screenshot_url}" alt="Payment screenshot" loading="lazy"><span>Payment</span>
+                    </a>
+                </div>
+                ${actions}
+            </div>`;
         }
 
-        // ---------- Upload one file to Supabase Storage, return public URL ----------
-        async function ffxiplUploadFile(client, file, folder) {
-            const ext = file.name.split('.').pop();
-            const path = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-            const { error } = await client.storage.from(FFXIPL_BUCKET).upload(path, file, { upsert: false });
-            if (error) throw error;
-            const { data } = client.storage.from(FFXIPL_BUCKET).getPublicUrl(path);
-            return data.publicUrl;
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
         }
 
-        // ---------- Submit ----------
-        document.getElementById('regForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formMsg.classList.remove('show');
+        async function updateStatus(playerId, newStatus) {
+            const { error } = await ffxiplClient
+                .from('ffxipl_players')
+                .update({ status: newStatus, approved_at: newStatus === 'approved' ? new Date().toISOString() : null })
+                .eq('id', playerId);
+            if (error) { alert('Update failed: ' + error.message); return; }
+            await loadAllPlayers();
+        }
 
-            if (!checkLevel()) {
-                showMsg('Minimum Free Fire Level is 50. You cannot register below Level 50.', false);
-                levelInput.focus();
-                return;
-            }
-
-            const realName = document.getElementById('realName').value.trim();
-            const ign = document.getElementById('ign').value.trim();
-            const ffUid = document.getElementById('ffUid').value.trim();
-            const ffLevel = parseInt(levelInput.value, 10);
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const profileFile = document.getElementById('profileShot').files[0];
-            const paymentFile = document.getElementById('paymentShot').files[0];
-
-            if (!realName || !ign || !ffUid || !whatsapp || !profileFile || !paymentFile) {
-                showMsg('Please fill in every field and upload both screenshots.', false);
-                return;
-            }
-
-            if (!ffxiplClient) {
-                showMsg('Registration form is ready, but this page isn\u2019t connected to Supabase yet \u2014 add your project URL and anon key in the script config to go live.', false);
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting…';
-
-            try {
-                const profileUrl = await ffxiplUploadFile(ffxiplClient, profileFile, 'profile-screenshots');
-                const paymentUrl = await ffxiplUploadFile(ffxiplClient, paymentFile, 'payment-screenshots');
-
-                const { error } = await ffxiplClient.from('ffxipl_players').insert([{
-                    season_number: FFXIPL_SEASON_NUMBER,
-                    real_name: realName,
-                    ign: ign,
-                    ff_uid: ffUid,
-                    ff_level: ffLevel,
-                    whatsapp: whatsapp,
-                    profile_screenshot_url: profileUrl,
-                    payment_screenshot_url: paymentUrl,
-                    status: 'pending'
-                }]);
-
-                if (error) throw error;
-
-                showMsg('Registration submitted! Your status is Pending — you\u2019ll be eligible for the Play-Ins once the admin panel marks you Approved.', true);
-                document.getElementById('regForm').reset();
-                document.getElementById('profileFileName').textContent = '';
-                document.getElementById('paymentFileName').textContent = '';
-                document.getElementById('profileBox').classList.remove('has-file');
-                document.getElementById('paymentBox').classList.remove('has-file');
-                levelGate.classList.remove('show');
-            } catch (err) {
-                console.error(err);
-                showMsg('Something went wrong submitting your registration: ' + (err.message || err), false);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Registration →';
-            }
+        // ---------- Tabs + search ----------
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentStatus = tab.dataset.status;
+                renderList();
+            });
         });
+        searchInput.addEventListener('input', renderList);
+
+        checkAdminSession();
     </script>
 </body>
 

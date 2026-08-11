@@ -17,20 +17,19 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Player Registration — FREEFIRE XIPL Season 12</title>
-    <meta name="description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
-    <meta property="og:title" content="Player Registration — FREEFIRE XIPL Season 12">
-    <meta property="og:description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
+    <title>Route Map — FREEFIRE XIPL Season 12</title>
+    <meta name="description" content="The complete FREEFIREXIPL Season 12 route map — every stage from registration to the champion's trophy, explained clearly step by step.">
+    <meta property="og:title" content="Route Map — FREEFIRE XIPL Season 12">
+    <meta property="og:description" content="The complete FREEFIREXIPL Season 12 route map — every stage from registration to the champion's trophy, explained clearly step by step.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
-    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
+    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/route-map.html">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0a0a0a">
-    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
+    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/route-map.html">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -1895,91 +1894,7 @@
         }
     </style>
     <style>
-        /* ============ REG HERO ============ */
-        .reghero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
-        .reghero::before {
-            content: ''; position: absolute; inset: 0;
-            background-image: linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
-            background-size: 26px 26px;
-            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
-        }
-        .reghero-title {
-            position: relative; margin-top: 12px; font-size: 34px; line-height: 1;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-        }
-        .reghero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
-
-        .fee-strip { display: flex; gap: 10px; padding: 0 20px; margin-top: 18px; }
-        .fee-box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; text-align: center; }
-        .fee-box b { display: block; font-family: 'Anton', sans-serif; font-size: 19px; color: var(--gold); }
-        .fee-box span { display: block; margin-top: 4px; font-size: 8.5px; letter-spacing: 0.09em; color: var(--ink-faint); text-transform: uppercase; }
-
-        /* ============ LEVEL GATE ============ */
-        .level-gate {
-            margin: 18px 20px 0; padding: 14px 16px; border-radius: 16px;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
-            background: rgba(var(--live-rgb), 0.08);
-            display: none; align-items: center; gap: 10px;
-        }
-        .level-gate.show { display: flex; }
-        .level-gate .ico { font-size: 18px; flex-shrink: 0; }
-        .level-gate .txt { font-size: 12px; line-height: 1.45; color: var(--ink); }
-        .level-gate .txt b { color: var(--live); }
-
-        /* ============ FORM ============ */
-        .reg-form { display: flex; flex-direction: column; gap: 16px; padding: 22px 20px 6px; }
-        .f-group { display: flex; flex-direction: column; gap: 6px; }
-        .f-label { font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); text-transform: uppercase; display: flex; justify-content: space-between; }
-        .f-label .req { color: var(--live); }
-        .f-input, .f-select {
-            width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line);
-            background: var(--surface); color: var(--ink); font-size: 14px; font-family: inherit;
-            -webkit-appearance: none; appearance: none;
-        }
-        .f-input:focus, .f-select:focus { outline: none; border-color: var(--gold-deep); box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.12); }
-        .f-hint { font-size: 10.5px; color: var(--ink-faint); }
-        .f-hint.err { color: var(--live); }
-
-        .upload-box {
-            border: 1.5px dashed var(--line); border-radius: 14px; padding: 18px 14px; text-align: center;
-            background: var(--surface); cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease;
-            position: relative; overflow: hidden;
-        }
-        .upload-box.has-file { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.06); }
-        .upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .upload-ico { font-size: 22px; }
-        .upload-txt { margin-top: 6px; font-size: 11.5px; color: var(--ink-dim); }
-        .upload-txt b { color: var(--gold-pale); }
-        .upload-filename { margin-top: 6px; font-size: 10.5px; color: var(--gold-pale); font-family: 'Space Mono', monospace; word-break: break-all; }
-
-        /* ============ QR / PAYMENT ============ */
-        .pay-card {
-            margin: 6px 20px 0; padding: 22px 18px 20px; border-radius: 20px; text-align: center;
-            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.14), transparent 62%), var(--surface);
-            border: 1px solid var(--line);
-        }
-        .pay-amt { font-family: 'Anton', sans-serif; font-size: 30px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .pay-sub { margin-top: 4px; font-size: 11px; color: var(--ink-faint); }
-        .qr-wrap { width: 168px; height: 168px; margin: 16px auto 0; border-radius: 16px; background: #fff; padding: 10px; display: flex; align-items: center; justify-content: center; }
-        .qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
-        .pay-link { display: inline-block; margin-top: 14px; font-size: 11.5px; color: var(--gold-pale); text-decoration: none; border-bottom: 1px dashed var(--gold-deep); padding-bottom: 1px; }
-
-        /* ============ SUBMIT / STATUS ============ */
-        .reg-submit-btn { width: 100%; margin-top: 4px; }
-        .reg-submit-btn:disabled { opacity: 0.5; pointer-events: none; }
-        .form-msg { margin: 10px 20px 0; padding: 12px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5; display: none; }
-        .form-msg.show { display: block; }
-        .form-msg.ok { background: rgba(95, 217, 126, 0.12); border: 1px solid rgba(95, 217, 126, 0.35); color: #5fd97e; }
-        .form-msg.bad { background: rgba(var(--live-rgb), 0.12); border: 1px solid rgba(var(--live-rgb), 0.35); color: var(--live); }
-
-        .flow-strip { display: flex; align-items: center; gap: 6px; padding: 0 20px; margin-top: 22px; overflow-x: auto; }
-        .flow-strip::-webkit-scrollbar { display: none; }
-        .flow-step { flex-shrink: 0; font-size: 9.5px; letter-spacing: 0.06em; padding: 7px 11px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-faint); background: var(--surface); white-space: nowrap; }
-        .flow-step.now { border-color: var(--gold-deep); color: var(--gold-pale); background: rgba(var(--gold-rgb), 0.1); }
-        .flow-arrow { color: var(--ink-faint); font-size: 11px; flex-shrink: 0; }
-
-        /* legacy intro rules below kept for other pages, unused here */
+        /* ============ INTRO ============ */
         .intro {
             position: relative;
             padding: 34px 20px 8px;
@@ -1989,145 +1904,97 @@
         .intro::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
-            background-size: 26px 26px;
-            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 340px;
+            height: 340px;
+            background: radial-gradient(circle, var(--amb1), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .intro-title {
             position: relative;
-            margin-top: 12px;
-            font-size: 36px;
-            line-height: 0.98;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            background-size: 100% 300%;
-            animation: titleSheen 5s ease-in-out infinite;
+            font-size: clamp(30px, 8.5vw, 46px);
+            line-height: 1.06;
+            margin: 10px 0 12px;
+            color: var(--ink);
+            text-shadow: 0 0 30px rgba(var(--gold-rgb), 0.18);
         }
 
-        @keyframes titleSheen {
-
-            0%,
-            100% {
-                background-position: 0 0%;
-            }
-
-            50% {
-                background-position: 0 100%;
-            }
+        .intro-title em {
+            font-style: normal;
+            color: var(--gold);
         }
 
         .intro-desc {
             position: relative;
-            margin-top: 12px;
-            font-size: 13.5px;
-            line-height: 1.55;
+            max-width: 560px;
             color: var(--ink-dim);
-            max-width: 320px;
+            font-size: 15px;
+            line-height: 1.65;
+            margin-bottom: 20px;
         }
 
         .intro-stats {
             position: relative;
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
         }
 
         .intro-stat {
-            flex: 1;
-            background: var(--surface);
+            position: relative;
+            flex: 1 1 100px;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.14), transparent 65%), linear-gradient(160deg, var(--card-a), var(--card-b));
             border: 1px solid var(--line);
-            border-radius: 13px;
-            padding: 14px 8px;
+            border-top: 2px solid rgba(var(--gold-rgb), 0.55);
+            border-radius: 14px;
+            padding: 13px 10px 12px;
             text-align: center;
+            overflow: hidden;
         }
 
         .intro-stat b {
             display: block;
             font-family: 'Anton', sans-serif;
-            font-size: 20px;
+            font-size: 24px;
             color: var(--gold);
+            text-shadow: 0 0 18px rgba(var(--gold-rgb), 0.35);
         }
 
         .intro-stat span {
             display: block;
             margin-top: 3px;
-            font-size: 8.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
+            font-size: 10px;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
+            color: var(--ink-faint);
+            font-weight: 700;
+        }
+
+        .intro-stat.alert {
+            border-top-color: rgba(var(--live-rgb), 0.6);
         }
 
         .intro-stat.alert b {
             color: var(--live);
+            text-shadow: 0 0 18px rgba(var(--live-rgb), 0.4);
         }
 
-        .intro-stat.alert {
-            border-color: rgba(var(--live-rgb), 0.3);
-            animation: alertPulse 2.2s ease-in-out infinite;
-        }
-
-        @keyframes alertPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 rgba(var(--live-rgb), 0);
-            }
-
-            50% {
-                box-shadow: 0 0 14px rgba(var(--live-rgb), 0.35);
-            }
-        }
-
-        /* ============ COUNTER STRIP ============ */
-        .counter-strip {
-            display: flex;
-            gap: 10px;
-            padding: 0 20px;
-            margin-top: 12px;
-        }
-
-        .counter-box {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 16px 8px;
-            text-align: center;
-        }
-
-        .counter-num {
-            font-family: 'Anton', sans-serif;
-            font-size: 24px;
-            color: var(--gold);
-            text-shadow: 0 0 16px rgba(var(--gold-rgb), 0.4);
-        }
-
-        .counter-label {
-            display: block;
-            margin-top: 4px;
-            font-size: 8px;
-            letter-spacing: 0.09em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        /* ============ JUMP CHIPS ============ */
-        .rule-jump {
+        /* ============ JUMP NAV (reuses .jump-chip from rulebook utility) ============ */
+        .route-jump {
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding: 0 20px 4px;
-            margin-top: 22px;
+            padding: 4px 20px 16px;
+            scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
         }
 
-        .rule-jump::-webkit-scrollbar {
+        .route-jump::-webkit-scrollbar {
             display: none;
         }
 
@@ -2161,358 +2028,426 @@
             color: var(--ink);
         }
 
-        /* ============ CHAPTER CARDS ============ */
-        .rule-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            padding: 16px 20px 6px;
-        }
-
-        /* Chapter cards use .foil-frame only as a positioning wrapper here — the spinning
-           conic-gradient border is switched off in favor of a quiet static border with a
-           thin top accent in the chapter's color. */
-        .rule-list>.foil-frame {
-            padding: 0;
-            background: none;
-        }
-
-        .rule-list>.foil-frame::before {
-            content: none;
-        }
-
-        .rule-list .rule-card {
+        /* ============ ROUTE MAP TIMELINE ============ */
+        .route-map {
             position: relative;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 10px 20px 40px;
+        }
+
+        .route-line-track {
+            position: absolute;
+            left: 33px;
+            top: 6px;
+            bottom: 40px;
+            width: 3px;
+            background: linear-gradient(180deg, var(--line), var(--line));
+            border-radius: 3px;
+            z-index: 0;
+        }
+
+        .route-line-fill {
+            position: absolute;
+            left: 33px;
+            top: 6px;
+            width: 3px;
+            height: 0%;
+            background: linear-gradient(180deg, var(--gold-pale, var(--gold)), var(--gold), var(--gold-deep));
+            border-radius: 3px;
+            box-shadow: 0 0 14px rgba(var(--gold-rgb), 0.6), 0 0 3px rgba(var(--gold-rgb), 0.9);
             z-index: 1;
-            border-radius: 20px;
-            padding: 20px 18px;
-            overflow: hidden;
-            border: 1px solid var(--line);
-            border-top: 2px solid var(--foil, var(--gold-deep));
-            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.10), transparent 60%), var(--surface);
+            transition: height 0.15s linear;
         }
 
-        .rule-head {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .rule-icon {
-            width: 46px;
-            height: 46px;
-            flex-shrink: 0;
-            border-radius: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-            background: color-mix(in srgb, var(--foil, var(--gold)) 16%, var(--surface));
-            border: 1px solid color-mix(in srgb, var(--foil, var(--gold)) 30%, var(--line));
-        }
-
-        .rule-head-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .rule-num {
-            font-family: 'Space Mono', monospace;
-            font-size: 9.5px;
-            letter-spacing: 0.14em;
-            color: var(--gold-deep);
-        }
-
-        .rule-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 16.5px;
-            letter-spacing: 0.01em;
-            margin-top: 2px;
-        }
-
-        .rule-chevron {
-            flex-shrink: 0;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--foil, var(--gold));
-            font-size: 13px;
-            transition: transform 0.4s cubic-bezier(.2, .9, .25, 1);
-        }
-
-        .rule-card.open .rule-chevron {
-            transform: rotate(180deg);
-        }
-
-        .rule-card.open {
-            box-shadow: 0 16px 44px rgba(var(--gold-rgb), 0.20);
-        }
-
-        .rule-items,
-        .penalty-list {
-            position: relative;
-            z-index: 2;
-            margin-top: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(.2, .9, .25, 1), opacity 0.4s ease, margin-top 0.5s ease;
-        }
-
-        .rule-card.open .rule-items,
-        .rule-card.open .penalty-list {
-            opacity: 1;
-            margin-top: 16px;
-        }
-
-        .rule-item {
-            display: flex;
-            gap: 10px;
-            padding: 11px 12px;
-            border-radius: 12px;
-            background: rgba(var(--gold-rgb), 0.045);
-            border: 1px solid var(--line);
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .rule-item.in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .rule-item b {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 6px;
-            background: rgba(var(--gold-rgb), 0.15);
-            color: var(--gold);
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 1px;
-        }
-
-        .rule-item p {
-            font-size: 12.5px;
-            line-height: 1.5;
-            color: var(--ink-dim);
-        }
-
-        .rule-item p em {
-            color: var(--gold-pale);
-            font-style: normal;
-            font-weight: 600;
-        }
-
-        .rule-item.pinned {
-            border-color: rgba(var(--gold-rgb), 0.4);
-            background: rgba(var(--gold-rgb), 0.09);
-        }
-
-        /* ============ SCORING TABLE (chapter 03) ============ */
-        .score-table-wrap {
-            margin-top: 6px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--line);
-        }
-
-        table.score-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        .score-table th {
-            background: var(--surface-2);
-            color: var(--gold-pale);
-            text-align: left;
-            padding: 9px 12px;
-            font-size: 10.5px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .score-table td {
-            padding: 9px 12px;
-            border-top: 1px solid var(--line);
-            color: var(--ink-dim);
-        }
-
-        .score-table td.num,
-        .score-table th.num {
-            font-family: 'Space Mono', monospace;
-            color: var(--gold);
-            text-align: right;
-        }
-
-        /* ============ PENALTY LIST ============ */
-        .penalty-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 12px;
-            border-radius: 12px;
-            background: rgba(var(--gold-rgb), 0.04);
-            border: 1px solid var(--line);
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .penalty-row.in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .penalty-sev {
-            flex-shrink: 0;
-            width: 8px;
-            height: 8px;
+        /* "You are here" tracker riding the tip of the gold line */
+        .route-pointer {
+            position: absolute;
+            left: 33px;
+            top: 6px;
+            width: 15px;
+            height: 15px;
+            margin-left: -6px;
+            margin-top: -7px;
             border-radius: 50%;
+            background: var(--gold-pale, #fff);
+            box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.22), 0 0 16px rgba(var(--gold-rgb), 0.9);
+            z-index: 3;
+            opacity: 0;
+            transition: top 0.15s linear, opacity 0.3s ease;
+            animation: pointerPulse 1.6s ease-in-out infinite;
         }
 
-        .penalty-sev.low {
-            background: #5fd97e;
+        .route-pointer.show {
+            opacity: 1;
         }
 
-        .penalty-sev.mid {
-            background: var(--gold);
-            animation: sevBlink 1.6s ease-in-out infinite;
-        }
-
-        .penalty-sev.high {
-            background: var(--live);
-            animation: sevBlink 0.9s ease-in-out infinite;
-        }
-
-        @keyframes sevBlink {
+        @keyframes pointerPulse {
 
             0%,
             100% {
-                opacity: 1;
+                transform: scale(1);
             }
 
             50% {
-                opacity: 0.4;
+                transform: scale(1.35);
             }
         }
 
-        .penalty-text {
-            flex: 1;
-            min-width: 0;
+        .route-stage {
+            position: relative;
+            display: flex;
+            gap: 18px;
+            padding: 0 0 34px 0;
+            z-index: 2;
         }
 
-        .penalty-foul {
-            font-size: 12.5px;
-            color: var(--ink);
-            font-weight: 600;
+        .route-stage:last-child {
+            padding-bottom: 4px;
         }
 
-        .penalty-action {
-            font-size: 10.5px;
-            color: var(--ink-faint);
-            margin-top: 1px;
+        .route-node-col {
+            flex: 0 0 auto;
+            width: 68px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .penalty-tag {
+        .route-node-ring {
+            position: relative;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
             flex-shrink: 0;
-            font-family: 'Space Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 0.06em;
-            padding: 4px 8px;
-            border-radius: 100px;
+            isolation: isolate;
+        }
+
+        .route-node-ring::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            z-index: 0;
+            background: conic-gradient(from 0deg, var(--foil, var(--gold-deep)), transparent 18%, transparent 82%, var(--foil, var(--gold-deep)));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .route-stage.in .route-node-ring::before {
+            opacity: 1;
+            animation: frameSpin 6s linear infinite;
+            will-change: transform;
+        }
+
+        .route-node {
+            position: relative;
+            z-index: 1;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: linear-gradient(160deg, var(--surface-2), var(--surface));
+            border: 2px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s;
+        }
+
+        .route-stage.in .route-node {
+            border-color: var(--foil, var(--gold));
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--foil, var(--gold)) 14%, transparent), 0 0 24px color-mix(in srgb, var(--foil, var(--gold)) 45%, transparent);
+            transform: scale(1.05);
+        }
+
+        .route-node-num {
+            position: absolute;
+            top: -6px;
+            right: -3px;
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            background: var(--foil, var(--gold));
+            color: var(--on-accent);
+            font-family: 'Anton', sans-serif;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            transition: background 0.4s;
+        }
+
+        .route-card {
+            position: relative;
+            flex: 1 1 auto;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, color-mix(in srgb, var(--foil, var(--gold)) 10%, transparent), transparent 60%), linear-gradient(160deg, var(--card-a), var(--card-b));
+            border: 1px solid var(--line);
+            border-top: 2px solid color-mix(in srgb, var(--foil, var(--gold-deep)) 65%, var(--line));
+            border-radius: 16px;
+            padding: 16px 16px 15px;
+            min-width: 0;
+            overflow: hidden;
+            transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s;
+        }
+
+        .route-stage.in .route-card {
+            border-color: color-mix(in srgb, var(--foil, var(--gold)) 45%, var(--line));
+            box-shadow: 0 14px 34px -12px color-mix(in srgb, var(--foil, var(--gold)) 40%, transparent);
+        }
+
+        .route-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9.5px;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
+            color: var(--foil, var(--gold));
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .route-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--foil, var(--gold));
+            box-shadow: 0 0 6px var(--foil, var(--gold));
+            flex-shrink: 0;
+        }
+
+        .route-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 17.5px;
+            color: var(--ink);
+            margin-bottom: 6px;
+            line-height: 1.25;
+        }
+
+        .route-desc {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--ink-dim);
+            margin-bottom: 12px;
+        }
+
+        .route-desc b,
+        .route-desc em {
+            color: var(--ink);
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        .route-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .route-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10.5px;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: color-mix(in srgb, var(--foil, var(--gold)) 9%, var(--surface));
+            border: 1px solid color-mix(in srgb, var(--foil, var(--gold)) 24%, var(--line));
+            color: var(--ink-dim);
             white-space: nowrap;
         }
 
-        .penalty-tag.low {
-            background: rgba(95, 217, 126, 0.12);
-            color: #5fd97e;
+        /* Highlighted chips call out the single most important number/rule of a stage */
+        .route-chip.hl {
+            background: color-mix(in srgb, var(--foil, var(--gold)) 20%, var(--surface));
+            border: 1px solid color-mix(in srgb, var(--foil, var(--gold)) 55%, var(--line));
+            color: var(--ink);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            box-shadow: 0 0 14px color-mix(in srgb, var(--foil, var(--gold)) 25%, transparent);
         }
 
-        .penalty-tag.mid {
-            background: rgba(var(--gold-rgb), 0.14);
-            color: var(--gold);
-        }
-
-        .penalty-tag.high {
-            background: rgba(var(--live-rgb), 0.14);
-            color: var(--live);
-        }
-
-        /* ============ SIREN BAND ============ */
-        .siren-band {
-            position: relative;
-            margin: 6px 20px 20px;
-            padding: 14px 16px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: linear-gradient(90deg, rgba(var(--live-rgb), 0.14), rgba(var(--live-rgb), 0.03), rgba(var(--live-rgb), 0.14));
-            background-size: 200% 100%;
-            animation: sirenSweep 3s linear infinite;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
+        /* Bouncing flow chevron between consecutive stages */
+        .route-flow {
+            position: absolute;
+            left: 33px;
+            bottom: -6px;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--ink-faint);
+            z-index: 2;
+            opacity: 0;
+            transform: translate(-50%, 0);
+            transition: opacity 0.5s ease, color 0.5s ease, border-color 0.5s ease;
         }
 
-        @keyframes sirenSweep {
-            to {
-                background-position: 200% 0;
-            }
+        .route-stage.in .route-flow {
+            opacity: 1;
+            color: var(--foil, var(--gold));
+            border-color: color-mix(in srgb, var(--foil, var(--gold)) 50%, var(--line));
+            animation: flowBounce 1.4s ease-in-out infinite;
         }
 
-        .siren-icon {
-            font-size: 20px;
-            animation: sirenShake 1.2s ease-in-out infinite;
-        }
-
-        @keyframes sirenShake {
+        @keyframes flowBounce {
 
             0%,
             100% {
-                transform: rotate(0);
+                transform: translate(-50%, 0);
             }
 
-            25% {
-                transform: rotate(-10deg);
-            }
-
-            75% {
-                transform: rotate(10deg);
+            50% {
+                transform: translate(-50%, 4px);
             }
         }
 
-        .siren-text b {
-            display: block;
+        /* Final champion stage — the extraordinary treatment */
+        .route-stage.champion {
+            padding-top: 6px;
+        }
+
+        .route-stage.champion .route-node-ring {
+            width: 82px;
+            height: 82px;
+        }
+
+        .route-stage.champion .route-node {
+            width: 82px;
+            height: 82px;
+            font-size: 34px;
+            background: linear-gradient(160deg, var(--gold-pale, var(--gold)), var(--gold), var(--gold-deep));
+            border-color: var(--gold);
+            box-shadow: 0 0 0 5px rgba(var(--gold-rgb), 0.14), 0 0 30px rgba(var(--gold-rgb), 0.55);
+        }
+
+        .route-stage.champion .route-node-ring::before {
+            opacity: 1;
+            animation: frameSpin 4s linear infinite;
+        }
+
+        .route-stage.champion .route-card {
+            background:
+                radial-gradient(ellipse 140% 100% at 50% -20%, rgba(var(--gold-rgb), 0.22), transparent 65%),
+                linear-gradient(160deg, var(--card-a), var(--card-b));
+            border: 1px solid rgba(var(--gold-rgb), 0.5);
+            border-top: 2px solid var(--gold);
+        }
+
+        /* Lightweight GPU-friendly sweep — a single translating strip instead of an
+           animated multi-layer background (which forces paint every frame). */
+        .route-stage.champion .route-card::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 0;
+            width: 34%;
+            height: 140%;
+            background: linear-gradient(115deg, transparent, rgba(var(--gold-rgb), 0.30), transparent);
+            transform: translateX(-140%) rotate(8deg);
+            animation: championSweep 4.5s ease-in-out infinite;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        @keyframes championSweep {
+            0% {
+                transform: translateX(-140%) rotate(8deg);
+            }
+
+            55%,
+            100% {
+                transform: translateX(340%) rotate(8deg);
+            }
+        }
+
+        .route-stage.champion .route-title {
             font-family: 'Anton', sans-serif;
-            font-size: 13px;
-            color: var(--live);
-            letter-spacing: 0.02em;
+            font-size: 21px;
+            letter-spacing: 0.01em;
+            background: linear-gradient(100deg, var(--gold-pale, var(--gold)), var(--gold) 40%, var(--gold-deep) 70%, var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .siren-text span {
-            display: block;
-            margin-top: 2px;
-            font-size: 11px;
+        .route-stage.champion .route-chip.hl {
+            font-size: 11.5px;
+        }
+
+        @media (min-width: 640px) {
+
+            .route-line-track,
+            .route-line-fill,
+            .route-pointer {
+                left: 38px;
+            }
+
+            .route-flow {
+                left: 38px;
+            }
+
+            .route-node-col {
+                width: 78px;
+            }
+
+            .route-node-ring,
+            .route-node {
+                width: 78px;
+                height: 78px;
+                font-size: 30px;
+            }
+
+            .route-stage.champion .route-node-ring,
+            .route-stage.champion .route-node {
+                width: 92px;
+                height: 92px;
+                font-size: 38px;
+            }
+        }
+
+        /* ============ LEGEND / NOTE ============ */
+        .route-note {
+            max-width: 720px;
+            margin: 4px auto 0;
+            padding: 0 20px 30px;
+        }
+
+        .route-note-inner {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            background: linear-gradient(160deg, var(--card-a), var(--card-b));
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 13px 14px;
+        }
+
+        .route-note-inner .ic {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .route-note-inner p {
+            font-size: 12.5px;
+            line-height: 1.55;
             color: var(--ink-dim);
-            line-height: 1.4;
+        }
+
+        .route-note-inner b {
+            color: var(--ink);
         }
     </style>
 </head>
@@ -2532,7 +2467,7 @@
             <div class="ignite-core"></div>
         </div>
         <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">PLAYER REGISTRATION</div>
+        <div class="splash-sub">THE ROUTE MAP</div>
         <div class="splash-bar">
             <div class="splash-bar-fill"></div>
         </div>
@@ -2648,7 +2583,7 @@
             <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
 
            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link" aria-current="page"><span class="nav-link-icon">👤</span> Registration
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
@@ -2657,106 +2592,261 @@
             <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
             <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
             <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+            <a href="route-map.html" class="nav-link" aria-current="page"><span class="nav-link-icon">🗺️</span> Route Map</a>
             <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
         </div>
         <div class="nav-drawer-foot">FREEFIREXIPL · Season 12</div>
     </nav>
 
-
-    <!-- REG HERO -->
-    <section class="reghero">
-        <div class="eyebrow fade-up">👤 SEASON 12 · PLAY-INS</div>
-        <h1 class="reghero-title display fade-up d1">Register For<br>The Play-Ins</h1>
-        <p class="reghero-desc fade-up d2">Fill in your details, pay the entry fee and upload your screenshots. Your registration goes to the admin panel for approval before you're eligible for the Play-Ins.</p>
-        <div class="fee-strip fade-up d3">
-            <div class="fee-box"><b>₹12</b><span>Entry Fee</span></div>
-            <div class="fee-box"><b>Lvl 50+</b><span>Minimum Level</span></div>
-            <div class="fee-box"><b>9</b><span>Play-In Matches</span></div>
-        </div>
-        <div class="flow-strip fade-up d4">
-            <span class="flow-step now">1. REGISTER</span><span class="flow-arrow">→</span>
-            <span class="flow-step">2. APPROVAL</span><span class="flow-arrow">→</span>
-            <span class="flow-step">3. PLAY-INS</span><span class="flow-arrow">→</span>
-            <span class="flow-step">4. AUCTION</span><span class="flow-arrow">→</span>
-            <span class="flow-step">5. TEAM</span>
+    <!-- INTRO -->
+    <section class="intro">
+        <div class="eyebrow fade-up">🗺️ TOURNAMENT FORMAT</div>
+        <h1 class="intro-title display fade-up d1">Registration.<br>To The <em>Cup.</em></h1>
+        <p class="intro-desc fade-up d2">Every FREEFIREXIPL Season 12 player and team follows the exact same road.
+            No shortcuts, no side doors — one connected path from your first registration to the trophy lift.
+            Here's the whole journey, stage by stage.</p>
+        <div class="intro-stats fade-up d3">
+            <div class="intro-stat"><b>11</b><span>Stages</span></div>
+            <div class="intro-stat"><b>8</b><span>Franchises</span></div>
+            <div class="intro-stat alert"><b>1</b><span>Champion</span></div>
         </div>
     </section>
 
-    <!-- LEVEL GATE WARNING -->
-    <div class="level-gate" id="levelGate">
-        <div class="ico">⚠️</div>
-        <div class="txt"><b>Minimum Free Fire Level is 50.</b> You cannot register below Level 50.</div>
+    <!-- JUMP NAV -->
+    <div class="route-jump fade-up">
+        <a href="#s-reg" class="jump-chip" style="--foil:var(--gold);">Registration</a>
+        <a href="#s-approval" class="jump-chip" style="--foil:#3d6fe0;">Approval</a>
+        <a href="#s-playin" class="jump-chip" style="--foil:#5fd97e;">Play-Ins</a>
+        <a href="#s-auction" class="jump-chip" style="--foil:#f5a623;">Auction</a>
+        <a href="#s-season" class="jump-chip" style="--foil:#29c4a9;">Main Season</a>
+        <a href="#s-playoffs" class="jump-chip" style="--foil:#ff4d94;">Playoffs</a>
+        <a href="#s-champion" class="jump-chip" style="--foil:#ffd23d;">Champion</a>
     </div>
 
-    <!-- REGISTRATION FORM -->
-    <form class="reg-form fade-up" id="regForm" novalidate>
-        <div class="f-group">
-            <label class="f-label" for="realName">Real Name <span class="req">*</span></label>
-            <input class="f-input" type="text" id="realName" name="realName" placeholder="Your full name" required>
+    <!-- ROUTE MAP -->
+    <div class="route-map" id="routeMap">
+        <div class="route-line-track"></div>
+        <div class="route-line-fill" id="routeLineFill"></div>
+        <div class="route-pointer" id="routePointer"></div>
+
+        <!-- 01 -->
+        <div class="route-stage fade-up" id="s-reg" style="--foil:#f0b93d;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">📝<span class="route-node-num">1</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 01 · Open to everyone</span>
+                <div class="route-title">Play-In Registration Opens</div>
+                <p class="route-desc">Players submit real name, Free Fire IGN, UID, level, a profile screenshot,
+                    WhatsApp number and a ₹12 payment screenshot. Free Fire level must be 50 or above — anything
+                    lower can't be submitted.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">🎮 Level 50+ only</span>
+                    <span class="route-chip hl">₹12 entry fee</span>
+                    <span class="route-chip">🟡 Status: Pending</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
         </div>
 
-        <div class="f-group">
-            <label class="f-label" for="ign">Free Fire IGN <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ign" name="ign" placeholder="In-game name" required>
+        <!-- 02 -->
+        <div class="route-stage fade-up" id="s-approval" style="--foil:#3d6fe0;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">✅<span class="route-node-num">2</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 02 · Admin checkpoint</span>
+                <div class="route-title">Admin Verifies & Approves</div>
+                <p class="route-desc">The admin panel reviews every submission — profile screenshot, UID, level and
+                    payment proof — then marks it <b>Approved</b> or <b>Rejected</b>. Only approved players move
+                    forward.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">Pending → Approved</span>
+                    <span class="route-chip">🔍 Payment verified</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
         </div>
 
-        <div class="f-group">
-            <label class="f-label" for="ffUid">Free Fire UID <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ffUid" name="ffUid" inputmode="numeric" placeholder="e.g. 123456789" required>
+        <!-- 03 -->
+        <div class="route-stage fade-up" id="s-registered" style="--foil:#5a8bff;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">👥<span class="route-node-num">3</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 03 · Public page</span>
+                <div class="route-title">Registered Players Hub</div>
+                <p class="route-desc">Approved players appear automatically on the Registered Players page —
+                    name, IGN, UID, level and photo, visible to everyone. This same list feeds the Play-Ins.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">⚡ Auto-updates</span>
+                    <span class="route-chip">Approved only</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
         </div>
 
-        <div class="f-group">
-            <label class="f-label" for="ffLevel">Free Fire Level <span class="req">*</span></label>
-            <input class="f-input" type="number" id="ffLevel" name="ffLevel" min="1" max="90" placeholder="e.g. 62" required>
-            <span class="f-hint" id="levelHint">Minimum level to register is 50.</span>
+        <!-- 04 -->
+        <div class="route-stage fade-up" id="s-playin" style="--foil:#5fd97e;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">🎮<span class="route-node-num">4</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 04 · 3 days on the grind</span>
+                <div class="route-title">Play-Ins: 9 Matches, 40 Players</div>
+                <p class="route-desc">3 Battle Royale matches a day for 3 days. Room ID and password are posted for
+                    every match. 1 kill = 1 point, a Booyah adds a 3 point bonus — scored automatically.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">👤 40 players</span>
+                    <span class="route-chip hl">🗓️ 9 BR matches</span>
+                    <span class="route-chip">🎯 Kill + Booyah scoring</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
         </div>
 
-        <div class="f-group">
-            <label class="f-label" for="whatsapp">WhatsApp Number <span class="req">*</span></label>
-            <input class="f-input" type="tel" id="whatsapp" name="whatsapp" placeholder="+91 XXXXX XXXXX" required>
+        <!-- 05 -->
+        <div class="route-stage fade-up" id="s-playin-score" style="--foil:#7fe89a;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">📊<span class="route-node-num">5</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 05 · Your Play-In résumé</span>
+                <div class="route-title">Total Play-In Score Locked In</div>
+                <p class="route-desc">Points across all 9 matches accumulate into one total — kills, Booyahs and
+                    match points per player. This total becomes each player's <b>base value</b> walking into the
+                    auction.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">📌 Sets auction base price</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
         </div>
 
-        <div class="f-group">
-            <label class="f-label">Free Fire Profile Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="profileBox">
-                <input type="file" id="profileShot" name="profileShot" accept="image/*" required>
-                <div class="upload-ico">🖼️</div>
-                <div class="upload-txt"><b>Tap to upload</b> your in-game profile screenshot</div>
-                <div class="upload-filename" id="profileFileName"></div>
+        <!-- 06 -->
+        <div class="route-stage fade-up" id="s-auction" style="--foil:#f5a623;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">🔨<span class="route-node-num">6</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 06 · Live, animated auction room</span>
+                <div class="route-title">Auction Day — Captains Bid Live</div>
+                <p class="route-desc">Only approved, Play-In players go under the hammer. Every viewer watches
+                    sold, unsold and going-once moments live — <b>no refresh needed</b>.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">💰 ₹100 Cr purse</span>
+                    <span class="route-chip hl">⬆️ Min bid ₹2 Cr, even only</span>
+                    <span class="route-chip">👥 5 players per team</span>
+                    <span class="route-chip">💸 Player gets 50% payout</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
+        </div>
+
+        <!-- 07 -->
+        <div class="route-stage fade-up" id="s-teams" style="--foil:#ffb84d;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">🛡️<span class="route-node-num">7</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 07 · Instant, automatic</span>
+                <div class="route-title">Sold Players Join Their Franchise</div>
+                <p class="route-desc">The moment a captain wins a player, that player is assigned straight to the
+                    team roster — same record, everywhere: Teams page, leaderboard and season stats update
+                    together.</p>
+                <div class="route-chips">
+                    <span class="route-chip">🏏 RCB · CSK · MI · DC</span>
+                    <span class="route-chip">🏏 KKR · SRH · RR · PBKS</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
+        </div>
+
+        <!-- 08 -->
+        <div class="route-stage fade-up" id="s-season" style="--foil:#29c4a9;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">🔥<span class="route-node-num">8</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 08 · The season proper</span>
+                <div class="route-title">Main Season — 14 Matches Each</div>
+                <p class="route-desc">All 8 fully-formed franchises battle it out. Every result updates the points
+                    table and player stats in real time.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">🗓️ 8 teams × 14 matches</span>
+                    <span class="route-chip hl">🏆 Win = 2 pts</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
+        </div>
+
+        <!-- 09 -->
+        <div class="route-stage fade-up" id="s-points" style="--foil:#4dd8bf;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">📈<span class="route-node-num">9</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 09 · The race to Top 5</span>
+                <div class="route-title">Points Table & Leaderboard</div>
+                <p class="route-desc">Teams are ranked by points, then round difference as the tiebreaker. Player
+                    stats — kills, Booyahs, total points — climb the leaderboard toward the Most Kills / MVP race.</p>
+                <div class="route-chips">
+                    <span class="route-chip">📐 Sort: Points → Round Diff</span>
+                    <span class="route-chip hl">🚀 Top 5 qualify</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
+        </div>
+
+        <!-- 10 -->
+        <div class="route-stage fade-up" id="s-playoffs" style="--foil:#ff4d94;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">⚔️<span class="route-node-num">10</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 10 · Knockouts begin</span>
+                <div class="route-title">Playoffs — Top 5 Bracket</div>
+                <p class="route-desc">#1 vs #2 in Qualifier 1, #4 vs #5 in Eliminator 1 — the loser's path runs
+                    through Eliminator 2 and Qualifier 2 to earn a second shot at the Final.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">🥊 Qualifier 1 & 2</span>
+                    <span class="route-chip hl">❌ Eliminator 1 & 2</span>
+                </div>
+            </div>
+            <div class="route-flow">⌄</div>
+        </div>
+
+        <!-- 11 CHAMPION -->
+        <div class="route-stage fade-up champion" id="s-champion" style="--foil:#ffd23d;">
+            <div class="route-node-col">
+                <div class="route-node-ring"><div class="route-node">🏆<span class="route-node-num">11</span></div></div>
+            </div>
+            <div class="route-card">
+                <span class="route-tag">Stage 11 · The last stop 🎉</span>
+                <div class="route-title">Grand Final — Season 12 Champion</div>
+                <p class="route-desc">Winner of Qualifier 1 meets the winner of Qualifier 2. Whoever takes it lifts
+                    the FREEFIREXIPL Season 12 trophy, with the MVP crowned separately for most kills in the
+                    season.</p>
+                <div class="route-chips">
+                    <span class="route-chip hl">🥇 Champion ₹600</span>
+                    <span class="route-chip hl">🥈 Runner-up ₹300</span>
+                    <span class="route-chip hl">👑 MVP ₹100</span>
+                </div>
             </div>
         </div>
-
-        <!-- PAYMENT -->
-        <div class="pay-card">
-            <div class="pay-amt display">₹12</div>
-            <div class="pay-sub">Scan, pay, upload the screenshot below</div>
-            <div class="qr-wrap">
-                <img src="payment-qr.png" alt="FREEFIREXIPL payment QR code" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-size:11px;color:#888;&quot;>QR image not found<br>(payment-qr.png)</span>'">
-            </div>
-            <a class="pay-link" id="upiLink" href="upi://pay?pa=ffxipl@upi&pn=FREEFIREXIPL&am=12&cu=INR&tn=Season12Registration">Or pay via UPI app →</a>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label">Payment Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="paymentBox">
-                <input type="file" id="paymentShot" name="paymentShot" accept="image/*" required>
-                <div class="upload-ico">🧾</div>
-                <div class="upload-txt"><b>Tap to upload</b> your ₹12 payment confirmation</div>
-                <div class="upload-filename" id="paymentFileName"></div>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary reg-submit-btn" id="submitBtn">Submit Registration →</button>
-        <div class="form-msg" id="formMsg"></div>
-    </form>
-
-    <div class="cta-band fade-up" style="margin:8px 20px 0;">
-        <h3 class="display">ALREADY REGISTERED?</h3>
-        <p>Check the Registered Players page to see if your registration has been approved yet.</p>
-        <a class="btn btn-primary" href="players.html" style="display:block; text-decoration:none;">View Registered Players</a>
     </div>
 
-    <!-- FOOTER -->
+    <!-- NOTE -->
+    <div class="route-note fade-up">
+        <div class="route-note-inner">
+            <span class="ic">💡</span>
+            <p><b>One connected database, start to finish.</b> A player's journey — Registration → Approval →
+                Registered Players → Play-Ins → Auction → Team → Main Season → Leaderboard — and a team's journey —
+                Auction → Team → Matches → Points Table → Playoffs → Final — both run through the same live records.
+                Change one, and it reflects everywhere automatically.</p>
+        </div>
+    </div>
+
     <footer>
         <div class="foot-brand">
             <div class="crest" style="width:26px;height:26px;"></div>
@@ -2924,24 +3014,49 @@
         }, { threshold: 0.15 });
         revealEls.forEach(el => io.observe(el));
 
-// ---------- Scroll progress bar + back-to-top button ----------
-// (wired up here — shared chrome, so it belongs in every page automatically)
+// ---------- Scroll progress bar + back-to-top button + route map (batched in one rAF loop to avoid layout thrashing) ----------
 const scrollFillEl = document.getElementById('scrollFill');
 const backToTopBtn = document.getElementById('backToTop');
 const bttFillEl = document.getElementById('bttFill');
 const BTT_C = 131.9; // 2 * PI * 21, matches the SVG circle radius
+const routeMapEl = document.getElementById('routeMap');
+const routeLineFill = document.getElementById('routeLineFill');
+const routePointer = document.getElementById('routePointer');
 
-function updateScrollChrome() {
+let scrollRafId = null;
+function runScrollUpdate() {
+    scrollRafId = null;
+    // ---- reads first ----
     const doc = document.documentElement;
+    const scrollY = window.scrollY;
     const max = doc.scrollHeight - doc.clientHeight;
-    const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    const pct = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+    const routeRect = routeMapEl ? routeMapEl.getBoundingClientRect() : null;
+
+    // ---- writes after ----
     if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
     if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
-    if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
+    if (backToTopBtn) backToTopBtn.classList.toggle('show', scrollY > 400);
+
+    if (routeRect && routeLineFill) {
+        const viewportMid = window.innerHeight * 0.72;
+        const total = routeRect.height;
+        const traveled = Math.min(total, Math.max(0, viewportMid - routeRect.top));
+        const routePct = total > 0 ? (traveled / total) * 100 : 0;
+        routeLineFill.style.height = routePct + '%';
+        if (routePointer) {
+            routePointer.style.top = routePct + '%';
+            routePointer.classList.toggle('show', traveled > 4 && traveled < total - 2);
+        }
+    }
 }
-window.addEventListener('scroll', updateScrollChrome, { passive: true });
-window.addEventListener('load', updateScrollChrome);
-updateScrollChrome();
+function requestScrollUpdate() {
+    if (scrollRafId === null) scrollRafId = requestAnimationFrame(runScrollUpdate);
+}
+window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+window.addEventListener('resize', requestScrollUpdate, { passive: true });
+window.addEventListener('load', requestScrollUpdate);
+requestScrollUpdate();
 
 if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
@@ -2949,141 +3064,47 @@ if (backToTopBtn) {
 
     </script>
     <script>
-        // ====================================================================
-        // FREEFIREXIPL — SUPABASE CONFIG
-        // Fill these in with your project's values (Project Settings > API).
-        // Table + bucket names are prefixed "ffxipl_" / "ffxipl-" on purpose
-        // so this project never collides with other Supabase projects.
-        // ====================================================================
-         const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
-        const FFXIPL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
-        const FFXIPL_SEASON_NUMBER = 12;
-        const FFXIPL_BUCKET = 'ffxipl-uploads';
+        // ====== ROUTE MAP: only the stage currently centered in view is "active" —
+        // adds AND removes the class so animated rings never pile up as you scroll ======
+        const routeStages = document.querySelectorAll('.route-stage');
+        const routeIo = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                en.target.classList.toggle('in', en.isIntersecting);
+            });
+        }, { threshold: 0, rootMargin: '-38% 0px -38% 0px' });
+        routeStages.forEach(s => routeIo.observe(s));
 
-        let ffxiplClient = null;
-        try {
-            if (window.supabase && FFXIPL_SUPABASE_URL.startsWith('http')) {
-                ffxiplClient = window.supabase.createClient(FFXIPL_SUPABASE_URL, FFXIPL_SUPABASE_ANON_KEY);
-            }
-        } catch (e) { console.warn('Supabase client not initialized:', e); }
+        // ====== ANIMATED COUNTERS ======
+        const counters = document.querySelectorAll('.counter-num');
+        const counterIo = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (!en.isIntersecting) return;
+                const el = en.target;
+                const target = parseInt(el.dataset.count, 10);
+                const duration = 1100;
+                const start = performance.now();
+                function tick(now) {
+                    const p = Math.min(1, (now - start) / duration);
+                    const eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = Math.round(eased * target);
+                    if (p < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+                counterIo.unobserve(el);
+            });
+        }, { threshold: 0.4 });
+        counters.forEach(c => counterIo.observe(c));
 
-        // ---------- Level gate (min level 50) ----------
-        const levelInput = document.getElementById('ffLevel');
-        const levelGate = document.getElementById('levelGate');
-        const levelHint = document.getElementById('levelHint');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function checkLevel() {
-            const v = parseInt(levelInput.value, 10);
-            const invalid = levelInput.value !== '' && (isNaN(v) || v < 50);
-            levelGate.classList.toggle('show', invalid);
-            levelHint.classList.toggle('err', invalid);
-            levelHint.textContent = invalid
-                ? 'Minimum Free Fire Level is 50. You cannot register below Level 50.'
-                : 'Minimum level to register is 50.';
-            return !invalid && levelInput.value !== '';
-        }
-        levelInput.addEventListener('input', checkLevel);
-
-        // ---------- File upload previews ----------
-        function wireUpload(inputId, boxId, nameId) {
-            const input = document.getElementById(inputId);
-            const box = document.getElementById(boxId);
-            const nameEl = document.getElementById(nameId);
-            input.addEventListener('change', () => {
-                if (input.files && input.files[0]) {
-                    box.classList.add('has-file');
-                    nameEl.textContent = '✓ ' + input.files[0].name;
-                } else {
-                    box.classList.remove('has-file');
-                    nameEl.textContent = '';
+        // ====== JUMP CHIPS: smooth scroll with offset for sticky header ======
+        document.querySelectorAll('.jump-chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetEl = document.querySelector(chip.getAttribute('href'));
+                if (targetEl) {
+                    const y = targetEl.getBoundingClientRect().top + window.scrollY - 66;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
                 }
             });
-        }
-        wireUpload('profileShot', 'profileBox', 'profileFileName');
-        wireUpload('paymentShot', 'paymentBox', 'paymentFileName');
-
-        // ---------- Form message helper ----------
-        const formMsg = document.getElementById('formMsg');
-        function showMsg(text, ok) {
-            formMsg.textContent = text;
-            formMsg.className = 'form-msg show ' + (ok ? 'ok' : 'bad');
-        }
-
-        // ---------- Upload one file to Supabase Storage, return public URL ----------
-        async function ffxiplUploadFile(client, file, folder) {
-            const ext = file.name.split('.').pop();
-            const path = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-            const { error } = await client.storage.from(FFXIPL_BUCKET).upload(path, file, { upsert: false });
-            if (error) throw error;
-            const { data } = client.storage.from(FFXIPL_BUCKET).getPublicUrl(path);
-            return data.publicUrl;
-        }
-
-        // ---------- Submit ----------
-        document.getElementById('regForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formMsg.classList.remove('show');
-
-            if (!checkLevel()) {
-                showMsg('Minimum Free Fire Level is 50. You cannot register below Level 50.', false);
-                levelInput.focus();
-                return;
-            }
-
-            const realName = document.getElementById('realName').value.trim();
-            const ign = document.getElementById('ign').value.trim();
-            const ffUid = document.getElementById('ffUid').value.trim();
-            const ffLevel = parseInt(levelInput.value, 10);
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const profileFile = document.getElementById('profileShot').files[0];
-            const paymentFile = document.getElementById('paymentShot').files[0];
-
-            if (!realName || !ign || !ffUid || !whatsapp || !profileFile || !paymentFile) {
-                showMsg('Please fill in every field and upload both screenshots.', false);
-                return;
-            }
-
-            if (!ffxiplClient) {
-                showMsg('Registration form is ready, but this page isn\u2019t connected to Supabase yet \u2014 add your project URL and anon key in the script config to go live.', false);
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting…';
-
-            try {
-                const profileUrl = await ffxiplUploadFile(ffxiplClient, profileFile, 'profile-screenshots');
-                const paymentUrl = await ffxiplUploadFile(ffxiplClient, paymentFile, 'payment-screenshots');
-
-                const { error } = await ffxiplClient.from('ffxipl_players').insert([{
-                    season_number: FFXIPL_SEASON_NUMBER,
-                    real_name: realName,
-                    ign: ign,
-                    ff_uid: ffUid,
-                    ff_level: ffLevel,
-                    whatsapp: whatsapp,
-                    profile_screenshot_url: profileUrl,
-                    payment_screenshot_url: paymentUrl,
-                    status: 'pending'
-                }]);
-
-                if (error) throw error;
-
-                showMsg('Registration submitted! Your status is Pending — you\u2019ll be eligible for the Play-Ins once the admin panel marks you Approved.', true);
-                document.getElementById('regForm').reset();
-                document.getElementById('profileFileName').textContent = '';
-                document.getElementById('paymentFileName').textContent = '';
-                document.getElementById('profileBox').classList.remove('has-file');
-                document.getElementById('paymentBox').classList.remove('has-file');
-                levelGate.classList.remove('show');
-            } catch (err) {
-                console.error(err);
-                showMsg('Something went wrong submitting your registration: ' + (err.message || err), false);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Registration →';
-            }
         });
     </script>
 </body>

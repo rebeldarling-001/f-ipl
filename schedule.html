@@ -17,20 +17,20 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Player Registration — FREEFIRE XIPL Season 12</title>
-    <meta name="description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
-    <meta property="og:title" content="Player Registration — FREEFIRE XIPL Season 12">
-    <meta property="og:description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
+    <title>Schedule — FREEFIRE XIPL Season 12</title>
+    <meta name="description" content="FREEFIRE XIPL Season 12 match schedule — 56 matches, 8 teams, live results feeding the Points Table.">
+    <meta property="og:title" content="Schedule — FREEFIRE XIPL Season 12">
+    <meta property="og:description" content="FREEFIRE XIPL Season 12 match schedule — 56 matches, 8 teams, live results feeding the Points Table.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
-    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
+    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/schedule.html">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0a0a0a">
-    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
+    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/schedule.html">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -1895,89 +1895,73 @@
         }
     </style>
     <style>
-        /* ============ REG HERO ============ */
-        .reghero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
-        .reghero::before {
+        /* ============ SC HERO ============ */
+        .schero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
+        .schero::before {
             content: ''; position: absolute; inset: 0;
             background-image: linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
             background-size: 26px 26px;
             mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
         }
-        .reghero-title {
-            position: relative; margin-top: 12px; font-size: 34px; line-height: 1;
+        .schero-title {
+            position: relative; margin-top: 12px; font-size: 32px; line-height: 1;
             background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
-        .reghero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
+        .schero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
 
-        .fee-strip { display: flex; gap: 10px; padding: 0 20px; margin-top: 18px; }
-        .fee-box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; text-align: center; }
-        .fee-box b { display: block; font-family: 'Anton', sans-serif; font-size: 19px; color: var(--gold); }
-        .fee-box span { display: block; margin-top: 4px; font-size: 8.5px; letter-spacing: 0.09em; color: var(--ink-faint); text-transform: uppercase; }
+        .sc-stats { display: flex; gap: 10px; padding: 0 20px; margin-top: 18px; }
+        .sc-stat-box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; text-align: center; }
+        .sc-stat-box b { display: block; font-family: 'Anton', sans-serif; font-size: 19px; color: var(--gold); }
+        .sc-stat-box span { display: block; margin-top: 4px; font-size: 8.5px; letter-spacing: 0.09em; color: var(--ink-faint); text-transform: uppercase; }
 
-        /* ============ LEVEL GATE ============ */
-        .level-gate {
-            margin: 18px 20px 0; padding: 14px 16px; border-radius: 16px;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
-            background: rgba(var(--live-rgb), 0.08);
-            display: none; align-items: center; gap: 10px;
-        }
-        .level-gate.show { display: flex; }
-        .level-gate .ico { font-size: 18px; flex-shrink: 0; }
-        .level-gate .txt { font-size: 12px; line-height: 1.45; color: var(--ink); }
-        .level-gate .txt b { color: var(--live); }
+        .sc-tabs { display: flex; gap: 8px; padding: 20px 20px 0; }
+        .sc-tab { flex: 1; text-align: center; padding: 10px 6px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-size: 12px; color: var(--ink-dim); cursor: pointer; }
+        .sc-tab.active { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.1); color: var(--gold-pale); }
 
-        /* ============ FORM ============ */
-        .reg-form { display: flex; flex-direction: column; gap: 16px; padding: 22px 20px 6px; }
-        .f-group { display: flex; flex-direction: column; gap: 6px; }
-        .f-label { font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); text-transform: uppercase; display: flex; justify-content: space-between; }
-        .f-label .req { color: var(--live); }
-        .f-input, .f-select {
-            width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line);
-            background: var(--surface); color: var(--ink); font-size: 14px; font-family: inherit;
-            -webkit-appearance: none; appearance: none;
-        }
-        .f-input:focus, .f-select:focus { outline: none; border-color: var(--gold-deep); box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.12); }
-        .f-hint { font-size: 10.5px; color: var(--ink-faint); }
-        .f-hint.err { color: var(--live); }
+        .sc-match-list { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 6px; }
+        .sc-match-card { border-radius: 16px; border: 1px solid var(--line); background: var(--surface); padding: 14px 16px; }
+        .sm-head { display: flex; align-items: center; justify-content: space-between; }
+        .sm-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--gold-deep); letter-spacing: 0.06em; }
+        .sm-status { font-size: 8.5px; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 100px; text-transform: uppercase; }
+        .sm-status.scheduled { background: rgba(var(--gold-rgb), 0.1); color: var(--gold-pale); border: 1px solid var(--gold-deep); }
+        .sm-status.live { background: rgba(var(--live-rgb), 0.14); color: var(--live); animation: blink 1.2s ease-in-out infinite; }
+        .sm-status.completed { background: rgba(95, 217, 126, 0.12); color: #5fd97e; }
+        .sm-time { margin-top: 6px; font-size: 10.5px; color: var(--ink-faint); }
 
-        .upload-box {
-            border: 1.5px dashed var(--line); border-radius: 14px; padding: 18px 14px; text-align: center;
-            background: var(--surface); cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease;
-            position: relative; overflow: hidden;
-        }
-        .upload-box.has-file { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.06); }
-        .upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .upload-ico { font-size: 22px; }
-        .upload-txt { margin-top: 6px; font-size: 11.5px; color: var(--ink-dim); }
-        .upload-txt b { color: var(--gold-pale); }
-        .upload-filename { margin-top: 6px; font-size: 10.5px; color: var(--gold-pale); font-family: 'Space Mono', monospace; word-break: break-all; }
+        .sm-matchup { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 12px; }
+        .sm-team { flex: 1; text-align: center; }
+        .sm-team-abbr { font-family: 'Anton', sans-serif; font-size: 20px; }
+        .sm-team.winner .sm-team-abbr { color: var(--gold); }
+        .sm-vs { font-size: 10px; color: var(--ink-faint); letter-spacing: 0.1em; }
+        .sm-rounds { text-align: center; margin-top: 4px; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink-dim); }
 
-        /* ============ QR / PAYMENT ============ */
-        .pay-card {
-            margin: 6px 20px 0; padding: 22px 18px 20px; border-radius: 20px; text-align: center;
+        .empty-state { text-align: center; padding: 32px 20px; color: var(--ink-faint); font-size: 12.5px; }
+
+        /* ---- admin ---- */
+        .sc-admin-toggle { margin: 20px 20px 0; text-align: center; }
+        .sc-admin-toggle button { all: unset; cursor: pointer; font-size: 11px; color: var(--ink-faint); border-bottom: 1px dashed var(--line); padding-bottom: 1px; }
+        .admin-hidden { display: none !important; }
+        .login-card {
+            margin: 14px 20px 0; padding: 22px; border-radius: 20px; text-align: center;
             background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.14), transparent 62%), var(--surface);
             border: 1px solid var(--line);
         }
-        .pay-amt { font-family: 'Anton', sans-serif; font-size: 30px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .pay-sub { margin-top: 4px; font-size: 11px; color: var(--ink-faint); }
-        .qr-wrap { width: 168px; height: 168px; margin: 16px auto 0; border-radius: 16px; background: #fff; padding: 10px; display: flex; align-items: center; justify-content: center; }
-        .qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
-        .pay-link { display: inline-block; margin-top: 14px; font-size: 11.5px; color: var(--gold-pale); text-decoration: none; border-bottom: 1px dashed var(--gold-deep); padding-bottom: 1px; }
+        .login-title { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--gold-pale); }
+        .login-card .f-group { text-align: left; margin-top: 12px; }
+        .login-msg { margin-top: 10px; font-size: 11.5px; color: var(--live); min-height: 14px; }
 
-        /* ============ SUBMIT / STATUS ============ */
-        .reg-submit-btn { width: 100%; margin-top: 4px; }
-        .reg-submit-btn:disabled { opacity: 0.5; pointer-events: none; }
-        .form-msg { margin: 10px 20px 0; padding: 12px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5; display: none; }
-        .form-msg.show { display: block; }
-        .form-msg.ok { background: rgba(95, 217, 126, 0.12); border: 1px solid rgba(95, 217, 126, 0.35); color: #5fd97e; }
-        .form-msg.bad { background: rgba(var(--live-rgb), 0.12); border: 1px solid rgba(var(--live-rgb), 0.35); color: var(--live); }
+        .f-group { display: flex; flex-direction: column; gap: 6px; }
+        .f-label { font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); text-transform: uppercase; }
+        .f-input, .f-select {
+            width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line);
+            background: var(--surface-2); color: var(--ink); font-size: 14px; font-family: inherit; appearance: none;
+        }
+        .f-row2 { display: flex; gap: 10px; }
+        .f-row2 .f-group { flex: 1; }
 
-        .flow-strip { display: flex; align-items: center; gap: 6px; padding: 0 20px; margin-top: 22px; overflow-x: auto; }
-        .flow-strip::-webkit-scrollbar { display: none; }
-        .flow-step { flex-shrink: 0; font-size: 9.5px; letter-spacing: 0.06em; padding: 7px 11px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-faint); background: var(--surface); white-space: nowrap; }
-        .flow-step.now { border-color: var(--gold-deep); color: var(--gold-pale); background: rgba(var(--gold-rgb), 0.1); }
-        .flow-arrow { color: var(--ink-faint); font-size: 11px; flex-shrink: 0; }
+        .admin-panel { padding: 16px 20px 6px; display: flex; flex-direction: column; gap: 14px; }
+        .admin-subhead { font-size: 12px; font-weight: 600; color: var(--ink); margin-top: 6px; }
 
         /* legacy intro rules below kept for other pages, unused here */
         .intro {
@@ -2532,7 +2516,7 @@
             <div class="ignite-core"></div>
         </div>
         <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">PLAYER REGISTRATION</div>
+        <div class="splash-sub">MATCH SCHEDULE</div>
         <div class="splash-bar">
             <div class="splash-bar-fill"></div>
         </div>
@@ -2648,10 +2632,12 @@
             <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
 
            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link" aria-current="page"><span class="nav-link-icon">👤</span> Registration
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
+            <a href="players.html" class="nav-link"><span class="nav-link-icon">📋</span> Registered Players</a>
+            <a href="playins.html" class="nav-link"><span class="nav-link-icon">🎮</span> Play-Ins</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
-            <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+            <a href="schedule.html" class="nav-link" aria-current="page"><span class="nav-link-icon">📅</span> Schedule</a>
             <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
             <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
@@ -2663,97 +2649,63 @@
     </nav>
 
 
-    <!-- REG HERO -->
-    <section class="reghero">
-        <div class="eyebrow fade-up">👤 SEASON 12 · PLAY-INS</div>
-        <h1 class="reghero-title display fade-up d1">Register For<br>The Play-Ins</h1>
-        <p class="reghero-desc fade-up d2">Fill in your details, pay the entry fee and upload your screenshots. Your registration goes to the admin panel for approval before you're eligible for the Play-Ins.</p>
-        <div class="fee-strip fade-up d3">
-            <div class="fee-box"><b>₹12</b><span>Entry Fee</span></div>
-            <div class="fee-box"><b>Lvl 50+</b><span>Minimum Level</span></div>
-            <div class="fee-box"><b>9</b><span>Play-In Matches</span></div>
-        </div>
-        <div class="flow-strip fade-up d4">
-            <span class="flow-step now">1. REGISTER</span><span class="flow-arrow">→</span>
-            <span class="flow-step">2. APPROVAL</span><span class="flow-arrow">→</span>
-            <span class="flow-step">3. PLAY-INS</span><span class="flow-arrow">→</span>
-            <span class="flow-step">4. AUCTION</span><span class="flow-arrow">→</span>
-            <span class="flow-step">5. TEAM</span>
+    <!-- SC HERO -->
+    <section class="schero">
+        <div class="eyebrow fade-up">📅 SEASON 12 · MAIN SEASON</div>
+        <h1 class="schero-title display fade-up d1">Match<br>Schedule</h1>
+        <p class="schero-desc fade-up d2">Every team plays 14 matches — 56 total. Win = 2 points, Loss = 0. Ties on points are broken by Round Difference.</p>
+        <div class="sc-stats fade-up d3">
+            <div class="sc-stat-box"><b>8</b><span>Teams</span></div>
+            <div class="sc-stat-box"><b>14</b><span>Matches Each</span></div>
+            <div class="sc-stat-box"><b>56</b><span>Total Matches</span></div>
         </div>
     </section>
 
-    <!-- LEVEL GATE WARNING -->
-    <div class="level-gate" id="levelGate">
-        <div class="ico">⚠️</div>
-        <div class="txt"><b>Minimum Free Fire Level is 50.</b> You cannot register below Level 50.</div>
+    <div class="sc-tabs fade-up">
+        <div class="sc-tab active" data-status="all">All</div>
+        <div class="sc-tab" data-status="scheduled">Upcoming</div>
+        <div class="sc-tab" data-status="completed">Completed</div>
     </div>
 
-    <!-- REGISTRATION FORM -->
-    <form class="reg-form fade-up" id="regForm" novalidate>
-        <div class="f-group">
-            <label class="f-label" for="realName">Real Name <span class="req">*</span></label>
-            <input class="f-input" type="text" id="realName" name="realName" placeholder="Your full name" required>
+    <div class="sc-match-list" id="matchList">
+        <div class="empty-state" id="matchLoading">Loading schedule…</div>
+    </div>
+
+    <!-- ADMIN TOGGLE -->
+    <div class="sc-admin-toggle fade-up">
+        <button id="adminToggleBtn">🔒 Admin: create matches &amp; enter results</button>
+    </div>
+
+    <div class="login-card admin-hidden" id="loginCard">
+        <div class="login-title">Admin Login</div>
+        <form id="loginForm">
+            <div class="f-group"><input class="f-input" type="email" id="adminEmail" placeholder="Admin email" required autocomplete="username"></div>
+            <div class="f-group" style="margin-top:10px;"><input class="f-input" type="password" id="adminPass" placeholder="Password" required autocomplete="current-password"></div>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:14px;" id="loginBtn">Sign In</button>
+            <div class="login-msg" id="loginMsg"></div>
+        </form>
+    </div>
+
+    <!-- ADMIN PANEL (hidden until authenticated) -->
+    <div class="admin-panel admin-hidden" id="adminPanel">
+        <div class="admin-subhead">Create a Match</div>
+        <div class="f-row2">
+            <div class="f-group"><label class="f-label">Team A</label><select class="f-select" id="teamASelect"></select></div>
+            <div class="f-group"><label class="f-label">Team B</label><select class="f-select" id="teamBSelect"></select></div>
         </div>
+        <div class="f-group"><label class="f-label">Match Number</label><input class="f-input" type="number" id="matchNumber" min="1" max="56"></div>
+        <div class="f-group"><label class="f-label">Scheduled Time</label><input class="f-input" type="datetime-local" id="matchTime"></div>
+        <button class="btn btn-primary" id="createMatchBtn" style="width:100%;">Create Match</button>
+        <div class="login-msg" id="createMsg"></div>
 
-        <div class="f-group">
-            <label class="f-label" for="ign">Free Fire IGN <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ign" name="ign" placeholder="In-game name" required>
+        <div class="admin-subhead" style="margin-top:8px;">Enter Result</div>
+        <div class="f-group"><label class="f-label">Match</label><select class="f-select" id="resultMatchSelect"></select></div>
+        <div class="f-row2">
+            <div class="f-group"><label class="f-label" id="roundsALabel">Rounds Won (A)</label><input class="f-input" type="number" id="roundsA" min="0"></div>
+            <div class="f-group"><label class="f-label" id="roundsBLabel">Rounds Won (B)</label><input class="f-input" type="number" id="roundsB" min="0"></div>
         </div>
-
-        <div class="f-group">
-            <label class="f-label" for="ffUid">Free Fire UID <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ffUid" name="ffUid" inputmode="numeric" placeholder="e.g. 123456789" required>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label" for="ffLevel">Free Fire Level <span class="req">*</span></label>
-            <input class="f-input" type="number" id="ffLevel" name="ffLevel" min="1" max="90" placeholder="e.g. 62" required>
-            <span class="f-hint" id="levelHint">Minimum level to register is 50.</span>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label" for="whatsapp">WhatsApp Number <span class="req">*</span></label>
-            <input class="f-input" type="tel" id="whatsapp" name="whatsapp" placeholder="+91 XXXXX XXXXX" required>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label">Free Fire Profile Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="profileBox">
-                <input type="file" id="profileShot" name="profileShot" accept="image/*" required>
-                <div class="upload-ico">🖼️</div>
-                <div class="upload-txt"><b>Tap to upload</b> your in-game profile screenshot</div>
-                <div class="upload-filename" id="profileFileName"></div>
-            </div>
-        </div>
-
-        <!-- PAYMENT -->
-        <div class="pay-card">
-            <div class="pay-amt display">₹12</div>
-            <div class="pay-sub">Scan, pay, upload the screenshot below</div>
-            <div class="qr-wrap">
-                <img src="payment-qr.png" alt="FREEFIREXIPL payment QR code" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-size:11px;color:#888;&quot;>QR image not found<br>(payment-qr.png)</span>'">
-            </div>
-            <a class="pay-link" id="upiLink" href="upi://pay?pa=ffxipl@upi&pn=FREEFIREXIPL&am=12&cu=INR&tn=Season12Registration">Or pay via UPI app →</a>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label">Payment Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="paymentBox">
-                <input type="file" id="paymentShot" name="paymentShot" accept="image/*" required>
-                <div class="upload-ico">🧾</div>
-                <div class="upload-txt"><b>Tap to upload</b> your ₹12 payment confirmation</div>
-                <div class="upload-filename" id="paymentFileName"></div>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary reg-submit-btn" id="submitBtn">Submit Registration →</button>
-        <div class="form-msg" id="formMsg"></div>
-    </form>
-
-    <div class="cta-band fade-up" style="margin:8px 20px 0;">
-        <h3 class="display">ALREADY REGISTERED?</h3>
-        <p>Check the Registered Players page to see if your registration has been approved yet.</p>
-        <a class="btn btn-primary" href="players.html" style="display:block; text-decoration:none;">View Registered Players</a>
+        <button class="btn btn-primary" id="saveResultBtn" style="width:100%;">Save Result →</button>
+        <div class="login-msg" id="resultMsg"></div>
     </div>
 
     <!-- FOOTER -->
@@ -2950,15 +2902,11 @@ if (backToTopBtn) {
     </script>
     <script>
         // ====================================================================
-        // FREEFIREXIPL — SUPABASE CONFIG
-        // Fill these in with your project's values (Project Settings > API).
-        // Table + bucket names are prefixed "ffxipl_" / "ffxipl-" on purpose
-        // so this project never collides with other Supabase projects.
+        // FREEFIREXIPL — SUPABASE CONFIG (same project as the other pages)
         // ====================================================================
-         const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+          const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
         const FFXIPL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
         const FFXIPL_SEASON_NUMBER = 12;
-        const FFXIPL_BUCKET = 'ffxipl-uploads';
 
         let ffxiplClient = null;
         try {
@@ -2967,124 +2915,215 @@ if (backToTopBtn) {
             }
         } catch (e) { console.warn('Supabase client not initialized:', e); }
 
-        // ---------- Level gate (min level 50) ----------
-        const levelInput = document.getElementById('ffLevel');
-        const levelGate = document.getElementById('levelGate');
-        const levelHint = document.getElementById('levelHint');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function checkLevel() {
-            const v = parseInt(levelInput.value, 10);
-            const invalid = levelInput.value !== '' && (isNaN(v) || v < 50);
-            levelGate.classList.toggle('show', invalid);
-            levelHint.classList.toggle('err', invalid);
-            levelHint.textContent = invalid
-                ? 'Minimum Free Fire Level is 50. You cannot register below Level 50.'
-                : 'Minimum level to register is 50.';
-            return !invalid && levelInput.value !== '';
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
         }
-        levelInput.addEventListener('input', checkLevel);
 
-        // ---------- File upload previews ----------
-        function wireUpload(inputId, boxId, nameId) {
-            const input = document.getElementById(inputId);
-            const box = document.getElementById(boxId);
-            const nameEl = document.getElementById(nameId);
-            input.addEventListener('change', () => {
-                if (input.files && input.files[0]) {
-                    box.classList.add('has-file');
-                    nameEl.textContent = '✓ ' + input.files[0].name;
-                } else {
-                    box.classList.remove('has-file');
-                    nameEl.textContent = '';
-                }
+        let seasonId = null;
+        let teamsById = {};
+        let matchesCache = [];
+        let currentTab = 'all';
+
+        async function getSeasonId() {
+            if (seasonId) return seasonId;
+            const { data } = await ffxiplClient.from('ffxipl_seasons').select('id').eq('season_number', FFXIPL_SEASON_NUMBER).maybeSingle();
+            seasonId = data ? data.id : null;
+            return seasonId;
+        }
+
+        // ---------- Tabs ----------
+        document.querySelectorAll('.sc-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.sc-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentTab = tab.dataset.status;
+                renderMatches();
             });
-        }
-        wireUpload('profileShot', 'profileBox', 'profileFileName');
-        wireUpload('paymentShot', 'paymentBox', 'paymentFileName');
-
-        // ---------- Form message helper ----------
-        const formMsg = document.getElementById('formMsg');
-        function showMsg(text, ok) {
-            formMsg.textContent = text;
-            formMsg.className = 'form-msg show ' + (ok ? 'ok' : 'bad');
-        }
-
-        // ---------- Upload one file to Supabase Storage, return public URL ----------
-        async function ffxiplUploadFile(client, file, folder) {
-            const ext = file.name.split('.').pop();
-            const path = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-            const { error } = await client.storage.from(FFXIPL_BUCKET).upload(path, file, { upsert: false });
-            if (error) throw error;
-            const { data } = client.storage.from(FFXIPL_BUCKET).getPublicUrl(path);
-            return data.publicUrl;
-        }
-
-        // ---------- Submit ----------
-        document.getElementById('regForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formMsg.classList.remove('show');
-
-            if (!checkLevel()) {
-                showMsg('Minimum Free Fire Level is 50. You cannot register below Level 50.', false);
-                levelInput.focus();
-                return;
-            }
-
-            const realName = document.getElementById('realName').value.trim();
-            const ign = document.getElementById('ign').value.trim();
-            const ffUid = document.getElementById('ffUid').value.trim();
-            const ffLevel = parseInt(levelInput.value, 10);
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const profileFile = document.getElementById('profileShot').files[0];
-            const paymentFile = document.getElementById('paymentShot').files[0];
-
-            if (!realName || !ign || !ffUid || !whatsapp || !profileFile || !paymentFile) {
-                showMsg('Please fill in every field and upload both screenshots.', false);
-                return;
-            }
-
-            if (!ffxiplClient) {
-                showMsg('Registration form is ready, but this page isn\u2019t connected to Supabase yet \u2014 add your project URL and anon key in the script config to go live.', false);
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting…';
-
-            try {
-                const profileUrl = await ffxiplUploadFile(ffxiplClient, profileFile, 'profile-screenshots');
-                const paymentUrl = await ffxiplUploadFile(ffxiplClient, paymentFile, 'payment-screenshots');
-
-                const { error } = await ffxiplClient.from('ffxipl_players').insert([{
-                    season_number: FFXIPL_SEASON_NUMBER,
-                    real_name: realName,
-                    ign: ign,
-                    ff_uid: ffUid,
-                    ff_level: ffLevel,
-                    whatsapp: whatsapp,
-                    profile_screenshot_url: profileUrl,
-                    payment_screenshot_url: paymentUrl,
-                    status: 'pending'
-                }]);
-
-                if (error) throw error;
-
-                showMsg('Registration submitted! Your status is Pending — you\u2019ll be eligible for the Play-Ins once the admin panel marks you Approved.', true);
-                document.getElementById('regForm').reset();
-                document.getElementById('profileFileName').textContent = '';
-                document.getElementById('paymentFileName').textContent = '';
-                document.getElementById('profileBox').classList.remove('has-file');
-                document.getElementById('paymentBox').classList.remove('has-file');
-                levelGate.classList.remove('show');
-            } catch (err) {
-                console.error(err);
-                showMsg('Something went wrong submitting your registration: ' + (err.message || err), false);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Registration →';
-            }
         });
+
+        // ---------- Load teams (for names + admin selects) ----------
+        async function loadTeams() {
+            if (!ffxiplClient) return;
+            const sid = await getSeasonId();
+            const { data } = await ffxiplClient.from('ffxipl_teams').select('*').eq('season_id', sid).order('abbr');
+            (data || []).forEach(t => { teamsById[t.id] = t; });
+
+            const optsHtml = (data || []).map(t => `<option value="${t.id}">${escapeHtml(t.abbr)} — ${escapeHtml(t.name)}</option>`).join('');
+            document.getElementById('teamASelect').innerHTML = optsHtml;
+            document.getElementById('teamBSelect').innerHTML = optsHtml;
+        }
+
+        // ---------- Load & render matches ----------
+        async function loadMatches() {
+            const box = document.getElementById('matchList');
+            if (!ffxiplClient) {
+                box.innerHTML = '<div class="empty-state">This page isn\u2019t connected to Supabase yet — add your project URL and anon key in the script config.</div>';
+                return;
+            }
+            const sid = await getSeasonId();
+            const { data, error } = await ffxiplClient
+                .from('ffxipl_season_matches').select('*').eq('season_id', sid).order('match_number', { ascending: true });
+
+            if (error) { box.innerHTML = '<div class="empty-state">Error loading schedule: ' + escapeHtml(error.message) + '</div>'; return; }
+
+            matchesCache = data || [];
+            renderMatches();
+            populateResultSelect();
+        }
+
+        function renderMatches() {
+            const box = document.getElementById('matchList');
+            let list = matchesCache;
+            if (currentTab !== 'all') list = list.filter(m => m.status === currentTab);
+
+            if (list.length === 0) { box.innerHTML = '<div class="empty-state">No matches yet — the admin panel can create the first fixture.</div>'; return; }
+
+            box.innerHTML = list.map(m => {
+                const teamA = teamsById[m.team_a_id];
+                const teamB = teamsById[m.team_b_id];
+                const aWon = m.winner_team_id && m.winner_team_id === m.team_a_id;
+                const bWon = m.winner_team_id && m.winner_team_id === m.team_b_id;
+                return `
+                <div class="sc-match-card">
+                    <div class="sm-head">
+                        <span class="sm-num">MATCH ${m.match_number}</span>
+                        <span class="sm-status ${m.status}">${m.status}</span>
+                    </div>
+                    <div class="sm-time">${m.scheduled_time ? new Date(m.scheduled_time).toLocaleString(undefined, { weekday: 'short', hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : 'Time TBA'}</div>
+                    <div class="sm-matchup">
+                        <div class="sm-team ${aWon ? 'winner' : ''}"><div class="sm-team-abbr">${escapeHtml(teamA ? teamA.abbr : '—')}</div></div>
+                        <div class="sm-vs">VS</div>
+                        <div class="sm-team ${bWon ? 'winner' : ''}"><div class="sm-team-abbr">${escapeHtml(teamB ? teamB.abbr : '—')}</div></div>
+                    </div>
+                    ${m.status === 'completed' ? `<div class="sm-rounds">${m.rounds_won_a} — ${m.rounds_won_b}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        function populateResultSelect() {
+            const sel = document.getElementById('resultMatchSelect');
+            const scheduled = matchesCache.filter(m => m.status !== 'completed');
+            sel.innerHTML = scheduled.length
+                ? scheduled.map(m => {
+                    const a = teamsById[m.team_a_id], b = teamsById[m.team_b_id];
+                    return `<option value="${m.id}" data-a="${m.team_a_id}" data-b="${m.team_b_id}">Match ${m.match_number} — ${a ? a.abbr : '?'} vs ${b ? b.abbr : '?'}</option>`;
+                }).join('')
+                : '<option value="">No pending matches</option>';
+
+            sel.addEventListener('change', () => {
+                const opt = sel.options[sel.selectedIndex];
+                if (!opt || !opt.dataset.a) return;
+                document.getElementById('roundsALabel').textContent = 'Rounds Won (' + (teamsById[opt.dataset.a]?.abbr || 'A') + ')';
+                document.getElementById('roundsBLabel').textContent = 'Rounds Won (' + (teamsById[opt.dataset.b]?.abbr || 'B') + ')';
+            });
+            if (scheduled.length) sel.dispatchEvent(new Event('change'));
+        }
+
+        // ---------- Admin: create match ----------
+        document.getElementById('createMatchBtn').addEventListener('click', async () => {
+            const msg = document.getElementById('createMsg');
+            const teamA = document.getElementById('teamASelect').value;
+            const teamB = document.getElementById('teamBSelect').value;
+            const matchNumber = parseInt(document.getElementById('matchNumber').value, 10);
+            const time = document.getElementById('matchTime').value;
+
+            msg.style.color = 'var(--live)';
+            if (!teamA || !teamB || teamA === teamB) { msg.textContent = 'Pick two different teams.'; return; }
+            if (!matchNumber) { msg.textContent = 'Enter a match number.'; return; }
+
+            const sid = await getSeasonId();
+            const { error } = await ffxiplClient.from('ffxipl_season_matches').insert([{
+                season_id: sid, match_number: matchNumber, team_a_id: teamA, team_b_id: teamB,
+                scheduled_time: time || null, status: 'scheduled'
+            }]);
+
+            if (error) { msg.textContent = 'Error: ' + error.message; return; }
+            msg.style.color = '#5fd97e';
+            msg.textContent = 'Match created.';
+            document.getElementById('matchNumber').value = '';
+            document.getElementById('matchTime').value = '';
+            await loadMatches();
+        });
+
+        // ---------- Admin: save result ----------
+        document.getElementById('saveResultBtn').addEventListener('click', async () => {
+            const msg = document.getElementById('resultMsg');
+            const sel = document.getElementById('resultMatchSelect');
+            const matchId = sel.value;
+            const opt = sel.options[sel.selectedIndex];
+
+            msg.style.color = 'var(--live)';
+            if (!matchId) { msg.textContent = 'No pending match selected.'; return; }
+
+            const roundsA = parseInt(document.getElementById('roundsA').value, 10);
+            const roundsB = parseInt(document.getElementById('roundsB').value, 10);
+            if (isNaN(roundsA) || isNaN(roundsB)) { msg.textContent = 'Enter rounds won for both teams.'; return; }
+            if (roundsA === roundsB) { msg.textContent = 'Rounds can\u2019t be tied — one team must win.'; return; }
+
+            const winnerId = roundsA > roundsB ? opt.dataset.a : opt.dataset.b;
+
+            const { error } = await ffxiplClient.from('ffxipl_season_matches').update({
+                rounds_won_a: roundsA, rounds_won_b: roundsB, winner_team_id: winnerId, status: 'completed'
+            }).eq('id', matchId);
+
+            if (error) { msg.textContent = 'Error: ' + error.message; return; }
+            msg.style.color = '#5fd97e';
+            msg.textContent = 'Result saved. Points Table and Teams page updated.';
+            document.getElementById('roundsA').value = '';
+            document.getElementById('roundsB').value = '';
+            await loadMatches();
+        });
+
+        // ---------- Admin auth ----------
+        const adminToggleBtn = document.getElementById('adminToggleBtn');
+        const loginCard = document.getElementById('loginCard');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+        const loginMsg = document.getElementById('loginMsg');
+        const loginBtn = document.getElementById('loginBtn');
+
+        adminToggleBtn.addEventListener('click', () => loginCard.classList.toggle('admin-hidden'));
+
+        async function verifyAdmin(userId) {
+            const { data, error } = await ffxiplClient.from('ffxipl_admins').select('id').eq('id', userId).maybeSingle();
+            return !error && !!data;
+        }
+
+        async function checkAdminSession() {
+            if (!ffxiplClient) return;
+            const { data: { session } } = await ffxiplClient.auth.getSession();
+            if (session && await verifyAdmin(session.user.id)) {
+                loginCard.classList.add('admin-hidden');
+                adminPanel.classList.remove('admin-hidden');
+                adminToggleBtn.classList.add('admin-hidden');
+            }
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!ffxiplClient) { loginMsg.textContent = 'Supabase is not configured on this page yet.'; return; }
+            loginBtn.disabled = true; loginBtn.textContent = 'Signing in…';
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPass').value;
+            const { data, error } = await ffxiplClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                loginMsg.textContent = error.message;
+            } else if (!(await verifyAdmin(data.user.id))) {
+                loginMsg.textContent = 'This account is not registered as an FFXIPL admin.';
+                await ffxiplClient.auth.signOut();
+            } else {
+                loginCard.classList.add('admin-hidden');
+                adminPanel.classList.remove('admin-hidden');
+                adminToggleBtn.classList.add('admin-hidden');
+            }
+            loginBtn.disabled = false; loginBtn.textContent = 'Sign In';
+        });
+
+        (async function init() {
+            await loadTeams();
+            await loadMatches();
+            await checkAdminSession();
+        })();
     </script>
 </body>
 

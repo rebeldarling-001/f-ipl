@@ -17,18 +17,18 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Player Registration — FREEFIRE XIPL Season 12</title>
-    <meta name="description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
-    <meta property="og:title" content="Player Registration — FREEFIRE XIPL Season 12">
-    <meta property="og:description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
+    <title>Auction Center — FREEFIRE XIPL Season 12</title>
+    <meta name="description" content="FREEFIRE XIPL Season 12 player auction — 4 rounds by Play-In rank, ₹100 Cr purses, 8 franchises, 5 players each.">
+    <meta property="og:title" content="Auction Center — FREEFIRE XIPL Season 12">
+    <meta property="og:description" content="FREEFIRE XIPL Season 12 player auction — 4 rounds by Play-In rank, ₹100 Cr purses, 8 franchises, 5 players each.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
-    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
+    <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/auction-center.html">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0a0a0a">
-    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
+    <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/auction-center.html">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1895,89 +1895,82 @@
         }
     </style>
     <style>
-        /* ============ REG HERO ============ */
-        .reghero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
-        .reghero::before {
+        /* ============ AC HERO ============ */
+        .achero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
+        .achero::before {
             content: ''; position: absolute; inset: 0;
             background-image: linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
             background-size: 26px 26px;
             mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
         }
-        .reghero-title {
-            position: relative; margin-top: 12px; font-size: 34px; line-height: 1;
+        .achero-title {
+            position: relative; margin-top: 12px; font-size: 32px; line-height: 1;
             background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
-        .reghero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
+        .achero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
 
-        .fee-strip { display: flex; gap: 10px; padding: 0 20px; margin-top: 18px; }
-        .fee-box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; text-align: center; }
-        .fee-box b { display: block; font-family: 'Anton', sans-serif; font-size: 19px; color: var(--gold); }
-        .fee-box span { display: block; margin-top: 4px; font-size: 8.5px; letter-spacing: 0.09em; color: var(--ink-faint); text-transform: uppercase; }
+        .round-strip { display: flex; gap: 8px; padding: 0 20px; margin-top: 18px; overflow-x: auto; }
+        .round-strip::-webkit-scrollbar { display: none; }
+        .round-chip { flex-shrink: 0; padding: 8px 13px; border-radius: 100px; border: 1px solid var(--line); background: var(--surface); font-size: 10.5px; color: var(--ink-dim); white-space: nowrap; }
+        .round-chip.active { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.1); color: var(--gold-pale); }
+        .round-chip b { color: var(--gold); }
 
-        /* ============ LEVEL GATE ============ */
-        .level-gate {
-            margin: 18px 20px 0; padding: 14px 16px; border-radius: 16px;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
-            background: rgba(var(--live-rgb), 0.08);
-            display: none; align-items: center; gap: 10px;
-        }
-        .level-gate.show { display: flex; }
-        .level-gate .ico { font-size: 18px; flex-shrink: 0; }
-        .level-gate .txt { font-size: 12px; line-height: 1.45; color: var(--ink); }
-        .level-gate .txt b { color: var(--live); }
+        .ac-tabs { display: flex; gap: 8px; padding: 20px 20px 0; }
+        .ac-tab { flex: 1; text-align: center; padding: 10px 6px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-size: 12px; color: var(--ink-dim); cursor: pointer; }
+        .ac-tab.active { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.1); color: var(--gold-pale); }
+        .ac-panel { display: none; }
+        .ac-panel.active { display: block; }
 
-        /* ============ FORM ============ */
-        .reg-form { display: flex; flex-direction: column; gap: 16px; padding: 22px 20px 6px; }
-        .f-group { display: flex; flex-direction: column; gap: 6px; }
-        .f-label { font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); text-transform: uppercase; display: flex; justify-content: space-between; }
-        .f-label .req { color: var(--live); }
-        .f-input, .f-select {
-            width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line);
-            background: var(--surface); color: var(--ink); font-size: 14px; font-family: inherit;
-            -webkit-appearance: none; appearance: none;
-        }
-        .f-input:focus, .f-select:focus { outline: none; border-color: var(--gold-deep); box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.12); }
-        .f-hint { font-size: 10.5px; color: var(--ink-faint); }
-        .f-hint.err { color: var(--live); }
+        /* ---- team purse cards ---- */
+        .purse-list { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 6px; }
+        .purse-card { border-radius: 16px; border: 1px solid var(--line); background: var(--surface); padding: 13px 15px; }
+        .purse-head { display: flex; align-items: center; justify-content: space-between; }
+        .purse-abbr { font-family: 'Anton', sans-serif; font-size: 16px; color: var(--gold-pale); }
+        .purse-slots { font-size: 10px; color: var(--ink-faint); }
+        .purse-slots b { color: var(--gold); }
+        .purse-bar-track { height: 6px; border-radius: 6px; background: rgba(var(--gold-rgb), 0.09); overflow: hidden; margin-top: 9px; }
+        .purse-bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale)); transition: width 0.5s ease; }
+        .purse-nums { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--ink-faint); }
+        .purse-nums b { color: var(--ink); font-family: 'Space Mono', monospace; }
 
-        .upload-box {
-            border: 1.5px dashed var(--line); border-radius: 14px; padding: 18px 14px; text-align: center;
-            background: var(--surface); cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease;
-            position: relative; overflow: hidden;
-        }
-        .upload-box.has-file { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.06); }
-        .upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .upload-ico { font-size: 22px; }
-        .upload-txt { margin-top: 6px; font-size: 11.5px; color: var(--ink-dim); }
-        .upload-txt b { color: var(--gold-pale); }
-        .upload-filename { margin-top: 6px; font-size: 10.5px; color: var(--gold-pale); font-family: 'Space Mono', monospace; word-break: break-all; }
+        /* ---- sold players feed ---- */
+        .sold-list { display: flex; flex-direction: column; gap: 8px; padding: 16px 20px 6px; }
+        .sold-row { display: flex; align-items: center; gap: 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); padding: 10px 12px; }
+        .sold-info { flex: 1; min-width: 0; }
+        .sold-ign { font-size: 13px; font-weight: 600; color: var(--ink); }
+        .sold-team { font-size: 10.5px; color: var(--ink-faint); margin-top: 1px; }
+        .sold-amt { text-align: right; flex-shrink: 0; }
+        .sold-amt b { display: block; font-family: 'Anton', sans-serif; font-size: 14px; color: var(--gold); }
+        .sold-amt span { display: block; font-size: 8px; color: var(--ink-faint); text-transform: uppercase; }
 
-        /* ============ QR / PAYMENT ============ */
-        .pay-card {
-            margin: 6px 20px 0; padding: 22px 18px 20px; border-radius: 20px; text-align: center;
+        /* ---- admin ---- */
+        .ac-admin-toggle { margin: 20px 20px 0; text-align: center; }
+        .ac-admin-toggle button { all: unset; cursor: pointer; font-size: 11px; color: var(--ink-faint); border-bottom: 1px dashed var(--line); padding-bottom: 1px; }
+        .admin-hidden { display: none !important; }
+        .login-card {
+            margin: 14px 20px 0; padding: 22px; border-radius: 20px; text-align: center;
             background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.14), transparent 62%), var(--surface);
             border: 1px solid var(--line);
         }
-        .pay-amt { font-family: 'Anton', sans-serif; font-size: 30px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .pay-sub { margin-top: 4px; font-size: 11px; color: var(--ink-faint); }
-        .qr-wrap { width: 168px; height: 168px; margin: 16px auto 0; border-radius: 16px; background: #fff; padding: 10px; display: flex; align-items: center; justify-content: center; }
-        .qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
-        .pay-link { display: inline-block; margin-top: 14px; font-size: 11.5px; color: var(--gold-pale); text-decoration: none; border-bottom: 1px dashed var(--gold-deep); padding-bottom: 1px; }
+        .login-title { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--gold-pale); }
+        .login-card .f-group { text-align: left; margin-top: 12px; }
+        .login-msg { margin-top: 10px; font-size: 11.5px; color: var(--live); min-height: 14px; }
 
-        /* ============ SUBMIT / STATUS ============ */
-        .reg-submit-btn { width: 100%; margin-top: 4px; }
-        .reg-submit-btn:disabled { opacity: 0.5; pointer-events: none; }
-        .form-msg { margin: 10px 20px 0; padding: 12px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5; display: none; }
-        .form-msg.show { display: block; }
-        .form-msg.ok { background: rgba(95, 217, 126, 0.12); border: 1px solid rgba(95, 217, 126, 0.35); color: #5fd97e; }
-        .form-msg.bad { background: rgba(var(--live-rgb), 0.12); border: 1px solid rgba(var(--live-rgb), 0.35); color: var(--live); }
+        .f-group { display: flex; flex-direction: column; gap: 6px; }
+        .f-label { font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); text-transform: uppercase; }
+        .f-input, .f-select {
+            width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line);
+            background: var(--surface-2); color: var(--ink); font-size: 14px; font-family: inherit; appearance: none;
+        }
 
-        .flow-strip { display: flex; align-items: center; gap: 6px; padding: 0 20px; margin-top: 22px; overflow-x: auto; }
-        .flow-strip::-webkit-scrollbar { display: none; }
-        .flow-step { flex-shrink: 0; font-size: 9.5px; letter-spacing: 0.06em; padding: 7px 11px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-faint); background: var(--surface); white-space: nowrap; }
-        .flow-step.now { border-color: var(--gold-deep); color: var(--gold-pale); background: rgba(var(--gold-rgb), 0.1); }
-        .flow-arrow { color: var(--ink-faint); font-size: 11px; flex-shrink: 0; }
+        .admin-panel { padding: 16px 20px 6px; display: flex; flex-direction: column; gap: 14px; }
+        .bid-stepper { display: flex; align-items: center; gap: 10px; }
+        .bid-step-btn { width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--gold-deep); background: rgba(var(--gold-rgb), 0.08); color: var(--gold); font-size: 18px; flex-shrink: 0; cursor: pointer; }
+        .bid-display { flex: 1; text-align: center; font-family: 'Anton', sans-serif; font-size: 26px; color: var(--gold-pale); }
+        .bid-hint { font-size: 10.5px; color: var(--ink-faint); text-align: center; }
+
+        .empty-state { text-align: center; padding: 32px 20px; color: var(--ink-faint); font-size: 12.5px; }
 
         /* legacy intro rules below kept for other pages, unused here */
         .intro {
@@ -2532,7 +2525,7 @@
             <div class="ignite-core"></div>
         </div>
         <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">PLAYER REGISTRATION</div>
+        <div class="splash-sub">AUCTION CENTER</div>
         <div class="splash-bar">
             <div class="splash-bar-fill"></div>
         </div>
@@ -2648,9 +2641,11 @@
             <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
 
            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link" aria-current="page"><span class="nav-link-icon">👤</span> Registration
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
-            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
+            <a href="players.html" class="nav-link"><span class="nav-link-icon">📋</span> Registered Players</a>
+            <a href="playins.html" class="nav-link"><span class="nav-link-icon">🎮</span> Play-Ins</a>
+            <a href="auction-center.html" class="nav-link" aria-current="page"><span class="nav-link-icon">🔨</span> Auction</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
             <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
@@ -2663,97 +2658,73 @@
     </nav>
 
 
-    <!-- REG HERO -->
-    <section class="reghero">
-        <div class="eyebrow fade-up">👤 SEASON 12 · PLAY-INS</div>
-        <h1 class="reghero-title display fade-up d1">Register For<br>The Play-Ins</h1>
-        <p class="reghero-desc fade-up d2">Fill in your details, pay the entry fee and upload your screenshots. Your registration goes to the admin panel for approval before you're eligible for the Play-Ins.</p>
-        <div class="fee-strip fade-up d3">
-            <div class="fee-box"><b>₹12</b><span>Entry Fee</span></div>
-            <div class="fee-box"><b>Lvl 50+</b><span>Minimum Level</span></div>
-            <div class="fee-box"><b>9</b><span>Play-In Matches</span></div>
-        </div>
-        <div class="flow-strip fade-up d4">
-            <span class="flow-step now">1. REGISTER</span><span class="flow-arrow">→</span>
-            <span class="flow-step">2. APPROVAL</span><span class="flow-arrow">→</span>
-            <span class="flow-step">3. PLAY-INS</span><span class="flow-arrow">→</span>
-            <span class="flow-step">4. AUCTION</span><span class="flow-arrow">→</span>
-            <span class="flow-step">5. TEAM</span>
-        </div>
+    <!-- AC HERO -->
+    <section class="achero">
+        <div class="eyebrow fade-up">🔨 SEASON 12 · PLAYER AUCTION</div>
+        <h1 class="achero-title display fade-up d1">The<br>Auction</h1>
+        <p class="achero-desc fade-up d2">4 rounds, set by Play-In rank. Captains bid up from the round's starting price — even-crore bids only, ₹100 Cr purse, exactly 5 players per team.</p>
+        <div class="round-strip fade-up d3" id="roundStrip"></div>
     </section>
 
-    <!-- LEVEL GATE WARNING -->
-    <div class="level-gate" id="levelGate">
-        <div class="ico">⚠️</div>
-        <div class="txt"><b>Minimum Free Fire Level is 50.</b> You cannot register below Level 50.</div>
+    <div class="ac-tabs fade-up">
+        <div class="ac-tab active" data-tab="purses">Team Purses</div>
+        <div class="ac-tab" data-tab="sold">Sold Players</div>
     </div>
 
-    <!-- REGISTRATION FORM -->
-    <form class="reg-form fade-up" id="regForm" novalidate>
-        <div class="f-group">
-            <label class="f-label" for="realName">Real Name <span class="req">*</span></label>
-            <input class="f-input" type="text" id="realName" name="realName" placeholder="Your full name" required>
+    <!-- TEAM PURSES -->
+    <div class="ac-panel active" id="panelPurses">
+        <div class="purse-list" id="purseList">
+            <div class="empty-state" id="purseLoading">Loading team purses…</div>
         </div>
+    </div>
 
-        <div class="f-group">
-            <label class="f-label" for="ign">Free Fire IGN <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ign" name="ign" placeholder="In-game name" required>
+    <!-- SOLD PLAYERS -->
+    <div class="ac-panel" id="panelSold">
+        <div class="sold-list" id="soldList">
+            <div class="empty-state" id="soldLoading">No players sold yet.</div>
         </div>
+    </div>
 
+    <!-- ADMIN TOGGLE -->
+    <div class="ac-admin-toggle fade-up">
+        <button id="adminToggleBtn">🔒 Admin: run the auction</button>
+    </div>
+
+    <div class="login-card admin-hidden" id="loginCard">
+        <div class="login-title">Admin Login</div>
+        <form id="loginForm">
+            <div class="f-group"><input class="f-input" type="email" id="adminEmail" placeholder="Admin email" required autocomplete="username"></div>
+            <div class="f-group" style="margin-top:10px;"><input class="f-input" type="password" id="adminPass" placeholder="Password" required autocomplete="current-password"></div>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:14px;" id="loginBtn">Sign In</button>
+            <div class="login-msg" id="loginMsg"></div>
+        </form>
+    </div>
+
+    <!-- ADMIN PANEL (hidden until authenticated) -->
+    <div class="admin-panel admin-hidden" id="adminPanel">
         <div class="f-group">
-            <label class="f-label" for="ffUid">Free Fire UID <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ffUid" name="ffUid" inputmode="numeric" placeholder="e.g. 123456789" required>
+            <label class="f-label">Round</label>
+            <select class="f-select" id="roundSelect"></select>
         </div>
-
         <div class="f-group">
-            <label class="f-label" for="ffLevel">Free Fire Level <span class="req">*</span></label>
-            <input class="f-input" type="number" id="ffLevel" name="ffLevel" min="1" max="90" placeholder="e.g. 62" required>
-            <span class="f-hint" id="levelHint">Minimum level to register is 50.</span>
+            <label class="f-label">Player on the Block</label>
+            <select class="f-select" id="playerSelect"></select>
         </div>
-
         <div class="f-group">
-            <label class="f-label" for="whatsapp">WhatsApp Number <span class="req">*</span></label>
-            <input class="f-input" type="tel" id="whatsapp" name="whatsapp" placeholder="+91 XXXXX XXXXX" required>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label">Free Fire Profile Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="profileBox">
-                <input type="file" id="profileShot" name="profileShot" accept="image/*" required>
-                <div class="upload-ico">🖼️</div>
-                <div class="upload-txt"><b>Tap to upload</b> your in-game profile screenshot</div>
-                <div class="upload-filename" id="profileFileName"></div>
+            <label class="f-label">Current Bid (₹ Cr)</label>
+            <div class="bid-stepper">
+                <button type="button" class="bid-step-btn" id="bidDown">−</button>
+                <div class="bid-display" id="bidDisplay">₹2 Cr</div>
+                <button type="button" class="bid-step-btn" id="bidUp">+</button>
             </div>
+            <div class="bid-hint">Bids move in ₹2 Cr steps — even amounts only.</div>
         </div>
-
-        <!-- PAYMENT -->
-        <div class="pay-card">
-            <div class="pay-amt display">₹12</div>
-            <div class="pay-sub">Scan, pay, upload the screenshot below</div>
-            <div class="qr-wrap">
-                <img src="payment-qr.png" alt="FREEFIREXIPL payment QR code" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-size:11px;color:#888;&quot;>QR image not found<br>(payment-qr.png)</span>'">
-            </div>
-            <a class="pay-link" id="upiLink" href="upi://pay?pa=ffxipl@upi&pn=FREEFIREXIPL&am=12&cu=INR&tn=Season12Registration">Or pay via UPI app →</a>
-        </div>
-
         <div class="f-group">
-            <label class="f-label">Payment Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="paymentBox">
-                <input type="file" id="paymentShot" name="paymentShot" accept="image/*" required>
-                <div class="upload-ico">🧾</div>
-                <div class="upload-txt"><b>Tap to upload</b> your ₹12 payment confirmation</div>
-                <div class="upload-filename" id="paymentFileName"></div>
-            </div>
+            <label class="f-label">Winning Team</label>
+            <select class="f-select" id="teamSelect"></select>
         </div>
-
-        <button type="submit" class="btn btn-primary reg-submit-btn" id="submitBtn">Submit Registration →</button>
-        <div class="form-msg" id="formMsg"></div>
-    </form>
-
-    <div class="cta-band fade-up" style="margin:8px 20px 0;">
-        <h3 class="display">ALREADY REGISTERED?</h3>
-        <p>Check the Registered Players page to see if your registration has been approved yet.</p>
-        <a class="btn btn-primary" href="players.html" style="display:block; text-decoration:none;">View Registered Players</a>
+        <button class="btn btn-primary" id="sellBtn" style="width:100%;">Confirm Sale →</button>
+        <div class="login-msg" id="sellMsg"></div>
     </div>
 
     <!-- FOOTER -->
@@ -2950,15 +2921,13 @@ if (backToTopBtn) {
     </script>
     <script>
         // ====================================================================
-        // FREEFIREXIPL — SUPABASE CONFIG
-        // Fill these in with your project's values (Project Settings > API).
-        // Table + bucket names are prefixed "ffxipl_" / "ffxipl-" on purpose
-        // so this project never collides with other Supabase projects.
+        // FREEFIREXIPL — SUPABASE CONFIG (same project as the other pages)
         // ====================================================================
          const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
         const FFXIPL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
         const FFXIPL_SEASON_NUMBER = 12;
-        const FFXIPL_BUCKET = 'ffxipl-uploads';
+        const TEAM_PLAYER_LIMIT = 5;
+        const TEAM_PURSE_CR = 100;
 
         let ffxiplClient = null;
         try {
@@ -2967,124 +2936,255 @@ if (backToTopBtn) {
             }
         } catch (e) { console.warn('Supabase client not initialized:', e); }
 
-        // ---------- Level gate (min level 50) ----------
-        const levelInput = document.getElementById('ffLevel');
-        const levelGate = document.getElementById('levelGate');
-        const levelHint = document.getElementById('levelHint');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function checkLevel() {
-            const v = parseInt(levelInput.value, 10);
-            const invalid = levelInput.value !== '' && (isNaN(v) || v < 50);
-            levelGate.classList.toggle('show', invalid);
-            levelHint.classList.toggle('err', invalid);
-            levelHint.textContent = invalid
-                ? 'Minimum Free Fire Level is 50. You cannot register below Level 50.'
-                : 'Minimum level to register is 50.';
-            return !invalid && levelInput.value !== '';
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
         }
-        levelInput.addEventListener('input', checkLevel);
 
-        // ---------- File upload previews ----------
-        function wireUpload(inputId, boxId, nameId) {
-            const input = document.getElementById(inputId);
-            const box = document.getElementById(boxId);
-            const nameEl = document.getElementById(nameId);
-            input.addEventListener('change', () => {
-                if (input.files && input.files[0]) {
-                    box.classList.add('has-file');
-                    nameEl.textContent = '✓ ' + input.files[0].name;
-                } else {
-                    box.classList.remove('has-file');
-                    nameEl.textContent = '';
-                }
+        // ---------- Tabs ----------
+        document.querySelectorAll('.ac-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.ac-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.ac-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById('panel' + (tab.dataset.tab === 'purses' ? 'Purses' : 'Sold')).classList.add('active');
             });
-        }
-        wireUpload('profileShot', 'profileBox', 'profileFileName');
-        wireUpload('paymentShot', 'paymentBox', 'paymentFileName');
-
-        // ---------- Form message helper ----------
-        const formMsg = document.getElementById('formMsg');
-        function showMsg(text, ok) {
-            formMsg.textContent = text;
-            formMsg.className = 'form-msg show ' + (ok ? 'ok' : 'bad');
-        }
-
-        // ---------- Upload one file to Supabase Storage, return public URL ----------
-        async function ffxiplUploadFile(client, file, folder) {
-            const ext = file.name.split('.').pop();
-            const path = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-            const { error } = await client.storage.from(FFXIPL_BUCKET).upload(path, file, { upsert: false });
-            if (error) throw error;
-            const { data } = client.storage.from(FFXIPL_BUCKET).getPublicUrl(path);
-            return data.publicUrl;
-        }
-
-        // ---------- Submit ----------
-        document.getElementById('regForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formMsg.classList.remove('show');
-
-            if (!checkLevel()) {
-                showMsg('Minimum Free Fire Level is 50. You cannot register below Level 50.', false);
-                levelInput.focus();
-                return;
-            }
-
-            const realName = document.getElementById('realName').value.trim();
-            const ign = document.getElementById('ign').value.trim();
-            const ffUid = document.getElementById('ffUid').value.trim();
-            const ffLevel = parseInt(levelInput.value, 10);
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const profileFile = document.getElementById('profileShot').files[0];
-            const paymentFile = document.getElementById('paymentShot').files[0];
-
-            if (!realName || !ign || !ffUid || !whatsapp || !profileFile || !paymentFile) {
-                showMsg('Please fill in every field and upload both screenshots.', false);
-                return;
-            }
-
-            if (!ffxiplClient) {
-                showMsg('Registration form is ready, but this page isn\u2019t connected to Supabase yet \u2014 add your project URL and anon key in the script config to go live.', false);
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting…';
-
-            try {
-                const profileUrl = await ffxiplUploadFile(ffxiplClient, profileFile, 'profile-screenshots');
-                const paymentUrl = await ffxiplUploadFile(ffxiplClient, paymentFile, 'payment-screenshots');
-
-                const { error } = await ffxiplClient.from('ffxipl_players').insert([{
-                    season_number: FFXIPL_SEASON_NUMBER,
-                    real_name: realName,
-                    ign: ign,
-                    ff_uid: ffUid,
-                    ff_level: ffLevel,
-                    whatsapp: whatsapp,
-                    profile_screenshot_url: profileUrl,
-                    payment_screenshot_url: paymentUrl,
-                    status: 'pending'
-                }]);
-
-                if (error) throw error;
-
-                showMsg('Registration submitted! Your status is Pending — you\u2019ll be eligible for the Play-Ins once the admin panel marks you Approved.', true);
-                document.getElementById('regForm').reset();
-                document.getElementById('profileFileName').textContent = '';
-                document.getElementById('paymentFileName').textContent = '';
-                document.getElementById('profileBox').classList.remove('has-file');
-                document.getElementById('paymentBox').classList.remove('has-file');
-                levelGate.classList.remove('show');
-            } catch (err) {
-                console.error(err);
-                showMsg('Something went wrong submitting your registration: ' + (err.message || err), false);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Registration →';
-            }
         });
+
+        let roundsCache = [];
+        let rankedPlayers = [];   // approved players ranked 1..40 by Play-In points
+        let soldPlayerIds = new Set();
+        let teamsCache = [];
+
+        function tierRoundNumberFor(rank) {
+            if (rank <= 10) return 1;
+            if (rank <= 20) return 2;
+            if (rank <= 30) return 3;
+            return 4;
+        }
+
+        // ---------- Load rounds ----------
+        async function loadRounds() {
+            if (!ffxiplClient) return;
+            const { data, error } = await ffxiplClient
+                .from('ffxipl_auction_rounds').select('*').order('round_number', { ascending: true });
+            if (error || !data) return;
+            roundsCache = data;
+
+            const strip = document.getElementById('roundStrip');
+            strip.innerHTML = data.map(r => `<div class="round-chip"><b>R${r.round_number}</b> · ${escapeHtml(r.tier_label)} · ₹${r.starting_bid_cr} Cr start</div>`).join('');
+
+            const sel = document.getElementById('roundSelect');
+            sel.innerHTML = data.map(r => `<option value="${r.id}" data-round="${r.round_number}" data-start="${r.starting_bid_cr}">Round ${r.round_number} — ${escapeHtml(r.tier_label)}</option>`).join('');
+            sel.addEventListener('change', onRoundChange);
+        }
+
+        // ---------- Load ranked standings + sold players ----------
+        async function loadRankingsAndSold() {
+            if (!ffxiplClient) return;
+            const { data: players } = await ffxiplClient.from('ffxipl_players').select('id, ign').eq('status', 'approved');
+            const { data: results } = await ffxiplClient.from('ffxipl_playin_results').select('player_id, kills, booyah, points');
+            const { data: picks } = await ffxiplClient.from('ffxipl_auction_picks').select('player_id');
+
+            soldPlayerIds = new Set((picks || []).map(p => p.player_id));
+
+            const totals = {};
+            (players || []).forEach(p => { totals[p.id] = { id: p.id, ign: p.ign, points: 0 }; });
+            (results || []).forEach(r => { if (totals[r.player_id]) totals[r.player_id].points += r.points || 0; });
+
+            rankedPlayers = Object.values(totals).sort((a, b) => b.points - a.points);
+            onRoundChange();
+        }
+
+        // ---------- Team purses ----------
+        async function loadTeams() {
+            if (!ffxiplClient) return;
+            const { data, error } = await ffxiplClient.from('ffxipl_teams').select('*').eq('season_id', await getSeasonId()).order('abbr');
+            if (error) { document.getElementById('purseList').innerHTML = '<div class="empty-state">Error loading teams: ' + escapeHtml(error.message) + '</div>'; return; }
+
+            const { data: picks } = await ffxiplClient.from('ffxipl_auction_picks').select('team_id');
+            const countByTeam = {};
+            (picks || []).forEach(p => { countByTeam[p.team_id] = (countByTeam[p.team_id] || 0) + 1; });
+
+            teamsCache = (data || []).map(t => ({ ...t, players_bought: countByTeam[t.id] || 0 }));
+            renderPurses();
+            populateTeamSelect();
+        }
+
+        let seasonIdCache = null;
+        async function getSeasonId() {
+            if (seasonIdCache) return seasonIdCache;
+            const { data } = await ffxiplClient.from('ffxipl_seasons').select('id').eq('season_number', FFXIPL_SEASON_NUMBER).maybeSingle();
+            seasonIdCache = data ? data.id : null;
+            return seasonIdCache;
+        }
+
+        function renderPurses() {
+            const box = document.getElementById('purseList');
+            if (teamsCache.length === 0) { box.innerHTML = '<div class="empty-state">No teams found for this season.</div>'; return; }
+            box.innerHTML = teamsCache.map(t => {
+                const remaining = TEAM_PURSE_CR - t.purse_spent_cr;
+                const pct = Math.min(100, (t.purse_spent_cr / TEAM_PURSE_CR) * 100);
+                return `
+                <div class="purse-card">
+                    <div class="purse-head">
+                        <span class="purse-abbr">${escapeHtml(t.abbr)}</span>
+                        <span class="purse-slots"><b>${t.players_bought}</b>/${TEAM_PLAYER_LIMIT} players</span>
+                    </div>
+                    <div class="purse-bar-track"><div class="purse-bar-fill" style="width:${pct}%;"></div></div>
+                    <div class="purse-nums"><span>Spent: <b>₹${t.purse_spent_cr} Cr</b></span><span>Remaining: <b>₹${remaining} Cr</b></span></div>
+                </div>`;
+            }).join('');
+        }
+
+        function populateTeamSelect() {
+            const sel = document.getElementById('teamSelect');
+            sel.innerHTML = teamsCache.map(t =>
+                `<option value="${t.id}">${escapeHtml(t.abbr)} — ₹${(TEAM_PURSE_CR - t.purse_spent_cr)} Cr left, ${t.players_bought}/${TEAM_PLAYER_LIMIT} players</option>`
+            ).join('');
+        }
+
+        // ---------- Sold players feed ----------
+        async function loadSold() {
+            if (!ffxiplClient) return;
+            const { data, error } = await ffxiplClient
+                .from('ffxipl_auction_picks')
+                .select('final_bid_cr, payout_rupees, purchased_at, ffxipl_players(ign), ffxipl_teams(abbr)')
+                .order('purchased_at', { ascending: false });
+
+            const box = document.getElementById('soldList');
+            if (error) { box.innerHTML = '<div class="empty-state">Error: ' + escapeHtml(error.message) + '</div>'; return; }
+            if (!data || data.length === 0) { box.innerHTML = '<div class="empty-state">No players sold yet.</div>'; return; }
+
+            box.innerHTML = data.map(p => `
+                <div class="sold-row">
+                    <div class="sold-info">
+                        <div class="sold-ign">${escapeHtml(p.ffxipl_players?.ign || '—')}</div>
+                        <div class="sold-team">Sold to ${escapeHtml(p.ffxipl_teams?.abbr || '—')} · Payout ₹${p.payout_rupees}</div>
+                    </div>
+                    <div class="sold-amt"><b>₹${p.final_bid_cr} Cr</b><span>Final Bid</span></div>
+                </div>`).join('');
+        }
+
+        // ---------- Admin: round → eligible player list ----------
+        let currentBid = 2;
+        function onRoundChange() {
+            const sel = document.getElementById('roundSelect');
+            const opt = sel.options[sel.selectedIndex];
+            if (!opt) return;
+            const roundNum = parseInt(opt.dataset.round, 10);
+            const startBid = parseInt(opt.dataset.start, 10);
+
+            const eligible = rankedPlayers
+                .map((p, i) => ({ ...p, rank: i + 1 }))
+                .filter(p => tierRoundNumberFor(p.rank) === roundNum && !soldPlayerIds.has(p.id));
+
+            const playerSel = document.getElementById('playerSelect');
+            playerSel.innerHTML = eligible.length
+                ? eligible.map(p => `<option value="${p.id}">#${p.rank} ${escapeHtml(p.ign)} (${p.points} pts)</option>`).join('')
+                : '<option value="">No unsold players in this round</option>';
+
+            currentBid = startBid;
+            updateBidDisplay();
+        }
+
+        function updateBidDisplay() {
+            document.getElementById('bidDisplay').textContent = '₹' + currentBid + ' Cr';
+        }
+        document.getElementById('bidUp').addEventListener('click', () => { currentBid += 2; updateBidDisplay(); });
+        document.getElementById('bidDown').addEventListener('click', () => {
+            const sel = document.getElementById('roundSelect');
+            const opt = sel.options[sel.selectedIndex];
+            const floor = opt ? parseInt(opt.dataset.start, 10) : 2;
+            currentBid = Math.max(floor, currentBid - 2);
+            updateBidDisplay();
+        });
+
+        // ---------- Admin: confirm sale ----------
+        document.getElementById('sellBtn').addEventListener('click', async () => {
+            const sellMsg = document.getElementById('sellMsg');
+            sellMsg.style.color = 'var(--live)';
+
+            const roundSel = document.getElementById('roundSelect');
+            const roundId = roundSel.value;
+            const playerId = document.getElementById('playerSelect').value;
+            const teamId = document.getElementById('teamSelect').value;
+
+            if (!playerId) { sellMsg.textContent = 'No player selected for this round.'; return; }
+            if (currentBid < 2 || currentBid % 2 !== 0) { sellMsg.textContent = 'Bid must be an even number, minimum ₹2 Cr.'; return; }
+
+            const team = teamsCache.find(t => String(t.id) === String(teamId));
+            if (!team) { sellMsg.textContent = 'Select a winning team.'; return; }
+            if (team.players_bought >= TEAM_PLAYER_LIMIT) { sellMsg.textContent = `${team.abbr} already has ${TEAM_PLAYER_LIMIT} players.`; return; }
+            if (team.purse_spent_cr + currentBid > TEAM_PURSE_CR) { sellMsg.textContent = `${team.abbr} only has ₹${TEAM_PURSE_CR - team.purse_spent_cr} Cr left.`; return; }
+
+            const { error: pickErr } = await ffxiplClient.from('ffxipl_auction_picks').insert([{
+                player_id: playerId, team_id: teamId, round_id: roundId, final_bid_cr: currentBid
+            }]);
+            if (pickErr) { sellMsg.textContent = 'Error: ' + pickErr.message; return; }
+
+            const { error: playerErr } = await ffxiplClient.from('ffxipl_players').update({ team_id: teamId }).eq('id', playerId);
+            if (playerErr) { sellMsg.textContent = 'Pick saved, but failed to assign team: ' + playerErr.message; return; }
+
+            const { error: teamErr } = await ffxiplClient.from('ffxipl_teams').update({ purse_spent_cr: team.purse_spent_cr + currentBid }).eq('id', teamId);
+            if (teamErr) { sellMsg.textContent = 'Pick saved, but failed to update purse: ' + teamErr.message; return; }
+
+            sellMsg.style.color = '#5fd97e';
+            sellMsg.textContent = 'Sold! Purse and standings updated.';
+            await Promise.all([loadTeams(), loadSold(), loadRankingsAndSold()]);
+        });
+
+        // ---------- Admin auth ----------
+        const adminToggleBtn = document.getElementById('adminToggleBtn');
+        const loginCard = document.getElementById('loginCard');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+        const loginMsg = document.getElementById('loginMsg');
+        const loginBtn = document.getElementById('loginBtn');
+
+        adminToggleBtn.addEventListener('click', () => loginCard.classList.toggle('admin-hidden'));
+
+        async function verifyAdmin(userId) {
+            const { data, error } = await ffxiplClient.from('ffxipl_admins').select('id').eq('id', userId).maybeSingle();
+            return !error && !!data;
+        }
+
+        async function checkAdminSession() {
+            if (!ffxiplClient) return;
+            const { data: { session } } = await ffxiplClient.auth.getSession();
+            if (session && await verifyAdmin(session.user.id)) {
+                loginCard.classList.add('admin-hidden');
+                adminPanel.classList.remove('admin-hidden');
+                adminToggleBtn.classList.add('admin-hidden');
+            }
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!ffxiplClient) { loginMsg.textContent = 'Supabase is not configured on this page yet.'; return; }
+            loginBtn.disabled = true; loginBtn.textContent = 'Signing in…';
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPass').value;
+            const { data, error } = await ffxiplClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                loginMsg.textContent = error.message;
+            } else if (!(await verifyAdmin(data.user.id))) {
+                loginMsg.textContent = 'This account is not registered as an FFXIPL admin.';
+                await ffxiplClient.auth.signOut();
+            } else {
+                loginCard.classList.add('admin-hidden');
+                adminPanel.classList.remove('admin-hidden');
+                adminToggleBtn.classList.add('admin-hidden');
+            }
+            loginBtn.disabled = false; loginBtn.textContent = 'Sign In';
+        });
+
+        (async function init() {
+            await loadRounds();
+            await loadTeams();
+            await loadRankingsAndSold();
+            await loadSold();
+            await checkAdminSession();
+        })();
     </script>
 </body>
 
