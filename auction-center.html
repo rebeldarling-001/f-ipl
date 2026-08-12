@@ -729,7 +729,7 @@
    ========================================================================= */
 
         // ---------- SUPABASE CONFIG (paste your project's values) ----------
-        const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+            const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -904,8 +904,16 @@
                 .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ffxipl_s12_bid_log' }, payload => {
                     flashBid(payload.new); pushAdminLog(payload.new);
                 })
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_public_players' }, () => {
+                // NOTE: ffxipl_s12_public_players is a VIEW — Postgres logical
+                // replication (what Realtime is built on) can only stream changes
+                // from actual tables, never views. Subscribing to a view silently
+                // does nothing. We listen on the real underlying table instead and
+                // re-fetch through the safe view every time it changes.
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_registrations' }, () => {
                     loadPlayers();
+                })
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_auction_rounds' }, () => {
+                    loadRounds();
                 })
                 .subscribe();
 
@@ -922,6 +930,14 @@
                 }
             });
             window._presenceRoom = room;
+
+            // Defensive fallback: Realtime sockets occasionally drop a single
+            // message during a reconnect. A silent background re-sync every
+            // second means the page self-heals almost instantly even if that
+            // happens — nobody should ever need to hit refresh. This is a
+            // pure re-fetch of state/teams; it does not touch the live
+            // subscription handlers above in any way.
+            setInterval(() => { loadState(); loadTeams(); }, 1000);
         }
 
         // ---------- RENDER: STAGE ----------
