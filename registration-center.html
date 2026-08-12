@@ -2,14 +2,12 @@
 <html lang="en">
 
 <head>
-    <!-- Pre-paint theme snippet — must stay inline here, before theme.css loads. Copied verbatim
-         from index.html; do not move this to theme.js. -->
     <script>
         (function () {
             try {
                 var saved = localStorage.getItem('xipl-theme');
                 if (saved) document.documentElement.setAttribute('data-theme', saved);
-            } catch (e) { /* localStorage unavailable — default theme will render */ }
+            } catch (e) { }
         })();
     </script>
     <meta charset="UTF-8">
@@ -17,10 +15,12 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Player Registration — FREEFIRE XIPL Season 12</title>
-    <meta name="description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
-    <meta property="og:title" content="Player Registration — FREEFIRE XIPL Season 12">
-    <meta property="og:description" content="Register for FREEFIRE XIPL Season 12 Play-Ins. Level 50+, ₹12 entry fee, submit your details and get approved by the admin panel.">
+    <title>Registration Center — FREEFIRE XIPL Season 12</title>
+    <meta name="description"
+        content="Register for FREEFIREXIPL Season 12 Play-Ins, track your approval status, and browse every approved player.">
+    <meta property="og:title" content="Registration Center — FREEFIRE XIPL Season 12">
+    <meta property="og:description"
+        content="Register for FREEFIREXIPL Season 12 Play-Ins, track your approval status, and browse every approved player.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
     <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
@@ -29,48 +29,18 @@
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0a0a0a">
     <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/registration-center.html">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-/* =========================================================================
-   FREEFIRE XIPL — SHARED THEME SYSTEM
-   =========================================================================
-   One file, every page. Contains:
-     1. Theme variable definitions (12 color themes + 1 hidden "rgb-dynamic")
-     2. Global reset + body background
-     3. Shared chrome: splash screen, embers, header, theme switcher panel,
-        nav drawer, scroll progress bar, back-to-top button, footer
-     4. Shared utility classes: .fade-up, .btn / .btn-primary / .btn-ghost,
-        .eyebrow / .sec-title / .sec-desc, .foil-frame, .cta-band
-
-   HOW TO USE ON A NEW PAGE:
-     <link rel="stylesheet" href="theme.css">
-   Then write only page-specific CSS in that page's own <style> block —
-   things like a unique section layout, a card grid, etc. Never redefine
-   variables or chrome here again; add a new theme by adding one more
-   [data-theme="..."] block below and one <button class="theme-opt"> in
-   the theme panel markup (see theme-panel-template.html).
-
-   Also add this tiny pre-paint snippet inline in <head>, BEFORE this
-   stylesheet link (it must run synchronously, before first paint, so an
-   external/deferred file won't do):
-
-     <script>
-       (function () {
-         try {
-           var saved = localStorage.getItem('xipl-theme');
-           if (saved) document.documentElement.setAttribute('data-theme', saved);
-         } catch (e) {}
-       })();
-     </script>
+        /* =========================================================================
+   FREEFIRE XIPL — SHARED THEME SYSTEM (copied verbatim — do not diverge)
    ========================================================================= */
-
-/* ---------- 1. THEME VARIABLE DEFINITIONS ---------- */
         :root,
         [data-theme="golden-fire"] {
             --bg: #0a0705;
@@ -86,13 +56,11 @@
             --live: #ff4433;
             --line: rgba(var(--gold-rgb), 0.14);
             --shadow-gold: 0 0 40px rgba(var(--gold-rgb), 0.18);
-
             --bg-rgb: 10, 7, 5;
             --gold-rgb: 240, 185, 61;
             --live-rgb: 255, 68, 51;
             --mvp-glow-rgb: 178, 110, 224;
             --on-accent: #1a1206;
-
             --card-a: #1d1509;
             --card-b: #100b06;
             --nav-a: #160f08;
@@ -102,7 +70,6 @@
             --splash-a: #1c1206;
             --splash-b: #0a0705;
             --btt-bg: rgba(15, 10, 5, 0.85);
-
             --amb1: rgba(240, 185, 61, .20);
             --amb2: rgba(251, 228, 166, .14);
             --amb3: rgba(179, 129, 31, .10);
@@ -126,13 +93,11 @@
             --live: #ff4433;
             --line: rgba(var(--gold-rgb), 0.14);
             --shadow-gold: 0 0 40px rgba(var(--gold-rgb), 0.18);
-
             --bg-rgb: 10, 7, 5;
             --gold-rgb: 240, 185, 61;
             --live-rgb: 255, 68, 51;
             --mvp-glow-rgb: 178, 110, 224;
             --on-accent: #1a1206;
-
             --card-a: #1d1509;
             --card-b: #100b06;
             --nav-a: #160f08;
@@ -142,7 +107,6 @@
             --splash-a: #1c1206;
             --splash-b: #0a0705;
             --btt-bg: rgba(15, 10, 5, 0.85);
-
             --amb1: rgba(0, 180, 255, .18);
             --amb2: rgba(130, 80, 255, .16);
             --amb3: rgba(0, 255, 180, .08);
@@ -152,7 +116,6 @@
             --body-4: #05070D;
         }
 
-        /* ============ THEME DEFINITIONS ============ */
         [data-theme="crystal-light"] {
             --bg: #eef6fb9a;
             --bg-alt: #ffffff76;
@@ -167,13 +130,11 @@
             --live: #ff5252;
             --line: rgba(28, 127, 176, 0.16);
             --shadow-gold: 0 8px 30px rgba(46, 168, 224, 0.16);
-
             --bg-rgb: 238, 246, 251;
             --gold-rgb: 46, 168, 224;
             --live-rgb: 255, 82, 82;
             --mvp-glow-rgb: 130, 190, 255;
             --on-accent: #ffffff8d;
-
             --card-a: #ffffff72;
             --card-b: #dcf0fb;
             --nav-a: #ffffff;
@@ -183,7 +144,6 @@
             --splash-a: #ffffff;
             --splash-b: #d7edfa;
             --btt-bg: rgba(255, 255, 255, 0.85);
-
             --amb1: rgba(46, 168, 224, .16);
             --amb2: rgba(120, 190, 255, .14);
             --amb3: rgba(150, 230, 255, .12);
@@ -207,13 +167,11 @@
             --live: #ff3b7a;
             --line: rgba(41, 211, 255, 0.18);
             --shadow-gold: 0 0 40px rgba(41, 211, 255, 0.25);
-
             --bg-rgb: 5, 6, 15;
             --gold-rgb: 41, 211, 255;
             --live-rgb: 255, 59, 122;
             --mvp-glow-rgb: 124, 58, 237;
             --on-accent: #05060f;
-
             --card-a: #131a35;
             --card-b: #0a0d1c;
             --nav-a: #131a35;
@@ -223,7 +181,6 @@
             --splash-a: #131a35;
             --splash-b: #05060f;
             --btt-bg: rgba(10, 13, 28, 0.85);
-
             --amb1: rgba(41, 211, 255, .22);
             --amb2: rgba(124, 58, 237, .22);
             --amb3: rgba(0, 255, 220, .1);
@@ -247,13 +204,11 @@
             --live: #ff4d8d;
             --line: rgba(179, 102, 255, 0.18);
             --shadow-gold: 0 0 40px rgba(179, 102, 255, 0.25);
-
             --bg-rgb: 20, 10, 36;
             --gold-rgb: 179, 102, 255;
             --live-rgb: 255, 77, 141;
             --mvp-glow-rgb: 255, 143, 224;
             --on-accent: #1a0630;
-
             --card-a: #2a1948;
             --card-b: #180b2b;
             --nav-a: #2a1948;
@@ -263,7 +218,6 @@
             --splash-a: #2a1948;
             --splash-b: #140a24;
             --btt-bg: rgba(24, 11, 43, 0.85);
-
             --amb1: rgba(179, 102, 255, .24);
             --amb2: rgba(255, 143, 224, .18);
             --amb3: rgba(120, 80, 255, .14);
@@ -287,13 +241,11 @@
             --live: #ff5a4d;
             --line: rgba(34, 197, 142, 0.18);
             --shadow-gold: 0 0 40px rgba(34, 197, 142, 0.22);
-
             --bg-rgb: 6, 23, 15;
             --gold-rgb: 34, 197, 142;
             --live-rgb: 255, 90, 77;
             --mvp-glow-rgb: 167, 243, 208;
             --on-accent: #042014;
-
             --card-a: #123222;
             --card-b: #08190f;
             --nav-a: #123222;
@@ -303,7 +255,6 @@
             --splash-a: #123222;
             --splash-b: #06170f;
             --btt-bg: rgba(8, 25, 15, 0.85);
-
             --amb1: rgba(34, 197, 142, .2);
             --amb2: rgba(167, 243, 208, .14);
             --amb3: rgba(80, 220, 150, .12);
@@ -327,13 +278,11 @@
             --live: #ff3b3b;
             --line: rgba(255, 122, 69, 0.18);
             --shadow-gold: 0 0 40px rgba(255, 122, 69, 0.22);
-
             --bg-rgb: 31, 15, 8;
             --gold-rgb: 255, 122, 69;
             --live-rgb: 255, 59, 59;
             --mvp-glow-rgb: 255, 187, 130;
             --on-accent: #2a0e04;
-
             --card-a: #391d0f;
             --card-b: #200f07;
             --nav-a: #391d0f;
@@ -343,7 +292,6 @@
             --splash-a: #391d0f;
             --splash-b: #1f0f08;
             --btt-bg: rgba(32, 15, 7, 0.85);
-
             --amb1: rgba(255, 122, 69, .22);
             --amb2: rgba(255, 187, 130, .16);
             --amb3: rgba(255, 90, 90, .1);
@@ -367,13 +315,11 @@
             --live: #ff5c5c;
             --line: rgba(0, 180, 216, 0.18);
             --shadow-gold: 0 0 40px rgba(0, 180, 216, 0.24);
-
             --bg-rgb: 2, 18, 31;
             --gold-rgb: 0, 180, 216;
             --live-rgb: 255, 92, 92;
             --mvp-glow-rgb: 144, 224, 239;
             --on-accent: #011520;
-
             --card-a: #0a3550;
             --card-b: #041c2b;
             --nav-a: #0a3550;
@@ -383,7 +329,6 @@
             --splash-a: #0a3550;
             --splash-b: #02121f;
             --btt-bg: rgba(4, 28, 43, 0.85);
-
             --amb1: rgba(0, 180, 216, .22);
             --amb2: rgba(144, 224, 239, .16);
             --amb3: rgba(0, 119, 182, .16);
@@ -407,13 +352,11 @@
             --live: #ff5577;
             --line: rgba(224, 90, 149, 0.18);
             --shadow-gold: 0 8px 30px rgba(255, 143, 194, 0.2);
-
             --bg-rgb: 253, 243, 247;
             --gold-rgb: 255, 143, 194;
             --live-rgb: 255, 85, 119;
             --mvp-glow-rgb: 220, 180, 255;
             --on-accent: #ffffff;
-
             --card-a: #ffffff;
             --card-b: #ffe4f0;
             --nav-a: #ffffff;
@@ -423,7 +366,6 @@
             --splash-a: #ffffff;
             --splash-b: #ffdcec;
             --btt-bg: rgba(255, 255, 255, 0.85);
-
             --amb1: rgba(255, 143, 194, .2);
             --amb2: rgba(220, 180, 255, .16);
             --amb3: rgba(255, 210, 230, .18);
@@ -447,13 +389,11 @@
             --live: #ff4d4d;
             --line: rgba(255, 255, 255, 0.12);
             --shadow-gold: 0 0 40px rgba(255, 255, 255, 0.1);
-
             --bg-rgb: 10, 10, 10;
             --gold-rgb: 212, 212, 212;
             --live-rgb: 255, 77, 77;
             --mvp-glow-rgb: 180, 180, 180;
             --on-accent: #0a0a0a;
-
             --card-a: #1c1c1c;
             --card-b: #0d0d0d;
             --nav-a: #1c1c1c;
@@ -463,7 +403,6 @@
             --splash-a: #1c1c1c;
             --splash-b: #0a0a0a;
             --btt-bg: rgba(13, 13, 13, 0.85);
-
             --amb1: rgba(255, 255, 255, .08);
             --amb2: rgba(200, 200, 200, .06);
             --amb3: rgba(255, 255, 255, .04);
@@ -472,7 +411,6 @@
             --body-3: #131313;
             --body-4: #070707;
         }
-
 
         [data-theme="crimson-blood"] {
             --bg: #1a0505;
@@ -488,13 +426,11 @@
             --live: #ffcc00;
             --line: rgba(224, 48, 74, 0.18);
             --shadow-gold: 0 0 40px rgba(224, 48, 74, 0.22);
-
             --bg-rgb: 26, 5, 5;
             --gold-rgb: 224, 48, 74;
             --live-rgb: 255, 204, 0;
             --mvp-glow-rgb: 255, 143, 163;
             --on-accent: #1a0505;
-
             --card-a: #3a0f0f;
             --card-b: #200808;
             --nav-a: #3a0f0f;
@@ -504,7 +440,6 @@
             --splash-a: #3a0f0f;
             --splash-b: #1a0505;
             --btt-bg: rgba(32, 8, 8, 0.85);
-
             --amb1: rgba(224, 48, 74, .22);
             --amb2: rgba(255, 143, 163, .16);
             --amb3: rgba(163, 24, 45, .12);
@@ -517,61 +452,42 @@
         [data-theme="arena-pro"] {
             --bg: #FEF5EF;
             --bg-alt: #F3EAF4;
-
             --surface: #FFFFFF;
             --surface-2: #EADDE1;
-
             --gold: #9D5C63;
             --gold-deep: #584B53;
             --gold-pale: #8B4B54;
-
             --ink: #584B53;
             --ink-dim: #8F9491;
             --ink-faint: #BCA3AC;
-
             --live: #9D5C63;
-
             --line: rgba(88, 75, 83, .14);
             --shadow-gold: 0 10px 30px rgba(157, 92, 99, .18);
-
             --bg-rgb: 254, 245, 239;
             --gold-rgb: 157, 92, 99;
             --live-rgb: 157, 92, 99;
             --mvp-glow-rgb: 157, 92, 99;
-
             --on-accent: #FEF5EF;
-
             --card-a: #FFFFFF;
             --card-b: #EADDE1;
-
             --nav-a: #FEF5EF;
             --nav-b: #F3EAF4;
-
             --cta-a: #FFFFFF;
             --cta-b: #EADDE1;
-
             --splash-a: #FEF5EF;
             --splash-b: #F3EAF4;
-
             --btt-bg: rgba(254, 245, 239, .90);
-
             --amb1: rgba(157, 92, 99, .08);
             --amb2: rgba(243, 234, 244, .45);
             --amb3: rgba(88, 75, 83, .06);
-
             --body-1: #FEF5EF;
             --body-2: #F3EAF4;
             --body-3: #FFFFFF;
             --body-4: #EADDE1;
         }
 
-        /* ===========================
-   ARENA PRO PREMIUM OVERRIDES
-   =========================== */
-
         [data-theme="arena-pro"] body {
-            background:
-                radial-gradient(circle at 18% 10%, rgba(157, 92, 99, .07), transparent 32%),
+            background: radial-gradient(circle at 18% 10%, rgba(157, 92, 99, .07), transparent 32%),
                 radial-gradient(circle at 85% 4%, rgba(214, 227, 248, .45), transparent 32%),
                 linear-gradient(180deg, #FEF5EF, #F3EAF4 40%, #FEF5EF);
             color: #584B53;
@@ -747,7 +663,6 @@
             animation: rgbBorder 6s linear infinite;
         }
 
-        /* Smooth theme-swap transition, active only briefly on switch */
         html.theme-transitioning,
         html.theme-transitioning * {
             transition: background-color .6s ease, background-image .6s ease, border-color .6s ease,
@@ -771,27 +686,14 @@
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             position: relative;
-
             background:
                 linear-gradient(rgba(var(--gold-rgb), .05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(var(--gold-rgb), .05) 1px, transparent 1px),
                 radial-gradient(circle at 15% 20%, var(--amb1), transparent 28%),
                 radial-gradient(circle at 85% 15%, var(--amb2), transparent 30%),
                 radial-gradient(circle at 50% 85%, var(--amb3), transparent 35%),
-                linear-gradient(180deg,
-                    var(--body-1) 0%,
-                    var(--body-2) 30%,
-                    var(--body-3) 60%,
-                    var(--body-4) 100%);
-
-            background-size:
-                40px 40px,
-                40px 40px,
-                auto,
-                auto,
-                auto,
-                auto;
-
+                linear-gradient(180deg, var(--body-1) 0%, var(--body-2) 30%, var(--body-3) 60%, var(--body-4) 100%);
+            background-size: 40px 40px, 40px 40px, auto, auto, auto, auto;
             background-attachment: fixed;
         }
 
@@ -818,9 +720,6 @@
             font-family: 'Space Mono', monospace;
         }
 
-
-/* ---------- 2. SHARED CHROME: splash / embers / header / theme switcher / nav drawer ---------- */
-        /* ============ SPLASH ============ */
         #splash {
             position: fixed;
             inset: 0;
@@ -833,9 +732,6 @@
             max-width: 480px;
             margin: 0 auto;
             transition: opacity 0.7s ease, visibility 0.7s ease;
-        }
-
-        #splash {
             will-change: mask-image;
         }
 
@@ -969,7 +865,6 @@
             }
         }
 
-        /* ============ EMBERS (ambient bg) ============ */
         .embers {
             position: fixed;
             inset: 0;
@@ -1014,7 +909,6 @@
             }
         }
 
-        /* ============ HEADER ============ */
         header {
             position: sticky;
             top: 0;
@@ -1080,7 +974,6 @@
             font-size: 15px;
         }
 
-        /* ============ THEME SWITCHER ============ */
         .theme-overlay {
             position: fixed;
             inset: 0;
@@ -1186,18 +1079,6 @@
             display: block;
         }
 
-        .theme-swatch.rainbow i:nth-child(1) {
-            background: linear-gradient(180deg, #ff2d55, #ff9500);
-        }
-
-        .theme-swatch.rainbow i:nth-child(2) {
-            background: linear-gradient(180deg, #ffe600, #2dff6b);
-        }
-
-        .theme-swatch.rainbow i:nth-child(3) {
-            background: linear-gradient(180deg, #2dcaff, #a855f7);
-        }
-
         .theme-opt-name {
             font-size: 11.5px;
             letter-spacing: 0.02em;
@@ -1214,7 +1095,6 @@
             font-style: normal;
         }
 
-        /* ============ NAV DRAWER ============ */
         .nav-overlay {
             position: fixed;
             inset: 0;
@@ -1305,26 +1185,10 @@
             color: var(--gold-pale);
         }
 
-        /* Back-to-home affordance for inner pages — pairs with .brand in the header */
         .header-flex {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .back-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            text-decoration: none;
-            flex-shrink: 0;
         }
 
         .nav-link:active {
@@ -1367,8 +1231,6 @@
             text-transform: uppercase;
         }
 
-
-/* ---------- 3. UTILITY: scroll-reveal animation ---------- */
         .fade-up {
             opacity: 0;
             transform: translateY(24px);
@@ -1378,11 +1240,6 @@
         .fade-up.in {
             opacity: 1;
             transform: translateY(0);
-        }
-
-        .fade-up.in {
-            opacity: 1;
-            transform: perspective(600px) rotateX(0);
         }
 
         .fade-up.d1 {
@@ -1401,7 +1258,6 @@
             transition-delay: 0.35s;
         }
 
-/* ---------- 4. UTILITY: live-dot blink keyframe (used by status dots across pages) ---------- */
         @keyframes blink {
 
             0%,
@@ -1414,7 +1270,6 @@
             }
         }
 
-/* ---------- 5. UTILITY: buttons ---------- */
         .btn {
             flex: 1;
             text-align: center;
@@ -1426,6 +1281,8 @@
             text-transform: uppercase;
             border: none;
             transition: transform 0.15s ease;
+            cursor: pointer;
+            font-family: inherit;
         }
 
         .btn:active {
@@ -1444,8 +1301,11 @@
             border: 1px solid var(--gold-deep);
         }
 
-/* ---------- 6. UTILITY: section header (eyebrow / title / description) ---------- */
-        /* ============ SECTION SHARED ============ */
+        .btn:disabled {
+            opacity: .45;
+            pointer-events: none;
+        }
+
         section {
             padding: 44px 20px 6px;
             position: relative;
@@ -1487,8 +1347,6 @@
             max-width: 320px;
         }
 
-
-/* ---------- 7. UTILITY: foil-frame (signature rotating gold border, wrap any card in it) ---------- */
         .foil-frame {
             position: relative;
             border-radius: 26px;
@@ -1512,7 +1370,6 @@
             }
         }
 
-/* ---------- 8. CHROME: scroll progress bar ---------- */
         .scroll-progress {
             position: fixed;
             top: 0;
@@ -1533,8 +1390,6 @@
             transition: width 0.05s linear;
         }
 
-/* ---------- 9. CHROME: back-to-top button ---------- */
-        /* ============ BACK TO TOP ============ */
         .back-to-top {
             position: fixed;
             right: 18px;
@@ -1588,7 +1443,6 @@
             font-weight: 700;
         }
 
-/* ---------- 10. UTILITY: CTA band (reusable promo strip, e.g. before footer) ---------- */
         .cta-band {
             margin: 44px 20px 0;
             padding: 26px 20px;
@@ -1617,8 +1471,6 @@
             margin-top: 16px;
         }
 
-/* ---------- 11. CHROME: footer ---------- */
-        /* ============ FOOTER ============ */
         footer {
             margin-top: 40px;
             padding: 26px 20px 20px;
@@ -1664,322 +1516,9 @@
             color: var(--ink-faint);
             letter-spacing: 0.03em;
         }
-
-        /* ============ NOTIFICATION POPUP (homepage only) ============ */
-        /* Driven by notify.js reading notifications.json — see that file to push a new notice. */
-        .notify-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9000;
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s ease;
-        }
-
-        .notify-overlay.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .notify-modal {
-            position: relative;
-            width: 100%;
-            max-width: 390px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
-            border: 1px solid rgba(var(--gold-rgb), 0.28);
-            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(var(--gold-rgb), 0.08);
-            transform: translateY(22px) scale(0.97);
-            transition: transform 0.38s cubic-bezier(.22, .9, .25, 1);
-        }
-
-        .notify-overlay.show .notify-modal {
-            transform: translateY(0) scale(1);
-        }
-
-        .notify-glow {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 260px;
-            height: 160px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.28), transparent 70%);
-            filter: blur(8px);
-            pointer-events: none;
-            animation: notifyHaloPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes notifyHaloPulse {
-
-            0%,
-            100% {
-                opacity: 0.7;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .notify-shimmer {
-            position: absolute;
-            top: 0;
-            left: -60%;
-            width: 35%;
-            height: 100%;
-            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            animation: notifyShimmerSweep 5s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes notifyShimmerSweep {
-
-            0%,
-            100% {
-                left: -60%;
-            }
-
-            50% {
-                left: 120%;
-            }
-        }
-
-        .notify-close {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            z-index: 2;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--ink-faint);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .notify-top {
-            position: relative;
-            padding: 32px 24px 24px;
-            text-align: center;
-        }
-
-        .notify-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
-            border-radius: 100px;
-            border: 1px solid var(--gold-deep);
-            background: rgba(var(--gold-rgb), 0.08);
-            font-size: 9.5px;
-            letter-spacing: 0.2em;
-            color: var(--gold-pale);
-            text-transform: uppercase;
-        }
-
-        .notify-badge .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--live);
-            box-shadow: 0 0 6px var(--live);
-            animation: blink 1.2s ease-in-out infinite;
-        }
-
-        .notify-icon {
-            margin: 20px auto 0;
-            width: 62px;
-            height: 62px;
-            border-radius: 18px;
-            background: linear-gradient(145deg, rgba(var(--gold-rgb), 0.18), rgba(var(--gold-rgb), 0.05));
-            border: 1px solid rgba(var(--gold-rgb), 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
-        .notify-title {
-            margin-top: 18px;
-            font-family: 'Anton', sans-serif;
-            font-size: 26px;
-            line-height: 1.08;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 0.02em;
-        }
-
-        .notify-date {
-            margin-top: 8px;
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-        }
-
-        .notify-msg {
-            margin-top: 14px;
-            font-size: 13.5px;
-            line-height: 1.6;
-            color: var(--ink-dim);
-            padding: 0 4px;
-        }
-
-        .notify-msg b {
-            color: var(--ink);
-        }
-
-        .notify-divider {
-            margin: 0 24px;
-            border: none;
-            border-top: 1px solid var(--line);
-        }
-
-        .notify-footer {
-            padding: 20px 24px 26px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notify-cta {
-            all: unset;
-            box-sizing: border-box;
-            display: block;
-            width: 100%;
-            padding: 14px;
-            border-radius: 14px;
-            text-align: center;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            color: var(--on-accent);
-            box-shadow: 0 4px 22px rgba(var(--gold-rgb), 0.35);
-            transition: opacity 0.2s, transform 0.15s;
-        }
-
-        .notify-cta:active {
-            transform: scale(0.97);
-            opacity: 0.88;
-        }
-
-        .notify-skip {
-            all: unset;
-            box-sizing: border-box;
-            cursor: pointer;
-            font-size: 11px;
-            color: var(--ink-faint);
-            letter-spacing: 0.06em;
-        }
     </style>
     <style>
-        /* ============ REG HERO ============ */
-        .reghero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
-        .reghero::before {
-            content: ''; position: absolute; inset: 0;
-            background-image: linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
-            background-size: 26px 26px;
-            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
-        }
-        .reghero-title {
-            position: relative; margin-top: 12px; font-size: 34px; line-height: 1;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-        }
-        .reghero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
-
-        .fee-strip { display: flex; gap: 10px; padding: 0 20px; margin-top: 18px; }
-        .fee-box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; text-align: center; }
-        .fee-box b { display: block; font-family: 'Anton', sans-serif; font-size: 19px; color: var(--gold); }
-        .fee-box span { display: block; margin-top: 4px; font-size: 8.5px; letter-spacing: 0.09em; color: var(--ink-faint); text-transform: uppercase; }
-
-        /* ============ LEVEL GATE ============ */
-        .level-gate {
-            margin: 18px 20px 0; padding: 14px 16px; border-radius: 16px;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
-            background: rgba(var(--live-rgb), 0.08);
-            display: none; align-items: center; gap: 10px;
-        }
-        .level-gate.show { display: flex; }
-        .level-gate .ico { font-size: 18px; flex-shrink: 0; }
-        .level-gate .txt { font-size: 12px; line-height: 1.45; color: var(--ink); }
-        .level-gate .txt b { color: var(--live); }
-
-        /* ============ FORM ============ */
-        .reg-form { display: flex; flex-direction: column; gap: 16px; padding: 22px 20px 6px; }
-        .f-group { display: flex; flex-direction: column; gap: 6px; }
-        .f-label { font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); text-transform: uppercase; display: flex; justify-content: space-between; }
-        .f-label .req { color: var(--live); }
-        .f-input, .f-select {
-            width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line);
-            background: var(--surface); color: var(--ink); font-size: 14px; font-family: inherit;
-            -webkit-appearance: none; appearance: none;
-        }
-        .f-input:focus, .f-select:focus { outline: none; border-color: var(--gold-deep); box-shadow: 0 0 0 3px rgba(var(--gold-rgb), 0.12); }
-        .f-hint { font-size: 10.5px; color: var(--ink-faint); }
-        .f-hint.err { color: var(--live); }
-
-        .upload-box {
-            border: 1.5px dashed var(--line); border-radius: 14px; padding: 18px 14px; text-align: center;
-            background: var(--surface); cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease;
-            position: relative; overflow: hidden;
-        }
-        .upload-box.has-file { border-color: var(--gold-deep); background: rgba(var(--gold-rgb), 0.06); }
-        .upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .upload-ico { font-size: 22px; }
-        .upload-txt { margin-top: 6px; font-size: 11.5px; color: var(--ink-dim); }
-        .upload-txt b { color: var(--gold-pale); }
-        .upload-filename { margin-top: 6px; font-size: 10.5px; color: var(--gold-pale); font-family: 'Space Mono', monospace; word-break: break-all; }
-
-        /* ============ QR / PAYMENT ============ */
-        .pay-card {
-            margin: 6px 20px 0; padding: 22px 18px 20px; border-radius: 20px; text-align: center;
-            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.14), transparent 62%), var(--surface);
-            border: 1px solid var(--line);
-        }
-        .pay-amt { font-family: 'Anton', sans-serif; font-size: 30px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .pay-sub { margin-top: 4px; font-size: 11px; color: var(--ink-faint); }
-        .qr-wrap { width: 168px; height: 168px; margin: 16px auto 0; border-radius: 16px; background: #fff; padding: 10px; display: flex; align-items: center; justify-content: center; }
-        .qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
-        .pay-link { display: inline-block; margin-top: 14px; font-size: 11.5px; color: var(--gold-pale); text-decoration: none; border-bottom: 1px dashed var(--gold-deep); padding-bottom: 1px; }
-
-        /* ============ SUBMIT / STATUS ============ */
-        .reg-submit-btn { width: 100%; margin-top: 4px; }
-        .reg-submit-btn:disabled { opacity: 0.5; pointer-events: none; }
-        .form-msg { margin: 10px 20px 0; padding: 12px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5; display: none; }
-        .form-msg.show { display: block; }
-        .form-msg.ok { background: rgba(95, 217, 126, 0.12); border: 1px solid rgba(95, 217, 126, 0.35); color: #5fd97e; }
-        .form-msg.bad { background: rgba(var(--live-rgb), 0.12); border: 1px solid rgba(var(--live-rgb), 0.35); color: var(--live); }
-
-        .flow-strip { display: flex; align-items: center; gap: 6px; padding: 0 20px; margin-top: 22px; overflow-x: auto; }
-        .flow-strip::-webkit-scrollbar { display: none; }
-        .flow-step { flex-shrink: 0; font-size: 9.5px; letter-spacing: 0.06em; padding: 7px 11px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-faint); background: var(--surface); white-space: nowrap; }
-        .flow-step.now { border-color: var(--gold-deep); color: var(--gold-pale); background: rgba(var(--gold-rgb), 0.1); }
-        .flow-arrow { color: var(--ink-faint); font-size: 11px; flex-shrink: 0; }
-
-        /* legacy intro rules below kept for other pages, unused here */
+        /* ============ PAGE-SPECIFIC: REGISTRATION HUB ============ */
         .intro {
             position: relative;
             padding: 34px 20px 8px;
@@ -1990,9 +1529,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image:
-                linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
             background-size: 26px 26px;
             mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
         }
@@ -2000,26 +1537,12 @@
         .intro-title {
             position: relative;
             margin-top: 12px;
-            font-size: 36px;
+            font-size: 34px;
             line-height: 0.98;
             background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            background-size: 100% 300%;
-            animation: titleSheen 5s ease-in-out infinite;
-        }
-
-        @keyframes titleSheen {
-
-            0%,
-            100% {
-                background-position: 0 0%;
-            }
-
-            50% {
-                background-position: 0 100%;
-            }
         }
 
         .intro-desc {
@@ -2028,97 +1551,11 @@
             font-size: 13.5px;
             line-height: 1.55;
             color: var(--ink-dim);
-            max-width: 320px;
+            max-width: 340px;
         }
 
-        .intro-stats {
-            position: relative;
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .intro-stat {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 13px;
-            padding: 14px 8px;
-            text-align: center;
-        }
-
-        .intro-stat b {
-            display: block;
-            font-family: 'Anton', sans-serif;
-            font-size: 20px;
-            color: var(--gold);
-        }
-
-        .intro-stat span {
-            display: block;
-            margin-top: 3px;
-            font-size: 8.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .intro-stat.alert b {
-            color: var(--live);
-        }
-
-        .intro-stat.alert {
-            border-color: rgba(var(--live-rgb), 0.3);
-            animation: alertPulse 2.2s ease-in-out infinite;
-        }
-
-        @keyframes alertPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 rgba(var(--live-rgb), 0);
-            }
-
-            50% {
-                box-shadow: 0 0 14px rgba(var(--live-rgb), 0.35);
-            }
-        }
-
-        /* ============ COUNTER STRIP ============ */
-        .counter-strip {
-            display: flex;
-            gap: 10px;
-            padding: 0 20px;
-            margin-top: 12px;
-        }
-
-        .counter-box {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 16px 8px;
-            text-align: center;
-        }
-
-        .counter-num {
-            font-family: 'Anton', sans-serif;
-            font-size: 24px;
-            color: var(--gold);
-            text-shadow: 0 0 16px rgba(var(--gold-rgb), 0.4);
-        }
-
-        .counter-label {
-            display: block;
-            margin-top: 4px;
-            font-size: 8px;
-            letter-spacing: 0.09em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        /* ============ JUMP CHIPS ============ */
-        .rule-jump {
+        /* Journey strip */
+        .journey-strip {
             display: flex;
             gap: 8px;
             overflow-x: auto;
@@ -2127,392 +1564,547 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .rule-jump::-webkit-scrollbar {
+        .journey-strip::-webkit-scrollbar {
             display: none;
         }
 
-        .jump-chip {
+        .journey-step {
             flex-shrink: 0;
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
+            gap: 7px;
+            padding: 9px 14px;
             border-radius: 100px;
             border: 1px solid var(--line);
             background: var(--surface);
             color: var(--ink-dim);
             font-family: 'Space Mono', monospace;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 700;
-            text-decoration: none;
             letter-spacing: 0.02em;
-        }
-
-        .jump-chip::before {
-            content: '';
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--foil, var(--gold));
-        }
-
-        .jump-chip:active {
-            background: var(--surface-2);
-            color: var(--ink);
-        }
-
-        /* ============ CHAPTER CARDS ============ */
-        .rule-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            padding: 16px 20px 6px;
-        }
-
-        /* Chapter cards use .foil-frame only as a positioning wrapper here — the spinning
-           conic-gradient border is switched off in favor of a quiet static border with a
-           thin top accent in the chapter's color. */
-        .rule-list>.foil-frame {
-            padding: 0;
-            background: none;
-        }
-
-        .rule-list>.foil-frame::before {
-            content: none;
-        }
-
-        .rule-list .rule-card {
-            position: relative;
-            z-index: 1;
-            border-radius: 20px;
-            padding: 20px 18px;
-            overflow: hidden;
-            border: 1px solid var(--line);
-            border-top: 2px solid var(--foil, var(--gold-deep));
-            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.10), transparent 60%), var(--surface);
-        }
-
-        .rule-head {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .rule-icon {
-            width: 46px;
-            height: 46px;
-            flex-shrink: 0;
-            border-radius: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-            background: color-mix(in srgb, var(--foil, var(--gold)) 16%, var(--surface));
-            border: 1px solid color-mix(in srgb, var(--foil, var(--gold)) 30%, var(--line));
-        }
-
-        .rule-head-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .rule-num {
-            font-family: 'Space Mono', monospace;
-            font-size: 9.5px;
-            letter-spacing: 0.14em;
-            color: var(--gold-deep);
-        }
-
-        .rule-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 16.5px;
-            letter-spacing: 0.01em;
-            margin-top: 2px;
-        }
-
-        .rule-chevron {
-            flex-shrink: 0;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--foil, var(--gold));
-            font-size: 13px;
-            transition: transform 0.4s cubic-bezier(.2, .9, .25, 1);
-        }
-
-        .rule-card.open .rule-chevron {
-            transform: rotate(180deg);
-        }
-
-        .rule-card.open {
-            box-shadow: 0 16px 44px rgba(var(--gold-rgb), 0.20);
-        }
-
-        .rule-items,
-        .penalty-list {
-            position: relative;
-            z-index: 2;
-            margin-top: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(.2, .9, .25, 1), opacity 0.4s ease, margin-top 0.5s ease;
-        }
-
-        .rule-card.open .rule-items,
-        .rule-card.open .penalty-list {
-            opacity: 1;
-            margin-top: 16px;
-        }
-
-        .rule-item {
-            display: flex;
-            gap: 10px;
-            padding: 11px 12px;
-            border-radius: 12px;
-            background: rgba(var(--gold-rgb), 0.045);
-            border: 1px solid var(--line);
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .rule-item.in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .rule-item b {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 6px;
-            background: rgba(var(--gold-rgb), 0.15);
-            color: var(--gold);
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 1px;
-        }
-
-        .rule-item p {
-            font-size: 12.5px;
-            line-height: 1.5;
-            color: var(--ink-dim);
-        }
-
-        .rule-item p em {
-            color: var(--gold-pale);
-            font-style: normal;
-            font-weight: 600;
-        }
-
-        .rule-item.pinned {
-            border-color: rgba(var(--gold-rgb), 0.4);
-            background: rgba(var(--gold-rgb), 0.09);
-        }
-
-        /* ============ SCORING TABLE (chapter 03) ============ */
-        .score-table-wrap {
-            margin-top: 6px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--line);
-        }
-
-        table.score-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        .score-table th {
-            background: var(--surface-2);
-            color: var(--gold-pale);
-            text-align: left;
-            padding: 9px 12px;
-            font-size: 10.5px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .score-table td {
-            padding: 9px 12px;
-            border-top: 1px solid var(--line);
-            color: var(--ink-dim);
-        }
-
-        .score-table td.num,
-        .score-table th.num {
-            font-family: 'Space Mono', monospace;
-            color: var(--gold);
-            text-align: right;
-        }
-
-        /* ============ PENALTY LIST ============ */
-        .penalty-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 12px;
-            border-radius: 12px;
-            background: rgba(var(--gold-rgb), 0.04);
-            border: 1px solid var(--line);
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .penalty-row.in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .penalty-sev {
-            flex-shrink: 0;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .penalty-sev.low {
-            background: #5fd97e;
-        }
-
-        .penalty-sev.mid {
-            background: var(--gold);
-            animation: sevBlink 1.6s ease-in-out infinite;
-        }
-
-        .penalty-sev.high {
-            background: var(--live);
-            animation: sevBlink 0.9s ease-in-out infinite;
-        }
-
-        @keyframes sevBlink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-        }
-
-        .penalty-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .penalty-foul {
-            font-size: 12.5px;
-            color: var(--ink);
-            font-weight: 600;
-        }
-
-        .penalty-action {
-            font-size: 10.5px;
-            color: var(--ink-faint);
-            margin-top: 1px;
-        }
-
-        .penalty-tag {
-            flex-shrink: 0;
-            font-family: 'Space Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 0.06em;
-            padding: 4px 8px;
-            border-radius: 100px;
-            text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .penalty-tag.low {
-            background: rgba(95, 217, 126, 0.12);
-            color: #5fd97e;
+        .journey-step.now {
+            border-color: var(--gold-deep);
+            color: var(--gold-pale);
+            background: rgba(var(--gold-rgb), 0.08);
         }
 
-        .penalty-tag.mid {
+        .journey-arrow {
+            color: var(--ink-faint);
+            font-size: 11px;
+            flex-shrink: 0;
+            align-self: center;
+        }
+
+        /* Tabs */
+        .rc-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 20px 20px 0;
+        }
+
+        .rc-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 4px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .rc-tab.active {
+            border-color: var(--gold);
+            color: var(--gold-pale);
+            background: rgba(var(--gold-rgb), 0.1);
+            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.3);
+        }
+
+        .rc-panel {
+            display: none;
+        }
+
+        .rc-panel.active {
+            display: block;
+        }
+
+        /* Form */
+        .rc-card {
+            position: relative;
+            z-index: 1;
+            border-radius: 22px;
+            padding: 22px 18px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.10), transparent 60%), var(--surface);
+        }
+
+        .field-group {
+            margin-top: 16px;
+        }
+
+        .field-group:first-child {
+            margin-top: 0;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 7px;
+        }
+
+        .field-label .req {
+            color: var(--live);
+        }
+
+        .field-input,
+        .field-select {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: rgba(var(--bg-rgb), 0.4);
+            color: var(--ink);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .field-input:focus,
+        .field-select:focus {
+            border-color: var(--gold-deep);
+        }
+
+        .field-hint {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--ink-faint);
+            line-height: 1.4;
+        }
+
+        .field-error {
+            margin-top: 6px;
+            font-size: 11.5px;
+            color: var(--live);
+            line-height: 1.4;
+            display: none;
+            font-weight: 600;
+        }
+
+        .field-error.show {
+            display: block;
+        }
+
+        .field-input.invalid {
+            border-color: var(--live);
+        }
+
+        .file-drop {
+            border: 1.5px dashed var(--line);
+            border-radius: 14px;
+            padding: 18px 14px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(var(--gold-rgb), 0.03);
+            transition: border-color 0.2s ease;
+        }
+
+        .file-drop.has-file {
+            border-color: var(--gold-deep);
+            border-style: solid;
+            background: rgba(var(--gold-rgb), 0.06);
+        }
+
+        .file-drop-icon {
+            font-size: 22px;
+        }
+
+        .file-drop-text {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--ink-dim);
+        }
+
+        .file-drop-name {
+            margin-top: 4px;
+            font-size: 10.5px;
+            color: var(--gold-pale);
+            font-family: 'Space Mono', monospace;
+            word-break: break-all;
+        }
+
+        .file-drop input[type="file"] {
+            display: none;
+        }
+
+        .pay-box {
+            margin-top: 16px;
+            border-radius: 16px;
+            border: 1px solid var(--gold-deep);
+            background: rgba(var(--gold-rgb), 0.06);
+            padding: 18px 16px;
+            text-align: center;
+        }
+
+        .pay-qr {
+            width: 150px;
+            height: 150px;
+            margin: 10px auto 0;
+            border-radius: 12px;
+            background: var(--surface-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--ink-faint);
+            text-align: center;
+            padding: 10px;
+            border: 1px solid var(--line);
+        }
+
+        .pay-upi {
+            margin-top: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12.5px;
+            color: var(--gold-pale);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .pay-amt {
+            font-size: 20px;
+            font-family: 'Anton', sans-serif;
+            color: var(--gold);
+            margin-top: 2px;
+        }
+
+        .submit-msg {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .submit-msg.show {
+            display: block;
+        }
+
+        .submit-msg.ok {
+            background: rgba(95, 217, 126, 0.1);
+            border: 1px solid rgba(95, 217, 126, 0.35);
+            color: #8fe6a6;
+        }
+
+        .submit-msg.err {
+            background: rgba(var(--live-rgb), 0.1);
+            border: 1px solid rgba(var(--live-rgb), 0.35);
+            color: var(--live);
+        }
+
+        .submit-msg.info {
+            background: rgba(var(--gold-rgb), 0.08);
+            border: 1px solid rgba(var(--gold-rgb), 0.3);
+            color: var(--gold-pale);
+        }
+
+        /* Registered players grid */
+        .players-toolbar {
+            display: flex;
+            gap: 8px;
+            padding: 20px 20px 0;
+        }
+
+        .players-search {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .players-count {
+            padding: 20px 20px 0;
+            font-size: 11.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.04em;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 14px 20px 6px;
+        }
+
+        .player-mini {
+            border-radius: 15px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            padding: 13px 12px;
+            text-align: center;
+        }
+
+        .player-mini-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            margin: 0 auto;
+            background: rgba(var(--gold-rgb), 0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            color: var(--gold-pale);
+        }
+
+        .player-mini-name {
+            margin-top: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .player-mini-ign {
+            margin-top: 2px;
+            font-size: 10px;
+            color: var(--ink-faint);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .player-mini-lvl {
+            display: inline-block;
+            margin-top: 7px;
+            padding: 3px 9px;
+            border-radius: 100px;
+            font-size: 9.5px;
+            letter-spacing: 0.06em;
+            background: rgba(var(--gold-rgb), 0.12);
+            color: var(--gold-pale);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 16px;
+            color: var(--ink-faint);
+            font-size: 12.5px;
+        }
+
+        /* Admin */
+        .admin-gate {
+            padding: 20px;
+        }
+
+        .admin-gate .field-input {
+            margin-bottom: 10px;
+        }
+
+        .admin-header {
+            display: flex;
+            gap: 8px;
+            padding: 20px 20px 0;
+        }
+
+        .admin-filter {
+            flex-shrink: 0;
+            padding: 9px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink-dim);
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.03em;
+        }
+
+        .admin-filter.active {
+            border-color: var(--gold);
+            color: var(--gold-pale);
+            background: rgba(var(--gold-rgb), 0.1);
+        }
+
+        .admin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 16px 20px 6px;
+        }
+
+        .admin-row {
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            padding: 14px;
+        }
+
+        .admin-row-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .admin-row-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .admin-row-sub {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            margin-top: 2px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .status-pill {
+            flex-shrink: 0;
+            font-size: 9.5px;
+            letter-spacing: 0.06em;
+            padding: 4px 9px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .status-pill.pending {
             background: rgba(var(--gold-rgb), 0.14);
             color: var(--gold);
         }
 
-        .penalty-tag.high {
+        .status-pill.approved {
+            background: rgba(95, 217, 126, 0.14);
+            color: #5fd97e;
+        }
+
+        .status-pill.rejected {
             background: rgba(var(--live-rgb), 0.14);
             color: var(--live);
         }
 
-        /* ============ SIREN BAND ============ */
-        .siren-band {
-            position: relative;
-            margin: 6px 20px 20px;
-            padding: 14px 16px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: linear-gradient(90deg, rgba(var(--live-rgb), 0.14), rgba(var(--live-rgb), 0.03), rgba(var(--live-rgb), 0.14));
-            background-size: 200% 100%;
-            animation: sirenSweep 3s linear infinite;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
+        .admin-row-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;
+            margin-top: 12px;
+            font-size: 11.5px;
+            color: var(--ink-dim);
+        }
+
+        .admin-row-grid b {
+            color: var(--ink);
+        }
+
+        .admin-shots {
             display: flex;
-            align-items: center;
-            gap: 12px;
+            gap: 8px;
+            margin-top: 12px;
         }
 
-        @keyframes sirenSweep {
-            to {
-                background-position: 200% 0;
-            }
+        .admin-shot-link {
+            flex: 1;
+            text-align: center;
+            padding: 9px 6px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            font-size: 10.5px;
+            color: var(--gold-pale);
+            text-decoration: none;
+            background: rgba(var(--gold-rgb), 0.05);
         }
 
-        .siren-icon {
-            font-size: 20px;
-            animation: sirenShake 1.2s ease-in-out infinite;
+        .admin-row-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
         }
 
-        @keyframes sirenShake {
-
-            0%,
-            100% {
-                transform: rotate(0);
-            }
-
-            25% {
-                transform: rotate(-10deg);
-            }
-
-            75% {
-                transform: rotate(10deg);
-            }
+        .admin-btn {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 10px;
+            border: none;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            text-transform: uppercase;
         }
 
-        .siren-text b {
-            display: block;
-            font-family: 'Anton', sans-serif;
-            font-size: 13px;
+        .admin-btn.approve {
+            background: rgba(95, 217, 126, 0.16);
+            color: #5fd97e;
+        }
+
+        .admin-btn.reject {
+            background: rgba(var(--live-rgb), 0.16);
             color: var(--live);
-            letter-spacing: 0.02em;
         }
 
-        .siren-text span {
-            display: block;
-            margin-top: 2px;
+        .admin-btn:disabled {
+            opacity: .4;
+            pointer-events: none;
+        }
+
+        .loader {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--ink-faint);
+            font-size: 12px;
+        }
+
+        .spin {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(var(--gold-rgb), 0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spinRot 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spinRot {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .config-note {
+            margin: 20px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px dashed rgba(var(--live-rgb), 0.4);
+            background: rgba(var(--live-rgb), 0.06);
             font-size: 11px;
             color: var(--ink-dim);
-            line-height: 1.4;
+            line-height: 1.5;
+        }
+
+        .config-note b {
+            color: var(--live);
         }
     </style>
 </head>
@@ -2523,7 +2115,6 @@
         <div class="scroll-progress-fill" id="scrollFill"></div>
     </div>
 
-    <!-- SPLASH -->
     <div id="splash">
         <div class="ignite-wrap">
             <div class="ignite-ring r1"></div>
@@ -2532,7 +2123,7 @@
             <div class="ignite-core"></div>
         </div>
         <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">PLAYER REGISTRATION</div>
+        <div class="splash-sub">REGISTRATION HUB</div>
         <div class="splash-bar">
             <div class="splash-bar-fill"></div>
         </div>
@@ -2540,10 +2131,8 @@
 
     <div class="embers" id="embers"></div>
 
-    <!-- HEADER -->
     <header>
         <div class="header-flex">
-            
             <div class="brand">
                 <div class="crest"></div>
                 <div class="brand-text">FREEFIRE<b>XIPL</b></div>
@@ -2556,85 +2145,62 @@
         </div>
     </header>
 
-    <!-- THEME SWITCHER -->
     <div class="theme-overlay" id="themeOverlay"></div>
     <div class="theme-panel" id="themePanel" role="menu" aria-label="Theme switcher">
-        <div class="theme-panel-head">
-            <span>🎨 Choose a Theme</span>
-            <button class="nav-close" id="themeClose" aria-label="Close theme menu">✕</button>
-        </div>
+        <div class="theme-panel-head"><span>🎨 Choose a Theme</span><button class="nav-close" id="themeClose"
+                aria-label="Close theme menu">✕</button></div>
         <div class="theme-grid" id="themeGrid">
-            <button class="theme-opt" data-theme="golden-fire" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i
-                        style="background:#b88f20"></i></span>
-                <span class="theme-opt-name">Golden Fire <em>🔥</em></span>
-            </button>
-            <button class="theme-opt" data-theme="og-bar" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i
-                        style="background:#49310d"></i></span>
-                <span class="theme-opt-name">Disco Blue <em>❤️</em></span>
-            </button>
-
-            <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i
-                        style="background:#49199b"></i></span>
-                <span class="theme-opt-name">Neon Cyber <em>💙</em></span>
-            </button>
-            <button class="theme-opt" data-theme="royal-purple" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i
-                        style="background:#911b73"></i></span>
-                <span class="theme-opt-name">Royal Purple <em>💜</em></span>
-            </button>
-            <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i
-                        style="background:#147749"></i></span>
-                <span class="theme-opt-name">Emerald Forest <em>💚</em></span>
-            </button>
-            <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i
-                        style="background:#824619"></i></span>
-                <span class="theme-opt-name">Sunset Orange <em>🧡</em></span>
-            </button>
-            <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i
-                        style="background:#147282"></i></span>
-                <span class="theme-opt-name">Ocean Blue <em>🌊</em></span>
-            </button>
-            <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i
-                        style="background:#97184f"></i></span>
-                <span class="theme-opt-name">Sakura Pink <em>🌸</em></span>
-            </button>
-            <button class="theme-opt" data-theme="midnight-black" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i
-                        style="background:#a22222"></i></span>
-                <span class="theme-opt-name">Midnight Black <em>⚫</em></span>
-            </button>
-            <button class="theme-opt" data-theme="crystal-light" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i
-                        style="background:#058ede"></i></span>
-                <span class="theme-opt-name">Crystal Light <em>☀️</em></span>
-            </button>
-            <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio">
-                <span class="theme-swatch">
-                    <i style="background:#1a0505"></i>
-                    <i style="background:#e0304a"></i>
-                    <i style="background:#ff8fa3"></i>
-                </span>
-                <span class="theme-opt-name">Crimson Blood <em>🩸</em></span>
-            </button>
-            <button class="theme-opt" data-theme="arena-pro" role="menuitemradio">
-                <span class="theme-swatch">
-                    <i style="background:#0b0b10"></i>
-                    <i style="background:#ff8c00"></i>
-                    <i style="background:#ffd36a"></i>
-                </span>
-                <span class="theme-opt-name">Arena Pro <em>⚔️</em></span>
-            </button>
+            <button class="theme-opt" data-theme="golden-fire" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#0a0705"></i><i style="background:#f0b93d"></i><i
+                        style="background:#b88f20"></i></span><span class="theme-opt-name">Golden Fire
+                    <em>🔥</em></span></button>
+            <button class="theme-opt" data-theme="og-bar" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#22a6df"></i><i style="background:#250505"></i><i
+                        style="background:#49310d"></i></span><span class="theme-opt-name">Disco Blue
+                    <em>❤️</em></span></button>
+            <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#05060f"></i><i style="background:#29d3ff"></i><i
+                        style="background:#49199b"></i></span><span class="theme-opt-name">Neon Cyber
+                    <em>💙</em></span></button>
+            <button class="theme-opt" data-theme="royal-purple" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#140a24"></i><i style="background:#b366ff"></i><i
+                        style="background:#911b73"></i></span><span class="theme-opt-name">Royal Purple
+                    <em>💜</em></span></button>
+            <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#06170f"></i><i style="background:#22c58e"></i><i
+                        style="background:#147749"></i></span><span class="theme-opt-name">Emerald Forest
+                    <em>💚</em></span></button>
+            <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i
+                        style="background:#824619"></i></span><span class="theme-opt-name">Sunset Orange
+                    <em>🧡</em></span></button>
+            <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#02121f"></i><i style="background:#00b4d8"></i><i
+                        style="background:#147282"></i></span><span class="theme-opt-name">Ocean Blue
+                    <em>🌊</em></span></button>
+            <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i
+                        style="background:#97184f"></i></span><span class="theme-opt-name">Sakura Pink
+                    <em>🌸</em></span></button>
+            <button class="theme-opt" data-theme="midnight-black" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i
+                        style="background:#a22222"></i></span><span class="theme-opt-name">Midnight Black
+                    <em>⚫</em></span></button>
+            <button class="theme-opt" data-theme="crystal-light" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i
+                        style="background:#058ede"></i></span><span class="theme-opt-name">Crystal Light
+                    <em>☀️</em></span></button>
+            <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#1a0505"></i><i style="background:#e0304a"></i><i
+                        style="background:#ff8fa3"></i></span><span class="theme-opt-name">Crimson Blood
+                    <em>🩸</em></span></button>
+            <button class="theme-opt" data-theme="arena-pro" role="menuitemradio"><span class="theme-swatch"><i
+                        style="background:#0b0b10"></i><i style="background:#ff8c00"></i><i
+                        style="background:#ffd36a"></i></span><span class="theme-opt-name">Arena Pro
+                    <em>⚔️</em></span></button>
         </div>
     </div>
 
-    <!-- NAV DRAWER -->
     <div class="nav-overlay" id="navOverlay"></div>
     <nav class="nav-drawer" id="navDrawer">
         <div class="nav-drawer-head">
@@ -2645,11 +2211,10 @@
             <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
         </div>
         <div class="nav-links">
-            <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
-
-           <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link" aria-current="page"><span class="nav-link-icon">👤</span> Registration
-                Center</a>
+            <a href="home.html" class="nav-link"><span class="nav-link-icon">🔥</span> Home</a>
+            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="registration-center.html" class="nav-link nav-link-primary" aria-current="page"><span
+                    class="nav-link-icon">👤</span> Registration Center</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
             <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
@@ -2662,109 +2227,170 @@
         <div class="nav-drawer-foot">FREEFIREXIPL · Season 12</div>
     </nav>
 
+    <!-- INTRO -->
+    <section class="intro">
+        <div class="eyebrow fade-up">👤 STEP 01 OF THE JOURNEY</div>
+        <h1 class="intro-title display fade-up d1">Squad Up.<br>Get Verified.</h1>
+        <p class="intro-desc fade-up d2">Register for Season 12 Play-Ins, pay the ₹12 entry fee, and wait for admin
+            approval. Once approved you're locked in for the Play-Ins — the road to the auction starts here.</p>
 
-    <!-- REG HERO -->
-    <section class="reghero">
-        <div class="eyebrow fade-up">👤 SEASON 12 · PLAY-INS</div>
-        <h1 class="reghero-title display fade-up d1">Register For<br>The Play-Ins</h1>
-        <p class="reghero-desc fade-up d2">Fill in your details, pay the entry fee and upload your screenshots. Your registration goes to the admin panel for approval before you're eligible for the Play-Ins.</p>
-        <div class="fee-strip fade-up d3">
-            <div class="fee-box"><b>₹12</b><span>Entry Fee</span></div>
-            <div class="fee-box"><b>Lvl 50+</b><span>Minimum Level</span></div>
-            <div class="fee-box"><b>9</b><span>Play-In Matches</span></div>
-        </div>
-        <div class="flow-strip fade-up d4">
-            <span class="flow-step now">1. REGISTER</span><span class="flow-arrow">→</span>
-            <span class="flow-step">2. APPROVAL</span><span class="flow-arrow">→</span>
-            <span class="flow-step">3. PLAY-INS</span><span class="flow-arrow">→</span>
-            <span class="flow-step">4. AUCTION</span><span class="flow-arrow">→</span>
-            <span class="flow-step">5. TEAM</span>
+        <div class="journey-strip fade-up d3">
+            <span class="journey-step now">01 REGISTER</span><span class="journey-arrow">→</span>
+            <span class="journey-step">02 APPROVAL</span><span class="journey-arrow">→</span>
+            <span class="journey-step">03 PLAY-INS</span><span class="journey-arrow">→</span>
+            <span class="journey-step">04 AUCTION</span><span class="journey-arrow">→</span>
+            <span class="journey-step">05 TEAM</span><span class="journey-arrow">→</span>
+            <span class="journey-step">06 SEASON</span><span class="journey-arrow">→</span>
+            <span class="journey-step">07 PLAYOFFS</span><span class="journey-arrow">→</span>
+            <span class="journey-step">🏆 CUP</span>
         </div>
     </section>
 
-    <!-- LEVEL GATE WARNING -->
-    <div class="level-gate" id="levelGate">
-        <div class="ico">⚠️</div>
-        <div class="txt"><b>Minimum Free Fire Level is 50.</b> You cannot register below Level 50.</div>
+    <!-- TABS -->
+    <div class="rc-tabs fade-up">
+        <div class="rc-tab active" data-panel="register">Register</div>
+        <div class="rc-tab" data-panel="players">Registered Players</div>
+        <div class="rc-tab" data-panel="admin">Admin</div>
     </div>
 
-    <!-- REGISTRATION FORM -->
-    <form class="reg-form fade-up" id="regForm" novalidate>
-        <div class="f-group">
-            <label class="f-label" for="realName">Real Name <span class="req">*</span></label>
-            <input class="f-input" type="text" id="realName" name="realName" placeholder="Your full name" required>
-        </div>
+    <!-- ===================== REGISTER PANEL ===================== -->
+    <section id="panel-register" class="rc-panel active" style="padding-top:16px;">
+        <div class="foil-frame fade-up" style="--foil:var(--gold);">
+            <div class="rc-card">
+                <form id="regForm" autocomplete="off">
+                    <div class="field-group">
+                        <label class="field-label">Real Name <span class="req">*</span></label>
+                        <input class="field-input" type="text" id="f_real_name" required
+                            placeholder="e.g. Rahul Sharma">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Free Fire IGN <span class="req">*</span></label>
+                        <input class="field-input" type="text" id="f_ign" required placeholder="Your in-game name">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Free Fire UID <span class="req">*</span></label>
+                        <input class="field-input" type="text" id="f_uid" required inputmode="numeric"
+                            placeholder="e.g. 123456789">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Free Fire Level <span class="req">*</span></label>
+                        <input class="field-input" type="number" id="f_level" required min="1"
+                            placeholder="Minimum Level 50 required">
+                        <div class="field-error" id="err_level">Minimum Free Fire Level is 50. You cannot register below
+                            Level 50.</div>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">WhatsApp Number <span class="req">*</span></label>
+                        <input class="field-input" type="tel" id="f_whatsapp" required
+                            placeholder="10-digit WhatsApp number">
+                    </div>
 
-        <div class="f-group">
-            <label class="f-label" for="ign">Free Fire IGN <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ign" name="ign" placeholder="In-game name" required>
-        </div>
+                    <div class="field-group">
+                        <label class="field-label">Free Fire Profile Screenshot <span class="req">*</span></label>
+                        <label class="file-drop" id="dropProfile">
+                            <div class="file-drop-icon">🖼️</div>
+                            <div class="file-drop-text">Tap to upload your profile screenshot</div>
+                            <div class="file-drop-name" id="nameProfile"></div>
+                            <input type="file" id="f_profile_shot" accept="image/*" required>
+                        </label>
+                    </div>
 
-        <div class="f-group">
-            <label class="f-label" for="ffUid">Free Fire UID <span class="req">*</span></label>
-            <input class="f-input" type="text" id="ffUid" name="ffUid" inputmode="numeric" placeholder="e.g. 123456789" required>
-        </div>
+                    <div class="pay-box">
+                        <div class="eyebrow" style="justify-content:center;">ENTRY FEE</div>
+                        <div class="pay-amt display">₹12</div>
+                        <div class="pay-qr" id="payQr"><img id="payQrImg" src="" alt="Scan to pay ₹12"
+                                style="width:100%;height:100%;object-fit:contain;border-radius:10px;"></div>
+                        <div class="pay-upi" id="payUpi"></div>
+                        <a class="btn btn-primary" id="payUpiBtn" href="#"
+                            style="display:block; text-decoration:none; margin-top:14px;">Pay ₹12 Now via UPI App</a>
+                        <div class="field-hint">Scan the QR, or tap the button above to pay directly in Google Pay /
+                            PhonePe / Paytm — then upload your payment screenshot below.</div>
+                    </div>
 
-        <div class="f-group">
-            <label class="f-label" for="ffLevel">Free Fire Level <span class="req">*</span></label>
-            <input class="f-input" type="number" id="ffLevel" name="ffLevel" min="1" max="90" placeholder="e.g. 62" required>
-            <span class="f-hint" id="levelHint">Minimum level to register is 50.</span>
-        </div>
+                    <div class="field-group">
+                        <label class="field-label">Payment Screenshot <span class="req">*</span></label>
+                        <label class="file-drop" id="dropPayment">
+                            <div class="file-drop-icon">🧾</div>
+                            <div class="file-drop-text">Tap to upload your ₹12 payment screenshot</div>
+                            <div class="file-drop-name" id="namePayment"></div>
+                            <input type="file" id="f_payment_shot" accept="image/*" required>
+                        </label>
+                    </div>
 
-        <div class="f-group">
-            <label class="f-label" for="whatsapp">WhatsApp Number <span class="req">*</span></label>
-            <input class="f-input" type="tel" id="whatsapp" name="whatsapp" placeholder="+91 XXXXX XXXXX" required>
+                    <button type="submit" class="btn btn-primary" id="submitBtn"
+                        style="width:100%; margin-top:20px;">Submit Registration →</button>
+                    <div class="submit-msg" id="submitMsg"></div>
+                </form>
+            </div>
         </div>
+    </section>
 
-        <div class="f-group">
-            <label class="f-label">Free Fire Profile Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="profileBox">
-                <input type="file" id="profileShot" name="profileShot" accept="image/*" required>
-                <div class="upload-ico">🖼️</div>
-                <div class="upload-txt"><b>Tap to upload</b> your in-game profile screenshot</div>
-                <div class="upload-filename" id="profileFileName"></div>
+    <!-- ===================== REGISTERED PLAYERS PANEL ===================== -->
+    <section id="panel-players" class="rc-panel" style="padding-top:16px; padding-left:0; padding-right:0;">
+        <div style="padding:0 20px;">
+            <div class="eyebrow">APPROVED ROSTER</div>
+            <h2 class="sec-title">Registered <b>players</b></h2>
+            <p class="sec-desc">Every approved Level 50+ player is automatically eligible for the Play-Ins.</p>
+        </div>
+        <div class="players-toolbar">
+            <input class="players-search" id="playersSearch" type="text" placeholder="Search by name, IGN or UID…">
+        </div>
+        <div class="players-count" id="playersCount">Loading…</div>
+        <div class="players-grid" id="playersGrid"></div>
+    </section>
+
+    <!-- ===================== ADMIN PANEL ===================== -->
+    <section id="panel-admin" class="rc-panel" style="padding-top:16px; padding-left:0; padding-right:0;">
+        <div id="adminGateWrap">
+            <div style="padding:0 20px;">
+                <div class="eyebrow">RESTRICTED</div>
+                <h2 class="sec-title">Admin <b>approval panel</b></h2>
+                <p class="sec-desc">Sign in with your admin account to review registrations.</p>
+            </div>
+            <div class="admin-gate">
+                <input class="field-input" type="email" id="adminEmail" placeholder="Admin email"
+                    autocomplete="username">
+                <input class="field-input" type="password" id="adminPass" placeholder="Password"
+                    autocomplete="current-password">
+                <button class="btn btn-primary" id="adminLoginBtn" style="width:100%;">Sign In</button>
+                <div class="submit-msg" id="adminGateMsg"></div>
             </div>
         </div>
 
-        <!-- PAYMENT -->
-        <div class="pay-card">
-            <div class="pay-amt display">₹12</div>
-            <div class="pay-sub">Scan, pay, upload the screenshot below</div>
-            <div class="qr-wrap">
-                <img src="payment-qr.png" alt="FREEFIREXIPL payment QR code" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-size:11px;color:#888;&quot;>QR image not found<br>(payment-qr.png)</span>'">
+        <div id="adminPanelWrap" style="display:none;">
+            <div style="padding:0 20px; display:flex; align-items:center; justify-content:space-between;">
+                <div>
+                    <div class="eyebrow">ADMIN</div>
+                    <h2 class="sec-title">Review <b>registrations</b></h2>
+                    <p class="sec-desc" id="adminWhoami" style="margin-top:2px;"></p>
+                </div>
+                <button class="btn btn-ghost" id="adminLogoutBtn"
+                    style="flex:none; padding:8px 14px; font-size:11px;">Sign Out</button>
             </div>
-            <a class="pay-link" id="upiLink" href="upi://pay?pa=ffxipl@upi&pn=FREEFIREXIPL&am=12&cu=INR&tn=Season12Registration">Or pay via UPI app →</a>
-        </div>
-
-        <div class="f-group">
-            <label class="f-label">Payment Screenshot <span class="req">*</span></label>
-            <div class="upload-box" id="paymentBox">
-                <input type="file" id="paymentShot" name="paymentShot" accept="image/*" required>
-                <div class="upload-ico">🧾</div>
-                <div class="upload-txt"><b>Tap to upload</b> your ₹12 payment confirmation</div>
-                <div class="upload-filename" id="paymentFileName"></div>
+            <div class="admin-header">
+                <div class="admin-filter active" data-status="pending">Pending</div>
+                <div class="admin-filter" data-status="approved">Approved</div>
+                <div class="admin-filter" data-status="rejected">Rejected</div>
+                <div class="admin-filter" data-status="all">All</div>
             </div>
+            <div class="admin-list" id="adminList"></div>
         </div>
+    </section>
 
-        <button type="submit" class="btn btn-primary reg-submit-btn" id="submitBtn">Submit Registration →</button>
-        <div class="form-msg" id="formMsg"></div>
-    </form>
-
-    <div class="cta-band fade-up" style="margin:8px 20px 0;">
-        <h3 class="display">ALREADY REGISTERED?</h3>
-        <p>Check the Registered Players page to see if your registration has been approved yet.</p>
-        <a class="btn btn-primary" href="players.html" style="display:block; text-decoration:none;">View Registered Players</a>
+    <div class="cta-band fade-up" style="margin:24px 20px 0;">
+        <h3 class="display">NEXT STOP: PLAY-INS</h3>
+        <p>Once you're approved, your Play-In matches, room details and scores will appear on the Play-Ins page.</p>
+        <a class="btn btn-primary" href="rules.html" style="display:block; text-decoration:none;">Read the Full
+            Rulebook</a>
     </div>
 
-    <!-- FOOTER -->
     <footer>
         <div class="foot-brand">
             <div class="crest" style="width:26px;height:26px;"></div>
             <div class="brand-text">FREEFIRE<b>XIPL</b></div>
         </div>
         <p class="foot-tag">The unofficial home of Free Fire XIPL Season 12 — fixtures, standings and every clutch
-            moment of
-            the season.</p>
+            moment of the season.</p>
         <div class="foot-social">
             <div class="soc">✕</div>
             <div class="soc">◎</div>
@@ -2774,7 +2400,6 @@
         <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
     </footer>
 
-    <!-- BACK TO TOP -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <svg width="48" height="48" viewBox="0 0 48 48">
             <circle class="btt-bg" cx="24" cy="24" r="21" />
@@ -2785,47 +2410,19 @@
     </button>
 
     <script>
-/* =========================================================================
-   FREEFIRE XIPL — SHARED THEME BEHAVIOR
-   =========================================================================
-   Load this once, near the end of <body>, on every page:
-     theme.js loaded as a <script> tag
-
-   Requires this shared markup to already be on the page (copy it from
-   chrome-template.html): #splash, #embers, header#themeBtn/#menuBtn,
-   #themeOverlay/#themePanel/.theme-opt buttons, #navOverlay/#navDrawer/
-   #navClose, .scroll-progress-fill#scrollFill, #backToTop/#bttFill.
-
-   Page-specific behavior (countdown timers, stat counters, carousels,
-   registration status, etc.) stays inline in that page's own <script>
-   block — it does NOT belong in this shared file.
-   ========================================================================= */
-
-// ---------- Always feel like a fresh visit ----------
-        // Always feel like a fresh visit: reset scroll and defeat back/forward cache restores
+        /* =========================================================================
+           FREEFIRE XIPL — SHARED THEME BEHAVIOR (copied verbatim from theme.js)
+           ========================================================================= */
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0, 0);
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) { window.location.reload(); }
-        });
+        window.addEventListener('pageshow', (event) => { if (event.persisted) { window.location.reload(); } });
 
-// ---------- Splash screen removal ----------
         setTimeout(() => {
             const splash = document.getElementById('splash');
-
-            splash.animate([
-                { transform: "scale(1)", opacity: 1 },
-                { transform: "scale(2.5)", opacity: 0 }
-            ], {
-                duration: 1600,
-                easing: "cubic-bezier(.2,.8,.2,1)"
-            });
-
+            splash.animate([{ transform: "scale(1)", opacity: 1 }, { transform: "scale(2.5)", opacity: 0 }], { duration: 1600, easing: "cubic-bezier(.2,.8,.2,1)" });
             setTimeout(() => splash.style.display = "none", 600);
         }, 2100);
 
-// ---------- Nav drawer ----------
-        // Nav drawer
         const menuBtn = document.getElementById('menuBtn');
         const navDrawer = document.getElementById('navDrawer');
         const navOverlay = document.getElementById('navOverlay');
@@ -2835,17 +2432,7 @@
         menuBtn.addEventListener('click', openNav);
         navClose.addEventListener('click', closeNav);
         navOverlay.addEventListener('click', closeNav);
-        document.querySelectorAll('.nav-link[data-scroll]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                closeNav();
-                const targetEl = document.querySelector(link.getAttribute('href'));
-                if (targetEl) setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 200);
-            });
-        });
 
-// ---------- Theme switcher ----------
-        // ====== THEME SWITCHER ======
         const THEME_KEY = 'xipl-theme';
         const DEFAULT_THEME = 'golden-fire';
         const themeBtn = document.getElementById('themeBtn');
@@ -2853,58 +2440,23 @@
         const themeOverlay = document.getElementById('themeOverlay');
         const themeClose = document.getElementById('themeClose');
         const themeOpts = document.querySelectorAll('.theme-opt');
-
-        function getSavedTheme() {
-            try { return localStorage.getItem(THEME_KEY) || DEFAULT_THEME; }
-            catch (e) { return DEFAULT_THEME; }
-        }
-
-        function markActiveTheme(theme) {
-            themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme));
-        }
-
+        function markActiveTheme(theme) { themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme)); }
         function applyTheme(theme, persist) {
             document.documentElement.classList.add('theme-transitioning');
             document.documentElement.setAttribute('data-theme', theme);
             markActiveTheme(theme);
-            if (persist) {
-                try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable, theme still applies for this session */ }
-            }
+            if (persist) { try { localStorage.setItem(THEME_KEY, theme); } catch (e) { } }
             window.clearTimeout(applyTheme._t);
-            applyTheme._t = window.setTimeout(() => {
-                document.documentElement.classList.remove('theme-transitioning');
-            }, 650);
+            applyTheme._t = window.setTimeout(() => { document.documentElement.classList.remove('theme-transitioning'); }, 650);
         }
-
-        function openTheme() {
-            themePanel.classList.add('show');
-            themeOverlay.classList.add('show');
-            themeBtn.setAttribute('aria-expanded', 'true');
-        }
-        function closeTheme() {
-            themePanel.classList.remove('show');
-            themeOverlay.classList.remove('show');
-            themeBtn.setAttribute('aria-expanded', 'false');
-        }
-
-        themeBtn.addEventListener('click', () => {
-            if (themePanel.classList.contains('show')) closeTheme(); else { closeNav(); openTheme(); }
-        });
+        function openTheme() { themePanel.classList.add('show'); themeOverlay.classList.add('show'); themeBtn.setAttribute('aria-expanded', 'true'); }
+        function closeTheme() { themePanel.classList.remove('show'); themeOverlay.classList.remove('show'); themeBtn.setAttribute('aria-expanded', 'false'); }
+        themeBtn.addEventListener('click', () => { if (themePanel.classList.contains('show')) closeTheme(); else { closeNav(); openTheme(); } });
         themeClose.addEventListener('click', closeTheme);
         themeOverlay.addEventListener('click', closeTheme);
-        themeOpts.forEach(opt => {
-            opt.addEventListener('click', () => {
-                applyTheme(opt.dataset.theme, true);
-                closeTheme();
-            });
-        });
-
-        // Initialize active swatch to whatever theme is currently applied (set pre-paint above, or default)
+        themeOpts.forEach(opt => { opt.addEventListener('click', () => { applyTheme(opt.dataset.theme, true); closeTheme(); }); });
         markActiveTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
 
-
-// ---------- Ambient ember particles ----------
-        // Embers
         const emberField = document.getElementById('embers');
         for (let i = 0; i < 22; i++) {
             const e = document.createElement('div');
@@ -2916,137 +2468,145 @@
             emberField.appendChild(e);
         }
 
-// ---------- Scroll-reveal (.fade-up elements) ----------
-        // Scroll reveal
         const revealEls = document.querySelectorAll('.fade-up');
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-        }, { threshold: 0.15 });
+        const io = new IntersectionObserver((entries) => { entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: 0.15 });
         revealEls.forEach(el => io.observe(el));
 
-// ---------- Scroll progress bar + back-to-top button ----------
-// (wired up here — shared chrome, so it belongs in every page automatically)
-const scrollFillEl = document.getElementById('scrollFill');
-const backToTopBtn = document.getElementById('backToTop');
-const bttFillEl = document.getElementById('bttFill');
-const BTT_C = 131.9; // 2 * PI * 21, matches the SVG circle radius
-
-function updateScrollChrome() {
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
-    if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
-    if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
-}
-window.addEventListener('scroll', updateScrollChrome, { passive: true });
-window.addEventListener('load', updateScrollChrome);
-updateScrollChrome();
-
-if (backToTopBtn) {
-    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
-
-    </script>
-    <script>
-        // ====================================================================
-        // FREEFIREXIPL — SUPABASE CONFIG
-        // Fill these in with your project's values (Project Settings > API).
-        // Table + bucket names are prefixed "ffxipl_" / "ffxipl-" on purpose
-        // so this project never collides with other Supabase projects.
-        // ====================================================================
-         const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
-        const FFXIPL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
-        const FFXIPL_SEASON_NUMBER = 12;
-
-        const FFXIPL_BUCKET = 'ffxipl-uploads';
-
-        let ffxiplClient = null;
-        try {
-            if (window.supabase && FFXIPL_SUPABASE_URL.startsWith('http')) {
-                ffxiplClient = window.supabase.createClient(FFXIPL_SUPABASE_URL, FFXIPL_SUPABASE_ANON_KEY);
-            }
-        } catch (e) { console.warn('Supabase client not initialized:', e); }
-
-        // ---------- Level gate (min level 50) ----------
-        const levelInput = document.getElementById('ffLevel');
-        const levelGate = document.getElementById('levelGate');
-        const levelHint = document.getElementById('levelHint');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function checkLevel() {
-            const v = parseInt(levelInput.value, 10);
-            const invalid = levelInput.value !== '' && (isNaN(v) || v < 50);
-            levelGate.classList.toggle('show', invalid);
-            levelHint.classList.toggle('err', invalid);
-            levelHint.textContent = invalid
-                ? 'Minimum Free Fire Level is 50. You cannot register below Level 50.'
-                : 'Minimum level to register is 50.';
-            return !invalid && levelInput.value !== '';
+        const scrollFillEl = document.getElementById('scrollFill');
+        const backToTopBtn = document.getElementById('backToTop');
+        const bttFillEl = document.getElementById('bttFill');
+        const BTT_C = 131.9;
+        function updateScrollChrome() {
+            const doc = document.documentElement;
+            const max = doc.scrollHeight - doc.clientHeight;
+            const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+            if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
+            if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
+            if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
         }
-        levelInput.addEventListener('input', checkLevel);
+        window.addEventListener('scroll', updateScrollChrome, { passive: true });
+        window.addEventListener('load', updateScrollChrome);
+        updateScrollChrome();
+        if (backToTopBtn) backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
 
-        // ---------- File upload previews ----------
-        function wireUpload(inputId, boxId, nameId) {
+    <script>
+        /* =========================================================================
+           FREEFIRE XIPL — REGISTRATION HUB LOGIC (Supabase-backed, PRODUCTION)
+           =========================================================================
+           Full SQL setup lives in ffxipl_s12_registration_setup.sql — run that in
+           the Supabase SQL editor before using this page. Summary of what it sets
+           up: the ffxipl_s12_registrations table, a ffxipl_s12_admins table used
+           to gate admin access via real Supabase Auth (no client-side passcode
+           anywhere in this file), RLS policies for public insert / public view of
+           approved players / admin-only view+update of all rows, a private
+           "ffxipl-uploads" storage bucket, and storage policies so players can
+           upload screenshots but only signed-in admins can read them back via
+           short-lived signed URLs.
+           ========================================================================= */
+
+        // ---- CONFIG: replace with your real project values ----
+        const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+        const UPI_ID = 'ffxipl@upi'; // replace with your real UPI ID
+        // ---------------------------------------------------------
+
+        const TABLE = 'ffxipl_s12_registrations';
+        const ADMINS_TABLE = 'ffxipl_s12_admins';
+        const BUCKET = 'ffxipl-uploads';
+        let sb = null;
+        try {
+            sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (e) { console.error('Supabase client failed to init', e); }
+
+        // Build a real UPI payment link and render it as a scannable QR code,
+        // plus a one-tap button that opens Google Pay / PhonePe / Paytm directly.
+        const ENTRY_FEE = 12;
+        const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('FREEFIREXIPL')}&am=${ENTRY_FEE}&cu=INR&tn=${encodeURIComponent('FREEFIREXIPL Season 12 Play-In Entry')}`;
+        document.getElementById('payUpi').textContent = UPI_ID;
+        document.getElementById('payQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}`;
+        document.getElementById('payUpiBtn').href = upiLink;
+
+        // ====== TABS ======
+        const tabs = document.querySelectorAll('.rc-tab');
+        const panels = { register: document.getElementById('panel-register'), players: document.getElementById('panel-players'), admin: document.getElementById('panel-admin') };
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                Object.values(panels).forEach(p => p.classList.remove('active'));
+                panels[tab.dataset.panel].classList.add('active');
+                if (tab.dataset.panel === 'players') loadRegisteredPlayers();
+            });
+        });
+
+        // ====== FILE DROP UX ======
+        function wireFileDrop(dropId, inputId, nameId) {
+            const drop = document.getElementById(dropId);
             const input = document.getElementById(inputId);
-            const box = document.getElementById(boxId);
             const nameEl = document.getElementById(nameId);
             input.addEventListener('change', () => {
                 if (input.files && input.files[0]) {
-                    box.classList.add('has-file');
-                    nameEl.textContent = '✓ ' + input.files[0].name;
+                    drop.classList.add('has-file');
+                    nameEl.textContent = input.files[0].name;
                 } else {
-                    box.classList.remove('has-file');
+                    drop.classList.remove('has-file');
                     nameEl.textContent = '';
                 }
             });
         }
-        wireUpload('profileShot', 'profileBox', 'profileFileName');
-        wireUpload('paymentShot', 'paymentBox', 'paymentFileName');
+        wireFileDrop('dropProfile', 'f_profile_shot', 'nameProfile');
+        wireFileDrop('dropPayment', 'f_payment_shot', 'namePayment');
 
-        // ---------- Form message helper ----------
-        const formMsg = document.getElementById('formMsg');
-        function showMsg(text, ok) {
-            formMsg.textContent = text;
-            formMsg.className = 'form-msg show ' + (ok ? 'ok' : 'bad');
+        // ====== LEVEL 50 VALIDATION (live) ======
+        const levelInput = document.getElementById('f_level');
+        const levelErr = document.getElementById('err_level');
+        function validateLevel() {
+            const v = parseInt(levelInput.value, 10);
+            const invalid = !v || v < 50;
+            levelInput.classList.toggle('invalid', invalid && levelInput.value !== '');
+            levelErr.classList.toggle('show', invalid && levelInput.value !== '');
+            return !invalid;
         }
+        levelInput.addEventListener('input', validateLevel);
 
-        // ---------- Upload one file to Supabase Storage, return public URL ----------
-        async function ffxiplUploadFile(client, file, folder) {
-            const ext = file.name.split('.').pop();
-            const path = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-            const { error } = await client.storage.from(FFXIPL_BUCKET).upload(path, file, { upsert: false });
+        // ====== FILE UPLOAD HELPER ======
+        // Bucket is PRIVATE — this returns the storage object path only.
+        // Admins read files back later via short-lived signed URLs.
+        async function uploadShot(file, folder) {
+            const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+            const path = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
+            const { error } = await sb.storage.from(BUCKET).upload(path, file, { upsert: false, contentType: file.type || 'image/jpeg' });
             if (error) throw error;
-            const { data } = client.storage.from(FFXIPL_BUCKET).getPublicUrl(path);
-            return data.publicUrl;
+            return path;
         }
 
-        // ---------- Submit ----------
-        document.getElementById('regForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            formMsg.classList.remove('show');
+        // ====== REGISTRATION SUBMIT ======
+        const regForm = document.getElementById('regForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitMsg = document.getElementById('submitMsg');
+        function showSubmitMsg(text, kind) {
+            submitMsg.textContent = text;
+            submitMsg.className = 'submit-msg show ' + kind;
+        }
 
-            if (!checkLevel()) {
-                showMsg('Minimum Free Fire Level is 50. You cannot register below Level 50.', false);
+        regForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitMsg.classList.remove('show');
+
+            if (!validateLevel()) {
+                showSubmitMsg('Minimum Free Fire Level is 50. You cannot register below Level 50.', 'err');
                 levelInput.focus();
                 return;
             }
-
-            const realName = document.getElementById('realName').value.trim();
-            const ign = document.getElementById('ign').value.trim();
-            const ffUid = document.getElementById('ffUid').value.trim();
-            const ffLevel = parseInt(levelInput.value, 10);
-            const whatsapp = document.getElementById('whatsapp').value.trim();
-            const profileFile = document.getElementById('profileShot').files[0];
-            const paymentFile = document.getElementById('paymentShot').files[0];
-
-            if (!realName || !ign || !ffUid || !whatsapp || !profileFile || !paymentFile) {
-                showMsg('Please fill in every field and upload both screenshots.', false);
+            const profileFile = document.getElementById('f_profile_shot').files[0];
+            const paymentFile = document.getElementById('f_payment_shot').files[0];
+            if (!profileFile || !paymentFile) {
+                showSubmitMsg('Please upload both your profile screenshot and payment screenshot.', 'err');
                 return;
             }
-
-            if (!ffxiplClient) {
-                showMsg('Registration form is ready, but this page isn\u2019t connected to Supabase yet \u2014 add your project URL and anon key in the script config to go live.', false);
+            if (!sb) {
+                showSubmitMsg('Registration backend is not configured yet. Ask the organizers to connect Supabase.', 'err');
                 return;
             }
 
@@ -3054,39 +2614,299 @@ if (backToTopBtn) {
             submitBtn.textContent = 'Submitting…';
 
             try {
-                const profileUrl = await ffxiplUploadFile(ffxiplClient, profileFile, 'profile-screenshots');
-                const paymentUrl = await ffxiplUploadFile(ffxiplClient, paymentFile, 'payment-screenshots');
+                const profilePath = await uploadShot(profileFile, 'profile');
+                const paymentPath = await uploadShot(paymentFile, 'payment');
 
-                const { error } = await ffxiplClient.from('ffxipl_players').insert([{
-                    season_number: FFXIPL_SEASON_NUMBER,
-                    real_name: realName,
-                    ign: ign,
-                    ff_uid: ffUid,
-                    ff_level: ffLevel,
-                    whatsapp: whatsapp,
-                    profile_screenshot_url: profileUrl,
-                    payment_screenshot_url: paymentUrl,
+                const payload = {
+                    real_name: document.getElementById('f_real_name').value.trim(),
+                    ign: document.getElementById('f_ign').value.trim(),
+                    uid: document.getElementById('f_uid').value.trim(),
+                    level: parseInt(levelInput.value, 10),
+                    whatsapp: document.getElementById('f_whatsapp').value.trim(),
+                    profile_screenshot_path: profilePath,
+                    payment_screenshot_path: paymentPath,
                     status: 'pending'
-                }]);
+                };
 
+                const { error } = await sb.from(TABLE).insert(payload);
                 if (error) throw error;
 
-                showMsg('Registration submitted! Your status is Pending — you\u2019ll be eligible for the Play-Ins once the admin panel marks you Approved.', true);
-                document.getElementById('regForm').reset();
-                document.getElementById('profileFileName').textContent = '';
-                document.getElementById('paymentFileName').textContent = '';
-                document.getElementById('profileBox').classList.remove('has-file');
-                document.getElementById('paymentBox').classList.remove('has-file');
-                levelGate.classList.remove('show');
+                showSubmitMsg('✅ Registration submitted! Your entry is now Pending — you\'ll be eligible for Play-Ins once an admin approves it.', 'ok');
+                regForm.reset();
+                document.getElementById('dropProfile').classList.remove('has-file');
+                document.getElementById('dropPayment').classList.remove('has-file');
+                document.getElementById('nameProfile').textContent = '';
+                document.getElementById('namePayment').textContent = '';
             } catch (err) {
                 console.error(err);
-                showMsg('Something went wrong submitting your registration: ' + (err.message || err), false);
+                if (err && err.code === '23505') {
+                    showSubmitMsg('This Free Fire UID has already registered for Season 12. If this is a mistake, contact the organizers.', 'err');
+                } else if (err && (err.message === 'Failed to fetch' || err.name === 'TypeError')) {
+                    showSubmitMsg('Network error — check your connection and try submitting again.', 'err');
+                } else {
+                    showSubmitMsg('Something went wrong submitting your registration: ' + (err.message || err), 'err');
+                }
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Registration →';
             }
         });
+
+        // ====== REGISTERED PLAYERS ======
+        const playersGrid = document.getElementById('playersGrid');
+        const playersCount = document.getElementById('playersCount');
+        const playersSearch = document.getElementById('playersSearch');
+        let allApprovedPlayers = [];
+        let playersLoaded = false;
+
+        function renderPlayers(list) {
+            if (!list.length) {
+                playersGrid.innerHTML = '<div class="empty-state">No approved players match yet. Check back after admin approval.</div>';
+                return;
+            }
+            playersGrid.innerHTML = list.map(p => `
+                <div class="player-mini">
+                    <div class="player-mini-avatar">${(p.real_name || '?').trim().charAt(0).toUpperCase()}</div>
+                    <div class="player-mini-name">${escapeHtml(p.real_name)}</div>
+                    <div class="player-mini-ign">${escapeHtml(p.ign)}</div>
+                    <div class="player-mini-lvl">LVL ${escapeHtml(String(p.level))}</div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            return String(str == null ? '' : str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        }
+
+        async function loadRegisteredPlayers() {
+            if (playersLoaded) return;
+            playersCount.textContent = 'Loading…';
+            if (!sb) {
+                playersCount.textContent = 'Registration backend is not configured yet.';
+                playersGrid.innerHTML = '';
+                return;
+            }
+            try {
+                const { data, error } = await sb.from(TABLE).select('real_name, ign, uid, level').eq('status', 'approved').order('created_at', { ascending: true });
+                if (error) throw error;
+                allApprovedPlayers = data || [];
+                playersLoaded = true;
+                playersCount.textContent = `${allApprovedPlayers.length} approved player${allApprovedPlayers.length === 1 ? '' : 's'} · eligible for Play-Ins`;
+                renderPlayers(allApprovedPlayers);
+            } catch (err) {
+                console.error(err);
+                if (err && err.message === 'Failed to fetch') {
+                    playersCount.textContent = 'Network error loading players — check your connection and reopen this tab.';
+                } else {
+                    playersCount.textContent = 'Could not load players: ' + (err.message || err);
+                }
+                playersGrid.innerHTML = '';
+            }
+        }
+
+        playersSearch.addEventListener('input', () => {
+            const q = playersSearch.value.trim().toLowerCase();
+            const filtered = !q ? allApprovedPlayers : allApprovedPlayers.filter(p =>
+                (p.real_name || '').toLowerCase().includes(q) ||
+                (p.ign || '').toLowerCase().includes(q) ||
+                (p.uid || '').toLowerCase().includes(q)
+            );
+            renderPlayers(filtered);
+        });
+
+        // ====== ADMIN PANEL (real Supabase Auth) ======
+        const adminGateWrap = document.getElementById('adminGateWrap');
+        const adminPanelWrap = document.getElementById('adminPanelWrap');
+        const adminEmail = document.getElementById('adminEmail');
+        const adminPass = document.getElementById('adminPass');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminGateMsg = document.getElementById('adminGateMsg');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+        const adminWhoami = document.getElementById('adminWhoami');
+        const adminList = document.getElementById('adminList');
+        const adminFilters = document.querySelectorAll('.admin-filter');
+        let currentAdminFilter = 'pending';
+
+        function showGateMsg(text, kind) {
+            adminGateMsg.textContent = text;
+            adminGateMsg.className = 'submit-msg show ' + kind;
+        }
+
+        // Confirms the signed-in user is actually listed in ffxipl_s12_admins.
+        // Relies on RLS: a non-admin gets zero rows back, not an error.
+        async function verifyAdminAndEnter(user) {
+            const { data, error } = await sb.from(ADMINS_TABLE).select('user_id').eq('user_id', user.id).maybeSingle();
+            if (error) {
+                showGateMsg('Could not verify admin access: ' + (error.message || error), 'err');
+                await sb.auth.signOut();
+                return;
+            }
+            if (!data) {
+                showGateMsg('This account is signed in but is not registered as a FREEFIREXIPL admin.', 'err');
+                await sb.auth.signOut();
+                return;
+            }
+            adminGateWrap.style.display = 'none';
+            adminPanelWrap.style.display = 'block';
+            adminWhoami.textContent = 'Signed in as ' + user.email;
+            loadAdminList();
+        }
+
+        adminLoginBtn.addEventListener('click', async () => {
+            if (!sb) { showGateMsg('Registration backend is not configured yet.', 'err'); return; }
+            const email = adminEmail.value.trim();
+            const password = adminPass.value;
+            if (!email || !password) { showGateMsg('Enter both email and password.', 'err'); return; }
+            adminLoginBtn.disabled = true;
+            adminLoginBtn.textContent = 'Signing in…';
+            showGateMsg('', '');
+            adminGateMsg.classList.remove('show');
+            try {
+                const { data, error } = await sb.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                await verifyAdminAndEnter(data.user);
+            } catch (err) {
+                console.error(err);
+                if (err && /invalid login credentials/i.test(err.message || '')) {
+                    showGateMsg('Incorrect email or password.', 'err');
+                } else if (err && (err.message === 'Failed to fetch')) {
+                    showGateMsg('Network error — check your connection and try again.', 'err');
+                } else {
+                    showGateMsg('Sign-in failed: ' + (err.message || err), 'err');
+                }
+            } finally {
+                adminLoginBtn.disabled = false;
+                adminLoginBtn.textContent = 'Sign In';
+            }
+        });
+        adminPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') adminLoginBtn.click(); });
+
+        adminLogoutBtn.addEventListener('click', async () => {
+            await sb.auth.signOut();
+            adminPanelWrap.style.display = 'none';
+            adminGateWrap.style.display = 'block';
+            adminEmail.value = '';
+            adminPass.value = '';
+        });
+
+        // Restore an existing admin session on page load/refresh, so admins
+        // don't have to sign in again every time they open this tab.
+        (async function restoreAdminSession() {
+            if (!sb) return;
+            const { data } = await sb.auth.getSession();
+            if (data && data.session && data.session.user) {
+                await verifyAdminAndEnter(data.session.user);
+            }
+        })();
+
+        adminFilters.forEach(f => {
+            f.addEventListener('click', () => {
+                adminFilters.forEach(x => x.classList.remove('active'));
+                f.classList.add('active');
+                currentAdminFilter = f.dataset.status;
+                loadAdminList();
+            });
+        });
+
+        async function loadAdminList() {
+            adminList.innerHTML = '<div class="loader"><span class="spin"></span>Loading registrations…</div>';
+            if (!sb) {
+                adminList.innerHTML = '<div class="loader">Registration backend is not configured yet.</div>';
+                return;
+            }
+            try {
+                let q = sb.from(TABLE).select('*').order('created_at', { ascending: false });
+                if (currentAdminFilter !== 'all') q = q.eq('status', currentAdminFilter);
+                const { data, error } = await q;
+                if (error) throw error;
+                if (!data || !data.length) {
+                    adminList.innerHTML = '<div class="loader">Nothing here right now.</div>';
+                    return;
+                }
+                renderAdminList(data);
+            } catch (err) {
+                console.error(err);
+                if (err && /JWT|permission|policy/i.test(err.message || '')) {
+                    adminList.innerHTML = '<div class="loader">Access denied by the database — this account isn\'t authorized as an admin.</div>';
+                } else if (err && err.message === 'Failed to fetch') {
+                    adminList.innerHTML = '<div class="loader">Network error loading registrations. Try again.</div>';
+                } else {
+                    adminList.innerHTML = `<div class="loader">Could not load registrations: ${escapeHtml(err.message || String(err))}</div>`;
+                }
+            }
+        }
+
+        // Screenshots live in a PRIVATE bucket — generate a short-lived signed
+        // URL on demand rather than storing/using a public link anywhere.
+        async function openSignedShot(path, btn) {
+            const originalText = btn.textContent;
+            btn.textContent = 'Loading…';
+            btn.disabled = true;
+            try {
+                const { data, error } = await sb.storage.from(BUCKET).createSignedUrl(path, 300);
+                if (error) throw error;
+                window.open(data.signedUrl, '_blank', 'noopener');
+            } catch (err) {
+                console.error(err);
+                alert('Could not open screenshot: ' + (err.message || err));
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function renderAdminList(rows) {
+            adminList.innerHTML = rows.map(r => `
+                <div class="admin-row" data-id="${r.id}">
+                    <div class="admin-row-head">
+                        <div>
+                            <div class="admin-row-name">${escapeHtml(r.real_name)}</div>
+                            <div class="admin-row-sub">${escapeHtml(r.ign)} · UID ${escapeHtml(r.uid)}</div>
+                        </div>
+                        <div class="status-pill ${r.status}">${r.status}</div>
+                    </div>
+                    <div class="admin-row-grid">
+                        <div>Level: <b>${escapeHtml(String(r.level))}</b></div>
+                        <div>WhatsApp: <b>${escapeHtml(r.whatsapp)}</b></div>
+                        <div>Submitted: <b>${new Date(r.created_at).toLocaleDateString()}</b></div>
+                        <div>Status: <b>${escapeHtml(r.status)}</b></div>
+                    </div>
+                    <div class="admin-shots">
+                        ${r.profile_screenshot_path ? `<button type="button" class="admin-shot-link admin-shot-btn" data-path="${escapeHtml(r.profile_screenshot_path)}" style="font:inherit;cursor:pointer;">🖼️ Profile</button>` : ''}
+                        ${r.payment_screenshot_path ? `<button type="button" class="admin-shot-link admin-shot-btn" data-path="${escapeHtml(r.payment_screenshot_path)}" style="font:inherit;cursor:pointer;">🧾 Payment</button>` : ''}
+                    </div>
+                    <div class="admin-row-actions">
+                        <button class="admin-btn approve" data-action="approved" ${r.status === 'approved' ? 'disabled' : ''}>Approve</button>
+                        <button class="admin-btn reject" data-action="rejected" ${r.status === 'rejected' ? 'disabled' : ''}>Reject</button>
+                    </div>
+                </div>
+            `).join('');
+
+            adminList.querySelectorAll('.admin-shot-btn').forEach(btn => {
+                btn.addEventListener('click', () => openSignedShot(btn.dataset.path, btn));
+            });
+
+            adminList.querySelectorAll('.admin-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const row = btn.closest('.admin-row');
+                    const id = row.dataset.id;
+                    const newStatus = btn.dataset.action;
+                    row.querySelectorAll('.admin-btn').forEach(b => b.disabled = true);
+                    try {
+                        const { error } = await sb.from(TABLE).update({ status: newStatus }).eq('id', id);
+                        if (error) throw error;
+                        playersLoaded = false; // refresh Registered Players next time it's viewed
+                        loadAdminList();
+                    } catch (err) {
+                        console.error(err);
+                        alert('Could not update status: ' + (err.message || err));
+                        row.querySelectorAll('.admin-btn').forEach(b => b.disabled = false);
+                    }
+                });
+            });
+        }
     </script>
+
 </body>
 
 </html>
