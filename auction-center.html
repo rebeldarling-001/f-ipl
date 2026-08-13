@@ -404,6 +404,36 @@
         .caveat-box { margin-top:22px; padding:14px 16px; border-radius:14px; background: rgba(var(--live-rgb),0.06); border:1px solid rgba(var(--live-rgb),0.25); font-size:11px; line-height:1.55; color:var(--ink-dim); }
         .caveat-box b { color:var(--live); }
     </style>
+    <style>
+        /* ============ TOAST (replaces all native alert()/confirm()) ============ */
+        .toast-stack { position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:500; max-width:440px; width:calc(100% - 28px); display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+        .toast { pointer-events:auto; padding:12px 16px; border-radius:13px; font-size:12.5px; line-height:1.4; background: linear-gradient(165deg, var(--card-a), var(--card-b) 80%); border:1px solid var(--gold-deep); color:var(--ink); box-shadow:0 12px 30px rgba(0,0,0,0.4); opacity:0; transform:translateY(-10px); transition: opacity 0.25s ease, transform 0.25s ease; }
+        .toast.show { opacity:1; transform:translateY(0); }
+        .toast.error { border-color:var(--live); }
+        .toast.success { border-color:#5fd97e; }
+
+        /* ============ ROUND BAND PLAYER BROWSER (admin) ============ */
+        .round-band { margin-top:14px; border-radius:16px; border:1px solid var(--line); background:var(--surface); overflow:hidden; }
+        .round-band-head { display:flex; align-items:center; justify-content:space-between; padding:13px 15px; cursor:pointer; }
+        .round-band-head .t { font-family:'Anton',sans-serif; font-size:14px; }
+        .round-band-head .sub { font-size:9.5px; color:var(--ink-faint); letter-spacing:0.06em; text-transform:uppercase; margin-top:2px; }
+        .round-band-body { display:none; padding:0 10px 10px; }
+        .round-band-body.open { display:block; }
+        .band-player-row { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 8px; border-radius:10px; font-size:11.5px; }
+        .band-player-row + .band-player-row { border-top:1px solid var(--line); }
+        .band-player-row .n { color:var(--ink); }
+        .band-player-row .m { display:block; font-size:9.5px; color:var(--ink-faint); margin-top:1px; }
+        .band-player-row .status-tag { font-size:8.5px; padding:3px 7px; border-radius:100px; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
+        .band-player-row .status-tag.avail { background: rgba(var(--gold-rgb),0.1); color:var(--gold-pale); }
+        .band-player-row .status-tag.sold { background: rgba(95,217,126,0.12); color:#5fd97e; }
+        .band-player-row .status-tag.block { background: rgba(var(--live-rgb),0.14); color:var(--live); }
+        .band-row-actions { display:flex; gap:6px; flex-shrink:0; }
+        .mini-btn { font-size:9.5px; padding:6px 9px; border-radius:9px; border:1px solid var(--gold-deep); background: rgba(var(--gold-rgb),0.08); color:var(--gold-pale); cursor:pointer; white-space:nowrap; }
+        .mini-btn.ghost-live { border-color: rgba(var(--live-rgb),0.4); color:var(--live); background: rgba(var(--live-rgb),0.06); }
+
+        .min-bid-label { margin-top:4px; font-size:11px; color:var(--ink-faint); }
+        .min-bid-label b { color:var(--gold-pale); }
+    </style>
 </head>
 <body>
 
@@ -478,15 +508,17 @@
         <div class="nav-drawer-foot">FREEFIREXIPL · Season 12</div>
     </nav>
 
+    <div class="toast-stack" id="toastStack"></div>
+
     <!-- INTRO -->
     <section style="padding-top:34px;">
         <div class="live-pill fade-up"><span class="dot"></span> AUCTION HUB · LIVE</div>
-        <h1 class="sec-title display fade-up d1" style="font-size:34px;">8 Teams. <b>₹100 Cr</b> Each.<br>4 Rounds. 40 Players.</h1>
-        <p class="sec-desc fade-up d2">Watch every bid live, or log in as a captain to buy your squad. Every player opens at their Play-In tier price — rounds are shuffled, prices are not.</p>
+        <h1 class="sec-title display fade-up d1" style="font-size:32px;">8 Teams. <b>₹100 Cr</b> Each.<br>40 Players.</h1>
+        <p class="sec-desc fade-up d2">Watch every bid live, or sign in as a captain to buy your squad. The admin can put any player up for auction at any time — every player still opens at their own Play-In minimum.</p>
         <div class="presence-row fade-up d3">
             <div class="presence-chip">👀 <b id="viewerCount">0</b> watching</div>
             <div class="presence-chip">🎖️ <b id="captainCount">0</b>/8 captains present</div>
-            <div class="presence-chip">📍 Round <b id="roundIndicator">—</b>/4</div>
+            <div class="presence-chip">✅ <b id="soldOverallCount">0</b>/40 sold</div>
         </div>
     </section>
 
@@ -497,7 +529,6 @@
             <div class="role-tab" data-role="account">🔐 Team / Admin Login</div>
         </div>
 
-        <!-- REAL SUPABASE AUTH LOGIN (email + password — no client-side passcodes) -->
         <div class="role-panel" id="panel-login">
             <div class="gate-box fade-up" id="loginBox">
                 <label>Email</label>
@@ -516,28 +547,24 @@
         </div>
     </section>
 
-    <!-- STAGE (shared by all roles once unlocked / always visible for public) -->
+    <!-- STAGE -->
     <section id="stageSection" style="padding-top:8px;">
         <div class="eyebrow">ON THE BLOCK</div>
         <h2 class="sec-title">Current <b>player</b></h2>
         <div class="foil-frame stage-wrap fade-up" style="--foil:var(--gold);">
             <div class="stage-card" id="stageCard">
-                <div class="round-badge-row">
-                    <span class="round-pill" id="stageRoundPill">ROUND —</span>
-                    <span class="tier-badge" id="stageTierBadge">—</span>
-                </div>
+                <div class="round-badge-row"><span class="round-pill" id="stageRoundPill">TIER —</span></div>
                 <div class="player-photo" id="stagePhoto">?</div>
-                <div class="player-name" id="stageName">Waiting for auction to begin…</div>
-                <div class="player-meta" id="stageMeta">Admin will generate the auction order to start</div>
+                <div class="player-name" id="stageName">No player on the block yet</div>
+                <div class="player-meta" id="stageMeta">UID — · Level —</div>
                 <div class="price-row">
-                    <div class="price-chip"><span class="lbl">Opening</span><span class="val" id="stageOpen">—</span></div>
-                    <div class="price-chip"><span class="lbl">Current Bid</span><span class="val" id="stageBid">—</span></div>
+                    <div class="price-chip"><span class="lbl">BASE PRICE</span><span class="val" id="stageOpen">—</span></div>
+                    <div class="price-chip"><span class="lbl">Current Bid</span><span class="val" id="stageBid">No bids yet</span></div>
                 </div>
                 <div class="bid-team-flash" id="stageBidTeam" style="color:var(--gold-pale);"></div>
 
-                <!-- overlays -->
                 <div class="countdown-overlay" id="countdownOverlay">
-                    <div class="countdown-big" id="countdownNum">30</div>
+                    <div class="countdown-big" id="countdownNum">10</div>
                     <div class="countdown-label" id="countdownLabel">Round begins in</div>
                 </div>
                 <div class="sold-overlay" id="soldOverlay">
@@ -546,7 +573,7 @@
                 </div>
                 <div class="unsold-overlay" id="unsoldOverlay">
                     <div class="unsold-word display">UNSOLD</div>
-                    <div class="sold-sub">No bids received — player returns to the pool.</div>
+                    <div class="sold-sub">No bids received — this player stays available.</div>
                 </div>
             </div>
         </div>
@@ -566,6 +593,7 @@
             <button class="bid-btn" data-inc="10">+10Cr</button>
             <button class="bid-btn" data-inc="20">+20Cr</button>
         </div>
+        <div class="min-bid-label" id="capBidHint">Tap any amount to open bidding at this player's minimum.</div>
         <div class="eyebrow" style="margin-top:22px;">MY ROSTER</div>
         <div class="players-left-list" id="capRosterList"></div>
     </section>
@@ -574,52 +602,51 @@
     <section class="role-panel" id="panel-admin" style="padding-top:8px;">
         <div class="eyebrow">AUCTIONEER CONTROLS</div>
         <h2 class="sec-title">Run the <b>auction</b></h2>
+
         <div class="admin-grid fade-up">
-            <button class="btn btn-primary" id="btnGenerateOrder">🎲 Generate Auction Order (once)</button>
-            <div class="admin-row">
-                <button class="btn btn-ghost" id="btnStartRound">▶ Start Round</button>
-                <button class="btn btn-ghost" id="btnNextPlayer">⏭ Next Player</button>
-            </div>
             <div class="admin-row">
                 <button class="btn btn-ghost" id="btnMarkSold">✅ Mark Sold</button>
                 <button class="btn btn-ghost" id="btnMarkUnsold">❌ Mark Unsold</button>
             </div>
             <div class="admin-row">
-                <button class="btn btn-ghost" id="btnVoidBid">↩ Void Last Bid</button>
-                <button class="btn btn-ghost" id="btnEndRound">🏁 End Round</button>
+                <button class="btn btn-ghost" id="btnVoidBid">↩ Clear Current Bid</button>
+                <button class="btn btn-ghost" id="btnClearStage">🧹 Clear Stage</button>
             </div>
         </div>
+
+        <div class="eyebrow" style="margin-top:20px;">PLAYERS — PICK ANYONE, ANY ROUND</div>
+        <div id="roundBandsContainer"></div>
+
+        <div class="eyebrow" style="margin-top:20px;">SUMMARIES</div>
+        <div class="admin-row fade-up" style="flex-wrap:wrap; gap:8px;">
+            <button class="btn btn-ghost" data-summary-round="1" style="flex:1 1 45%;">Round 1 Result</button>
+            <button class="btn btn-ghost" data-summary-round="2" style="flex:1 1 45%;">Round 2 Result</button>
+            <button class="btn btn-ghost" data-summary-round="3" style="flex:1 1 45%;">Round 3 Result</button>
+            <button class="btn btn-ghost" data-summary-round="4" style="flex:1 1 45%;">Round 4 Result</button>
+        </div>
+        <button class="btn btn-primary" style="width:100%; margin-top:10px;" id="btnFinalSummary">🏆 Final Summary — All Teams</button>
+
         <div class="eyebrow" style="margin-top:20px;">BID LOG</div>
         <div class="admin-log" id="adminLog"></div>
     </section>
 
-    <!-- TEAMS PURSE GRID (public + everyone) -->
+    <!-- TEAMS PURSE GRID -->
     <section id="pursesSection">
         <div class="eyebrow">FRANCHISE PURSES</div>
         <h2 class="sec-title">All <b>8 teams</b></h2>
         <div class="teams-purse-grid" id="teamsPurseGrid"></div>
         <div class="caveat-box fade-up">
-            <b>Note:</b> Captain and admin access is real Supabase Auth (email + password), not a shared passcode. Every bid, sale, and round action is validated and executed inside a SECURITY DEFINER database function — the browser never writes auction state directly, so a modified/faked client request is rejected server-side.
+            <b>Note:</b> Captain and admin access is real Supabase Auth (email + password). Every bid, sale, undo, and round action is validated and executed inside a database function — the browser never writes auction state directly.
         </div>
     </section>
 
-    <!-- ROUND SUMMARY MODAL -->
-    <div class="summary-modal" id="roundSummaryModal">
+    <!-- SUMMARY MODAL (shared for round + final — purely client-driven, no DB phase, so it can never get stuck reopening) -->
+    <div class="summary-modal" id="summaryModal">
         <div class="summary-card">
-            <div class="summary-title display" id="roundSummaryTitle">ROUND 1 RECAP</div>
-            <div class="summary-sub" id="roundSummarySub">All players sold this round</div>
-            <div class="summary-list" id="roundSummaryList"></div>
-            <button class="btn btn-primary summary-close" id="roundSummaryClose" style="width:100%;">Continue</button>
-        </div>
-    </div>
-
-    <!-- FINAL SUMMARY MODAL -->
-    <div class="summary-modal" id="finalSummaryModal">
-        <div class="summary-card">
-            <div class="summary-title display">🏆 AUCTION COMPLETE</div>
-            <div class="summary-sub">Final rosters — all 8 franchises</div>
-            <div class="summary-list" id="finalSummaryList"></div>
-            <button class="btn btn-primary summary-close" id="finalSummaryClose" style="width:100%;">Close</button>
+            <div class="summary-title display" id="summaryTitle">ROUND 1 RESULT</div>
+            <div class="summary-sub" id="summarySub"></div>
+            <div class="summary-list" id="summaryList"></div>
+            <button class="btn btn-primary summary-close" id="summaryClose" style="width:100%;">Close</button>
         </div>
     </div>
 
@@ -638,7 +665,6 @@
         </svg>
         <span>↑</span>
     </button>
-
     <script>
 /* =========================================================================
    FREEFIRE XIPL — SHARED THEME BEHAVIOR (copied verbatim pattern from home.html)
@@ -721,22 +747,27 @@
     </script>
     <script>
 /* =========================================================================
-   FREEFIRE XIPL — AUCTION HUB ENGINE (PRODUCTION)
-   Real Supabase Auth for captains/admins. All mutations go through
-   SECURITY DEFINER RPC functions (see ffxipl_s12_auction_setup.sql) — the
-   client never writes bids, sales, or round state directly to a table.
-   Public spectators read live via Realtime with no login required.
+   FREEFIRE XIPL — AUCTION HUB ENGINE (v2)
+   Changes from v1, per direct feedback:
+   - No shuffled/generated round order. Admin manually picks ANY of the 40
+     players, from any tier band, in any order, at any time.
+   - Fixed bid math: current_bid starts NULL ("no bids yet"), not pre-seeded
+     with the minimum. The first bid a captain places opens at the player's
+     minimum; every bid after that adds the clicked increment on top.
+   - Round-summary / final-summary are plain client-side modals triggered by
+     admin buttons — not tied to a database "phase", so they can never
+     silently reopen themselves after being closed.
+   - Only one timer exists anywhere on this page: a 10-second, purely
+     ceremonial "Round N begins in..." countdown when admin explicitly starts
+     it. No background polling timer — this page relies entirely on Realtime.
+   - Zero native browser alert()/confirm() popups. All feedback renders as
+     an in-page toast that matches the site's own theme.
    ========================================================================= */
 
-        // ---------- SUPABASE CONFIG (paste your project's values) ----------
-            const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+        const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ---------- STATIC TEAM DISPLAY CONFIG (names/colors only — no secrets here) ----------
-        // Captain identity/authorization is NOT decided by this object. It comes from
-        // ffxipl_s12_teams.captain_user_id (set by the admin against a real auth.users
-        // account) and is verified server-side by the RPC functions.
         const TEAM_META = {
             RCB: { name: 'Royal Challengers', color: '#e2394a' },
             CSK: { name: 'Chennai Super Kings', color: '#f5c518' },
@@ -749,25 +780,25 @@
         };
         const TEAM_IDS = Object.keys(TEAM_META);
         const TIER_PRICE = { top10: 10, top20: 6, top30: 4, top40: 2 };
-        const TIER_LABEL = { top10: 'TOP 10', top20: 'TOP 20', top30: 'TOP 30', top40: 'TOP 40' };
+        const ROUND_TIER = { 1: 'top10', 2: 'top20', 3: 'top30', 4: 'top40' };
+        const ROUND_LABEL = { 1: 'TIER 1 — Top 10 (min ₹10Cr)', 2: 'TIER 2 — Top 20 (min ₹6Cr)', 3: 'TIER 3 — Top 30 (min ₹4Cr)', 4: 'TIER 4 — Top 40 (min ₹2Cr)' };
 
-        let currentUser = null;    // Supabase auth user object, or null
-        let isAdmin = false;       // resolved server-side from ffxipl_s12_admins
-        let myTeamId = null;       // resolved server-side from ffxipl_s12_teams.captain_user_id
-        let teamsCache = {};
-        let playersCache = {};
-        let roundsCache = {};
-        let stateCache = null;
+        let currentUser = null, isAdmin = false, myTeamId = null;
+        let teamsCache = {}, playersCache = {}, stateCache = null;
         let countdownTimer = null;
 
         const fmtCr = (n) => (n === null || n === undefined) ? '—' : `₹${Number(n).toFixed(0)}Cr`;
         const $ = (id) => document.getElementById(id);
-        function publicUrlForProfile(path) {
-            if (!path) return null;
-            // Only the 'profile/' prefix is publicly readable (see storage policy in the SQL file).
-            // Payment screenshots stay private and are never referenced by this page.
-            const { data } = sb.storage.from('ffxipl-uploads').getPublicUrl(path);
-            return data?.publicUrl || null;
+
+        // ---------- TOAST (replaces every alert()/confirm()) ----------
+        function toast(message, type) {
+            const stack = $('toastStack');
+            const el = document.createElement('div');
+            el.className = 'toast' + (type ? ' ' + type : '');
+            el.textContent = message;
+            stack.appendChild(el);
+            requestAnimationFrame(() => el.classList.add('show'));
+            setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3600);
         }
 
         // ---------- ROLE TABS ----------
@@ -782,8 +813,8 @@
             document.querySelectorAll('.role-panel').forEach(p => p.classList.remove('active'));
             if (role === 'public') return;
             if (role === 'account') { $('panel-login').classList.add('active'); refreshAccountUI(); }
-            if (role === 'captain') { $('panel-captain').classList.add('active'); }
-            if (role === 'admin') { $('panel-admin').classList.add('active'); }
+            if (role === 'captain') $('panel-captain').classList.add('active');
+            if (role === 'admin') $('panel-admin').classList.add('active');
         }
 
         // ---------- AUTH ----------
@@ -803,14 +834,13 @@
             await sb.auth.signOut();
             currentUser = null; isAdmin = false; myTeamId = null;
             document.querySelectorAll('.role-tab[data-role="captain"], .role-tab[data-role="admin"]').forEach(t => t.remove());
-            refreshAccountUI();
-            showRolePanel('public');
+            refreshAccountUI(); showRolePanel('public');
         });
         function showAuthError(msg) { const el = $('authError'); el.textContent = msg; el.style.display = 'block'; }
 
         async function resolveRole() {
             if (!currentUser) return;
-            const [{ data: adminRow }, { data: teamRow, error: teamErr }] = await Promise.all([
+            const [{ data: adminRow }, { data: teamRow }] = await Promise.all([
                 sb.from('ffxipl_s12_admins').select('user_id').eq('user_id', currentUser.id).maybeSingle(),
                 sb.from('ffxipl_s12_teams').select('*').eq('captain_user_id', currentUser.id).maybeSingle(),
             ]);
@@ -821,8 +851,7 @@
             const tabs = document.querySelector('.role-tabs');
             if (myTeamId) {
                 const t = document.createElement('div');
-                t.className = 'role-tab'; t.dataset.role = 'captain';
-                t.textContent = `🎖️ ${myTeamId} Captain`;
+                t.className = 'role-tab'; t.dataset.role = 'captain'; t.textContent = `🎖️ ${myTeamId} Captain`;
                 t.addEventListener('click', () => { document.querySelectorAll('.role-tab').forEach(x => x.classList.remove('active')); t.classList.add('active'); showRolePanel('captain'); });
                 tabs.appendChild(t);
                 $('capTeamTitle').innerHTML = `Team <b>${myTeamId}</b>`;
@@ -830,123 +859,74 @@
             }
             if (isAdmin) {
                 const t = document.createElement('div');
-                t.className = 'role-tab'; t.dataset.role = 'admin';
-                t.textContent = '🛡️ Admin';
+                t.className = 'role-tab'; t.dataset.role = 'admin'; t.textContent = '🛡️ Admin';
                 t.addEventListener('click', () => { document.querySelectorAll('.role-tab').forEach(x => x.classList.remove('active')); t.classList.add('active'); showRolePanel('admin'); });
                 tabs.appendChild(t);
+                renderRoundBands();
             }
             refreshAccountUI();
             if (myTeamId) showRolePanel('captain'); else if (isAdmin) showRolePanel('admin'); else showRolePanel('account');
         }
 
         function refreshAccountUI() {
-            if (!currentUser) {
-                $('loginBox').style.display = 'block';
-                $('loggedInBox').style.display = 'none';
-                return;
-            }
-            $('loginBox').style.display = 'none';
-            $('loggedInBox').style.display = 'block';
+            if (!currentUser) { $('loginBox').style.display = 'block'; $('loggedInBox').style.display = 'none'; return; }
+            $('loginBox').style.display = 'none'; $('loggedInBox').style.display = 'block';
             $('loggedInLabel').textContent = `Signed in as ${currentUser.email}`;
             const roles = [];
             if (isAdmin) roles.push('Admin');
             if (myTeamId) roles.push(`${myTeamId} Captain`);
-            $('roleAssignedText').textContent = roles.length
-                ? `Role: ${roles.join(' + ')}. Use the tab that appeared above.`
-                : 'No admin or captain role is linked to this account yet — ask the tournament admin to assign one.';
+            $('roleAssignedText').textContent = roles.length ? `Role: ${roles.join(' + ')}. Use the tab that appeared above.` : 'No admin or captain role is linked to this account yet.';
         }
 
         // ---------- DATA LOADING ----------
         async function loadTeams() {
             const { data, error } = await sb.from('ffxipl_s12_teams').select('*');
             if (error) { console.error(error); return; }
-            teamsCache = {};
-            (data || []).forEach(t => teamsCache[t.id] = t);
+            teamsCache = {}; (data || []).forEach(t => teamsCache[t.id] = t);
             renderPurseGrid();
         }
-
         async function loadPlayers() {
-            // Public-safe view only — never selects whatsapp / payment_screenshot_path.
             const { data, error } = await sb.from('ffxipl_s12_public_players').select('*');
             if (error) { console.error(error); return; }
-            playersCache = {};
-            (data || []).forEach(p => playersCache[p.id] = p);
+            playersCache = {}; (data || []).forEach(p => playersCache[p.id] = p);
+            renderRoundBands();
+            updateSoldOverallCount();
         }
-
-        async function loadRounds() {
-            const { data, error } = await sb.from('ffxipl_s12_auction_rounds').select('*').order('round_number');
-            if (error) { console.error(error); return; }
-            roundsCache = {};
-            (data || []).forEach(r => roundsCache[r.round_number] = r);
-        }
-
         async function loadState() {
             const { data, error } = await sb.from('ffxipl_s12_auction_state').select('*').eq('id', 1).single();
-            if (error) { console.error(error); showStageError('Could not reach the auction state — check your connection.'); return; }
-            stateCache = data;
-            renderStage();
+            if (error) { console.error(error); return; }
+            stateCache = data; renderStage();
+        }
+        function updateSoldOverallCount() {
+            const sold = Object.values(playersCache).filter(p => p.team_id).length;
+            $('soldOverallCount').textContent = sold;
         }
 
-        function showStageError(msg) {
-            $('stageName').textContent = msg;
-            $('stageMeta').textContent = 'Retrying automatically…';
-        }
-
-        // ---------- REALTIME ----------
+        // ---------- REALTIME (this page's entire live-update mechanism — no polling) ----------
         function subscribeRealtime() {
             sb.channel('auction-state-changes')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_auction_state' }, payload => {
-                    stateCache = payload.new; renderStage();
-                })
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, payload => {
-                    teamsCache[payload.new.id] = payload.new; renderPurseGrid(); if (myTeamId) renderCaptainPanel();
-                })
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ffxipl_s12_bid_log' }, payload => {
-                    flashBid(payload.new); pushAdminLog(payload.new);
-                })
-                // NOTE: ffxipl_s12_public_players is a VIEW — Postgres logical
-                // replication (what Realtime is built on) can only stream changes
-                // from actual tables, never views. Subscribing to a view silently
-                // does nothing. We listen on the real underlying table instead and
-                // re-fetch through the safe view every time it changes.
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_registrations' }, () => {
-                    loadPlayers();
-                })
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_auction_rounds' }, () => {
-                    loadRounds();
-                })
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_auction_state' }, payload => { stateCache = payload.new; renderStage(); })
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, payload => { teamsCache[payload.new.id] = payload.new; renderPurseGrid(); if (myTeamId) renderCaptainPanel(); })
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ffxipl_s12_bid_log' }, payload => { flashBid(payload.new); pushAdminLog(payload.new); })
+                // ffxipl_s12_public_players is a VIEW — Postgres logical replication can only
+                // stream real tables, so we listen on the underlying table and re-fetch via the view.
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_registrations' }, () => loadPlayers())
                 .subscribe();
 
             const room = sb.channel('auction-room', { config: { presence: { key: crypto.randomUUID() } } });
             room.on('presence', { event: 'sync' }, () => {
-                const state = room.presenceState();
-                const all = Object.values(state).flat();
+                const all = Object.values(room.presenceState()).flat();
                 $('viewerCount').textContent = all.length;
-                const caps = new Set(all.filter(p => p.role === 'captain').map(p => p.team));
-                $('captainCount').textContent = caps.size;
+                $('captainCount').textContent = new Set(all.filter(p => p.role === 'captain').map(p => p.team)).size;
             }).subscribe(async (status) => {
-                if (status === 'SUBSCRIBED') {
-                    await room.track({ role: myTeamId ? 'captain' : (isAdmin ? 'admin' : 'viewer'), team: myTeamId, joined_at: Date.now() });
-                }
+                if (status === 'SUBSCRIBED') await room.track({ role: myTeamId ? 'captain' : (isAdmin ? 'admin' : 'viewer'), team: myTeamId, joined_at: Date.now() });
             });
-            window._presenceRoom = room;
-
-            // Defensive fallback: Realtime sockets occasionally drop a single
-            // message during a reconnect. A silent background re-sync every
-            // second means the page self-heals almost instantly even if that
-            // happens — nobody should ever need to hit refresh. This is a
-            // pure re-fetch of state/teams; it does not touch the live
-            // subscription handlers above in any way.
-            setInterval(() => { loadState(); loadTeams(); }, 1000);
         }
 
         // ---------- RENDER: STAGE ----------
         function renderStage() {
             if (!stateCache) return;
             const s = stateCache;
-            $('roundIndicator').textContent = s.current_round || '—';
-            $('stageRoundPill').textContent = `ROUND ${s.current_round || '—'}`;
-
             $('countdownOverlay').classList.remove('show');
             $('soldOverlay').classList.remove('show');
             $('unsoldOverlay').classList.remove('show');
@@ -954,45 +934,36 @@
 
             const player = playersCache[s.current_player_id];
             if (player) {
-                const photoUrl = publicUrlForProfile(player.profile_screenshot_path);
-                const photoEl = $('stagePhoto');
-                if (photoUrl) { photoEl.style.backgroundImage = `url('${photoUrl}')`; photoEl.style.backgroundSize = 'cover'; photoEl.style.backgroundPosition = 'center'; photoEl.textContent = ''; }
-                else { photoEl.style.backgroundImage = 'none'; photoEl.textContent = (player.ign || player.real_name || '?').slice(0, 2).toUpperCase(); }
-                $('stageName').textContent = player.ign || player.real_name;
-                $('stageMeta').textContent = `${player.real_name} · UID ${player.uid}`;
-                const tierBadge = $('stageTierBadge');
-                tierBadge.textContent = TIER_LABEL[player.auction_tier] || '—';
-                tierBadge.className = 'tier-badge ' + (player.auction_tier || '');
+                $('stageRoundPill').textContent = ROUND_LABEL[roundForTier(player.auction_tier)]?.split(' —')[0] || 'ROUND —';
+                $('stagePhoto').textContent = (player.ign || player.real_name || '?').slice(0, 2).toUpperCase();
+                $('stageName').textContent = player.ign || '—';
+                $('stageMeta').textContent = `${player.real_name} · UID ${player.uid} · Level ${player.level}`;
                 $('stageOpen').textContent = fmtCr(player.auction_base_price ?? TIER_PRICE[player.auction_tier]);
             } else {
-                $('stagePhoto').style.backgroundImage = 'none';
+                $('stageRoundPill').textContent = 'ROUND —';
                 $('stagePhoto').textContent = '?';
-                $('stageName').textContent = s.phase === 'final_summary' ? 'Auction complete!' : 'Waiting for auction to begin…';
-                $('stageMeta').textContent = s.phase === 'idle' ? 'Admin will generate the auction order to start' : '';
-                $('stageTierBadge').textContent = '—';
-                $('stageTierBadge').className = 'tier-badge';
+                $('stageName').textContent = 'No player on the block yet';
+                $('stageMeta').textContent = 'Admin can put any player up at any time';
                 $('stageOpen').textContent = '—';
             }
-            $('stageBid').textContent = fmtCr(s.current_bid);
+            $('stageBid').textContent = s.current_bid === null || s.current_bid === undefined ? 'No bids yet' : fmtCr(s.current_bid);
             $('stageBidTeam').textContent = s.current_bid_team_id ? `Leading bid: ${s.current_bid_team_id} — ${TEAM_META[s.current_bid_team_id]?.name || ''}` : '';
             $('stageBidTeam').style.color = s.current_bid_team_id ? TEAM_META[s.current_bid_team_id]?.color : 'var(--gold-pale)';
 
             if (s.phase === 'round_countdown') {
-                startCountdownDisplay(s.countdown_target, `Round ${s.current_round} begins in`);
+                startCountdownDisplay(s.countdown_target, `TIER ${s.current_round} begins in`);
             } else if (s.phase === 'sold') {
                 $('soldSub').innerHTML = `— to <b style="color:${TEAM_META[s.current_bid_team_id]?.color}">${s.current_bid_team_id}</b> for <b>${fmtCr(s.current_bid)}</b><br>Payout: <b>${fmtCr(s.current_bid / 2)}</b>`;
                 $('soldOverlay').classList.add('show');
             } else if (s.phase === 'unsold') {
                 $('unsoldOverlay').classList.add('show');
-            } else if (s.phase === 'round_summary') {
-                openRoundSummary(s.current_round);
-            } else if (s.phase === 'final_summary') {
-                openFinalSummary();
             }
-
             highlightTeamOnBlock(s.current_bid_team_id);
+            renderRoundBands();
             if (myTeamId) renderCaptainPanel();
         }
+
+        function roundForTier(tier) { return { top10: 1, top20: 2, top30: 3, top40: 4 }[tier] || 0; }
 
         function startCountdownDisplay(targetTs, label) {
             $('countdownLabel').textContent = label;
@@ -1006,21 +977,16 @@
             countdownTimer = setInterval(tick, 250);
         }
 
-        function flashBid(bidRow) {
+        function flashBid() {
             const valEl = $('stageBid');
             valEl.classList.add('tick');
             setTimeout(() => valEl.classList.remove('tick'), 220);
-            const flashEl = $('stageBidTeam');
-            flashEl.style.textShadow = `0 0 14px ${TEAM_META[bidRow.team_id]?.color || 'var(--gold)'}`;
-            setTimeout(() => flashEl.style.textShadow = 'none', 400);
         }
-
         function pushAdminLog(bidRow) {
-            const log = $('adminLog');
-            if (!log) return;
+            const log = $('adminLog'); if (!log) return;
             const row = document.createElement('div');
             row.className = 'admin-log-row';
-            row.innerHTML = `<b>${bidRow.team_id}</b> bid ${fmtCr(bidRow.bid_amount)} — Round ${bidRow.round_number}`;
+            row.innerHTML = `<b>${bidRow.team_id}</b> bid ${fmtCr(bidRow.bid_amount)}`;
             log.prepend(row);
         }
 
@@ -1034,16 +1000,14 @@
                 const pct = Math.min(100, ((t.purse_spent ?? 0) / (t.purse_total ?? 100)) * 100);
                 const done = (t.players_bought ?? 0) >= 5;
                 const el = document.createElement('div');
-                el.className = 'tp-card';
-                el.id = 'tp-' + id;
+                el.className = 'tp-card'; el.id = 'tp-' + id;
                 el.style.setProperty('--team-color', TEAM_META[id].color);
                 el.innerHTML = `
                     ${done ? '<span class="tp-done">Squad Full</span>' : ''}
                     <div class="tp-head"><span class="tp-abbr display">${id}</span><span class="tp-cap">Captain<br>${t.captain_name || '—'}</span></div>
                     <div class="tp-purse-track"><div class="tp-purse-fill" style="width:${pct}%"></div></div>
                     <div class="tp-nums"><span>Spent <b>${fmtCr(t.purse_spent ?? 0)}</b></span><span>Left <b>${fmtCr(remaining)}</b></span></div>
-                    <div class="tp-players">${t.players_bought ?? 0}/5 players bought</div>
-                `;
+                    <div class="tp-players">${t.players_bought ?? 0}/5 players bought</div>`;
                 grid.appendChild(el);
             });
             highlightTeamOnBlock(stateCache?.current_bid_team_id);
@@ -1059,6 +1023,10 @@
             const t = teamsCache[myTeamId] || { purse_total: 100, purse_spent: 0, players_bought: 0 };
             $('capPurseLeft').textContent = fmtCr((t.purse_total ?? 100) - (t.purse_spent ?? 0));
             $('capPlayersLeft').textContent = 5 - (t.players_bought ?? 0);
+            const player = playersCache[stateCache?.current_player_id];
+            $('capBidHint').innerHTML = stateCache?.current_bid == null && player
+                ? `First bid opens at this player's minimum: <b>${fmtCr(player.auction_base_price ?? TIER_PRICE[player.auction_tier])}</b>`
+                : 'Tap an amount to add it to the current bid.';
             const roster = Object.values(playersCache).filter(p => p.team_id === myTeamId);
             const list = $('capRosterList');
             list.innerHTML = roster.length ? '' : '<div class="pl-row"><span class="n">No players purchased yet</span></div>';
@@ -1070,76 +1038,126 @@
             });
         }
 
-        // ---------- CAPTAIN: PLACE BID (server-validated RPC — nothing trusted client-side) ----------
-        document.querySelectorAll('.bid-btn').forEach(btn => {
-            btn.addEventListener('click', () => placeBid(parseFloat(btn.dataset.inc)));
-        });
+        // ---------- CAPTAIN: PLACE BID ----------
+        document.querySelectorAll('.bid-btn').forEach(btn => btn.addEventListener('click', () => placeBid(parseFloat(btn.dataset.inc))));
         async function placeBid(inc) {
-            if (!currentUser) { alert('Sign in as your team\'s captain first.'); return; }
+            if (!myTeamId) { toast('Sign in as your team\'s captain first.', 'error'); return; }
             document.querySelectorAll('.bid-btn').forEach(b => b.disabled = true);
             const { error } = await sb.rpc('ffxipl_s12_place_bid', { p_increment: inc });
             document.querySelectorAll('.bid-btn').forEach(b => b.disabled = false);
-            if (error) { alert(error.message || 'Bid failed.'); }
+            if (error) toast(error.message || 'Bid failed.', 'error');
         }
 
-        // ---------- ADMIN ACTIONS (all server-validated RPCs, admin-checked in the DB) ----------
-        async function callAdminRpc(name, params, confirmMsg) {
-            if (!isAdmin) { alert('Admin sign-in required.'); return; }
-            if (confirmMsg && !confirm(confirmMsg)) return;
+        // ---------- ADMIN ACTIONS ----------
+        async function callAdminRpc(name, params) {
+            if (!isAdmin) { toast('Admin sign-in required.', 'error'); return false; }
             const { error } = await sb.rpc(name, params || {});
-            if (error) { alert(error.message || `${name} failed.`); return false; }
+            if (error) { toast(error.message || `${name} failed.`, 'error'); return false; }
             return true;
         }
 
-        $('btnGenerateOrder').addEventListener('click', async () => {
-            const ok = await callAdminRpc('ffxipl_s12_generate_auction_order', {}, 'Generate the mixed auction order for all 4 rounds? Run this only once before Round 1.');
-            if (ok) { await loadRounds(); await loadState(); alert('Auction order generated. Click "Start Round" to begin Round 1.'); }
-        });
-        $('btnStartRound').addEventListener('click', () => callAdminRpc('ffxipl_s12_start_round'));
-        $('btnNextPlayer').addEventListener('click', () => callAdminRpc('ffxipl_s12_next_player'));
-        $('btnMarkSold').addEventListener('click', () => callAdminRpc('ffxipl_s12_mark_sold'));
-        $('btnMarkUnsold').addEventListener('click', () => callAdminRpc('ffxipl_s12_mark_unsold'));
-        $('btnVoidBid').addEventListener('click', () => callAdminRpc('ffxipl_s12_void_bid'));
-        $('btnEndRound').addEventListener('click', () => callAdminRpc('ffxipl_s12_advance_round'));
+        $('btnMarkSold').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_mark_sold')) toast('Player marked sold.', 'success'); });
+        $('btnMarkUnsold').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_mark_unsold')) toast('Player marked unsold.', 'success'); });
+        $('btnVoidBid').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_void_bid')) toast('Current bid cleared.', 'success'); });
+        $('btnClearStage').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_clear_stage')) toast('Stage cleared.', 'success'); });
 
-        // ---------- ROUND / FINAL SUMMARIES ----------
-        async function openRoundSummary(roundNum) {
-            await loadPlayers();
-            const round = roundsCache[roundNum];
-            const list = $('roundSummaryList');
+        async function putPlayerOnBlock(playerId) {
+            const ok = await callAdminRpc('ffxipl_s12_put_player_on_block', { p_player_id: playerId });
+            if (ok) toast('Player is now on the block.', 'success');
+        }
+        async function undoSale(playerId) {
+            const ok = await callAdminRpc('ffxipl_s12_undo_sale', { p_player_id: playerId });
+            if (ok) toast('Sale undone — player returned to the pool.', 'success');
+        }
+
+        // ---------- ADMIN: ROUND-START CEREMONY (the ONLY timer on this page) ----------
+        document.addEventListener('click', async (e) => {
+            const startBtn = e.target.closest('[data-start-round]');
+            if (startBtn) {
+                const roundNum = parseInt(startBtn.dataset.startRound, 10);
+                await callAdminRpc('ffxipl_s12_start_round_countdown', { p_round: roundNum });
+            }
+        });
+
+        // ---------- ADMIN: ROUND BAND PLAYER BROWSER ----------
+        function renderRoundBands() {
+            const container = $('roundBandsContainer');
+            if (!container || !isAdmin) return;
+            const openBands = new Set(Array.from(container.querySelectorAll('.round-band-body.open')).map(el => el.dataset.round));
+            container.innerHTML = '';
+            [1, 2, 3, 4].forEach(roundNum => {
+                const tier = ROUND_TIER[roundNum];
+                const players = Object.values(playersCache).filter(p => p.auction_tier === tier).sort((a, b) => (a.ign || '').localeCompare(b.ign || ''));
+                const soldCount = players.filter(p => p.team_id).length;
+
+                const band = document.createElement('div');
+                band.className = 'round-band';
+                const head = document.createElement('div');
+                head.className = 'round-band-head';
+                head.innerHTML = `<div><div class="t">${ROUND_LABEL[roundNum]}</div><div class="sub">${soldCount}/${players.length} sold</div></div>
+                    <button class="mini-btn" data-start-round="${roundNum}">⏱ Start Round (10s)</button>`;
+                const body = document.createElement('div');
+                body.className = 'round-band-body' + (openBands.has(String(roundNum)) ? ' open' : '');
+                body.dataset.round = roundNum;
+
+                players.forEach(p => {
+                    const row = document.createElement('div');
+                    row.className = 'band-player-row';
+                    const isOnBlock = stateCache?.current_player_id === p.id;
+                    let statusHtml, actionHtml;
+                    if (p.team_id) {
+                        statusHtml = `<span class="status-tag sold">${p.team_id} · ${fmtCr(p.final_bid_price)}</span>`;
+                        actionHtml = `<button class="mini-btn ghost-live" data-undo="${p.id}">Undo Sale</button>`;
+                    } else if (isOnBlock) {
+                        statusHtml = `<span class="status-tag block">On the block</span>`;
+                        actionHtml = '';
+                    } else {
+                        statusHtml = `<span class="status-tag avail">Available</span>`;
+                        actionHtml = `<button class="mini-btn" data-put="${p.id}">Put on Block</button>`;
+                    }
+                    row.innerHTML = `<span class="n">${p.ign || p.real_name}<span class="m">${p.real_name} · UID ${p.uid} · Lvl ${p.level}</span></span>
+                        <div class="band-row-actions">${statusHtml}${actionHtml}</div>`;
+                    body.appendChild(row);
+                });
+
+                head.addEventListener('click', (e) => { if (e.target.closest('[data-start-round]')) return; body.classList.toggle('open'); });
+                band.appendChild(head); band.appendChild(body);
+                container.appendChild(band);
+            });
+            container.querySelectorAll('[data-put]').forEach(b => b.addEventListener('click', () => putPlayerOnBlock(b.dataset.put)));
+            container.querySelectorAll('[data-undo]').forEach(b => b.addEventListener('click', () => undoSale(b.dataset.undo)));
+        }
+
+        // ---------- SUMMARIES (plain client-side modals — no DB phase involved,
+        // so closing them is final and they can never silently reopen) ----------
+        document.querySelectorAll('[data-summary-round]').forEach(btn => {
+            btn.addEventListener('click', () => openRoundSummary(parseInt(btn.dataset.summaryRound, 10)));
+        });
+        function openRoundSummary(roundNum) {
+            const tier = ROUND_TIER[roundNum];
+            const players = Object.values(playersCache).filter(p => p.auction_tier === tier);
+            const sold = players.filter(p => p.team_id);
+            const list = $('summaryList');
             list.innerHTML = '';
-            let sold = 0, highest = null, lowest = null;
-            (round?.player_order || []).forEach(pid => {
-                const p = playersCache[pid];
-                if (!p || !p.team_id) return;
-                sold++;
-                if (!highest || p.final_bid_price > highest.final_bid_price) highest = p;
-                if (!lowest || p.final_bid_price < lowest.final_bid_price) lowest = p;
+            if (!sold.length) list.innerHTML = '<div class="summary-row"><span>No players sold in this round yet.</span></div>';
+            sold.sort((a, b) => (b.final_bid_price || 0) - (a.final_bid_price || 0)).forEach(p => {
                 const row = document.createElement('div');
                 row.className = 'summary-row';
                 row.innerHTML = `<span><span class="p">${p.ign || p.real_name}</span><br><span class="t">→ ${p.team_id}</span></span><span class="amt">${fmtCr(p.final_bid_price)}</span>`;
                 list.appendChild(row);
             });
-            $('roundSummaryTitle').textContent = `ROUND ${roundNum} RECAP`;
-            $('roundSummarySub').textContent = `${sold} players sold · Highest: ${highest ? fmtCr(highest.final_bid_price) : '—'} · Lowest: ${lowest ? fmtCr(lowest.final_bid_price) : '—'}`;
-            $('roundSummaryModal').classList.add('show');
+            $('summaryTitle').textContent = `TIER ${roundNum} RESULT`;
+            $('summarySub').textContent = `${sold.length} of ${players.length} players sold`;
+            $('summaryModal').classList.add('show');
         }
-        $('roundSummaryClose').addEventListener('click', async () => {
-            $('roundSummaryModal').classList.remove('show');
-            if (!isAdmin) return; // only the admin's browser auto-advances; everyone else just watches
-            await callAdminRpc('ffxipl_s12_advance_round');
-        });
-
-        async function openFinalSummary() {
-            await loadPlayers(); await loadTeams();
-            const list = $('finalSummaryList');
+        $('btnFinalSummary').addEventListener('click', () => {
+            const list = $('summaryList');
             list.innerHTML = '';
             TEAM_IDS.forEach(id => {
                 const t = teamsCache[id];
                 const roster = Object.values(playersCache).filter(p => p.team_id === id);
                 const header = document.createElement('div');
-                header.className = 'summary-row';
-                header.style.background = 'rgba(var(--gold-rgb),0.08)';
+                header.className = 'summary-row'; header.style.background = 'rgba(var(--gold-rgb),0.08)';
                 header.innerHTML = `<span class="p" style="color:${TEAM_META[id].color}">${id} — ${t?.captain_name || ''}</span><span class="amt">${fmtCr(t?.purse_spent ?? 0)} spent</span>`;
                 list.appendChild(header);
                 roster.forEach(p => {
@@ -1149,26 +1167,24 @@
                     list.appendChild(row);
                 });
             });
-            $('finalSummaryModal').classList.add('show');
-        }
-        $('finalSummaryClose').addEventListener('click', () => $('finalSummaryModal').classList.remove('show'));
+            $('summaryTitle').textContent = '🏆 FINAL SUMMARY';
+            $('summarySub').textContent = 'All 8 teams — click Close whenever you\'re done';
+            $('summaryModal').classList.add('show');
+        });
+        // Closing is unconditional and final — nothing re-opens this modal on its own.
+        $('summaryClose').addEventListener('click', () => $('summaryModal').classList.remove('show'));
 
         // ---------- BOOT ----------
         (async function boot() {
             const { data: { session } } = await sb.auth.getSession();
             if (session?.user) { currentUser = session.user; await resolveRole(); }
-            sb.auth.onAuthStateChange((event, session) => {
+            sb.auth.onAuthStateChange((event) => {
                 if (event === 'SIGNED_OUT') { currentUser = null; isAdmin = false; myTeamId = null; refreshAccountUI(); }
             });
-
             await loadTeams();
             await loadPlayers();
-            await loadRounds();
             await loadState();
             subscribeRealtime();
-
-            // Network/error resilience: retry a stalled initial load once after 4s.
-            setTimeout(() => { if (!stateCache) loadState(); }, 4000);
         })();
     </script>
 </body>

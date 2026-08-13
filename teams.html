@@ -3,7 +3,7 @@
 
 <head>
     <!-- Pre-paint theme snippet — must stay inline here, before theme.css loads. Copied verbatim
-         from index.html; do not move this to theme.js. -->
+         from home.html; do not move this to theme.js. -->
     <script>
         (function () {
             try {
@@ -18,9 +18,9 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Teams — FREEFIRE XIPL Season 12</title>
-    <meta name="description" content="FREEFIRE XIPL Season 12 franchises — rosters, captains, auction spend and live standings for all 8 teams.">
+    <meta name="description" content="The 8 franchises of FREEFIREXIPL Season 12 — captains, auction purse, live rosters and season records.">
     <meta property="og:title" content="Teams — FREEFIRE XIPL Season 12">
-    <meta property="og:description" content="FREEFIRE XIPL Season 12 franchises — rosters, captains, auction spend and live standings for all 8 teams.">
+    <meta property="og:description" content="The 8 franchises of FREEFIREXIPL Season 12 — captains, auction purse, live rosters and season records.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://rebeldarling-001.github.io/f-ipl/og-image.jpg">
     <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/teams.html">
@@ -30,44 +30,17 @@
     <meta name="theme-color" content="#0a0a0a">
     <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/teams.html">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
+    <!-- Supabase JS client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <style>
 /* =========================================================================
-   FREEFIRE XIPL — SHARED THEME SYSTEM
-   =========================================================================
-   One file, every page. Contains:
-     1. Theme variable definitions (12 color themes + 1 hidden "rgb-dynamic")
-     2. Global reset + body background
-     3. Shared chrome: splash screen, embers, header, theme switcher panel,
-        nav drawer, scroll progress bar, back-to-top button, footer
-     4. Shared utility classes: .fade-up, .btn / .btn-primary / .btn-ghost,
-        .eyebrow / .sec-title / .sec-desc, .foil-frame, .cta-band
-
-   HOW TO USE ON A NEW PAGE:
-     <link rel="stylesheet" href="theme.css">
-   Then write only page-specific CSS in that page's own <style> block —
-   things like a unique section layout, a card grid, etc. Never redefine
-   variables or chrome here again; add a new theme by adding one more
-   [data-theme="..."] block below and one <button class="theme-opt"> in
-   the theme panel markup (see theme-panel-template.html).
-
-   Also add this tiny pre-paint snippet inline in <head>, BEFORE this
-   stylesheet link (it must run synchronously, before first paint, so an
-   external/deferred file won't do):
-
-     <script>
-       (function () {
-         try {
-           var saved = localStorage.getItem('xipl-theme');
-           if (saved) document.documentElement.setAttribute('data-theme', saved);
-         } catch (e) {}
-       })();
-     </script>
+   FREEFIRE XIPL — SHARED THEME SYSTEM (copied verbatim — do not edit here,
+   edit the source page and re-copy to keep every page in lockstep)
    ========================================================================= */
 
 /* ---------- 1. THEME VARIABLE DEFINITIONS ---------- */
@@ -152,7 +125,6 @@
             --body-4: #05070D;
         }
 
-        /* ============ THEME DEFINITIONS ============ */
         [data-theme="crystal-light"] {
             --bg: #eef6fb9a;
             --bg-alt: #ffffff76;
@@ -473,7 +445,6 @@
             --body-4: #070707;
         }
 
-
         [data-theme="crimson-blood"] {
             --bg: #1a0505;
             --bg-alt: #240808;
@@ -564,10 +535,6 @@
             --body-3: #FFFFFF;
             --body-4: #EADDE1;
         }
-
-        /* ===========================
-   ARENA PRO PREMIUM OVERRIDES
-   =========================== */
 
         [data-theme="arena-pro"] body {
             background:
@@ -691,13 +658,8 @@
         }
 
         @keyframes rgbHue {
-            from {
-                filter: hue-rotate(0deg);
-            }
-
-            to {
-                filter: hue-rotate(360deg);
-            }
+            from { filter: hue-rotate(0deg); }
+            to { filter: hue-rotate(360deg); }
         }
 
         [data-theme="rgb-dynamic"] .crest,
@@ -713,33 +675,13 @@
         }
 
         @keyframes rgbBorder {
-            0% {
-                box-shadow: inset 0 0 0 1px #ff2d55, 0 0 18px rgba(255, 45, 85, .35);
-            }
-
-            16% {
-                box-shadow: inset 0 0 0 1px #ff9500, 0 0 18px rgba(255, 149, 0, .35);
-            }
-
-            33% {
-                box-shadow: inset 0 0 0 1px #ffe600, 0 0 18px rgba(255, 230, 0, .35);
-            }
-
-            50% {
-                box-shadow: inset 0 0 0 1px #2dff6b, 0 0 18px rgba(45, 255, 107, .35);
-            }
-
-            66% {
-                box-shadow: inset 0 0 0 1px #2dcaff, 0 0 18px rgba(45, 202, 255, .35);
-            }
-
-            83% {
-                box-shadow: inset 0 0 0 1px #a855f7, 0 0 18px rgba(168, 85, 247, .35);
-            }
-
-            100% {
-                box-shadow: inset 0 0 0 1px #ff2d55, 0 0 18px rgba(255, 45, 85, .35);
-            }
+            0% { box-shadow: inset 0 0 0 1px #ff2d55, 0 0 18px rgba(255, 45, 85, .35); }
+            16% { box-shadow: inset 0 0 0 1px #ff9500, 0 0 18px rgba(255, 149, 0, .35); }
+            33% { box-shadow: inset 0 0 0 1px #ffe600, 0 0 18px rgba(255, 230, 0, .35); }
+            50% { box-shadow: inset 0 0 0 1px #2dff6b, 0 0 18px rgba(45, 255, 107, .35); }
+            66% { box-shadow: inset 0 0 0 1px #2dcaff, 0 0 18px rgba(45, 202, 255, .35); }
+            83% { box-shadow: inset 0 0 0 1px #a855f7, 0 0 18px rgba(168, 85, 247, .35); }
+            100% { box-shadow: inset 0 0 0 1px #ff2d55, 0 0 18px rgba(255, 45, 85, .35); }
         }
 
         [data-theme="rgb-dynamic"] header,
@@ -747,7 +689,6 @@
             animation: rgbBorder 6s linear infinite;
         }
 
-        /* Smooth theme-swap transition, active only briefly on switch */
         html.theme-transitioning,
         html.theme-transitioning * {
             transition: background-color .6s ease, background-image .6s ease, border-color .6s ease,
@@ -761,9 +702,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
-            background: var(--bg);
-        }
+        html { background: var(--bg); }
 
         body {
             margin: 0;
@@ -784,14 +723,7 @@
                     var(--body-3) 60%,
                     var(--body-4) 100%);
 
-            background-size:
-                40px 40px,
-                40px 40px,
-                auto,
-                auto,
-                auto,
-                auto;
-
+            background-size: 40px 40px, 40px 40px, auto, auto, auto, auto;
             background-attachment: fixed;
         }
 
@@ -803,1682 +735,390 @@
             }
         }
 
-        ::selection {
-            background: var(--gold);
-            color: var(--on-accent);
-        }
+        ::selection { background: var(--gold); color: var(--on-accent); }
 
-        .display {
-            font-family: 'Anton', sans-serif;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-        }
+        .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; text-transform: uppercase; }
+        .mono { font-family: 'Space Mono', monospace; }
 
-        .mono {
-            font-family: 'Space Mono', monospace;
-        }
-
-
-/* ---------- 2. SHARED CHROME: splash / embers / header / theme switcher / nav drawer ---------- */
-        /* ============ SPLASH ============ */
+/* ---------- 2. SHARED CHROME ---------- */
         #splash {
-            position: fixed;
-            inset: 0;
-            z-index: 999;
+            position: fixed; inset: 0; z-index: 999;
             background: radial-gradient(ellipse at 50% 40%, var(--splash-a) 0%, var(--splash-b) 70%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            max-width: 480px;
-            margin: 0 auto;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            max-width: 480px; margin: 0 auto;
             transition: opacity 0.7s ease, visibility 0.7s ease;
-        }
-
-        #splash {
             will-change: mask-image;
         }
 
-        .ignite-wrap {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ignite-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 1.5px solid var(--gold-deep);
-            opacity: 0;
-            animation: ringPulse 1.8s ease-out infinite;
-        }
-
-        .ignite-ring.r2 {
-            animation-delay: 0.4s;
-        }
-
-        .ignite-ring.r3 {
-            animation-delay: 0.8s;
-        }
-
-        @keyframes ringPulse {
-            0% {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-
-            30% {
-                opacity: 0.9;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
-        }
+        .ignite-wrap { position: relative; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; }
+        .ignite-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid var(--gold-deep); opacity: 0; animation: ringPulse 1.8s ease-out infinite; }
+        .ignite-ring.r2 { animation-delay: 0.4s; }
+        .ignite-ring.r3 { animation-delay: 0.8s; }
+        @keyframes ringPulse { 0% { transform: scale(0.5); opacity: 0; } 30% { opacity: 0.9; } 100% { transform: scale(1.6); opacity: 0; } }
 
         .ignite-core {
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             background: linear-gradient(145deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
             animation: coreSpin 2.4s ease-in-out infinite, coreGlow 1.6s ease-in-out infinite;
             filter: drop-shadow(0 0 18px rgba(var(--gold-rgb), 0.7));
         }
-
-        @keyframes coreSpin {
-
-            0%,
-            100% {
-                transform: rotate(-6deg) scale(1);
-            }
-
-            50% {
-                transform: rotate(6deg) scale(1.08);
-            }
-        }
-
-        @keyframes coreGlow {
-
-            0%,
-            100% {
-                filter: drop-shadow(0 0 14px rgba(var(--gold-rgb), 0.5));
-            }
-
-            50% {
-                filter: drop-shadow(0 0 28px rgba(var(--gold-rgb), 0.9));
-            }
-        }
+        @keyframes coreSpin { 0%, 100% { transform: rotate(-6deg) scale(1); } 50% { transform: rotate(6deg) scale(1.08); } }
+        @keyframes coreGlow { 0%, 100% { filter: drop-shadow(0 0 14px rgba(var(--gold-rgb), 0.5)); } 50% { filter: drop-shadow(0 0 28px rgba(var(--gold-rgb), 0.9)); } }
 
         .splash-word {
-            margin-top: 28px;
-            font-size: 23px;
-            letter-spacing: 0.06em;
+            margin-top: 28px; font-size: 23px; letter-spacing: 0.06em;
             background: linear-gradient(180deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            opacity: 0;
-            animation: wordIn 0.8s ease forwards 0.5s;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            opacity: 0; animation: wordIn 0.8s ease forwards 0.5s;
         }
+        .splash-sub { margin-top: 6px; font-size: 11px; letter-spacing: 0.45em; color: var(--ink-faint); opacity: 0; animation: wordIn 0.8s ease forwards 0.9s; }
+        @keyframes wordIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .splash-sub {
-            margin-top: 6px;
-            font-size: 11px;
-            letter-spacing: 0.45em;
-            color: var(--ink-faint);
-            opacity: 0;
-            animation: wordIn 0.8s ease forwards 0.9s;
-        }
+        .splash-bar { margin-top: 36px; width: 130px; height: 2px; background: rgba(var(--gold-rgb), 0.15); border-radius: 2px; overflow: hidden; }
+        .splash-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold-deep), var(--gold)); animation: fillBar 1.9s ease forwards 0.3s; }
+        @keyframes fillBar { to { width: 100%; } }
 
-        @keyframes wordIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .splash-bar {
-            margin-top: 36px;
-            width: 130px;
-            height: 2px;
-            background: rgba(var(--gold-rgb), 0.15);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .splash-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold));
-            animation: fillBar 1.9s ease forwards 0.3s;
-        }
-
-        @keyframes fillBar {
-            to {
-                width: 100%;
-            }
-        }
-
-        /* ============ EMBERS (ambient bg) ============ */
-        .embers {
-            position: fixed;
-            inset: 0;
-            max-width: 480px;
-            margin: 0 auto;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
+        .embers { position: fixed; inset: 0; max-width: 480px; margin: 0 auto; pointer-events: none; z-index: 0; overflow: hidden; }
         .ember {
-            position: absolute;
-            bottom: -10px;
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            background: var(--gold);
-            opacity: 0;
-            box-shadow: 0 0 6px 1px rgba(var(--gold-rgb), 0.8);
-            animation-name: floatUp;
-            animation-timing-function: ease-in;
-            animation-iteration-count: infinite;
+            position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--gold);
+            opacity: 0; box-shadow: 0 0 6px 1px rgba(var(--gold-rgb), 0.8);
+            animation-name: floatUp; animation-timing-function: ease-in; animation-iteration-count: infinite;
         }
-
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.9;
-            }
-
-            90% {
-                opacity: 0.3;
-            }
-
-            100% {
-                transform: translateY(-720px) translateX(var(--drift, 20px));
-                opacity: 0;
-            }
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-720px) translateX(var(--drift, 20px)); opacity: 0; }
         }
 
-        /* ============ HEADER ============ */
         header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            position: sticky; top: 0; z-index: 50;
+            display: flex; align-items: center; justify-content: space-between;
             padding: 14px 18px;
             background: rgba(var(--bg-rgb), 0.82);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--line);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-
+        .brand { display: flex; align-items: center; gap: 9px; }
         .crest {
-            width: 30px;
-            height: 30px;
+            width: 30px; height: 30px;
             background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
         }
-
-        .brand-text {
-            font-size: 16px;
-            letter-spacing: 0.06em;
-        }
-
-        .brand-text b {
-            color: var(--gold);
-        }
+        .brand-text { font-size: 16px; letter-spacing: 0.06em; }
+        .brand-text b { color: var(--gold); }
 
         .menu-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            color: var(--gold);
-            font-size: 16px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.15s ease;
+            width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line);
+            display: flex; align-items: center; justify-content: center;
+            background: var(--surface); color: var(--gold); font-size: 16px; cursor: pointer;
+            -webkit-tap-highlight-color: transparent; transition: transform 0.15s ease;
         }
+        .menu-btn:active { transform: scale(0.92); }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .theme-btn { font-size: 15px; }
 
-        .menu-btn:active {
-            transform: scale(0.92);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .theme-btn {
-            font-size: 15px;
-        }
-
-        /* ============ THEME SWITCHER ============ */
         .theme-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 90;
-            max-width: 480px;
-            margin: 0 auto;
-            background: rgba(var(--bg-rgb), 0.5);
-            backdrop-filter: blur(3px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: fixed; inset: 0; z-index: 90; max-width: 480px; margin: 0 auto;
+            background: rgba(var(--bg-rgb), 0.5); backdrop-filter: blur(3px);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-
-        .theme-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .theme-overlay.show { opacity: 1; pointer-events: auto; }
 
         .theme-panel {
-            position: fixed;
-            z-index: 95;
-            top: 62px;
-            right: 14px;
-            left: 14px;
-            max-width: 452px;
-            margin: 0 auto;
+            position: fixed; z-index: 95; top: 62px; right: 14px; left: 14px; max-width: 452px; margin: 0 auto;
             background: linear-gradient(165deg, var(--nav-a), var(--nav-b) 80%);
-            border: 1px solid var(--line);
-            border-radius: 18px;
+            border: 1px solid var(--line); border-radius: 18px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-            transform: translateY(-14px) scale(0.97);
-            opacity: 0;
-            pointer-events: none;
+            transform: translateY(-14px) scale(0.97); opacity: 0; pointer-events: none;
             transition: transform 0.28s cubic-bezier(.2, .9, .25, 1), opacity 0.24s ease;
-            max-height: 78vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            max-height: 78vh; display: flex; flex-direction: column; overflow: hidden;
         }
-
-        .theme-panel.show {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        .theme-panel.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
         .theme-panel-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 14px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            color: var(--ink);
-            border-bottom: 1px solid var(--line);
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 14px 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.03em;
+            color: var(--ink); border-bottom: 1px solid var(--line); flex-shrink: 0;
         }
-
-        .theme-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            padding: 12px;
-            overflow-y: auto;
-        }
-
+        .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 12px; overflow-y: auto; }
         .theme-opt {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px;
-            border-radius: 12px;
-            border: 1px solid var(--line);
-            background: rgba(var(--bg-rgb), 0.35);
-            cursor: pointer;
-            text-align: left;
+            display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 12px;
+            border: 1px solid var(--line); background: rgba(var(--bg-rgb), 0.35); cursor: pointer; text-align: left;
             transition: border-color 0.18s ease, background 0.18s ease, transform 0.15s ease;
         }
+        .theme-opt:active { transform: scale(0.96); }
+        .theme-opt.active { border-color: var(--gold); background: rgba(var(--gold-rgb), 0.1); box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.35); }
+        .theme-swatch { display: flex; flex-shrink: 0; width: 26px; height: 26px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.12); }
+        .theme-swatch i { flex: 1; display: block; }
+        .theme-opt-name { font-size: 11.5px; letter-spacing: 0.02em; color: var(--ink-dim); line-height: 1.3; }
+        .theme-opt.active .theme-opt-name { color: var(--gold-pale); font-weight: 600; }
+        .theme-opt-name em { font-style: normal; }
 
-        .theme-opt:active {
-            transform: scale(0.96);
-        }
-
-        .theme-opt.active {
-            border-color: var(--gold);
-            background: rgba(var(--gold-rgb), 0.1);
-            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.35);
-        }
-
-        .theme-swatch {
-            display: flex;
-            flex-shrink: 0;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .theme-swatch i {
-            flex: 1;
-            display: block;
-        }
-
-        .theme-swatch.rainbow i:nth-child(1) {
-            background: linear-gradient(180deg, #ff2d55, #ff9500);
-        }
-
-        .theme-swatch.rainbow i:nth-child(2) {
-            background: linear-gradient(180deg, #ffe600, #2dff6b);
-        }
-
-        .theme-swatch.rainbow i:nth-child(3) {
-            background: linear-gradient(180deg, #2dcaff, #a855f7);
-        }
-
-        .theme-opt-name {
-            font-size: 11.5px;
-            letter-spacing: 0.02em;
-            color: var(--ink-dim);
-            line-height: 1.3;
-        }
-
-        .theme-opt.active .theme-opt-name {
-            color: var(--gold-pale);
-            font-weight: 600;
-        }
-
-        .theme-opt-name em {
-            font-style: normal;
-        }
-
-        /* ============ NAV DRAWER ============ */
         .nav-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 90;
-            max-width: 480px;
-            margin: 0 auto;
-            background: rgba(var(--bg-rgb), 0.62);
-            backdrop-filter: blur(3px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.32s ease;
+            position: fixed; inset: 0; z-index: 90; max-width: 480px; margin: 0 auto;
+            background: rgba(var(--bg-rgb), 0.62); backdrop-filter: blur(3px);
+            opacity: 0; pointer-events: none; transition: opacity 0.32s ease;
         }
-
-        .nav-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .nav-overlay.show { opacity: 1; pointer-events: auto; }
 
         .nav-drawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 95;
-            width: 76%;
-            max-width: 300px;
+            position: fixed; top: 0; right: 0; bottom: 0; z-index: 95; width: 76%; max-width: 300px;
             background: linear-gradient(165deg, var(--nav-a), var(--nav-b) 75%);
-            border-left: 1px solid var(--line);
-            display: flex;
-            flex-direction: column;
-            padding: 18px 16px 20px;
-            transform: translateX(100%);
+            border-left: 1px solid var(--line); display: flex; flex-direction: column;
+            padding: 18px 16px 20px; transform: translateX(100%);
             transition: transform 0.38s cubic-bezier(.2, .9, .25, 1);
-            box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
-            overflow-y: auto;
+            box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5); overflow-y: auto;
         }
-
-        .nav-drawer.show {
-            transform: translateX(0);
-        }
-
-        .nav-drawer-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--line);
-        }
-
+        .nav-drawer.show { transform: translateX(0); }
+        .nav-drawer-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
         .nav-close {
-            width: 30px;
-            height: 30px;
-            border-radius: 9px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--gold);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            width: 30px; height: 30px; border-radius: 9px; border: 1px solid var(--line);
+            background: var(--surface); color: var(--gold); font-size: 13px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
-
-        .nav-links {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 20px;
-        }
-
+        .nav-links { display: flex; flex-direction: column; gap: 6px; margin-top: 20px; }
         .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 13px 12px;
-            border-radius: 12px;
-            color: var(--ink);
-            font-size: 14px;
-            letter-spacing: 0.03em;
-            text-decoration: none;
-            border: 1px solid transparent;
-            transition: background 0.18s ease, border-color 0.18s ease;
+            display: flex; align-items: center; gap: 12px; padding: 13px 12px; border-radius: 12px;
+            color: var(--ink); font-size: 14px; letter-spacing: 0.03em; text-decoration: none;
+            border: 1px solid transparent; transition: background 0.18s ease, border-color 0.18s ease;
         }
+        .nav-link[aria-current="page"] { background: rgba(var(--gold-rgb), 0.1); border-color: rgba(var(--gold-rgb), 0.3); color: var(--gold-pale); }
+        .nav-link:active { background: rgba(var(--gold-rgb), 0.08); border-color: var(--line); }
+        .nav-link-primary { background: rgba(var(--gold-rgb), 0.1); border-color: var(--gold-deep); color: var(--gold-pale); font-weight: 600; }
+        .nav-link-primary .nav-link-icon { background: rgba(var(--gold-rgb), 0.18); color: var(--gold); }
+        .nav-link-icon { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; background: rgba(var(--gold-rgb), 0.08); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        .nav-drawer-foot { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); font-size: 9.5px; letter-spacing: 0.18em; color: var(--ink-faint); text-align: center; text-transform: uppercase; }
 
-        .nav-link[aria-current="page"] {
-            background: rgba(var(--gold-rgb), 0.1);
-            border-color: rgba(var(--gold-rgb), 0.3);
-            color: var(--gold-pale);
-        }
+/* ---------- 3. UTILITY: scroll-reveal ---------- */
+        .fade-up { opacity: 0; transform: translateY(24px); transition: 0.6s ease; }
+        .fade-up.in { opacity: 1; transform: translateY(0); }
+        .fade-up.d1 { transition-delay: 0.05s; }
+        .fade-up.d2 { transition-delay: 0.15s; }
+        .fade-up.d3 { transition-delay: 0.25s; }
+        .fade-up.d4 { transition-delay: 0.35s; }
 
-        /* Back-to-home affordance for inner pages — pairs with .brand in the header */
-        .header-flex {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .back-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .nav-link:active {
-            background: rgba(var(--gold-rgb), 0.08);
-            border-color: var(--line);
-        }
-
-        .nav-link-primary {
-            background: rgba(var(--gold-rgb), 0.1);
-            border-color: var(--gold-deep);
-            color: var(--gold-pale);
-            font-weight: 600;
-        }
-
-        .nav-link-primary .nav-link-icon {
-            background: rgba(var(--gold-rgb), 0.18);
-            color: var(--gold);
-        }
-
-        .nav-link-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 9px;
-            flex-shrink: 0;
-            background: rgba(var(--gold-rgb), 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-        }
-
-        .nav-drawer-foot {
-            margin-top: auto;
-            padding-top: 16px;
-            border-top: 1px solid var(--line);
-            font-size: 9.5px;
-            letter-spacing: 0.18em;
-            color: var(--ink-faint);
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-
-/* ---------- 3. UTILITY: scroll-reveal animation ---------- */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: 0.6s ease;
-        }
-
-        .fade-up.in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .fade-up.in {
-            opacity: 1;
-            transform: perspective(600px) rotateX(0);
-        }
-
-        .fade-up.d1 {
-            transition-delay: 0.05s;
-        }
-
-        .fade-up.d2 {
-            transition-delay: 0.15s;
-        }
-
-        .fade-up.d3 {
-            transition-delay: 0.25s;
-        }
-
-        .fade-up.d4 {
-            transition-delay: 0.35s;
-        }
-
-/* ---------- 4. UTILITY: live-dot blink keyframe (used by status dots across pages) ---------- */
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.25;
-            }
-        }
+/* ---------- 4. UTILITY: live-dot blink ---------- */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
 /* ---------- 5. UTILITY: buttons ---------- */
         .btn {
-            flex: 1;
-            text-align: center;
-            padding: 14px 0;
-            border-radius: 11px;
-            font-size: 13.5px;
-            letter-spacing: 0.1em;
-            font-weight: 600;
-            text-transform: uppercase;
-            border: none;
-            transition: transform 0.15s ease;
+            flex: 1; text-align: center; padding: 14px 0; border-radius: 11px; font-size: 13.5px;
+            letter-spacing: 0.1em; font-weight: 600; text-transform: uppercase; border: none; transition: transform 0.15s ease;
         }
+        .btn:active { transform: scale(0.96); }
+        .btn-primary { background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep)); color: var(--on-accent); box-shadow: 0 8px 24px rgba(var(--gold-rgb), 0.25); }
+        .btn-ghost { background: transparent; color: var(--gold-pale); border: 1px solid var(--gold-deep); }
 
-        .btn:active {
-            transform: scale(0.96);
-        }
+/* ---------- 6. UTILITY: section header ---------- */
+        section { padding: 44px 20px 6px; position: relative; z-index: 1; }
+        .eyebrow { font-size: 10.5px; letter-spacing: 0.32em; color: var(--gold-deep); display: flex; align-items: center; gap: 8px; }
+        .eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--gold-deep); }
+        .sec-title { font-size: 28px; margin-top: 8px; color: var(--ink); line-height: 1.05; }
+        .sec-title b { color: var(--gold); }
+        .sec-desc { margin-top: 8px; font-size: 13.5px; color: var(--ink-dim); line-height: 1.55; max-width: 320px; }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
-            color: var(--on-accent);
-            box-shadow: 0 8px 24px rgba(var(--gold-rgb), 0.25);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--gold-pale);
-            border: 1px solid var(--gold-deep);
-        }
-
-/* ---------- 6. UTILITY: section header (eyebrow / title / description) ---------- */
-        /* ============ SECTION SHARED ============ */
-        section {
-            padding: 44px 20px 6px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .eyebrow {
-            font-size: 10.5px;
-            letter-spacing: 0.32em;
-            color: var(--gold-deep);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .eyebrow::before {
-            content: '';
-            width: 16px;
-            height: 1px;
-            background: var(--gold-deep);
-        }
-
-        .sec-title {
-            font-size: 28px;
-            margin-top: 8px;
-            color: var(--ink);
-            line-height: 1.05;
-        }
-
-        .sec-title b {
-            color: var(--gold);
-        }
-
-        .sec-desc {
-            margin-top: 8px;
-            font-size: 13.5px;
-            color: var(--ink-dim);
-            line-height: 1.55;
-            max-width: 320px;
-        }
-
-
-/* ---------- 7. UTILITY: foil-frame (signature rotating gold border, wrap any card in it) ---------- */
-        .foil-frame {
-            position: relative;
-            border-radius: 26px;
-            padding: 2px;
-            overflow: hidden;
-            isolation: isolate;
-        }
-
+/* ---------- 7. UTILITY: foil-frame ---------- */
+        .foil-frame { position: relative; border-radius: 26px; padding: 2px; overflow: hidden; isolation: isolate; }
         .foil-frame::before {
-            content: '';
-            position: absolute;
-            inset: -60%;
-            z-index: 0;
+            content: ''; position: absolute; inset: -60%; z-index: 0;
             background: conic-gradient(from 0deg, var(--foil, var(--gold-deep)), var(--gold-pale) 25%, var(--gold) 50%, var(--foil, var(--gold-deep)) 75%, var(--gold-pale) 100%);
             animation: frameSpin 7s linear infinite;
         }
+        @keyframes frameSpin { to { transform: rotate(360deg); } }
 
-        @keyframes frameSpin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+/* ---------- 8. CHROME: scroll progress ---------- */
+        .scroll-progress { position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 80; width: 100%; max-width: 480px; height: 2px; background: transparent; }
+        .scroll-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale)); box-shadow: 0 0 8px rgba(var(--gold-rgb), 0.6); transition: width 0.05s linear; }
 
-/* ---------- 8. CHROME: scroll progress bar ---------- */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 80;
-            width: 100%;
-            max-width: 480px;
-            height: 2px;
-            background: transparent;
-        }
-
-        .scroll-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            box-shadow: 0 0 8px rgba(var(--gold-rgb), 0.6);
-            transition: width 0.05s linear;
-        }
-
-/* ---------- 9. CHROME: back-to-top button ---------- */
-        /* ============ BACK TO TOP ============ */
+/* ---------- 9. CHROME: back-to-top ---------- */
         .back-to-top {
-            position: fixed;
-            right: 18px;
-            bottom: 20px;
-            z-index: 70;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(10px) scale(0.9);
-            pointer-events: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            position: fixed; right: 18px; bottom: 20px; z-index: 70; width: 48px; height: 48px; border-radius: 50%;
+            border: none; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            opacity: 0; transform: translateY(10px) scale(0.9); pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease;
         }
+        .back-to-top.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .back-to-top svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+        .btt-bg { fill: var(--btt-bg); stroke: rgba(var(--gold-rgb), 0.18); stroke-width: 2; }
+        .btt-fill { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; transition: stroke-dashoffset 0.1s linear; }
+        .back-to-top span { position: relative; color: var(--gold); font-size: 16px; font-weight: 700; }
 
-        .back-to-top.show {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: auto;
-        }
-
-        .back-to-top svg {
-            position: absolute;
-            inset: 0;
-            transform: rotate(-90deg);
-        }
-
-        .btt-bg {
-            fill: var(--btt-bg);
-            stroke: rgba(var(--gold-rgb), 0.18);
-            stroke-width: 2;
-        }
-
-        .btt-fill {
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 2;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.1s linear;
-        }
-
-        .back-to-top span {
-            position: relative;
-            color: var(--gold);
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-/* ---------- 10. UTILITY: CTA band (reusable promo strip, e.g. before footer) ---------- */
+/* ---------- 10. UTILITY: CTA band ---------- */
         .cta-band {
-            margin: 44px 20px 0;
-            padding: 26px 20px;
-            border-radius: 18px;
-            text-align: center;
+            margin: 44px 20px 0; padding: 26px 20px; border-radius: 18px; text-align: center;
             background: linear-gradient(150deg, var(--cta-a), var(--cta-b) 60%);
-            border: 1px solid var(--gold-deep);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--gold-deep); position: relative; overflow: hidden;
         }
-
-        .cta-band h3 {
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            color: var(--gold-pale);
-            letter-spacing: 0.02em;
-        }
-
-        .cta-band p {
-            margin-top: 6px;
-            font-size: 12.5px;
-            color: var(--ink-dim);
-        }
-
-        .cta-band .btn {
-            margin-top: 16px;
-        }
+        .cta-band h3 { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--gold-pale); letter-spacing: 0.02em; }
+        .cta-band p { margin-top: 6px; font-size: 12.5px; color: var(--ink-dim); }
+        .cta-band .btn { margin-top: 16px; }
 
 /* ---------- 11. CHROME: footer ---------- */
-        /* ============ FOOTER ============ */
-        footer {
-            margin-top: 40px;
-            padding: 26px 20px 20px;
-            border-top: 1px solid var(--line);
-        }
-
-        .foot-brand {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-
-        .foot-tag {
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--ink-faint);
-            line-height: 1.6;
-            max-width: 300px;
-        }
-
-        .foot-social {
-            display: flex;
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .soc {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-deep);
-            font-size: 13px;
-        }
-
-        .foot-copy {
-            margin-top: 20px;
-            font-size: 10.5px;
-            color: var(--ink-faint);
-            letter-spacing: 0.03em;
-        }
-
-        /* ============ NOTIFICATION POPUP (homepage only) ============ */
-        /* Driven by notify.js reading notifications.json — see that file to push a new notice. */
-        .notify-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9000;
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s ease;
-        }
-
-        .notify-overlay.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .notify-modal {
-            position: relative;
-            width: 100%;
-            max-width: 390px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
-            border: 1px solid rgba(var(--gold-rgb), 0.28);
-            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(var(--gold-rgb), 0.08);
-            transform: translateY(22px) scale(0.97);
-            transition: transform 0.38s cubic-bezier(.22, .9, .25, 1);
-        }
-
-        .notify-overlay.show .notify-modal {
-            transform: translateY(0) scale(1);
-        }
-
-        .notify-glow {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 260px;
-            height: 160px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.28), transparent 70%);
-            filter: blur(8px);
-            pointer-events: none;
-            animation: notifyHaloPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes notifyHaloPulse {
-
-            0%,
-            100% {
-                opacity: 0.7;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .notify-shimmer {
-            position: absolute;
-            top: 0;
-            left: -60%;
-            width: 35%;
-            height: 100%;
-            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            animation: notifyShimmerSweep 5s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes notifyShimmerSweep {
-
-            0%,
-            100% {
-                left: -60%;
-            }
-
-            50% {
-                left: 120%;
-            }
-        }
-
-        .notify-close {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            z-index: 2;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--ink-faint);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .notify-top {
-            position: relative;
-            padding: 32px 24px 24px;
-            text-align: center;
-        }
-
-        .notify-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
-            border-radius: 100px;
-            border: 1px solid var(--gold-deep);
-            background: rgba(var(--gold-rgb), 0.08);
-            font-size: 9.5px;
-            letter-spacing: 0.2em;
-            color: var(--gold-pale);
-            text-transform: uppercase;
-        }
-
-        .notify-badge .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--live);
-            box-shadow: 0 0 6px var(--live);
-            animation: blink 1.2s ease-in-out infinite;
-        }
-
-        .notify-icon {
-            margin: 20px auto 0;
-            width: 62px;
-            height: 62px;
-            border-radius: 18px;
-            background: linear-gradient(145deg, rgba(var(--gold-rgb), 0.18), rgba(var(--gold-rgb), 0.05));
-            border: 1px solid rgba(var(--gold-rgb), 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
-        .notify-title {
-            margin-top: 18px;
-            font-family: 'Anton', sans-serif;
-            font-size: 26px;
-            line-height: 1.08;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 0.02em;
-        }
-
-        .notify-date {
-            margin-top: 8px;
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-        }
-
-        .notify-msg {
-            margin-top: 14px;
-            font-size: 13.5px;
-            line-height: 1.6;
-            color: var(--ink-dim);
-            padding: 0 4px;
-        }
-
-        .notify-msg b {
-            color: var(--ink);
-        }
-
-        .notify-divider {
-            margin: 0 24px;
-            border: none;
-            border-top: 1px solid var(--line);
-        }
-
-        .notify-footer {
-            padding: 20px 24px 26px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notify-cta {
-            all: unset;
-            box-sizing: border-box;
-            display: block;
-            width: 100%;
-            padding: 14px;
-            border-radius: 14px;
-            text-align: center;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            color: var(--on-accent);
-            box-shadow: 0 4px 22px rgba(var(--gold-rgb), 0.35);
-            transition: opacity 0.2s, transform 0.15s;
-        }
-
-        .notify-cta:active {
-            transform: scale(0.97);
-            opacity: 0.88;
-        }
-
-        .notify-skip {
-            all: unset;
-            box-sizing: border-box;
-            cursor: pointer;
-            font-size: 11px;
-            color: var(--ink-faint);
-            letter-spacing: 0.06em;
-        }
+        footer { margin-top: 40px; padding: 26px 20px 20px; border-top: 1px solid var(--line); }
+        .foot-brand { display: flex; align-items: center; gap: 9px; }
+        .foot-tag { margin-top: 10px; font-size: 12px; color: var(--ink-faint); line-height: 1.6; max-width: 300px; }
+        .foot-social { display: flex; gap: 10px; margin-top: 16px; }
+        .soc { width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); display: flex; align-items: center; justify-content: center; color: var(--gold-deep); font-size: 13px; }
+        .foot-copy { margin-top: 20px; font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.03em; }
     </style>
     <style>
-        /* ============ TM HERO ============ */
-        .tmhero { position: relative; padding: 34px 20px 8px; overflow: hidden; }
-        .tmhero::before {
+        /* ============================================================
+           PAGE-SPECIFIC: TEAMS
+           ============================================================ */
+
+        /* ---------- Intro ---------- */
+        .intro { position: relative; padding: 34px 20px 8px; overflow: hidden; }
+        .intro::before {
             content: ''; position: absolute; inset: 0;
             background-image: linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
             background-size: 26px 26px;
             mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
         }
-        .tmhero-title {
-            position: relative; margin-top: 12px; font-size: 32px; line-height: 1;
+        .intro-title {
+            position: relative; margin-top: 12px; font-size: 36px; line-height: 0.98;
             background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
-        .tmhero-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 320px; }
-
-        .tm-search { padding: 18px 20px 0; }
-
-        /* ---- team cards ---- */
-        .tm-list { display: flex; flex-direction: column; gap: 14px; padding: 16px 20px 6px; }
-        .tm-card { position: relative; z-index: 1; border-radius: 20px; padding: 18px 16px; overflow: hidden;
-            border: 1px solid var(--line); border-top: 2px solid var(--foil, var(--gold-deep));
-            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.10), transparent 60%), var(--surface); }
-        .tm-head { display: flex; align-items: center; gap: 12px; }
-        .tm-crest { width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            background: color-mix(in srgb, var(--foil, var(--gold)) 16%, var(--surface)); border: 1px solid color-mix(in srgb, var(--foil, var(--gold)) 30%, var(--line)); }
-        .tm-abbr { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--foil, var(--gold)); }
-        .tm-namewrap { flex: 1; min-width: 0; }
-        .tm-fullname { font-size: 14px; font-weight: 600; color: var(--ink); }
-        .tm-captain { font-size: 10.5px; color: var(--ink-faint); margin-top: 1px; }
-
-        .tm-purse-wrap { margin-top: 14px; }
-        .tm-purse-track { height: 6px; border-radius: 6px; background: rgba(var(--gold-rgb), 0.09); overflow: hidden; }
-        .tm-purse-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--foil, var(--gold-deep)), var(--gold), var(--gold-pale)); }
-        .tm-purse-nums { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--ink-faint); }
-        .tm-purse-nums b { color: var(--ink); font-family: 'Space Mono', monospace; }
-
-        .tm-roster { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
-        .tm-player-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; background: rgba(var(--gold-rgb), 0.045); border: 1px solid var(--line); }
-        .tm-player-ign { flex: 1; min-width: 0; font-size: 12.5px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .tm-player-bid { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gold-pale); flex-shrink: 0; }
-        .tm-empty-slot { font-size: 11px; color: var(--ink-faint); padding: 8px 10px; border-radius: 10px; border: 1px dashed var(--line); text-align: center; }
-
-        .tm-stats-row { display: flex; gap: 8px; margin-top: 14px; }
-        .tm-stat-box { flex: 1; text-align: center; background: rgba(var(--gold-rgb), 0.04); border: 1px solid var(--line); border-radius: 10px; padding: 8px 4px; }
-        .tm-stat-box b { display: block; font-family: 'Anton', sans-serif; font-size: 14px; color: var(--ink); }
-        .tm-stat-box span { display: block; font-size: 7.5px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; margin-top: 2px; }
-
-        .empty-state { text-align: center; padding: 32px 20px; color: var(--ink-faint); font-size: 12.5px; }
-
-        /* legacy intro rules below kept for other pages, unused here */
-        .intro {
-            position: relative;
-            padding: 34px 20px 8px;
-            overflow: hidden;
-        }
-
-        .intro::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(var(--gold-rgb), 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--gold-rgb), 0.05) 1px, transparent 1px);
-            background-size: 26px 26px;
-            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
-        }
-
-        .intro-title {
-            position: relative;
-            margin-top: 12px;
-            font-size: 36px;
-            line-height: 0.98;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            background-size: 100% 300%;
-            animation: titleSheen 5s ease-in-out infinite;
-        }
-
-        @keyframes titleSheen {
-
-            0%,
-            100% {
-                background-position: 0 0%;
-            }
-
-            50% {
-                background-position: 0 100%;
-            }
-        }
-
-        .intro-desc {
-            position: relative;
-            margin-top: 12px;
-            font-size: 13.5px;
-            line-height: 1.55;
-            color: var(--ink-dim);
-            max-width: 320px;
-        }
-
-        .intro-stats {
-            position: relative;
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .intro-stat {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 13px;
-            padding: 14px 8px;
-            text-align: center;
-        }
-
-        .intro-stat b {
-            display: block;
-            font-family: 'Anton', sans-serif;
-            font-size: 20px;
-            color: var(--gold);
-        }
-
-        .intro-stat span {
-            display: block;
-            margin-top: 3px;
-            font-size: 8.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .intro-stat.alert b {
-            color: var(--live);
-        }
-
-        .intro-stat.alert {
-            border-color: rgba(var(--live-rgb), 0.3);
-            animation: alertPulse 2.2s ease-in-out infinite;
-        }
-
-        @keyframes alertPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 rgba(var(--live-rgb), 0);
-            }
-
-            50% {
-                box-shadow: 0 0 14px rgba(var(--live-rgb), 0.35);
-            }
-        }
-
-        /* ============ COUNTER STRIP ============ */
-        .counter-strip {
-            display: flex;
-            gap: 10px;
-            padding: 0 20px;
-            margin-top: 12px;
-        }
-
-        .counter-box {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 16px 8px;
-            text-align: center;
-        }
-
-        .counter-num {
-            font-family: 'Anton', sans-serif;
-            font-size: 24px;
-            color: var(--gold);
-            text-shadow: 0 0 16px rgba(var(--gold-rgb), 0.4);
-        }
-
-        .counter-label {
-            display: block;
-            margin-top: 4px;
-            font-size: 8px;
-            letter-spacing: 0.09em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        /* ============ JUMP CHIPS ============ */
-        .rule-jump {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 0 20px 4px;
-            margin-top: 22px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .rule-jump::-webkit-scrollbar {
-            display: none;
-        }
-
-        .jump-chip {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            border-radius: 100px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--ink-dim);
-            font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            font-weight: 700;
-            text-decoration: none;
-            letter-spacing: 0.02em;
-        }
-
-        .jump-chip::before {
-            content: '';
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--foil, var(--gold));
-        }
-
-        .jump-chip:active {
-            background: var(--surface-2);
-            color: var(--ink);
-        }
-
-        /* ============ CHAPTER CARDS ============ */
-        .rule-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            padding: 16px 20px 6px;
-        }
-
-        /* Chapter cards use .foil-frame only as a positioning wrapper here — the spinning
-           conic-gradient border is switched off in favor of a quiet static border with a
-           thin top accent in the chapter's color. */
-        .rule-list>.foil-frame {
-            padding: 0;
-            background: none;
-        }
-
-        .rule-list>.foil-frame::before {
-            content: none;
-        }
-
-        .rule-list .rule-card {
-            position: relative;
-            z-index: 1;
-            border-radius: 20px;
-            padding: 20px 18px;
-            overflow: hidden;
-            border: 1px solid var(--line);
-            border-top: 2px solid var(--foil, var(--gold-deep));
-            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.10), transparent 60%), var(--surface);
-        }
-
-        .rule-head {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .rule-icon {
-            width: 46px;
-            height: 46px;
-            flex-shrink: 0;
-            border-radius: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-            background: color-mix(in srgb, var(--foil, var(--gold)) 16%, var(--surface));
-            border: 1px solid color-mix(in srgb, var(--foil, var(--gold)) 30%, var(--line));
-        }
-
-        .rule-head-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .rule-num {
-            font-family: 'Space Mono', monospace;
-            font-size: 9.5px;
-            letter-spacing: 0.14em;
-            color: var(--gold-deep);
-        }
-
-        .rule-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 16.5px;
-            letter-spacing: 0.01em;
-            margin-top: 2px;
-        }
-
-        .rule-chevron {
-            flex-shrink: 0;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--foil, var(--gold));
-            font-size: 13px;
-            transition: transform 0.4s cubic-bezier(.2, .9, .25, 1);
-        }
-
-        .rule-card.open .rule-chevron {
-            transform: rotate(180deg);
-        }
-
-        .rule-card.open {
-            box-shadow: 0 16px 44px rgba(var(--gold-rgb), 0.20);
-        }
-
-        .rule-items,
-        .penalty-list {
-            position: relative;
-            z-index: 2;
-            margin-top: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(.2, .9, .25, 1), opacity 0.4s ease, margin-top 0.5s ease;
-        }
-
-        .rule-card.open .rule-items,
-        .rule-card.open .penalty-list {
-            opacity: 1;
-            margin-top: 16px;
-        }
-
-        .rule-item {
-            display: flex;
-            gap: 10px;
-            padding: 11px 12px;
-            border-radius: 12px;
-            background: rgba(var(--gold-rgb), 0.045);
-            border: 1px solid var(--line);
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .rule-item.in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .rule-item b {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 6px;
-            background: rgba(var(--gold-rgb), 0.15);
-            color: var(--gold);
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 1px;
-        }
-
-        .rule-item p {
-            font-size: 12.5px;
-            line-height: 1.5;
-            color: var(--ink-dim);
-        }
-
-        .rule-item p em {
-            color: var(--gold-pale);
-            font-style: normal;
-            font-weight: 600;
-        }
-
-        .rule-item.pinned {
-            border-color: rgba(var(--gold-rgb), 0.4);
-            background: rgba(var(--gold-rgb), 0.09);
-        }
-
-        /* ============ SCORING TABLE (chapter 03) ============ */
-        .score-table-wrap {
-            margin-top: 6px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--line);
-        }
-
-        table.score-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        .score-table th {
-            background: var(--surface-2);
-            color: var(--gold-pale);
-            text-align: left;
-            padding: 9px 12px;
-            font-size: 10.5px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .score-table td {
-            padding: 9px 12px;
-            border-top: 1px solid var(--line);
-            color: var(--ink-dim);
-        }
-
-        .score-table td.num,
-        .score-table th.num {
-            font-family: 'Space Mono', monospace;
-            color: var(--gold);
-            text-align: right;
-        }
-
-        /* ============ PENALTY LIST ============ */
-        .penalty-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 12px;
-            border-radius: 12px;
-            background: rgba(var(--gold-rgb), 0.04);
-            border: 1px solid var(--line);
-            opacity: 0;
-            transform: translateX(-8px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .penalty-row.in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .penalty-sev {
-            flex-shrink: 0;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .penalty-sev.low {
-            background: #5fd97e;
-        }
-
-        .penalty-sev.mid {
-            background: var(--gold);
-            animation: sevBlink 1.6s ease-in-out infinite;
-        }
-
-        .penalty-sev.high {
-            background: var(--live);
-            animation: sevBlink 0.9s ease-in-out infinite;
-        }
-
-        @keyframes sevBlink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-        }
-
-        .penalty-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .penalty-foul {
-            font-size: 12.5px;
-            color: var(--ink);
-            font-weight: 600;
-        }
-
-        .penalty-action {
-            font-size: 10.5px;
-            color: var(--ink-faint);
-            margin-top: 1px;
-        }
-
-        .penalty-tag {
-            flex-shrink: 0;
-            font-family: 'Space Mono', monospace;
-            font-size: 9px;
-            letter-spacing: 0.06em;
-            padding: 4px 8px;
-            border-radius: 100px;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        .penalty-tag.low {
-            background: rgba(95, 217, 126, 0.12);
-            color: #5fd97e;
-        }
-
-        .penalty-tag.mid {
-            background: rgba(var(--gold-rgb), 0.14);
-            color: var(--gold);
-        }
-
-        .penalty-tag.high {
-            background: rgba(var(--live-rgb), 0.14);
-            color: var(--live);
-        }
-
-        /* ============ SIREN BAND ============ */
-        .siren-band {
-            position: relative;
-            margin: 6px 20px 20px;
-            padding: 14px 16px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: linear-gradient(90deg, rgba(var(--live-rgb), 0.14), rgba(var(--live-rgb), 0.03), rgba(var(--live-rgb), 0.14));
-            background-size: 200% 100%;
-            animation: sirenSweep 3s linear infinite;
-            border: 1px solid rgba(var(--live-rgb), 0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        @keyframes sirenSweep {
-            to {
-                background-position: 200% 0;
-            }
-        }
-
-        .siren-icon {
-            font-size: 20px;
-            animation: sirenShake 1.2s ease-in-out infinite;
-        }
-
-        @keyframes sirenShake {
-
-            0%,
-            100% {
-                transform: rotate(0);
-            }
-
-            25% {
-                transform: rotate(-10deg);
-            }
-
-            75% {
-                transform: rotate(10deg);
-            }
-        }
-
-        .siren-text b {
-            display: block;
-            font-family: 'Anton', sans-serif;
-            font-size: 13px;
-            color: var(--live);
-            letter-spacing: 0.02em;
-        }
-
-        .siren-text span {
-            display: block;
-            margin-top: 2px;
-            font-size: 11px;
-            color: var(--ink-dim);
-            line-height: 1.4;
-        }
+        .intro-desc { position: relative; margin-top: 12px; font-size: 13.5px; line-height: 1.55; color: var(--ink-dim); max-width: 340px; }
+
+        .live-strip {
+            position: relative; margin-top: 18px; display: flex; align-items: center; gap: 8px;
+            padding: 9px 14px; border-radius: 100px; border: 1px solid var(--gold-deep);
+            background: rgba(var(--gold-rgb), 0.07); font-size: 11px; letter-spacing: 0.1em; color: var(--gold-pale);
+            width: fit-content;
+        }
+        .live-strip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--live); box-shadow: 0 0 8px var(--live); animation: blink 1.1s ease-in-out infinite; }
+        .live-strip.stale .dot { background: var(--ink-faint); box-shadow: none; animation: none; }
+        .live-strip.stale { color: var(--ink-dim); border-color: var(--line); }
+
+        /* ---------- Summary stat strip ---------- */
+        .summary-strip { display: flex; gap: 10px; padding: 0 20px; margin-top: 22px; }
+        .summary-box { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 6px; text-align: center; }
+        .summary-num { font-family: 'Anton', sans-serif; font-size: 21px; color: var(--gold); }
+        .summary-label { display: block; margin-top: 4px; font-size: 7.5px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+
+        /* ---------- Search ---------- */
+        .search-wrap { position: relative; margin: 22px 20px 0; }
+        .search-input {
+            width: 100%; padding: 13px 16px 13px 40px; border-radius: 13px; border: 1px solid var(--line);
+            background: var(--surface); color: var(--ink); font-family: 'Rajdhani', sans-serif; font-size: 14px;
+            letter-spacing: 0.02em; outline: none; transition: border-color 0.2s ease;
+        }
+        .search-input:focus { border-color: var(--gold-deep); }
+        .search-input::placeholder { color: var(--ink-faint); }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: 14px; pointer-events: none; }
+
+        /* ---------- Overview grid ---------- */
+        .teams-grid { display: flex; flex-direction: column; gap: 14px; padding: 16px 20px 6px; }
+
+        .team-overview-card {
+            position: relative; z-index: 1; border-radius: 20px; padding: 18px 18px 16px; overflow: hidden;
+            border: 1px solid var(--line); border-top: 2px solid var(--tc, var(--gold-deep));
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.08), transparent 60%), var(--surface);
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+        }
+        .team-overview-card.hidden { display: none; }
+
+        .tov-top { display: flex; align-items: center; gap: 13px; }
+        .tov-crest {
+            width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+            font-family: 'Anton', sans-serif; font-size: 19px;
+            background: color-mix(in srgb, var(--tc, var(--gold)) 18%, var(--surface));
+            border: 1px solid color-mix(in srgb, var(--tc, var(--gold)) 35%, var(--line));
+            color: var(--tc, var(--gold));
+        }
+        .tov-name-wrap { flex: 1; min-width: 0; }
+        .tov-abbr { font-family: 'Anton', sans-serif; font-size: 17px; letter-spacing: 0.02em; }
+        .tov-cap { margin-top: 2px; font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.03em; }
+        .tov-cap b { color: var(--gold-pale); font-weight: 600; }
+        .tov-chevron { flex-shrink: 0; width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--tc, var(--gold)); font-size: 13px; transition: transform 0.4s cubic-bezier(.2,.9,.25,1); }
+        .team-overview-card.open .tov-chevron { transform: rotate(180deg); }
+
+        .tov-slots-row { display: flex; gap: 4px; margin-top: 14px; }
+        .tov-slot { flex: 1; height: 5px; border-radius: 4px; background: rgba(var(--gold-rgb), 0.08); }
+        .tov-slot.filled { background: var(--tc, var(--gold)); }
+
+        .tov-meta { display: flex; justify-content: space-between; margin-top: 10px; font-size: 10.5px; color: var(--ink-faint); letter-spacing: 0.02em; }
+        .tov-meta b { color: var(--ink); font-family: 'Space Mono', monospace; font-weight: 700; }
+
+        .tov-purse-track { margin-top: 10px; height: 6px; border-radius: 6px; background: rgba(var(--gold-rgb), 0.09); overflow: hidden; }
+        .tov-purse-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--tc-deep, var(--gold-deep)), var(--tc, var(--gold))); transition: width 0.9s cubic-bezier(.2,.9,.25,1); width: 0%; }
+        .tov-purse-label { margin-top: 7px; display: flex; justify-content: space-between; font-size: 9.5px; letter-spacing: 0.04em; color: var(--ink-faint); }
+        .tov-purse-label b { color: var(--gold-pale); font-family: 'Space Mono', monospace; }
+
+        .tov-status-pill {
+            display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; padding: 4px 10px; border-radius: 100px;
+            font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--line);
+        }
+        .tov-status-pill.complete { color: #5fd97e; border-color: rgba(95, 217, 126, 0.35); background: rgba(95, 217, 126, 0.08); }
+        .tov-status-pill.building { color: var(--gold); border-color: rgba(var(--gold-rgb), 0.35); background: rgba(var(--gold-rgb), 0.08); }
+        .tov-status-pill.empty { color: var(--ink-faint); }
+
+        /* ---------- Roster detail (expands within card) ---------- */
+        .tov-detail { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(.2,.9,.25,1), opacity 0.4s ease, margin-top 0.5s ease; }
+        .team-overview-card.open .tov-detail { opacity: 1; margin-top: 16px; }
+
+        .roster-list { display: flex; flex-direction: column; gap: 8px; }
+        .roster-row {
+            display: flex; align-items: center; gap: 10px; padding: 10px 11px; border-radius: 12px;
+            background: rgba(var(--gold-rgb), 0.045); border: 1px solid var(--line);
+        }
+        .roster-avatar {
+            width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; overflow: hidden;
+            background: var(--surface-2); display: flex; align-items: center; justify-content: center;
+            font-family: 'Anton', sans-serif; font-size: 14px; color: var(--gold-pale);
+        }
+        .roster-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .roster-info { flex: 1; min-width: 0; }
+        .roster-ign { font-size: 12.5px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .roster-sub { margin-top: 2px; font-size: 9.5px; color: var(--ink-faint); letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .roster-price { flex-shrink: 0; text-align: right; }
+        .roster-bid { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--gold-pale); }
+        .roster-payout { margin-top: 2px; font-size: 8.5px; color: var(--ink-faint); }
+        .roster-tier {
+            flex-shrink: 0; font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.04em; padding: 3px 6px;
+            border-radius: 100px; text-transform: uppercase; background: rgba(var(--gold-rgb), 0.14); color: var(--gold);
+        }
+
+        .roster-row.empty { opacity: 0.55; border-style: dashed; }
+        .roster-row.empty .roster-avatar { background: transparent; border: 1px dashed var(--line); color: var(--ink-faint); }
+        .roster-row.empty .roster-ign { color: var(--ink-faint); font-style: italic; font-weight: 500; }
+
+        .tov-section-label { margin-top: 4px; font-size: 9.5px; letter-spacing: 0.14em; color: var(--gold-deep); text-transform: uppercase; }
+
+        /* Season record placeholder grid */
+        .record-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 10px; }
+        .record-box { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 4px; text-align: center; }
+        .record-num { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--ink-dim); }
+        .record-label { display: block; margin-top: 2px; font-size: 6.5px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
+        .record-note { margin-top: 8px; font-size: 9.5px; color: var(--ink-faint); font-style: italic; }
+
+        /* ---------- Loading / empty states ---------- */
+        .load-state { text-align: center; padding: 40px 20px; color: var(--ink-faint); font-size: 12.5px; }
+        .load-state .spin {
+            width: 28px; height: 28px; margin: 0 auto 12px; border-radius: 50%;
+            border: 2px solid rgba(var(--gold-rgb), 0.18); border-top-color: var(--gold); animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .no-results { text-align: center; padding: 30px 20px; color: var(--ink-faint); font-size: 12.5px; display: none; }
+        .no-results.show { display: block; }
+
+        /* ---------- Error / empty states (real production states, not demo) ---------- */
+        .state-box { text-align: center; padding: 40px 24px; }
+        .state-icon { font-size: 30px; margin-bottom: 10px; }
+        .state-title { font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: 0.02em; color: var(--ink); }
+        .state-desc { margin-top: 8px; font-size: 12px; color: var(--ink-dim); line-height: 1.55; max-width: 280px; margin-left: auto; margin-right: auto; }
+        .state-retry {
+            margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 100px;
+            border: 1px solid var(--gold-deep); background: rgba(var(--gold-rgb), 0.08); color: var(--gold-pale);
+            font-family: 'Rajdhani', sans-serif; font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+        }
+        .state-retry:active { transform: scale(0.96); }
+
+        .live-strip.error .dot { background: var(--live); box-shadow: 0 0 8px var(--live); }
+        .live-strip.error { color: var(--live); border-color: rgba(var(--live-rgb), 0.4); background: rgba(var(--live-rgb), 0.06); }
     </style>
 </head>
 
@@ -2497,7 +1137,7 @@
             <div class="ignite-core"></div>
         </div>
         <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">THE FRANCHISES</div>
+        <div class="splash-sub">TEAMS</div>
         <div class="splash-bar">
             <div class="splash-bar-fill"></div>
         </div>
@@ -2507,16 +1147,12 @@
 
     <!-- HEADER -->
     <header>
-        <div class="header-flex">
-            
-            <div class="brand">
-                <div class="crest"></div>
-                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
-            </div>
+        <div class="brand">
+            <div class="crest"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
         </div>
         <div class="header-actions">
-            <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
-                aria-expanded="false">🎨</button>
+            <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true" aria-expanded="false">🎨</button>
             <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
         </div>
     </header>
@@ -2530,70 +1166,51 @@
         </div>
         <div class="theme-grid" id="themeGrid">
             <button class="theme-opt" data-theme="golden-fire" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i
-                        style="background:#b88f20"></i></span>
+                <span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i style="background:#b88f20"></i></span>
                 <span class="theme-opt-name">Golden Fire <em>🔥</em></span>
             </button>
             <button class="theme-opt" data-theme="og-bar" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i
-                        style="background:#49310d"></i></span>
+                <span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i style="background:#49310d"></i></span>
                 <span class="theme-opt-name">Disco Blue <em>❤️</em></span>
             </button>
-
             <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i
-                        style="background:#49199b"></i></span>
+                <span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i style="background:#49199b"></i></span>
                 <span class="theme-opt-name">Neon Cyber <em>💙</em></span>
             </button>
             <button class="theme-opt" data-theme="royal-purple" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i
-                        style="background:#911b73"></i></span>
+                <span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i style="background:#911b73"></i></span>
                 <span class="theme-opt-name">Royal Purple <em>💜</em></span>
             </button>
             <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i
-                        style="background:#147749"></i></span>
+                <span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i style="background:#147749"></i></span>
                 <span class="theme-opt-name">Emerald Forest <em>💚</em></span>
             </button>
             <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i
-                        style="background:#824619"></i></span>
+                <span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i style="background:#824619"></i></span>
                 <span class="theme-opt-name">Sunset Orange <em>🧡</em></span>
             </button>
             <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i
-                        style="background:#147282"></i></span>
+                <span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i style="background:#147282"></i></span>
                 <span class="theme-opt-name">Ocean Blue <em>🌊</em></span>
             </button>
             <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i
-                        style="background:#97184f"></i></span>
+                <span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i style="background:#97184f"></i></span>
                 <span class="theme-opt-name">Sakura Pink <em>🌸</em></span>
             </button>
             <button class="theme-opt" data-theme="midnight-black" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i
-                        style="background:#a22222"></i></span>
+                <span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i style="background:#a22222"></i></span>
                 <span class="theme-opt-name">Midnight Black <em>⚫</em></span>
             </button>
             <button class="theme-opt" data-theme="crystal-light" role="menuitemradio">
-                <span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i
-                        style="background:#058ede"></i></span>
+                <span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i style="background:#058ede"></i></span>
                 <span class="theme-opt-name">Crystal Light <em>☀️</em></span>
             </button>
             <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio">
-                <span class="theme-swatch">
-                    <i style="background:#1a0505"></i>
-                    <i style="background:#e0304a"></i>
-                    <i style="background:#ff8fa3"></i>
-                </span>
+                <span class="theme-swatch"><i style="background:#1a0505"></i><i style="background:#e0304a"></i><i style="background:#ff8fa3"></i></span>
                 <span class="theme-opt-name">Crimson Blood <em>🩸</em></span>
             </button>
             <button class="theme-opt" data-theme="arena-pro" role="menuitemradio">
-                <span class="theme-swatch">
-                    <i style="background:#0b0b10"></i>
-                    <i style="background:#ff8c00"></i>
-                    <i style="background:#ffd36a"></i>
-                </span>
+                <span class="theme-swatch"><i style="background:#0b0b10"></i><i style="background:#ff8c00"></i><i style="background:#ffd36a"></i></span>
                 <span class="theme-opt-name">Arena Pro <em>⚔️</em></span>
             </button>
         </div>
@@ -2611,12 +1228,8 @@
         </div>
         <div class="nav-links">
             <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
-
-           <a href="teams.html" class="nav-link" aria-current="page"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
-                Center</a>
-            <a href="players.html" class="nav-link"><span class="nav-link-icon">📋</span> Registered Players</a>
-            <a href="playins.html" class="nav-link"><span class="nav-link-icon">🎮</span> Play-Ins</a>
+            <a href="teams.html" class="nav-link" aria-current="page"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration Center</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
             <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
@@ -2629,20 +1242,50 @@
         <div class="nav-drawer-foot">FREEFIREXIPL · Season 12</div>
     </nav>
 
-
-    <!-- TM HERO -->
-    <section class="tmhero">
-        <div class="eyebrow fade-up">🛡️ SEASON 12 · FRANCHISES</div>
-        <h1 class="tmhero-title display fade-up d1">The 8<br>Teams</h1>
-        <p class="tmhero-desc fade-up d2">Every franchise's roster, auction spend and remaining purse — updated live as the auction happens and match results come in.</p>
+    <!-- INTRO -->
+    <section class="intro">
+        <div class="eyebrow fade-up">🛡️ THE FRANCHISES</div>
+        <h1 class="intro-title display fade-up d1">8 Teams.<br>1 Crown.</h1>
+        <p class="intro-desc fade-up d2">Every franchise, every captain, every player they've signed at the auction —
+            rosters update live as the bidding continues.</p>
+        <div class="live-strip fade-up d3" id="liveStrip"><span class="dot"></span> <span id="liveStripText">CONNECTING…</span></div>
     </section>
 
-    <div class="tm-search fade-up">
-        <input class="f-input" type="text" id="tmSearch" placeholder="Search by team name or player…">
+    <!-- SUMMARY -->
+    <div class="summary-strip fade-up d4">
+        <div class="summary-box"><span class="summary-num" id="sumTeams">8</span><span class="summary-label">Franchises</span></div>
+        <div class="summary-box"><span class="summary-num" id="sumPlayers">0/40</span><span class="summary-label">Players Signed</span></div>
+        <div class="summary-box"><span class="summary-num" id="sumSpent">₹0 Cr</span><span class="summary-label">Total Spent</span></div>
     </div>
 
-    <div class="tm-list" id="tmList">
-        <div class="empty-state" id="tmLoading">Loading teams…</div>
+    <!-- SEARCH -->
+    <div class="search-wrap fade-up">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search a team or player IGN…">
+    </div>
+
+    <!-- TEAMS GRID -->
+    <section id="teamsSection" style="padding-top:8px;">
+        <div id="loadState" class="load-state"><div class="spin"></div>Loading franchises…</div>
+        <div id="errorState" class="state-box" style="display:none;">
+            <div class="state-icon">⚠️</div>
+            <div class="state-title">Couldn't reach the server</div>
+            <div class="state-desc" id="errorDesc">Check your connection and try again. If this keeps happening, the tournament admins have been notified.</div>
+            <button class="state-retry" id="retryBtn">↻ Retry</button>
+        </div>
+        <div id="emptyState" class="state-box" style="display:none;">
+            <div class="state-icon">🛡️</div>
+            <div class="state-title">No franchises yet</div>
+            <div class="state-desc">Teams will appear here as soon as the auction seeds the 8 franchises.</div>
+        </div>
+        <div class="teams-grid" id="teamsGrid" style="display:none;"></div>
+        <div class="no-results" id="noResults">No teams or players match "<span id="noResultsQuery"></span>".</div>
+    </section>
+
+    <div class="cta-band fade-up" style="margin:32px 20px 0;">
+        <h3 class="display">FOLLOW THE AUCTION LIVE</h3>
+        <p>Watch every bid land in real time and see rosters fill up as captains battle for their squad.</p>
+        <a class="btn btn-primary" href="auction-center.html" style="display:block; text-decoration:none;">Open Auction Hub</a>
     </div>
 
     <!-- FOOTER -->
@@ -2652,8 +1295,7 @@
             <div class="brand-text">FREEFIRE<b>XIPL</b></div>
         </div>
         <p class="foot-tag">The unofficial home of Free Fire XIPL Season 12 — fixtures, standings and every clutch
-            moment of
-            the season.</p>
+            moment of the season.</p>
         <div class="foot-social">
             <div class="soc">✕</div>
             <div class="soc">◎</div>
@@ -2667,54 +1309,30 @@
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
         <svg width="48" height="48" viewBox="0 0 48 48">
             <circle class="btt-bg" cx="24" cy="24" r="21" />
-            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9"
-                stroke-dashoffset="131.9" />
+            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9" stroke-dashoffset="131.9" />
         </svg>
         <span>↑</span>
     </button>
 
     <script>
 /* =========================================================================
-   FREEFIRE XIPL — SHARED THEME BEHAVIOR
-   =========================================================================
-   Load this once, near the end of <body>, on every page:
-     theme.js loaded as a <script> tag
-
-   Requires this shared markup to already be on the page (copy it from
-   chrome-template.html): #splash, #embers, header#themeBtn/#menuBtn,
-   #themeOverlay/#themePanel/.theme-opt buttons, #navOverlay/#navDrawer/
-   #navClose, .scroll-progress-fill#scrollFill, #backToTop/#bttFill.
-
-   Page-specific behavior (countdown timers, stat counters, carousels,
-   registration status, etc.) stays inline in that page's own <script>
-   block — it does NOT belong in this shared file.
+   FREEFIRE XIPL — SHARED THEME BEHAVIOR (copied verbatim)
    ========================================================================= */
-
-// ---------- Always feel like a fresh visit ----------
-        // Always feel like a fresh visit: reset scroll and defeat back/forward cache restores
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0, 0);
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) { window.location.reload(); }
         });
 
-// ---------- Splash screen removal ----------
         setTimeout(() => {
             const splash = document.getElementById('splash');
-
             splash.animate([
                 { transform: "scale(1)", opacity: 1 },
                 { transform: "scale(2.5)", opacity: 0 }
-            ], {
-                duration: 1600,
-                easing: "cubic-bezier(.2,.8,.2,1)"
-            });
-
+            ], { duration: 1600, easing: "cubic-bezier(.2,.8,.2,1)" });
             setTimeout(() => splash.style.display = "none", 600);
         }, 2100);
 
-// ---------- Nav drawer ----------
-        // Nav drawer
         const menuBtn = document.getElementById('menuBtn');
         const navDrawer = document.getElementById('navDrawer');
         const navOverlay = document.getElementById('navOverlay');
@@ -2724,17 +1342,7 @@
         menuBtn.addEventListener('click', openNav);
         navClose.addEventListener('click', closeNav);
         navOverlay.addEventListener('click', closeNav);
-        document.querySelectorAll('.nav-link[data-scroll]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                closeNav();
-                const targetEl = document.querySelector(link.getAttribute('href'));
-                if (targetEl) setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 200);
-            });
-        });
 
-// ---------- Theme switcher ----------
-        // ====== THEME SWITCHER ======
         const THEME_KEY = 'xipl-theme';
         const DEFAULT_THEME = 'golden-fire';
         const themeBtn = document.getElementById('themeBtn');
@@ -2743,57 +1351,23 @@
         const themeClose = document.getElementById('themeClose');
         const themeOpts = document.querySelectorAll('.theme-opt');
 
-        function getSavedTheme() {
-            try { return localStorage.getItem(THEME_KEY) || DEFAULT_THEME; }
-            catch (e) { return DEFAULT_THEME; }
-        }
-
-        function markActiveTheme(theme) {
-            themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme));
-        }
-
+        function markActiveTheme(theme) { themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme)); }
         function applyTheme(theme, persist) {
             document.documentElement.classList.add('theme-transitioning');
             document.documentElement.setAttribute('data-theme', theme);
             markActiveTheme(theme);
-            if (persist) {
-                try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable, theme still applies for this session */ }
-            }
+            if (persist) { try { localStorage.setItem(THEME_KEY, theme); } catch (e) {} }
             window.clearTimeout(applyTheme._t);
-            applyTheme._t = window.setTimeout(() => {
-                document.documentElement.classList.remove('theme-transitioning');
-            }, 650);
+            applyTheme._t = window.setTimeout(() => { document.documentElement.classList.remove('theme-transitioning'); }, 650);
         }
-
-        function openTheme() {
-            themePanel.classList.add('show');
-            themeOverlay.classList.add('show');
-            themeBtn.setAttribute('aria-expanded', 'true');
-        }
-        function closeTheme() {
-            themePanel.classList.remove('show');
-            themeOverlay.classList.remove('show');
-            themeBtn.setAttribute('aria-expanded', 'false');
-        }
-
-        themeBtn.addEventListener('click', () => {
-            if (themePanel.classList.contains('show')) closeTheme(); else { closeNav(); openTheme(); }
-        });
+        function openTheme() { themePanel.classList.add('show'); themeOverlay.classList.add('show'); themeBtn.setAttribute('aria-expanded', 'true'); }
+        function closeTheme() { themePanel.classList.remove('show'); themeOverlay.classList.remove('show'); themeBtn.setAttribute('aria-expanded', 'false'); }
+        themeBtn.addEventListener('click', () => { if (themePanel.classList.contains('show')) closeTheme(); else { closeNav(); openTheme(); } });
         themeClose.addEventListener('click', closeTheme);
         themeOverlay.addEventListener('click', closeTheme);
-        themeOpts.forEach(opt => {
-            opt.addEventListener('click', () => {
-                applyTheme(opt.dataset.theme, true);
-                closeTheme();
-            });
-        });
-
-        // Initialize active swatch to whatever theme is currently applied (set pre-paint above, or default)
+        themeOpts.forEach(opt => { opt.addEventListener('click', () => { applyTheme(opt.dataset.theme, true); closeTheme(); }); });
         markActiveTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
 
-
-// ---------- Ambient ember particles ----------
-        // Embers
         const emberField = document.getElementById('embers');
         for (let i = 0; i < 22; i++) {
             const e = document.createElement('div');
@@ -2805,157 +1379,357 @@
             emberField.appendChild(e);
         }
 
-// ---------- Scroll-reveal (.fade-up elements) ----------
-        // Scroll reveal
         const revealEls = document.querySelectorAll('.fade-up');
         const io = new IntersectionObserver((entries) => {
             entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
         }, { threshold: 0.15 });
         revealEls.forEach(el => io.observe(el));
 
-// ---------- Scroll progress bar + back-to-top button ----------
-// (wired up here — shared chrome, so it belongs in every page automatically)
-const scrollFillEl = document.getElementById('scrollFill');
-const backToTopBtn = document.getElementById('backToTop');
-const bttFillEl = document.getElementById('bttFill');
-const BTT_C = 131.9; // 2 * PI * 21, matches the SVG circle radius
-
-function updateScrollChrome() {
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
-    if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
-    if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
-}
-window.addEventListener('scroll', updateScrollChrome, { passive: true });
-window.addEventListener('load', updateScrollChrome);
-updateScrollChrome();
-
-if (backToTopBtn) {
-    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
-
+        const scrollFillEl = document.getElementById('scrollFill');
+        const backToTopBtn = document.getElementById('backToTop');
+        const bttFillEl = document.getElementById('bttFill');
+        const BTT_C = 131.9;
+        function updateScrollChrome() {
+            const doc = document.documentElement;
+            const max = doc.scrollHeight - doc.clientHeight;
+            const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+            if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
+            if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
+            if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
+        }
+        window.addEventListener('scroll', updateScrollChrome, { passive: true });
+        window.addEventListener('load', updateScrollChrome);
+        updateScrollChrome();
+        if (backToTopBtn) { backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' })); }
     </script>
+
     <script>
-        // ====================================================================
-        // FREEFIREXIPL — SUPABASE CONFIG (same project as the other pages)
-        // ====================================================================
-          const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
-        const FFXIPL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
-        const FFXIPL_SEASON_NUMBER = 12;
-        const TEAM_PURSE_CR = 100;
-        const TEAM_PLAYER_LIMIT = 5;
+/* =========================================================================
+   FREEFIRE XIPL V2 — TEAMS PAGE DATA LAYER (PRODUCTION)
+   =========================================================================
+   Read-only public page. No writes happen from here.
 
-        const TEAM_COLORS = {
-            RCB: '#c31d1d', CSK: '#f5c518', MI: '#045d9e', DC: '#1f5fc4',
-            KKR: '#7d4bb0', SRH: '#f26522', RR: '#e03db2', PBKS: '#e2394a'
-        };
+   Reads:
+     ffxipl_s12_teams          — id, name, captain_name, captain_user_id,
+                                  color, purse_total, purse_spent,
+                                  players_bought, updated_at
+     ffxipl_s12_public_players — the public-safe view (no WhatsApp /
+                                  payment-screenshot columns) exposing:
+                                  ign, real_name, uid, level,
+                                  profile_screenshot_url, auction_tier,
+                                  final_bid_price, auction_payout,
+                                  play_in_points, team_id, status
 
-        let ffxiplClient = null;
+   Nothing new was created for this page — pure read of tables/views the
+   1st–3rd Claude already put into production. RLS on both is already in
+   place (public SELECT); this page never touches ffxipl_s12_admins or
+   any admin RPC, since it has no write path at all.
+   ========================================================================= */
+
+        // ---------- Supabase client ----------
+        // Fill in your project's own URL + public anon key below — these are
+        // the two values unique to your project and safe to ship in frontend
+        // code (never the service_role key). Everything else in this file is
+        // fully wired and requires no further edits.
+        const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+
+        let sb = null;
+        let initError = null;
         try {
-            if (window.supabase && FFXIPL_SUPABASE_URL.startsWith('http')) {
-                ffxiplClient = window.supabase.createClient(FFXIPL_SUPABASE_URL, FFXIPL_SUPABASE_ANON_KEY);
+            if (!window.supabase) {
+                throw new Error('Supabase client library failed to load from CDN.');
             }
-        } catch (e) { console.warn('Supabase client not initialized:', e); }
-
-        function escapeHtml(str) {
-            return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+            if (SUPABASE_URL.indexOf('YOUR-PROJECT') !== -1 || SUPABASE_ANON_KEY.indexOf('YOUR-PUBLIC-ANON-KEY') !== -1) {
+                throw new Error('Supabase URL / anon key have not been configured for this deployment yet.');
+            }
+            sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (e) {
+            initError = e;
+            console.error('Supabase init failed:', e);
         }
 
-        let teamsFull = [];
+        const TEAM_META = {
+            RCB: { full: 'Royal Challengers', color: '#c31d1d', deep: '#9e0404' },
+            CSK: { full: 'Chennai Super Kings', color: '#f5c518', deep: '#b3900e' },
+            MI: { full: 'Mumbai Indians', color: '#045d9e', deep: '#023b66' },
+            DC: { full: 'Delhi Capitals', color: '#1f5fc4', deep: '#153f85' },
+            KKR: { full: 'Kolkata Knight Riders', color: '#7d4bb0', deep: '#57337d' },
+            SRH: { full: 'Sunrisers', color: '#f26522', deep: '#b3480f' },
+            RR: { full: 'Rajasthan Royals', color: '#e03daf', deep: '#84077e' },
+            PBKS: { full: 'Punjab Kings', color: '#e2394a', deep: '#a3182d' }
+        };
+        const TIER_LABEL = { top10: 'Top 10', top20: 'Top 20', top30: 'Top 30', top40: 'Top 40' };
+        const PURSE_TOTAL_CR = 100;
 
-        async function loadTeams() {
-            const box = document.getElementById('tmList');
-            if (!ffxiplClient) {
-                box.innerHTML = '<div class="empty-state">This page isn\u2019t connected to Supabase yet — add your project URL and anon key in the script config.</div>';
-                return;
+        let allTeams = [];
+        let allPlayers = []; // approved + sold registrations across all teams
+        let searchQuery = '';
+
+        function fmtCr(n) {
+            const v = Number(n) || 0;
+            return '₹' + (v % 1 === 0 ? v : v.toFixed(2)) + ' Cr';
+        }
+        function initials(name) {
+            if (!name) return '?';
+            return name.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }
+
+        // ---------- View state machine: loading / error / empty / data ----------
+        function showState(state, opts) {
+            opts = opts || {};
+            const loadEl = document.getElementById('loadState');
+            const errEl = document.getElementById('errorState');
+            const emptyEl = document.getElementById('emptyState');
+            const gridEl = document.getElementById('teamsGrid');
+
+            loadEl.style.display = state === 'loading' ? 'block' : 'none';
+            errEl.style.display = state === 'error' ? 'block' : 'none';
+            emptyEl.style.display = state === 'empty' ? 'block' : 'none';
+            gridEl.style.display = state === 'data' ? 'flex' : 'none';
+
+            if (state === 'error' && opts.message) {
+                document.getElementById('errorDesc').textContent = opts.message;
             }
+        }
 
-            const { data: season } = await ffxiplClient.from('ffxipl_seasons').select('id').eq('season_number', FFXIPL_SEASON_NUMBER).maybeSingle();
-            const seasonId = season ? season.id : null;
+        function buildRosterRow(player) {
+            const avatar = player.profile_screenshot_url
+                ? `<img src="${player.profile_screenshot_url}" alt="${player.ign || 'Player'} profile">`
+                : initials(player.ign || player.real_name);
+            const bid = player.final_bid_price ? fmtCr(player.final_bid_price) : '—';
+            return `
+            <div class="roster-row">
+                <div class="roster-avatar">${avatar}</div>
+                <div class="roster-info">
+                    <div class="roster-ign">${player.ign || player.real_name || 'Unnamed'}</div>
+                    <div class="roster-sub">Level ${player.level != null ? player.level : '—'}</div>
+                </div>
+                <div class="roster-price">
+                    <div class="roster-bid">${bid}</div>
+                </div>
+            </div>`;
+        }
 
-            const { data: teams, error: teamErr } = await ffxiplClient.from('ffxipl_teams').select('*').eq('season_id', seasonId).order('abbr');
-            if (teamErr) { box.innerHTML = '<div class="empty-state">Error loading teams: ' + escapeHtml(teamErr.message) + '</div>'; return; }
-
-            const { data: picks } = await ffxiplClient
-                .from('ffxipl_auction_picks')
-                .select('team_id, final_bid_cr, ffxipl_players(ign)');
-
-            const { data: pointsTable } = await ffxiplClient.from('ffxipl_points_table').select('*');
-            const statsByTeam = {};
-            (pointsTable || []).forEach(row => { statsByTeam[row.team_id] = row; });
-
-            const rosterByTeam = {};
-            (picks || []).forEach(p => {
-                if (!rosterByTeam[p.team_id]) rosterByTeam[p.team_id] = [];
-                rosterByTeam[p.team_id].push({ ign: p.ffxipl_players?.ign || 'Unknown', bid: p.final_bid_cr });
-            });
-
-            teamsFull = (teams || []).map(t => ({
-                ...t,
-                roster: rosterByTeam[t.id] || [],
-                stats: statsByTeam[t.id] || { matches_played: 0, wins: 0, losses: 0, points: 0 }
-            }));
-
-            renderTeams();
+        function buildEmptySlotRow(slotNum, teamPlayersBought) {
+            const roundHint = teamPlayersBought >= 4 ? 'Round 4' : teamPlayersBought >= 3 ? 'Round 3' : teamPlayersBought >= 2 ? 'Round 2' : 'Round 1';
+            return `
+            <div class="roster-row empty">
+                <div class="roster-avatar">?</div>
+                <div class="roster-info">
+                    <div class="roster-ign">Slot ${slotNum} — TBD</div>
+                    <div class="roster-sub">Awaiting the auction (likely ${roundHint})</div>
+                </div>
+            </div>`;
         }
 
         function renderTeams() {
-            const box = document.getElementById('tmList');
-            const query = document.getElementById('tmSearch').value.trim().toLowerCase();
+            const grid = document.getElementById('teamsGrid');
+            const noResults = document.getElementById('noResults');
+            const q = searchQuery.trim().toLowerCase();
 
-            let list = teamsFull;
-            if (query) {
-                list = list.filter(t =>
-                    t.name.toLowerCase().includes(query) ||
-                    t.abbr.toLowerCase().includes(query) ||
-                    t.roster.some(p => p.ign.toLowerCase().includes(query))
-                );
-            }
+            let visibleCount = 0;
+            let html = '';
 
-            if (list.length === 0) { box.innerHTML = '<div class="empty-state">No teams match your search.</div>'; return; }
+            allTeams.forEach(team => {
+                const meta = TEAM_META[team.id] || { full: team.name || team.id, color: '#f0b93d', deep: '#b3811f' };
+                const color = team.color || meta.color;
+                const players = allPlayers.filter(p => p.team_id === team.id)
+                    .sort((a, b) => (b.final_bid_price || 0) - (a.final_bid_price || 0));
 
-            box.innerHTML = list.map(t => {
-                const foil = TEAM_COLORS[t.abbr] || 'var(--gold)';
-                const remaining = TEAM_PURSE_CR - t.purse_spent_cr;
-                const pct = Math.min(100, (t.purse_spent_cr / TEAM_PURSE_CR) * 100);
-                const emptySlots = TEAM_PLAYER_LIMIT - t.roster.length;
+                // client-side search: matches team id/name/captain OR any signed player IGN/real name
+                let matches = !q;
+                if (q) {
+                    const teamText = `${team.id} ${team.name || ''} ${team.captain_name || ''} ${meta.full}`.toLowerCase();
+                    matches = teamText.includes(q) || players.some(p => `${p.ign || ''} ${p.real_name || ''}`.toLowerCase().includes(q));
+                }
+                if (!matches) return;
+                visibleCount++;
 
-                const rosterHtml = t.roster.map(p => `
-                    <div class="tm-player-row">
-                        <span class="tm-player-ign">${escapeHtml(p.ign)}</span>
-                        <span class="tm-player-bid">₹${p.bid} Cr</span>
-                    </div>`).join('') +
-                    Array.from({ length: Math.max(0, emptySlots) }).map(() => `<div class="tm-empty-slot">Open slot — awaiting auction</div>`).join('');
+                const spent = team.purse_spent || 0;
+                const total = team.purse_total || PURSE_TOTAL_CR;
+                const remaining = Math.max(0, total - spent);
+                const spentPct = total > 0 ? Math.min(100, (spent / total) * 100) : 0;
+                const bought = team.players_bought || players.length || 0;
 
-                return `
-                <div class="tm-card" style="--foil:${foil};">
-                    <div class="tm-head">
-                        <div class="tm-crest"><span class="tm-abbr">${escapeHtml(t.abbr)}</span></div>
-                        <div class="tm-namewrap">
-                            <div class="tm-fullname">${escapeHtml(t.name)}</div>
-                            <div class="tm-captain">Captain: ${escapeHtml(t.captain_name || 'TBA')}</div>
+                let statusPill = `<span class="tov-status-pill empty">Building roster</span>`;
+                if (bought >= 5) statusPill = `<span class="tov-status-pill complete">✓ Roster complete</span>`;
+                else if (bought > 0) statusPill = `<span class="tov-status-pill building">${bought}/5 signed</span>`;
+
+                let slotsHtml = '';
+                for (let i = 0; i < 5; i++) {
+                    slotsHtml += `<div class="tov-slot ${i < bought ? 'filled' : ''}"></div>`;
+                }
+
+                let rosterHtml = players.map(buildRosterRow).join('');
+                for (let i = players.length; i < 5; i++) {
+                    rosterHtml += buildEmptySlotRow(i + 1, bought);
+                }
+
+                html += `
+                <div class="foil-frame fade-up" style="--foil:${color};">
+                <div class="team-overview-card" style="--tc:${color}; --tc-deep:${meta.deep};" data-team="${team.id}">
+                    <div class="tov-top">
+                        <div class="tov-crest">${team.id}</div>
+                        <div class="tov-name-wrap">
+                            <div class="tov-abbr display">${meta.full}</div>
+                            <div class="tov-cap">Captain <b>${team.captain_name || '—'}</b></div>
                         </div>
+                        ${statusPill}
+                        <div class="tov-chevron">⌄</div>
                     </div>
-                    <div class="tm-purse-wrap">
-                        <div class="tm-purse-track"><div class="tm-purse-fill" style="width:${pct}%;"></div></div>
-                        <div class="tm-purse-nums"><span>Spent: <b>₹${t.purse_spent_cr} Cr</b></span><span>Balance: <b>₹${remaining} Cr</b></span></div>
+                    <div class="tov-slots-row">${slotsHtml}</div>
+                    <div class="tov-meta"><span>Players Signed</span><b>${bought}/5</b></div>
+                    <div class="tov-purse-track"><div class="tov-purse-fill" style="width:${spentPct}%;"></div></div>
+                    <div class="tov-purse-label"><span>Spent <b>${fmtCr(spent)}</b></span><span>Remaining <b>${fmtCr(remaining)}</b></span></div>
+
+                    <div class="tov-detail">
+                        <div class="tov-section-label">ROSTER</div>
+                        <div class="roster-list" style="margin-top:10px;">${rosterHtml}</div>
+
+                        <div class="tov-section-label" style="margin-top:16px;">SEASON RECORD</div>
+                        <div class="record-grid">
+                            <div class="record-box"><div class="record-num">0</div><span class="record-label">Played</span></div>
+                            <div class="record-box"><div class="record-num">0</div><span class="record-label">Wins</span></div>
+                            <div class="record-box"><div class="record-num">0</div><span class="record-label">Losses</span></div>
+                            <div class="record-box"><div class="record-num">0</div><span class="record-label">Points</span></div>
+                            <div class="record-box"><div class="record-num">0</div><span class="record-label">Rnd Diff</span></div>
+                        </div>
+                        <div class="record-note">Season 12 hasn't started — standings populate once the Schedule &amp; Points Table go live.</div>
                     </div>
-                    <div class="tm-roster">${rosterHtml}</div>
-                    <div class="tm-stats-row">
-                        <div class="tm-stat-box"><b>${t.stats.matches_played}</b><span>Played</span></div>
-                        <div class="tm-stat-box"><b>${t.stats.wins}</b><span>Wins</span></div>
-                        <div class="tm-stat-box"><b>${t.stats.losses}</b><span>Losses</span></div>
-                        <div class="tm-stat-box"><b>${t.stats.points}</b><span>Points</span></div>
-                    </div>
+                </div>
                 </div>`;
-            }).join('');
+            });
+
+            grid.innerHTML = html;
+            document.getElementById('noResultsQuery').textContent = searchQuery;
+            noResults.classList.toggle('show', visibleCount === 0 && !!q);
+
+            // wire up accordion toggles
+            grid.querySelectorAll('.team-overview-card').forEach(card => {
+                card.addEventListener('click', () => card.classList.toggle('open'));
+            });
+
+            renderSummary();
+
+            if (allTeams.length === 0) {
+                showState('empty');
+            } else {
+                showState('data');
+            }
         }
 
-        document.getElementById('tmSearch').addEventListener('input', renderTeams);
-        loadTeams();
+        function renderSummary() {
+            const totalPlayers = allPlayers.filter(p => p.team_id).length;
+            const totalSpent = allTeams.reduce((s, t) => s + (t.purse_spent || 0), 0);
+            document.getElementById('sumTeams').textContent = allTeams.length || 8;
+            document.getElementById('sumPlayers').textContent = `${totalPlayers}/40`;
+            document.getElementById('sumSpent').textContent = fmtCr(totalSpent);
+        }
+
+        function setLiveStrip(mode) {
+            // mode: 'live' | 'reconnecting' | 'error'
+            const strip = document.getElementById('liveStrip');
+            const text = document.getElementById('liveStripText');
+            strip.classList.remove('stale', 'error');
+            if (mode === 'live') {
+                text.textContent = 'LIVE — SYNCED WITH THE AUCTION';
+            } else if (mode === 'reconnecting') {
+                strip.classList.add('stale');
+                text.textContent = 'RECONNECTING…';
+            } else {
+                strip.classList.add('error');
+                text.textContent = 'CONNECTION LOST — RETRYING';
+            }
+        }
+
+        // ---------- Live Supabase reads (production — no fallback/demo data) ----------
+        async function fetchTeams() {
+            const { data, error } = await sb
+                .from('ffxipl_s12_teams')
+                .select('id, name, captain_name, captain_user_id, color, purse_total, purse_spent, players_bought, updated_at')
+                .order('id', { ascending: true });
+            if (error) throw new Error('Could not load teams: ' + error.message);
+            allTeams = data || [];
+        }
+
+        async function fetchPlayers() {
+            // Public-safe view — never exposes whatsapp / payment_screenshot_url.
+            const { data, error } = await sb
+                .from('ffxipl_s12_public_players')
+                .select('ign, real_name, uid, level, profile_screenshot_url, auction_tier, final_bid_price, auction_payout, play_in_points, team_id, status')
+                .not('team_id', 'is', null)
+                .order('final_bid_price', { ascending: false });
+            if (error) throw new Error('Could not load rosters: ' + error.message);
+            allPlayers = data || [];
+        }
+
+        let hasLoadedOnce = false;
+
+        async function refreshAll(isBackgroundRefresh) {
+            try {
+                if (!isBackgroundRefresh) showState('loading');
+                await Promise.all([fetchTeams(), fetchPlayers()]);
+                hasLoadedOnce = true;
+                setLiveStrip('live');
+                renderTeams();
+            } catch (e) {
+                console.error('refreshAll failed:', e);
+                if (hasLoadedOnce) {
+                    // We already have data on screen — don't blow it away, just flag connection trouble.
+                    setLiveStrip('error');
+                } else {
+                    showState('error', { message: e.message || 'Something went wrong talking to the server.' });
+                }
+            }
+        }
+
+        let realtimeChannel = null;
+        function subscribeRealtime() {
+            try {
+                realtimeChannel = sb.channel('ffxipl-s12-teams-page')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, () => refreshAll(true))
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_registrations' }, () => refreshAll(true))
+                    .subscribe((status) => {
+                        if (status === 'SUBSCRIBED') setLiveStrip('live');
+                        else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') setLiveStrip('reconnecting');
+                    });
+            } catch (e) {
+                console.warn('Realtime subscription failed, falling back to polling every 15s:', e);
+                setInterval(() => refreshAll(true), 15000);
+            }
+        }
+
+        async function init() {
+            if (initError) {
+                showState('error', { message: initError.message });
+                setLiveStrip('error');
+                return;
+            }
+            await refreshAll(false);
+            if (sb) subscribeRealtime();
+        }
+
+        document.getElementById('retryBtn').addEventListener('click', () => {
+            if (initError) {
+                // Client never initialized — nothing to retry until credentials are fixed.
+                showState('error', { message: initError.message });
+                return;
+            }
+            init();
+        });
+
+        init();
+
+        // ---------- Search (client-side, against already-fetched data) ----------
+        const searchInput = document.getElementById('searchInput');
+        let searchTimer = null;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => { searchQuery = e.target.value; renderTeams(); }, 120);
+        });
     </script>
+
 </body>
 
 </html>
