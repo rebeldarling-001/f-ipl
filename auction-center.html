@@ -434,6 +434,61 @@
         .min-bid-label { margin-top:4px; font-size:11px; color:var(--ink-faint); }
         .min-bid-label b { color:var(--gold-pale); }
     </style>
+    <style>
+        /* ============ ROUND PROGRESS ============ */
+        .round-progress-bar { margin-top:10px; padding:12px 14px; border-radius:13px; background:var(--surface); border:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; }
+        .round-progress-bar .lbl { font-size:11px; color:var(--ink-dim); }
+        .round-progress-bar .n { font-family:'Space Mono',monospace; font-weight:700; color:var(--gold-pale); }
+        .round-progress-bar.complete { border-color:#5fd97e; background: rgba(95,217,126,0.08); }
+        .round-progress-bar.complete .n { color:#5fd97e; }
+
+        /* ============ PLAYER PHOTO (real image + lightbox) ============ */
+        .player-photo-img { width:96px; height:96px; border-radius:50%; margin:18px auto 0; border:3px solid var(--gold-deep); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; font-family:'Anton',sans-serif; font-size:30px; color:var(--gold-pale); box-shadow:0 0 0 6px rgba(var(--gold-rgb),0.08); cursor:pointer; }
+        .lightbox-overlay { position:fixed; inset:0; z-index:600; max-width:480px; margin:0 auto; background: rgba(0,0,0,0.9); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition: opacity 0.25s ease; }
+        .lightbox-overlay.show { opacity:1; pointer-events:auto; }
+        .lightbox-overlay img { max-width:100%; max-height:80vh; border-radius:16px; border:2px solid var(--gold-deep); }
+        .lightbox-close { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--line); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:16px; }
+
+        /* ============ CELEBRATION OVERLAY (sold + final) ============ */
+        .celebrate-overlay { position:fixed; inset:0; z-index:550; max-width:480px; margin:0 auto; display:flex; align-items:center; justify-content:center; flex-direction:column; background: rgba(var(--bg-rgb),0.92); opacity:0; pointer-events:none; transition: opacity 0.3s ease; overflow:hidden; }
+        .celebrate-overlay.show { opacity:1; pointer-events:auto; }
+        .celebrate-word { font-family:'Anton',sans-serif; font-size:38px; text-align:center; letter-spacing:0.02em; background: linear-gradient(180deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep)); -webkit-background-clip:text; background-clip:text; color:transparent; animation: celebratePop 0.6s cubic-bezier(.2,.9,.25,1); padding:0 24px; }
+        @keyframes celebratePop { from{ transform:scale(0.7); opacity:0; } to{ transform:scale(1); opacity:1; } }
+        .celebrate-sub { margin-top:12px; font-size:15px; color:var(--ink); text-align:center; padding:0 30px; line-height:1.5; }
+        .celebrate-sub b { color:var(--gold-pale); }
+        .celebrate-tap { margin-top:26px; font-size:11px; color:var(--ink-faint); letter-spacing:0.08em; text-transform:uppercase; }
+        .confetti-piece { position:absolute; top:-20px; width:8px; height:14px; opacity:0.9; animation-name:confettiFall; animation-timing-function:cubic-bezier(.4,0,.6,1); animation-iteration-count:1; }
+        @keyframes confettiFall { 0%{ transform:translateY(0) rotate(0deg); opacity:1; } 100%{ transform:translateY(720px) rotate(540deg); opacity:0; } }
+
+        /* ============ TEAM-WISE SWIPEABLE SUMMARY ============ */
+        .summary-swipe { display:flex; gap:12px; margin-top:16px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
+        .summary-swipe::-webkit-scrollbar { display:none; }
+        .summary-team-card { flex:0 0 78%; scroll-snap-align:start; border-radius:18px; padding:16px; background:var(--surface); border:1px solid var(--line); border-top:3px solid var(--team-color, var(--gold)); }
+        .summary-team-card .h { display:flex; align-items:center; justify-content:space-between; }
+        .summary-team-card .h .abbr { font-family:'Anton',sans-serif; font-size:20px; color:var(--team-color, var(--gold)); }
+        .summary-team-card .h .cap { font-size:9.5px; color:var(--ink-faint); text-align:right; }
+        .summary-team-card .spent { margin-top:8px; font-size:11px; color:var(--ink-dim); }
+        .summary-team-card .spent b { color:var(--gold-pale); font-family:'Space Mono',monospace; }
+        .summary-team-card .plist { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+        .summary-team-card .prow { display:flex; justify-content:space-between; font-size:11.5px; padding:6px 8px; border-radius:8px; background: rgba(var(--gold-rgb),0.04); }
+        .summary-team-card .prow .amt { color:var(--gold-pale); font-family:'Space Mono',monospace; }
+        .summary-team-card .empty-slot { font-size:10.5px; color:var(--ink-faint); font-style:italic; padding:6px 8px; }
+        .summary-swipe-hint { text-align:center; font-size:10px; color:var(--ink-faint); margin-top:6px; letter-spacing:0.06em; text-transform:uppercase; }
+
+        /* ============ EXPANDABLE TEAM PURSE CARDS ============ */
+        .tp-card { cursor:pointer; }
+        .tp-expand { display:none; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); flex-direction:column; gap:6px; }
+        .tp-expand.open { display:flex; }
+        .tp-expand .prow { display:flex; justify-content:space-between; font-size:10.5px; }
+        .tp-expand .prow .amt { color:var(--gold-pale); font-family:'Space Mono',monospace; }
+        .tp-expand .empty { font-size:9.5px; color:var(--ink-faint); font-style:italic; }
+
+        /* ============ CAPTAIN ROOM COLOR THEMING ============ */
+        #panel-captain { border-radius:20px; padding:4px; transition: box-shadow 0.4s ease; }
+        #panel-captain.themed { box-shadow: 0 0 0 1px var(--cap-color, var(--gold-deep)), 0 0 40px -10px var(--cap-color, var(--gold)); }
+        #panel-captain.themed .stat-card, #panel-captain.themed .bid-btn { border-color: var(--cap-color, var(--gold-deep)); }
+        #panel-captain.themed .sec-title b { color: var(--cap-color, var(--gold)); }
+    </style>
 </head>
 <body>
 
@@ -509,16 +564,25 @@
     </nav>
 
     <div class="toast-stack" id="toastStack"></div>
+    <div class="celebrate-overlay" id="celebrateOverlay"></div>
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="lightboxClose">✕</button>
+        <img id="lightboxImg" src="" alt="Player profile screenshot">
+    </div>
 
     <!-- INTRO -->
     <section style="padding-top:34px;">
         <div class="live-pill fade-up"><span class="dot"></span> AUCTION HUB · LIVE</div>
         <h1 class="sec-title display fade-up d1" style="font-size:32px;">8 Teams. <b>₹100 Cr</b> Each.<br>40 Players.</h1>
-        <p class="sec-desc fade-up d2">Watch every bid live, or sign in as a captain to buy your squad. The admin can put any player up for auction at any time — every player still opens at their own Play-In minimum.</p>
+        <p class="sec-desc fade-up d2">Watch every bid live, or sign in as a captain to buy your squad. 5 rounds of 8 players each — admin can pick any player from any tier for any round.</p>
         <div class="presence-row fade-up d3">
             <div class="presence-chip">👀 <b id="viewerCount">0</b> watching</div>
             <div class="presence-chip">🎖️ <b id="captainCount">0</b>/8 captains present</div>
             <div class="presence-chip">✅ <b id="soldOverallCount">0</b>/40 sold</div>
+        </div>
+        <div class="round-progress-bar fade-up" id="roundProgressBar">
+            <span class="lbl">Round <span id="roundProgressNum">—</span> progress</span>
+            <span class="n" id="roundProgressCount">0/8 decided</span>
         </div>
     </section>
 
@@ -553,12 +617,12 @@
         <h2 class="sec-title">Current <b>player</b></h2>
         <div class="foil-frame stage-wrap fade-up" style="--foil:var(--gold);">
             <div class="stage-card" id="stageCard">
-                <div class="round-badge-row"><span class="round-pill" id="stageRoundPill">TIER —</span></div>
-                <div class="player-photo" id="stagePhoto">?</div>
+                <div class="round-badge-row"><span class="round-pill" id="stageRoundPill">ROUND —</span><span class="tier-badge" id="stageTierBadge">TIER —</span></div>
+                <div class="player-photo-img" id="stagePhoto">?</div>
                 <div class="player-name" id="stageName">No player on the block yet</div>
                 <div class="player-meta" id="stageMeta">UID — · Level —</div>
                 <div class="price-row">
-                    <div class="price-chip"><span class="lbl">BASE PRICE</span><span class="val" id="stageOpen">—</span></div>
+                    <div class="price-chip"><span class="lbl">Minimum Bid</span><span class="val" id="stageOpen">—</span></div>
                     <div class="price-chip"><span class="lbl">Current Bid</span><span class="val" id="stageBid">No bids yet</span></div>
                 </div>
                 <div class="bid-team-flash" id="stageBidTeam" style="color:var(--gold-pale);"></div>
@@ -566,10 +630,6 @@
                 <div class="countdown-overlay" id="countdownOverlay">
                     <div class="countdown-big" id="countdownNum">10</div>
                     <div class="countdown-label" id="countdownLabel">Round begins in</div>
-                </div>
-                <div class="sold-overlay" id="soldOverlay">
-                    <div class="sold-word">SOLD!</div>
-                    <div class="sold-sub" id="soldSub">— to <b>—</b> for <b>—</b><br>Payout: <b>—</b></div>
                 </div>
                 <div class="unsold-overlay" id="unsoldOverlay">
                     <div class="unsold-word display">UNSOLD</div>
@@ -603,6 +663,14 @@
         <div class="eyebrow">AUCTIONEER CONTROLS</div>
         <h2 class="sec-title">Run the <b>auction</b></h2>
 
+        <div class="admin-row fade-up" style="flex-wrap:wrap; gap:8px;">
+            <button class="btn btn-ghost" data-start-round="1" style="flex:1 1 30%;">⏱ Round 1</button>
+            <button class="btn btn-ghost" data-start-round="2" style="flex:1 1 30%;">⏱ Round 2</button>
+            <button class="btn btn-ghost" data-start-round="3" style="flex:1 1 30%;">⏱ Round 3</button>
+            <button class="btn btn-ghost" data-start-round="4" style="flex:1 1 30%;">⏱ Round 4</button>
+            <button class="btn btn-ghost" data-start-round="5" style="flex:1 1 30%;">⏱ Round 5</button>
+        </div>
+
         <div class="admin-grid fade-up">
             <div class="admin-row">
                 <button class="btn btn-ghost" id="btnMarkSold">✅ Mark Sold</button>
@@ -614,15 +682,16 @@
             </div>
         </div>
 
-        <div class="eyebrow" style="margin-top:20px;">PLAYERS — PICK ANYONE, ANY ROUND</div>
+        <div class="eyebrow" style="margin-top:20px;">PLAYERS — PICK ANYONE, ANY TIER</div>
         <div id="roundBandsContainer"></div>
 
-        <div class="eyebrow" style="margin-top:20px;">SUMMARIES</div>
+        <div class="eyebrow" style="margin-top:20px;">SUMMARIES — VISIBLE TO EVERYONE</div>
         <div class="admin-row fade-up" style="flex-wrap:wrap; gap:8px;">
             <button class="btn btn-ghost" data-summary-round="1" style="flex:1 1 45%;">Round 1 Result</button>
             <button class="btn btn-ghost" data-summary-round="2" style="flex:1 1 45%;">Round 2 Result</button>
             <button class="btn btn-ghost" data-summary-round="3" style="flex:1 1 45%;">Round 3 Result</button>
             <button class="btn btn-ghost" data-summary-round="4" style="flex:1 1 45%;">Round 4 Result</button>
+            <button class="btn btn-ghost" data-summary-round="5" style="flex:1 1 45%;">Round 5 Result</button>
         </div>
         <button class="btn btn-primary" style="width:100%; margin-top:10px;" id="btnFinalSummary">🏆 Final Summary — All Teams</button>
 
@@ -633,19 +702,20 @@
     <!-- TEAMS PURSE GRID -->
     <section id="pursesSection">
         <div class="eyebrow">FRANCHISE PURSES</div>
-        <h2 class="sec-title">All <b>8 teams</b></h2>
+        <h2 class="sec-title">All <b>8 teams</b> <span style="font-size:10px; color:var(--ink-faint); font-weight:400;">— tap a card to see their roster</span></h2>
         <div class="teams-purse-grid" id="teamsPurseGrid"></div>
         <div class="caveat-box fade-up">
-            <b>Note:</b> Captain and admin access is real Supabase Auth (email + password). Every bid, sale, undo, and round action is validated and executed inside a database function — the browser never writes auction state directly.
+            <b>Note:</b> Captain and admin access is real Supabase Auth (email + password). Every bid, sale, undo, and round action is validated inside a database function.
         </div>
     </section>
 
-    <!-- SUMMARY MODAL (shared for round + final — purely client-driven, no DB phase, so it can never get stuck reopening) -->
+    <!-- SUMMARY MODAL (team-wise swipeable cards, broadcast to everyone) -->
     <div class="summary-modal" id="summaryModal">
         <div class="summary-card">
             <div class="summary-title display" id="summaryTitle">ROUND 1 RESULT</div>
             <div class="summary-sub" id="summarySub"></div>
-            <div class="summary-list" id="summaryList"></div>
+            <div class="summary-swipe" id="summarySwipe"></div>
+            <div class="summary-swipe-hint">← swipe for more teams →</div>
             <button class="btn btn-primary summary-close" id="summaryClose" style="width:100%;">Close</button>
         </div>
     </div>
@@ -747,24 +817,25 @@
     </script>
     <script>
 /* =========================================================================
-   FREEFIRE XIPL — AUCTION HUB ENGINE (v2)
-   Changes from v1, per direct feedback:
-   - No shuffled/generated round order. Admin manually picks ANY of the 40
-     players, from any tier band, in any order, at any time.
-   - Fixed bid math: current_bid starts NULL ("no bids yet"), not pre-seeded
-     with the minimum. The first bid a captain places opens at the player's
-     minimum; every bid after that adds the clicked increment on top.
-   - Round-summary / final-summary are plain client-side modals triggered by
-     admin buttons — not tied to a database "phase", so they can never
-     silently reopen themselves after being closed.
-   - Only one timer exists anywhere on this page: a 10-second, purely
-     ceremonial "Round N begins in..." countdown when admin explicitly starts
-     it. No background polling timer — this page relies entirely on Realtime.
-   - Zero native browser alert()/confirm() popups. All feedback renders as
-     an in-page toast that matches the site's own theme.
+   FREEFIRE XIPL — AUCTION HUB ENGINE (v3)
+   New in this version:
+   - Tiers (Top10/20/30/40) and Rounds (1-5, 8 players each) are now fully
+     independent. Admin can put any player from any tier into any round.
+   - Round progress is tracked via registrations.auction_round, tagged the
+     moment a player is sold OR marked unsold (either way counts as "decided").
+   - Round/final summaries broadcast live to EVERY connected client the
+     instant admin clicks the button — not just the admin's own browser —
+     via a Supabase Realtime broadcast channel (not a DB table), so there's
+     nothing that can get stuck reopening on its own.
+   - A SOLD event also broadcasts a celebration: a generic one for everyone,
+     and a special "you won him!" one specifically for the winning captain.
+   - Player photos are real images (public 'profile/' storage path) with a
+     tap-to-expand lightbox.
+   - Team purse cards expand on tap to show that team's roster, for anyone.
+   - Captain's own panel gets a subtle glow in their team's color once signed in.
    ========================================================================= */
 
-        const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+         const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -780,17 +851,23 @@
         };
         const TEAM_IDS = Object.keys(TEAM_META);
         const TIER_PRICE = { top10: 10, top20: 6, top30: 4, top40: 2 };
-        const ROUND_TIER = { 1: 'top10', 2: 'top20', 3: 'top30', 4: 'top40' };
-        const ROUND_LABEL = { 1: 'TIER 1 — Top 10 (min ₹10Cr)', 2: 'TIER 2 — Top 20 (min ₹6Cr)', 3: 'TIER 3 — Top 30 (min ₹4Cr)', 4: 'TIER 4 — Top 40 (min ₹2Cr)' };
+        const TIER_LABEL = { top10: 'TIER 1 — TOP 10', top20: 'TIER 2 — TOP 20', top30: 'TIER 3 — TOP 30', top40: 'TIER 4 — TOP 40' };
+        const TIER_SIZE = 8;
 
         let currentUser = null, isAdmin = false, myTeamId = null;
         let teamsCache = {}, playersCache = {}, stateCache = null;
         let countdownTimer = null;
+        let broadcastChannel = null;
 
         const fmtCr = (n) => (n === null || n === undefined) ? '—' : `₹${Number(n).toFixed(0)}Cr`;
         const $ = (id) => document.getElementById(id);
+        function publicUrlForProfile(path) {
+            if (!path) return null;
+            const { data } = sb.storage.from('ffxipl-uploads').getPublicUrl(path);
+            return data?.publicUrl || null;
+        }
 
-        // ---------- TOAST (replaces every alert()/confirm()) ----------
+        // ---------- TOAST ----------
         function toast(message, type) {
             const stack = $('toastStack');
             const el = document.createElement('div');
@@ -799,6 +876,35 @@
             stack.appendChild(el);
             requestAnimationFrame(() => el.classList.add('show'));
             setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3600);
+        }
+
+        // ---------- LIGHTBOX ----------
+        $('lightboxClose').addEventListener('click', () => $('lightboxOverlay').classList.remove('show'));
+        $('lightboxOverlay').addEventListener('click', (e) => { if (e.target.id === 'lightboxOverlay') $('lightboxOverlay').classList.remove('show'); });
+        function openLightbox(url) { $('lightboxImg').src = url; $('lightboxOverlay').classList.add('show'); }
+
+        // ---------- CONFETTI + CELEBRATION ----------
+        const CONFETTI_COLORS = ['#f0b93d', '#fbe4a6', '#ff4433', '#5fd97e', '#29d3ff'];
+        function fireConfetti(container) {
+            for (let i = 0; i < 34; i++) {
+                const p = document.createElement('div');
+                p.className = 'confetti-piece';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.background = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+                p.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
+                p.style.animationDelay = (Math.random() * 0.5) + 's';
+                container.appendChild(p);
+                setTimeout(() => p.remove(), 3500);
+            }
+        }
+        function showCelebration(wordHtml, subHtml, durationMs) {
+            const overlay = $('celebrateOverlay');
+            overlay.innerHTML = `<div class="celebrate-word display">${wordHtml}</div><div class="celebrate-sub">${subHtml}</div><div class="celebrate-tap">Tap anywhere to dismiss</div>`;
+            overlay.classList.add('show');
+            fireConfetti(overlay);
+            const dismiss = () => overlay.classList.remove('show');
+            overlay.onclick = dismiss;
+            if (durationMs) setTimeout(dismiss, durationMs);
         }
 
         // ---------- ROLE TABS ----------
@@ -834,6 +940,7 @@
             await sb.auth.signOut();
             currentUser = null; isAdmin = false; myTeamId = null;
             document.querySelectorAll('.role-tab[data-role="captain"], .role-tab[data-role="admin"]').forEach(t => t.remove());
+            $('panel-captain').classList.remove('themed');
             refreshAccountUI(); showRolePanel('public');
         });
         function showAuthError(msg) { const el = $('authError'); el.textContent = msg; el.style.display = 'block'; }
@@ -855,6 +962,9 @@
                 t.addEventListener('click', () => { document.querySelectorAll('.role-tab').forEach(x => x.classList.remove('active')); t.classList.add('active'); showRolePanel('captain'); });
                 tabs.appendChild(t);
                 $('capTeamTitle').innerHTML = `Team <b>${myTeamId}</b>`;
+                // Captain room color theming
+                $('panel-captain').classList.add('themed');
+                $('panel-captain').style.setProperty('--cap-color', TEAM_META[myTeamId].color);
                 renderCaptainPanel();
             }
             if (isAdmin) {
@@ -891,6 +1001,7 @@
             playersCache = {}; (data || []).forEach(p => playersCache[p.id] = p);
             renderRoundBands();
             updateSoldOverallCount();
+            updateRoundProgress();
         }
         async function loadState() {
             const { data, error } = await sb.from('ffxipl_s12_auction_state').select('*').eq('id', 1).single();
@@ -898,18 +1009,24 @@
             stateCache = data; renderStage();
         }
         function updateSoldOverallCount() {
-            const sold = Object.values(playersCache).filter(p => p.team_id).length;
-            $('soldOverallCount').textContent = sold;
+            $('soldOverallCount').textContent = Object.values(playersCache).filter(p => p.team_id).length;
+        }
+        function updateRoundProgress() {
+            const round = stateCache?.current_round;
+            const bar = $('roundProgressBar');
+            if (!round) { $('roundProgressNum').textContent = '—'; $('roundProgressCount').textContent = '0/8 decided'; bar.classList.remove('complete'); return; }
+            const decided = Object.values(playersCache).filter(p => p.auction_round === round).length;
+            $('roundProgressNum').textContent = round;
+            $('roundProgressCount').textContent = `${decided}/${ROUND_SIZE} decided`;
+            bar.classList.toggle('complete', decided >= ROUND_SIZE);
         }
 
-        // ---------- REALTIME (this page's entire live-update mechanism — no polling) ----------
+        // ---------- REALTIME (DB changes + broadcast channel) ----------
         function subscribeRealtime() {
             sb.channel('auction-state-changes')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_auction_state' }, payload => { stateCache = payload.new; renderStage(); })
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_auction_state' }, payload => { stateCache = payload.new; renderStage(); updateRoundProgress(); })
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, payload => { teamsCache[payload.new.id] = payload.new; renderPurseGrid(); if (myTeamId) renderCaptainPanel(); })
                 .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ffxipl_s12_bid_log' }, payload => { flashBid(payload.new); pushAdminLog(payload.new); })
-                // ffxipl_s12_public_players is a VIEW — Postgres logical replication can only
-                // stream real tables, so we listen on the underlying table and re-fetch via the view.
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_registrations' }, () => loadPlayers())
                 .subscribe();
 
@@ -921,6 +1038,26 @@
             }).subscribe(async (status) => {
                 if (status === 'SUBSCRIBED') await room.track({ role: myTeamId ? 'captain' : (isAdmin ? 'admin' : 'viewer'), team: myTeamId, joined_at: Date.now() });
             });
+
+            // Broadcast channel: summaries + sold celebrations, pushed live to
+            // every connected client the instant admin triggers them.
+            broadcastChannel = sb.channel('auction-broadcast')
+                .on('broadcast', { event: 'round_summary' }, ({ payload }) => renderSummaryModal(payload))
+                .on('broadcast', { event: 'final_summary' }, ({ payload }) => renderFinalSummaryModal(payload))
+                .on('broadcast', { event: 'player_sold' }, ({ payload }) => handleSoldBroadcast(payload))
+                .on('broadcast', { event: 'auction_complete' }, () => {
+                    showCelebration('🔥 SEASON 12 🔥', 'The auction is complete — every roster is set. Let\'s go!', 6000);
+                })
+                .subscribe();
+        }
+
+        function handleSoldBroadcast(payload) {
+            const iWon = myTeamId && payload.teamId === myTeamId;
+            const word = iWon ? '🎉 HE\'S YOURS! 🎉' : '🎉 SOLD! 🎉';
+            const sub = iWon
+                ? `Congratulations! <b>${payload.playerName}</b> just joined <b>${payload.teamId}</b> for <b>${fmtCr(payload.price)}</b>!`
+                : `<b>${payload.playerName}</b> sold to <b style="color:${TEAM_META[payload.teamId]?.color}">${payload.teamId}</b> for <b>${fmtCr(payload.price)}</b>!`;
+            showCelebration(word, sub, 4200);
         }
 
         // ---------- RENDER: STAGE ----------
@@ -928,20 +1065,31 @@
             if (!stateCache) return;
             const s = stateCache;
             $('countdownOverlay').classList.remove('show');
-            $('soldOverlay').classList.remove('show');
             $('unsoldOverlay').classList.remove('show');
             clearInterval(countdownTimer);
 
             const player = playersCache[s.current_player_id];
+            const photoEl = $('stagePhoto');
             if (player) {
-                $('stageRoundPill').textContent = ROUND_LABEL[roundForTier(player.auction_tier)]?.split(' —')[0] || 'ROUND —';
-                $('stagePhoto').textContent = (player.ign || player.real_name || '?').slice(0, 2).toUpperCase();
+                $('stageRoundPill').textContent = s.current_round ? `ROUND ${s.current_round}` : 'ROUND —';
+                $('stageTierBadge').textContent = TIER_LABEL[player.auction_tier]?.split(' — ')[0] || 'TIER —';
+                const photoUrl = publicUrlForProfile(player.profile_screenshot_path);
+                if (photoUrl) {
+                    photoEl.style.backgroundImage = `url('${photoUrl}')`;
+                    photoEl.textContent = '';
+                    photoEl.onclick = () => openLightbox(photoUrl);
+                } else {
+                    photoEl.style.backgroundImage = 'none';
+                    photoEl.textContent = (player.ign || player.real_name || '?').slice(0, 2).toUpperCase();
+                    photoEl.onclick = null;
+                }
                 $('stageName').textContent = player.ign || '—';
                 $('stageMeta').textContent = `${player.real_name} · UID ${player.uid} · Level ${player.level}`;
                 $('stageOpen').textContent = fmtCr(player.auction_base_price ?? TIER_PRICE[player.auction_tier]);
             } else {
-                $('stageRoundPill').textContent = 'ROUND —';
-                $('stagePhoto').textContent = '?';
+                $('stageRoundPill').textContent = s.current_round ? `ROUND ${s.current_round}` : 'ROUND —';
+                $('stageTierBadge').textContent = 'TIER —';
+                photoEl.style.backgroundImage = 'none'; photoEl.textContent = '?'; photoEl.onclick = null;
                 $('stageName').textContent = 'No player on the block yet';
                 $('stageMeta').textContent = 'Admin can put any player up at any time';
                 $('stageOpen').textContent = '—';
@@ -951,10 +1099,7 @@
             $('stageBidTeam').style.color = s.current_bid_team_id ? TEAM_META[s.current_bid_team_id]?.color : 'var(--gold-pale)';
 
             if (s.phase === 'round_countdown') {
-                startCountdownDisplay(s.countdown_target, `TIER ${s.current_round} begins in`);
-            } else if (s.phase === 'sold') {
-                $('soldSub').innerHTML = `— to <b style="color:${TEAM_META[s.current_bid_team_id]?.color}">${s.current_bid_team_id}</b> for <b>${fmtCr(s.current_bid)}</b><br>Payout: <b>${fmtCr(s.current_bid / 2)}</b>`;
-                $('soldOverlay').classList.add('show');
+                startCountdownDisplay(s.countdown_target, `Round ${s.current_round} begins in`);
             } else if (s.phase === 'unsold') {
                 $('unsoldOverlay').classList.add('show');
             }
@@ -962,8 +1107,6 @@
             renderRoundBands();
             if (myTeamId) renderCaptainPanel();
         }
-
-        function roundForTier(tier) { return { top10: 1, top20: 2, top30: 3, top40: 4 }[tier] || 0; }
 
         function startCountdownDisplay(targetTs, label) {
             $('countdownLabel').textContent = label;
@@ -978,9 +1121,7 @@
         }
 
         function flashBid() {
-            const valEl = $('stageBid');
-            valEl.classList.add('tick');
-            setTimeout(() => valEl.classList.remove('tick'), 220);
+            const valEl = $('stageBid'); valEl.classList.add('tick'); setTimeout(() => valEl.classList.remove('tick'), 220);
         }
         function pushAdminLog(bidRow) {
             const log = $('adminLog'); if (!log) return;
@@ -990,24 +1131,31 @@
             log.prepend(row);
         }
 
-        // ---------- RENDER: TEAM PURSE GRID ----------
+        // ---------- RENDER: TEAM PURSE GRID (expandable) ----------
         function renderPurseGrid() {
             const grid = $('teamsPurseGrid');
+            const openIds = new Set(Array.from(grid.querySelectorAll('.tp-expand.open')).map(el => el.dataset.team));
             grid.innerHTML = '';
             TEAM_IDS.forEach(id => {
                 const t = teamsCache[id] || { purse_total: 100, purse_spent: 0, players_bought: 0 };
                 const remaining = (t.purse_total ?? 100) - (t.purse_spent ?? 0);
                 const pct = Math.min(100, ((t.purse_spent ?? 0) / (t.purse_total ?? 100)) * 100);
                 const done = (t.players_bought ?? 0) >= 5;
+                const roster = Object.values(playersCache).filter(p => p.team_id === id);
                 const el = document.createElement('div');
                 el.className = 'tp-card'; el.id = 'tp-' + id;
                 el.style.setProperty('--team-color', TEAM_META[id].color);
+                const rosterHtml = roster.length
+                    ? roster.map(p => `<div class="prow"><span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span></div>`).join('')
+                    : '<div class="empty">No players purchased yet</div>';
                 el.innerHTML = `
                     ${done ? '<span class="tp-done">Squad Full</span>' : ''}
                     <div class="tp-head"><span class="tp-abbr display">${id}</span><span class="tp-cap">Captain<br>${t.captain_name || '—'}</span></div>
                     <div class="tp-purse-track"><div class="tp-purse-fill" style="width:${pct}%"></div></div>
                     <div class="tp-nums"><span>Spent <b>${fmtCr(t.purse_spent ?? 0)}</b></span><span>Left <b>${fmtCr(remaining)}</b></span></div>
-                    <div class="tp-players">${t.players_bought ?? 0}/5 players bought</div>`;
+                    <div class="tp-players">${t.players_bought ?? 0}/5 players bought</div>
+                    <div class="tp-expand${openIds.has(id) ? ' open' : ''}" data-team="${id}">${rosterHtml}</div>`;
+                el.addEventListener('click', (e) => { el.querySelector('.tp-expand').classList.toggle('open'); });
                 grid.appendChild(el);
             });
             highlightTeamOnBlock(stateCache?.current_bid_team_id);
@@ -1056,7 +1204,20 @@
             return true;
         }
 
-        $('btnMarkSold').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_mark_sold')) toast('Player marked sold.', 'success'); });
+        $('btnMarkSold').addEventListener('click', async () => {
+            // Capture who/what is being sold BEFORE the RPC clears the stage,
+            // so the celebration broadcast has the right details.
+            const player = playersCache[stateCache?.current_player_id];
+            const teamId = stateCache?.current_bid_team_id;
+            const price = stateCache?.current_bid;
+            const ok = await callAdminRpc('ffxipl_s12_mark_sold');
+            if (ok) {
+                toast('Player marked sold.', 'success');
+                if (player && teamId) {
+                    broadcastChannel.send({ type: 'broadcast', event: 'player_sold', payload: { playerName: player.ign || player.real_name, teamId, price } });
+                }
+            }
+        });
         $('btnMarkUnsold').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_mark_unsold')) toast('Player marked unsold.', 'success'); });
         $('btnVoidBid').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_void_bid')) toast('Current bid cleared.', 'success'); });
         $('btnClearStage').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_clear_stage')) toast('Stage cleared.', 'success'); });
@@ -1070,23 +1231,21 @@
             if (ok) toast('Sale undone — player returned to the pool.', 'success');
         }
 
-        // ---------- ADMIN: ROUND-START CEREMONY (the ONLY timer on this page) ----------
-        document.addEventListener('click', async (e) => {
-            const startBtn = e.target.closest('[data-start-round]');
-            if (startBtn) {
-                const roundNum = parseInt(startBtn.dataset.startRound, 10);
+        // ---------- ADMIN: ROUND-START CEREMONY ----------
+        document.querySelectorAll('[data-start-round]').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const roundNum = parseInt(btn.dataset.startRound, 10);
                 await callAdminRpc('ffxipl_s12_start_round_countdown', { p_round: roundNum });
-            }
+            });
         });
 
-        // ---------- ADMIN: ROUND BAND PLAYER BROWSER ----------
+        // ---------- ADMIN: TIER BAND PLAYER BROWSER ----------
         function renderRoundBands() {
             const container = $('roundBandsContainer');
             if (!container || !isAdmin) return;
-            const openBands = new Set(Array.from(container.querySelectorAll('.round-band-body.open')).map(el => el.dataset.round));
+            const openBands = new Set(Array.from(container.querySelectorAll('.round-band-body.open')).map(el => el.dataset.tier));
             container.innerHTML = '';
-            [1, 2, 3, 4].forEach(roundNum => {
-                const tier = ROUND_TIER[roundNum];
+            Object.keys(TIER_LABEL).forEach(tier => {
                 const players = Object.values(playersCache).filter(p => p.auction_tier === tier).sort((a, b) => (a.ign || '').localeCompare(b.ign || ''));
                 const soldCount = players.filter(p => p.team_id).length;
 
@@ -1094,11 +1253,10 @@
                 band.className = 'round-band';
                 const head = document.createElement('div');
                 head.className = 'round-band-head';
-                head.innerHTML = `<div><div class="t">${ROUND_LABEL[roundNum]}</div><div class="sub">${soldCount}/${players.length} sold</div></div>
-                    <button class="mini-btn" data-start-round="${roundNum}">⏱ Start Round (10s)</button>`;
+                head.innerHTML = `<div><div class="t">${TIER_LABEL[tier]}</div><div class="sub">${soldCount}/${players.length} sold</div></div>`;
                 const body = document.createElement('div');
-                body.className = 'round-band-body' + (openBands.has(String(roundNum)) ? ' open' : '');
-                body.dataset.round = roundNum;
+                body.className = 'round-band-body' + (openBands.has(tier) ? ' open' : '');
+                body.dataset.tier = tier;
 
                 players.forEach(p => {
                     const row = document.createElement('div');
@@ -1109,69 +1267,66 @@
                         statusHtml = `<span class="status-tag sold">${p.team_id} · ${fmtCr(p.final_bid_price)}</span>`;
                         actionHtml = `<button class="mini-btn ghost-live" data-undo="${p.id}">Undo Sale</button>`;
                     } else if (isOnBlock) {
-                        statusHtml = `<span class="status-tag block">On the block</span>`;
-                        actionHtml = '';
+                        statusHtml = `<span class="status-tag block">On the block</span>`; actionHtml = '';
                     } else {
                         statusHtml = `<span class="status-tag avail">Available</span>`;
                         actionHtml = `<button class="mini-btn" data-put="${p.id}">Put on Block</button>`;
                     }
-                    row.innerHTML = `<span class="n">${p.ign || p.real_name}<span class="m">${p.real_name} · UID ${p.uid} · Lvl ${p.level}</span></span>
+                    row.innerHTML = `<span class="n">${p.ign || p.real_name}<span class="m">${p.real_name} · UID ${p.uid} · Lvl ${p.level}${p.auction_round ? ' · Round ' + p.auction_round : ''}</span></span>
                         <div class="band-row-actions">${statusHtml}${actionHtml}</div>`;
                     body.appendChild(row);
                 });
 
-                head.addEventListener('click', (e) => { if (e.target.closest('[data-start-round]')) return; body.classList.toggle('open'); });
+                head.addEventListener('click', () => body.classList.toggle('open'));
                 band.appendChild(head); band.appendChild(body);
                 container.appendChild(band);
             });
-            container.querySelectorAll('[data-put]').forEach(b => b.addEventListener('click', () => putPlayerOnBlock(b.dataset.put)));
-            container.querySelectorAll('[data-undo]').forEach(b => b.addEventListener('click', () => undoSale(b.dataset.undo)));
+            container.querySelectorAll('[data-put]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); putPlayerOnBlock(b.dataset.put); }));
+            container.querySelectorAll('[data-undo]').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); undoSale(b.dataset.undo); }));
         }
 
-        // ---------- SUMMARIES (plain client-side modals — no DB phase involved,
-        // so closing them is final and they can never silently reopen) ----------
+        // ---------- SUMMARIES: broadcast (everyone sees them, admin triggers) ----------
         document.querySelectorAll('[data-summary-round]').forEach(btn => {
-            btn.addEventListener('click', () => openRoundSummary(parseInt(btn.dataset.summaryRound, 10)));
-        });
-        function openRoundSummary(roundNum) {
-            const tier = ROUND_TIER[roundNum];
-            const players = Object.values(playersCache).filter(p => p.auction_tier === tier);
-            const sold = players.filter(p => p.team_id);
-            const list = $('summaryList');
-            list.innerHTML = '';
-            if (!sold.length) list.innerHTML = '<div class="summary-row"><span>No players sold in this round yet.</span></div>';
-            sold.sort((a, b) => (b.final_bid_price || 0) - (a.final_bid_price || 0)).forEach(p => {
-                const row = document.createElement('div');
-                row.className = 'summary-row';
-                row.innerHTML = `<span><span class="p">${p.ign || p.real_name}</span><br><span class="t">→ ${p.team_id}</span></span><span class="amt">${fmtCr(p.final_bid_price)}</span>`;
-                list.appendChild(row);
+            btn.addEventListener('click', () => {
+                if (!isAdmin) return;
+                const roundNum = parseInt(btn.dataset.summaryRound, 10);
+                broadcastChannel.send({ type: 'broadcast', event: 'round_summary', payload: { round: roundNum } });
+                renderSummaryModal({ round: roundNum });
             });
-            $('summaryTitle').textContent = `TIER ${roundNum} RESULT`;
-            $('summarySub').textContent = `${sold.length} of ${players.length} players sold`;
+        });
+        $('btnFinalSummary').addEventListener('click', () => {
+            if (!isAdmin) return;
+            broadcastChannel.send({ type: 'broadcast', event: 'final_summary', payload: {} });
+            renderFinalSummaryModal({});
+            setTimeout(() => broadcastChannel.send({ type: 'broadcast', event: 'auction_complete', payload: {} }), 600);
+        });
+
+        function summaryTeamCard(id, roster) {
+            const rosterHtml = roster.length
+                ? roster.map(p => `<div class="prow"><span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span></div>`).join('')
+                : '<div class="empty-slot">No player yet</div>';
+            return `<div class="summary-team-card" style="--team-color:${TEAM_META[id].color}">
+                <div class="h"><span class="abbr display">${id}</span><span class="cap">Captain<br>${teamsCache[id]?.captain_name || '—'}</span></div>
+                <div class="spent">Spent <b>${fmtCr(teamsCache[id]?.purse_spent ?? 0)}</b> · ${teamsCache[id]?.players_bought ?? 0}/5 players</div>
+                <div class="plist">${rosterHtml}</div>
+            </div>`;
+        }
+
+        function renderSummaryModal({ round }) {
+            const players = Object.values(playersCache).filter(p => p.auction_round === round && p.team_id);
+            const swipe = $('summarySwipe');
+            swipe.innerHTML = TEAM_IDS.map(id => summaryTeamCard(id, players.filter(p => p.team_id === id))).join('');
+            $('summaryTitle').textContent = `ROUND ${round} RESULT`;
+            $('summarySub').textContent = `${players.length} of ${ROUND_SIZE} players decided this round`;
             $('summaryModal').classList.add('show');
         }
-        $('btnFinalSummary').addEventListener('click', () => {
-            const list = $('summaryList');
-            list.innerHTML = '';
-            TEAM_IDS.forEach(id => {
-                const t = teamsCache[id];
-                const roster = Object.values(playersCache).filter(p => p.team_id === id);
-                const header = document.createElement('div');
-                header.className = 'summary-row'; header.style.background = 'rgba(var(--gold-rgb),0.08)';
-                header.innerHTML = `<span class="p" style="color:${TEAM_META[id].color}">${id} — ${t?.captain_name || ''}</span><span class="amt">${fmtCr(t?.purse_spent ?? 0)} spent</span>`;
-                list.appendChild(header);
-                roster.forEach(p => {
-                    const row = document.createElement('div');
-                    row.className = 'summary-row';
-                    row.innerHTML = `<span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span>`;
-                    list.appendChild(row);
-                });
-            });
+        function renderFinalSummaryModal() {
+            const swipe = $('summarySwipe');
+            swipe.innerHTML = TEAM_IDS.map(id => summaryTeamCard(id, Object.values(playersCache).filter(p => p.team_id === id))).join('');
             $('summaryTitle').textContent = '🏆 FINAL SUMMARY';
-            $('summarySub').textContent = 'All 8 teams — click Close whenever you\'re done';
+            $('summarySub').textContent = 'All 8 teams — full rosters';
             $('summaryModal').classList.add('show');
-        });
-        // Closing is unconditional and final — nothing re-opens this modal on its own.
+        }
         $('summaryClose').addEventListener('click', () => $('summaryModal').classList.remove('show'));
 
         // ---------- BOOT ----------
