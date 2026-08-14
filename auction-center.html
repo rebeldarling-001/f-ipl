@@ -594,8 +594,9 @@
         .bid-leader-gain .arrow { margin-right:1px; }
 
         /* ============ NEW-PLAYER ANNOUNCE POPUP ============ */
-        .announce-overlay { position:fixed; inset:0; z-index:560; max-width:480px; margin:0 auto; display:flex; align-items:center; justify-content:center; flex-direction:column; background: rgba(var(--bg-rgb),0.9); opacity:0; pointer-events:none; transition: opacity 0.25s ease; }
-        .announce-overlay.show { opacity:1; }
+        .announce-overlay { position:fixed; inset:0; z-index:560; max-width:480px; margin:0 auto; display:flex; align-items:center; justify-content:center; flex-direction:column; background: rgba(var(--bg-rgb),0.92); opacity:0; pointer-events:none; transition: opacity 0.25s ease; cursor:pointer; }
+        .announce-overlay.show { opacity:1; pointer-events:auto; }
+        .announce-dismiss { margin-top:18px; font-size:10.5px; color:var(--ink-faint); letter-spacing:0.08em; text-transform:uppercase; }
         .announce-tag { font-size:11px; letter-spacing:0.28em; color:var(--gold-deep); text-transform:uppercase; }
         .announce-word { margin-top:10px; font-family:'Anton',sans-serif; font-size:30px; text-align:center; color:var(--ink); padding:0 24px; animation: celebratePop 0.5s cubic-bezier(.2,.9,.25,1); }
         .announce-meta { margin-top:10px; display:flex; gap:8px; }
@@ -684,6 +685,7 @@
             <span class="round-pill" id="announceRound">ROUND —</span>
             <span class="tier-badge" id="announceTier">TIER —</span>
         </div>
+        <div class="announce-dismiss">Tap anywhere to dismiss</div>
     </div>
     <div class="lightbox-overlay" id="lightboxOverlay">
         <button class="lightbox-close" id="lightboxClose">✕</button>
@@ -1091,6 +1093,12 @@
         function playBidSound() { playTone(880, 140, 'square', 0.09); }
         function playTickSound() { playTone(520, 110, 'triangle', 0.08); }
         function playGavelSound() { playTone(140, 90, 'square', 0.22); setTimeout(() => playTone(90, 220, 'square', 0.18), 90); }
+        function playAnnounceSound() {
+            // Rising 3-note chime: signals a new player is on the block
+            playTone(523, 160, 'sine', 0.13);
+            setTimeout(() => playTone(659, 160, 'sine', 0.13), 170);
+            setTimeout(() => playTone(784, 320, 'sine', 0.16), 340);
+        }
         function speak(text) {
             if (soundMuted) return;
             try {
@@ -1160,7 +1168,7 @@
             tierBadge.textContent = TIER_LABEL[player.auction_tier]?.split(' — ')[0] || 'TIER —';
             tierBadge.className = 'tier-badge ' + (player.auction_tier || '');
             overlay.classList.add('show');
-            playTickSound();
+            playAnnounceSound();
             speak(`Now on the block: ${player.ign || player.real_name}`);
             const dismiss = () => overlay.classList.remove('show');
             overlay.onclick = dismiss;
@@ -1276,12 +1284,9 @@
             const bar = $('roundProgressBar');
             if (!round) { $('roundProgressNum').textContent = '—'; $('roundProgressCount').textContent = '0/8 decided'; bar.classList.remove('complete'); }
             else {
-                // Count anyone decided (sold or unsold) *in this round*, tagged either
-                // via auction_round or — as a fallback, in case a sale lands before the
-                // round tag is written/replicated — anyone already sold to a team while
-                // this round is live gets counted too, so the bar can never read lower
-                // than what's actually on the block.
-                const decided = Object.values(playersCache).filter(p => p.auction_round === round || (p.team_id && p.auction_round == null)).length;
+                // Use the same decidedCountForRound() that the admin mini-chips use,
+                // so both the public bar and the round-timer chips always agree.
+                const decided = decidedCountForRound(round);
                 $('roundProgressNum').textContent = round;
                 $('roundProgressCount').textContent = `${decided}/${ROUND_SIZE} decided`;
                 bar.classList.toggle('complete', decided >= ROUND_SIZE);
@@ -1290,7 +1295,17 @@
         }
 
         // ---------- ROUND SEQUENCING: round N only unlocks once round N-1 is fully decided ----------
-        function decidedCountForRound(r) { return Object.values(playersCache).filter(p => p.auction_round === r).length; }
+        function decidedCountForRound(r) {
+            // Primary: player is explicitly tagged to this round
+            // Fallback: player was sold (has team_id) while this round is the active round
+            // and auction_round is null — covers the race where the sale lands before the
+            // round tag is written, same logic as the public progress bar uses.
+            const activeRound = stateCache?.current_round;
+            return Object.values(playersCache).filter(p =>
+                p.auction_round === r ||
+                (p.team_id && p.auction_round == null && r === activeRound)
+            ).length;
+        }
         function updateRoundLocks() {
             const note = $('roundLockNote');
             let nextUp = null;
