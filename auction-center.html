@@ -438,12 +438,26 @@
         .min-bid-label b { color:var(--gold-pale); }
     </style>
     <style>
-        /* ============ ROUND PROGRESS ============ */
-        .round-progress-bar { margin-top:10px; padding:12px 14px; border-radius:13px; background:var(--surface); border:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; }
-        .round-progress-bar .lbl { font-size:11px; color:var(--ink-dim); }
-        .round-progress-bar .n { font-family:'Space Mono',monospace; font-weight:700; color:var(--gold-pale); }
-        .round-progress-bar.complete { border-color:#5fd97e; background: rgba(95,217,126,0.08); }
-        .round-progress-bar.complete .n { color:#5fd97e; }
+        /* ============ ROUND PROGRESS PANEL (below TV card, everyone sees) ============ */
+        .round-progress-panel { margin-top:16px; padding:14px 16px; border-radius:18px; background: linear-gradient(160deg, var(--card-a), var(--card-b) 80%); border:1px solid var(--line); }
+        .rpp-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+        .rpp-title { font-size:9.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold-deep); font-weight:700; }
+        .rpp-overall { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; color:var(--gold-pale); background: rgba(var(--gold-rgb),0.1); border:1px solid var(--gold-deep); padding:3px 9px; border-radius:100px; }
+        .rpp-rows { display:flex; flex-direction:column; gap:8px; }
+        .rpp-row { display:flex; align-items:center; gap:10px; }
+        .rpp-label { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; color:var(--ink-faint); width:22px; flex-shrink:0; }
+        .rpp-track { flex:1; height:8px; border-radius:6px; background: rgba(var(--gold-rgb),0.08); border:1px solid rgba(var(--gold-rgb),0.12); overflow:hidden; position:relative; }
+        .rpp-fill { height:100%; border-radius:6px; background: linear-gradient(90deg, var(--gold-deep), var(--gold)); transition: width 0.5s cubic-bezier(.2,.8,.2,1); }
+        .rpp-count { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; color:var(--ink-dim); width:32px; text-align:right; flex-shrink:0; }
+        .rpp-row.active .rpp-label { color:var(--gold-pale); }
+        .rpp-row.active .rpp-track { border-color: rgba(var(--gold-rgb),0.4); background: rgba(var(--gold-rgb),0.12); }
+        .rpp-row.active .rpp-fill { background: linear-gradient(90deg, var(--gold), var(--gold-pale)); box-shadow: 0 0 8px rgba(var(--gold-rgb),0.5); animation: rppGlow 1.6s ease-in-out infinite; }
+        .rpp-row.active .rpp-count { color:var(--gold-pale); }
+        .rpp-row.done .rpp-label { color:#5fd97e; }
+        .rpp-row.done .rpp-track { border-color: rgba(95,217,126,0.4); background: rgba(95,217,126,0.08); }
+        .rpp-row.done .rpp-fill { background: linear-gradient(90deg, #3db85e, #5fd97e); box-shadow:none; }
+        .rpp-row.done .rpp-count { color:#5fd97e; }
+        @keyframes rppGlow { 0%,100%{ box-shadow:0 0 6px rgba(var(--gold-rgb),0.4); } 50%{ box-shadow:0 0 14px rgba(var(--gold-rgb),0.7); } }
 
         /* ============ PLAYER PHOTO (real image + lightbox) ============ */
         .player-photo-img { width:96px; height:96px; border-radius:50%; margin:18px auto 0; border:3px solid var(--gold-deep); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; font-family:'Anton',sans-serif; font-size:30px; color:var(--gold-pale); box-shadow:0 0 0 6px rgba(var(--gold-rgb),0.08); cursor:pointer; }
@@ -703,10 +717,6 @@
             <div class="presence-chip">✅ <b id="soldOverallCount">0</b>/40 sold</div>
         </div>
         <div class="captain-chips fade-up" id="captainChips"><span class="captain-chips-empty">No captains signed in yet</span></div>
-        <div class="round-progress-bar fade-up" id="roundProgressBar">
-            <span class="lbl">Round <span id="roundProgressNum">—</span> progress</span>
-            <span class="n" id="roundProgressCount">0/8 decided</span>
-        </div>
     </section>
 
     <!-- ROLE TABS -->
@@ -774,6 +784,17 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ROUND PROGRESS — visible to everyone below the TV card -->
+        <div class="round-progress-panel fade-up" id="roundProgressBar">
+            <div class="rpp-header">
+                <span class="rpp-title">ROUND PROGRESS</span>
+                <span class="rpp-overall" id="soldOverallBadge">0/40 sold</span>
+            </div>
+            <div class="rpp-rows" id="rppRows">
+                <!-- filled by updateRoundProgress() -->
             </div>
         </div>
     </section>
@@ -1280,31 +1301,44 @@
             $('soldOverallCount').textContent = Object.values(playersCache).filter(p => p.team_id).length;
         }
         function updateRoundProgress() {
-            const round = stateCache?.current_round;
-            const bar = $('roundProgressBar');
-            if (!round) { $('roundProgressNum').textContent = '—'; $('roundProgressCount').textContent = '0/8 decided'; bar.classList.remove('complete'); }
-            else {
-                // Use the same decidedCountForRound() that the admin mini-chips use,
-                // so both the public bar and the round-timer chips always agree.
-                const decided = decidedCountForRound(round);
-                $('roundProgressNum').textContent = round;
-                $('roundProgressCount').textContent = `${decided}/${ROUND_SIZE} decided`;
-                bar.classList.toggle('complete', decided >= ROUND_SIZE);
+            const activeRound = stateCache?.current_round;
+            const rppRows = $('rppRows');
+            const overallBadge = $('soldOverallBadge');
+
+            // Update overall sold badge
+            const totalSold = Object.values(playersCache).filter(p => p.team_id).length;
+            if (overallBadge) overallBadge.textContent = `${totalSold}/40 sold`;
+
+            // Render 5 round rows
+            if (rppRows) {
+                rppRows.innerHTML = [1,2,3,4,5].map(r => {
+                    const decided = decidedCountForRound(r);
+                    const pct = Math.min(100, (decided / ROUND_SIZE) * 100);
+                    const isDone = decided >= ROUND_SIZE;
+                    const isActive = !isDone && r === activeRound;
+                    const cls = isDone ? 'done' : isActive ? 'active' : '';
+                    return `<div class="rpp-row ${cls}">
+                        <span class="rpp-label">R${r}</span>
+                        <div class="rpp-track"><div class="rpp-fill" style="width:${pct}%"></div></div>
+                        <span class="rpp-count">${decided}/${ROUND_SIZE}</span>
+                    </div>`;
+                }).join('');
             }
             updateRoundLocks();
         }
 
         // ---------- ROUND SEQUENCING: round N only unlocks once round N-1 is fully decided ----------
         function decidedCountForRound(r) {
-            // Primary: player is explicitly tagged to this round
-            // Fallback: player was sold (has team_id) while this round is the active round
-            // and auction_round is null — covers the race where the sale lands before the
-            // round tag is written, same logic as the public progress bar uses.
+            // Primary count: player has auction_round explicitly tagged to this round
+            const tagged = Object.values(playersCache).filter(p => p.auction_round === r).length;
+            // Fallback: if this is the currently active round, also count sold players
+            // whose auction_round tag hasn't been written yet (race between sale and tag).
+            // Only applies to the live round so we don't double-count across rounds.
             const activeRound = stateCache?.current_round;
-            return Object.values(playersCache).filter(p =>
-                p.auction_round === r ||
-                (p.team_id && p.auction_round == null && r === activeRound)
-            ).length;
+            const fallback = (r === activeRound)
+                ? Object.values(playersCache).filter(p => p.team_id && p.auction_round == null).length
+                : 0;
+            return tagged + fallback;
         }
         function updateRoundLocks() {
             const note = $('roundLockNote');
