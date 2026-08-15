@@ -580,149 +580,171 @@
             font-family: 'Space Mono', monospace;
         }
 
+        /* ═══════════════════════════════════════════════════
+           AUCTION NIGHT SPLASH — full dramatic reveal
+           ═══════════════════════════════════════════════════ */
         #splash {
             position: fixed;
             inset: 0;
             z-index: 999;
-            background: radial-gradient(ellipse at 50% 40%, var(--splash-a) 0%, var(--splash-b) 70%);
+            background: #050302;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             max-width: 480px;
             margin: 0 auto;
-            transition: opacity .7s ease, visibility .7s ease;
-            will-change: mask-image;
-        }
-
-        .ignite-wrap {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ignite-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 1.5px solid var(--gold-deep);
-            opacity: 0;
-            animation: ringPulse 1.8s ease-out infinite;
-        }
-
-        .ignite-ring.r2 {
-            animation-delay: .4s;
-        }
-
-        .ignite-ring.r3 {
-            animation-delay: .8s;
-        }
-
-        @keyframes ringPulse {
-            0% {
-                transform: scale(.5);
-                opacity: 0;
-            }
-
-            30% {
-                opacity: .9;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
-        }
-
-        .ignite-core {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
-            animation: coreSpin 2.4s ease-in-out infinite, coreGlow 1.6s ease-in-out infinite;
-            filter: drop-shadow(0 0 18px rgba(var(--gold-rgb), .7));
-        }
-
-        @keyframes coreSpin {
-
-            0%,
-            100% {
-                transform: rotate(-6deg) scale(1);
-            }
-
-            50% {
-                transform: rotate(6deg) scale(1.08);
-            }
-        }
-
-        @keyframes coreGlow {
-
-            0%,
-            100% {
-                filter: drop-shadow(0 0 14px rgba(var(--gold-rgb), .5));
-            }
-
-            50% {
-                filter: drop-shadow(0 0 28px rgba(var(--gold-rgb), .9));
-            }
-        }
-
-        .splash-word {
-            margin-top: 28px;
-            font-size: 23px;
-            letter-spacing: .06em;
-            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            opacity: 0;
-            animation: wordIn .8s ease forwards .5s;
-        }
-
-        .splash-sub {
-            margin-top: 6px;
-            font-size: 11px;
-            letter-spacing: .45em;
-            color: var(--ink-faint);
-            opacity: 0;
-            animation: wordIn .8s ease forwards .9s;
-        }
-
-        @keyframes wordIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .splash-bar {
-            margin-top: 36px;
-            width: 130px;
-            height: 2px;
-            background: rgba(var(--gold-rgb), .15);
-            border-radius: 2px;
             overflow: hidden;
         }
 
-        .splash-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold));
-            animation: fillBar 1.9s ease forwards .3s;
+        /* Spotlight beam from top */
+        #splash::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 120%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(240,185,61,.18) 0%, transparent 65%);
+            animation: _spotFade 2.4s ease forwards;
+            pointer-events: none;
+        }
+        @keyframes _spotFade { from{opacity:0} 30%{opacity:1} to{opacity:1} }
+
+        /* Red curtain left + right panels */
+        .sp-curtain-l, .sp-curtain-r {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 55%;
+            background: linear-gradient(135deg, #3a0505, #1a0202);
+            z-index: 2;
+            animation: _curtainOpen 1s cubic-bezier(.6,0,.4,1) forwards .2s;
+        }
+        .sp-curtain-l { left: 0; transform-origin: left center; }
+        .sp-curtain-r { right: 0; transform-origin: right center; }
+        @keyframes _curtainOpen { to { transform: scaleX(0); } }
+
+        /* Curtain fringe top */
+        .sp-curtain-l::before, .sp-curtain-r::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 18px;
+            background: repeating-linear-gradient(90deg, #8b0000 0px, #8b0000 8px, #5a0000 8px, #5a0000 16px);
         }
 
-        @keyframes fillBar {
-            to {
-                width: 100%;
-            }
+        /* Gavel icon */
+        .sp-gavel {
+            font-size: 72px;
+            line-height: 1;
+            position: relative;
+            z-index: 3;
+            animation: _gavelDrop .5s cubic-bezier(.2,1.4,.4,1) forwards 1s, _gavelGlow 1.2s ease-in-out infinite alternate 1.5s;
+            transform: rotate(-35deg) scale(0);
+            transform-origin: 80% 80%;
+            filter: drop-shadow(0 0 0px rgba(240,185,61,0));
+        }
+        @keyframes _gavelDrop {
+            0%   { transform: rotate(-35deg) scale(0); filter: drop-shadow(0 0 0 rgba(240,185,61,0)); }
+            60%  { transform: rotate(8deg) scale(1.12); }
+            80%  { transform: rotate(-4deg) scale(.96); }
+            100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 20px rgba(240,185,61,.7)); }
+        }
+        @keyframes _gavelGlow {
+            from { filter: drop-shadow(0 0 12px rgba(240,185,61,.5)); }
+            to   { filter: drop-shadow(0 0 28px rgba(240,185,61,.9)); }
+        }
+
+        /* AUCTION NIGHT headline */
+        .sp-night {
+            font-family: 'Anton', sans-serif;
+            font-size: 38px;
+            letter-spacing: .06em;
+            line-height: 1;
+            margin-top: 18px;
+            position: relative;
+            z-index: 3;
+            opacity: 0;
+            background: linear-gradient(135deg, #ff4433, #ff7a45, #ffd700, #ff7a45, #ff4433);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: _nightIn .6s ease forwards 1.3s, _fireShimmer 2s linear infinite 1.9s;
+        }
+        @keyframes _nightIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes _fireShimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
+
+        /* Divider line */
+        .sp-divider {
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(240,185,61,.7), transparent);
+            margin: 10px 0;
+            position: relative;
+            z-index: 3;
+            animation: _divIn .5s ease forwards 1.7s;
+        }
+        @keyframes _divIn { to { width: 200px; } }
+
+        /* FREEFIRE XIPL tag */
+        .sp-brand {
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            letter-spacing: .22em;
+            color: var(--gold-pale);
+            opacity: 0;
+            position: relative;
+            z-index: 3;
+            animation: _nightIn .5s ease forwards 1.9s;
+        }
+
+        /* SEASON 12 sub */
+        .sp-season {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            letter-spacing: .3em;
+            color: var(--ink-faint);
+            opacity: 0;
+            margin-top: 4px;
+            position: relative;
+            z-index: 3;
+            animation: _nightIn .5s ease forwards 2.1s;
+        }
+
+        /* Progress bar */
+        .sp-bar {
+            margin-top: 32px;
+            width: 140px;
+            height: 2px;
+            background: rgba(240,185,61,.12);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            z-index: 3;
+        }
+        .sp-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff4433, #f0b93d);
+            animation: _barFill 2s ease forwards .4s;
+        }
+        @keyframes _barFill { to { width: 100%; } }
+
+        /* Spark particles */
+        .sp-spark {
+            position: absolute;
+            width: 3px; height: 3px;
+            border-radius: 50%;
+            background: #f0b93d;
+            pointer-events: none;
+            z-index: 4;
+            animation: _sparkFly linear forwards;
+        }
+        @keyframes _sparkFly {
+            0%   { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
         }
 
         .embers {
@@ -833,21 +855,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .back-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            text-decoration: none;
-            flex-shrink: 0;
         }
 
         .theme-overlay {
@@ -3605,24 +3612,20 @@
     </div>
 
     <div id="splash">
-        <div class="ignite-wrap">
-            <div class="ignite-ring r1"></div>
-            <div class="ignite-ring r2"></div>
-            <div class="ignite-ring r3"></div>
-            <div class="ignite-core"></div>
-        </div>
-        <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">AUCTION NIGHT</div>
-        <div class="splash-bar">
-            <div class="splash-bar-fill"></div>
-        </div>
+        <div class="sp-curtain-l"></div>
+        <div class="sp-curtain-r"></div>
+        <div class="sp-gavel">🔨</div>
+        <div class="sp-night">AUCTION NIGHT</div>
+        <div class="sp-divider"></div>
+        <div class="sp-brand">FREEFIRE XIPL</div>
+        <div class="sp-season">SEASON 12</div>
+        <div class="sp-bar"><div class="sp-bar-fill"></div></div>
     </div>
 
     <div class="embers" id="embers"></div>
 
     <header>
         <div class="header-flex">
-            <a href="home.html" class="back-btn" aria-label="Back to home">←</a>
             <div class="brand">
                 <div class="crest"></div>
                 <div class="brand-text">FREEFIRE<b>XIPL</b></div>
@@ -4144,11 +4147,25 @@
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0, 0);
         window.addEventListener('pageshow', (event) => { if (event.persisted) { window.location.reload(); } });
+        // Spark burst when gavel lands (~1s in)
         setTimeout(() => {
             const splash = document.getElementById('splash');
-            splash.animate([{ transform: "scale(1)", opacity: 1 }, { transform: "scale(2.5)", opacity: 0 }], { duration: 1600, easing: "cubic-bezier(.2,.8,.2,1)" });
-            setTimeout(() => splash.style.display = "none", 600);
-        }, 2100);
+            for (let i = 0; i < 18; i++) {
+                const sp = document.createElement('div');
+                sp.className = 'sp-spark';
+                const angle = (i / 18) * Math.PI * 2;
+                const dist = 60 + Math.random() * 80;
+                sp.style.cssText = 'left:50%;top:38%;--dx:' + Math.round(Math.cos(angle)*dist) + 'px;--dy:' + Math.round(Math.sin(angle)*dist) + 'px;animation-duration:' + (.4+Math.random()*.4) + 's;';
+                splash.appendChild(sp);
+                setTimeout(() => sp.remove(), 900);
+            }
+        }, 1050);
+        // Dismiss splash
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            splash.animate([{ opacity:1, transform:'scale(1)' }, { opacity:0, transform:'scale(1.15)' }], { duration:600, easing:'ease-in', fill:'forwards' });
+            setTimeout(() => splash.style.display = 'none', 580);
+        }, 3200);
 
         const menuBtn = document.getElementById('menuBtn');
         const navDrawer = document.getElementById('navDrawer');
@@ -4616,10 +4633,13 @@
             else tvFrame.classList.remove('hot-bid');
 
             if (s.phase === 'round_countdown') {
-                startCountdownDisplay(s.countdown_target, `Round ${s.current_round} begins in`);
                 if (s.current_round !== _lastAnnouncedRound) {
                     _lastAnnouncedRound = s.current_round;
+                    // Speak the round announcement first, delay countdown numbers by 3s
                     speak(`Round ${s.current_round} begins! Captains, get ready to bid!`);
+                    startCountdownDisplay(s.countdown_target, `Round ${s.current_round} begins in`, 3000);
+                } else {
+                    startCountdownDisplay(s.countdown_target, `Round ${s.current_round} begins in`, 0);
                 }
             }
             else if (s.phase === 'unsold') $('unsoldOverlay').classList.add('show');
@@ -4695,13 +4715,16 @@
                 else { leadEl.textContent = player ? 'Base price' : ''; leadEl.style.color = 'var(--ink-faint)'; }
             });
         }
-        function startCountdownDisplay(targetTs, label) {
+        function startCountdownDisplay(targetTs, label, delaySpeakMs) {
             $('countdownLabel').textContent = label; $('countdownOverlay').classList.add('show');
             let _lastSpoken = -1;
+            let _speakReady = false;
+            // delaySpeakMs lets the round-announcement finish before numbers start
+            setTimeout(() => { _speakReady = true; }, delaySpeakMs || 0);
             function tick() {
                 const secs = Math.max(0, Math.ceil((targetTs - Date.now()) / 1000));
                 $('countdownNum').textContent = secs;
-                if (secs !== _lastSpoken && secs > 0 && secs <= 10) {
+                if (_speakReady && secs !== _lastSpoken && secs > 0 && secs <= 10) {
                     _lastSpoken = secs;
                     speak(String(secs));
                 }
@@ -4990,7 +5013,8 @@
                 const ok = await callAdminRpc('ffxipl_s12_start_round_countdown', { p_round: roundNum });
                 if (ok) {
                     broadcastToast(`⏱️ Round ${roundNum} is starting!`, 'success');
-                    speak(`Round ${roundNum} begins! Get ready for the countdown!`);
+                    // speak the announcement — realtime update will handle the countdown numbers
+                    speak(`Round ${roundNum} begins! Captains, get ready to bid!`);
                 }
             });
         });
