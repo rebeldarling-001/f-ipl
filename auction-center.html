@@ -549,757 +549,13 @@
             background-attachment: fixed;
         }
 
-        /* ══════════════════════════════════════════════════════════════
-           AUCTION COMPLETED — GLORY SCREEN CSS
-           ══════════════════════════════════════════════════════════════ */
-        .glory-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            background: linear-gradient(160deg, #0a0705 0%, #1a0d04 35%, #0d0a1a 70%, #0a0705 100%);
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .glory-confetti-canvas {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .glory-particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        .glory-particle {
-            position: absolute;
-            font-size: 28px;
-            animation: floatUp linear infinite;
-            opacity: 0;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(110vh) scale(.7) rotate(0deg);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 1;
-            }
-
-            90% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-20vh) scale(1.1) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .glory-scroll {
-            position: relative;
-            z-index: 10;
-            padding: 0 0 60px;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        /* ── HERO ─────────────────────────────────── */
-        .glory-hero {
-            text-align: center;
-            padding: 60px 20px 30px;
-        }
-
-        .glory-trophy-wrap {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 16px;
-        }
-
-        .glory-trophy-glow {
-            position: absolute;
-            inset: -20px;
-            background: radial-gradient(circle, rgba(240, 185, 61, .45) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: pulseGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            from {
-                transform: scale(.85);
-                opacity: .6;
-            }
-
-            to {
-                transform: scale(1.15);
-                opacity: 1;
-            }
-        }
-
-        .glory-trophy {
-            font-size: 90px;
-            line-height: 1;
-            animation: trophyBounce 1.8s ease-in-out infinite alternate;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes trophyBounce {
-            from {
-                transform: translateY(0) scale(1);
-            }
-
-            to {
-                transform: translateY(-12px) scale(1.06);
-            }
-        }
-
-        .glory-headline {
-            font-size: 38px;
-            background: linear-gradient(135deg, #f0b93d, #fbe4a6, #f0b93d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 100%;
-            animation: shimmerText 2.5s linear infinite;
-            margin-bottom: 6px;
-        }
-
-        @keyframes shimmerText {
-            0% {
-                background-position: 200% center;
-            }
-
-            100% {
-                background-position: -200% center;
-            }
-        }
-
-        .glory-sub-headline {
-            font-size: 20px;
-            color: #ff4433;
-            letter-spacing: .08em;
-            margin-bottom: 18px;
-            animation: flickerRed 3s ease-in-out infinite;
-        }
-
-        @keyframes flickerRed {
-
-            0%,
-            100% {
-                text-shadow: 0 0 12px rgba(255, 68, 51, .8);
-            }
-
-            50% {
-                text-shadow: 0 0 28px rgba(255, 68, 51, 1), 0 0 50px rgba(255, 68, 51, .5);
-            }
-        }
-
-        .glory-welcome {
-            font-size: 15px;
-            color: #a9997d;
-            line-height: 1.7;
-            background: rgba(240, 185, 61, .06);
-            border: 1px solid rgba(240, 185, 61, .18);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin: 0 0 24px;
-        }
-
-        .glory-gold {
-            color: #f0b93d;
-            font-weight: 700;
-        }
-
-        .glory-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(240, 185, 61, .35), transparent);
-            margin: 4px 20px 28px;
-        }
-
-        /* ── SECTIONS ─────────────────────────────── */
-        .glory-section {
-            padding: 0 16px 8px;
-        }
-
-        .glory-eyebrow {
-            font-size: 11px;
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            color: #6b5f4c;
-            margin-bottom: 6px;
-        }
-
-        .glory-section-title {
-            font-size: 22px;
-            color: #f0b93d;
-            margin-bottom: 18px;
-        }
-
-        /* ── TOP 5 ────────────────────────────────── */
-        .glory-top5 {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .glory-top5-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .01));
-            border: 1px solid rgba(240, 185, 61, .16);
-            border-radius: 14px;
-            padding: 14px 14px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glory-top5-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--team-color, #f0b93d);
-            border-radius: 4px 0 0 4px;
-        }
-
-        .glory-top5-rank {
-            font-family: 'Anton', sans-serif;
-            font-size: 28px;
-            color: #f0b93d;
-            min-width: 36px;
-            text-align: center;
-            opacity: .8;
-        }
-
-        .glory-top5-rank.rank-1 {
-            color: #FFD700;
-            font-size: 32px;
-            opacity: 1;
-        }
-
-        .glory-top5-rank.rank-2 {
-            color: #C0C0C0;
-        }
-
-        .glory-top5-rank.rank-3 {
-            color: #CD7F32;
-        }
-
-        .glory-top5-info {
-            flex: 1;
-        }
-
-        .glory-top5-name {
-            font-size: 17px;
-            font-weight: 700;
-            color: #f4ecd8;
-        }
-
-        .glory-top5-team {
-            font-size: 12px;
-            color: #a9997d;
-            margin-top: 2px;
-        }
-
-        .glory-top5-price {
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            color: #f0b93d;
-            letter-spacing: .02em;
-        }
-
-        .glory-top5-card.rank-1-card {
-            border-color: rgba(255, 215, 0, .35);
-            background: linear-gradient(135deg, rgba(255, 215, 0, .07), rgba(255, 215, 0, .02));
-            box-shadow: 0 0 24px rgba(255, 215, 0, .12);
-        }
-
-        /* ── TEAMS GRID ───────────────────────────── */
-        .glory-teams {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .glory-team-card {
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(var(--team-color-rgb, 240, 185, 61), .22);
-            background: linear-gradient(145deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .01));
-        }
-
-        .glory-team-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, .06);
-            position: relative;
-        }
-
-        .glory-team-color-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-        }
-
-        .glory-team-badge {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 13px;
-            color: #fff;
-            letter-spacing: .03em;
-            flex-shrink: 0;
-        }
-
-        .glory-team-info {
-            flex: 1;
-        }
-
-        .glory-team-id {
-            font-family: 'Anton', sans-serif;
-            font-size: 20px;
-            color: #f4ecd8;
-        }
-
-        .glory-team-fullname {
-            font-size: 11px;
-            color: #6b5f4c;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-        }
-
-        .glory-team-captain {
-            font-size: 12px;
-            color: #a9997d;
-            margin-top: 1px;
-        }
-
-        .glory-team-purse {
-            text-align: right;
-            font-size: 12px;
-            color: #a9997d;
-            font-family: 'Space Mono', monospace;
-        }
-
-        .glory-team-purse b {
-            color: #f0b93d;
-            font-size: 14px;
-            display: block;
-        }
-
-        .glory-player-list {
-            padding: 8px 12px 12px;
-        }
-
-        .glory-player-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 7px 8px;
-            border-radius: 8px;
-            transition: background .15s;
-        }
-
-        .glory-player-row:nth-child(odd) {
-            background: rgba(255, 255, 255, .025);
-        }
-
-        .glory-player-ign {
-            font-size: 14px;
-            color: #f4ecd8;
-            font-weight: 600;
-        }
-
-        .glory-player-meta {
-            font-size: 11px;
-            color: #6b5f4c;
-            margin-top: 1px;
-        }
-
-        .glory-player-price {
-            font-family: 'Space Mono', monospace;
-            font-size: 13px;
-            color: #f0b93d;
-            font-weight: 700;
-        }
-
-        .glory-player-tier {
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: .08em;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 6px;
-            background: rgba(240, 185, 61, .15);
-            color: #f0b93d;
-            vertical-align: middle;
-        }
-
-        .glory-footer {
-            text-align: center;
-            padding: 40px 20px 20px;
-        }
-
-        .glory-footer-brand {
-            font-size: 24px;
-            color: #f0b93d;
-            margin-bottom: 6px;
-        }
-
-        .glory-footer-tag {
-            font-size: 13px;
-            color: #6b5f4c;
-            margin-bottom: 8px;
-        }
-
-        .glory-footer-note {
-            font-size: 11px;
-            color: #4a3f2e;
-            background: rgba(255, 255, 255, .03);
-            border: 1px solid rgba(240, 185, 61, .1);
-            border-radius: 8px;
-            padding: 8px 12px;
-            display: inline-block;
-        }
-
-        /* ── SUBMIT ROSTERS ─────────────────────────────────────────── */
-
-        .submit-info-box {
-            background: rgba(var(--gold-rgb), .08);
-            border: 1px solid rgba(var(--gold-rgb), .22);
-            border-radius: 10px;
-            padding: 12px 14px;
-            font-size: 13px;
-            color: var(--ink-dim);
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-
-        .submit-info-box span {
-            color: var(--gold);
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .btn-submit-rosters {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: #fff;
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            letter-spacing: .04em;
-            cursor: pointer;
-            box-shadow: 0 6px 24px rgba(34, 197, 94, .32);
-            transition: transform .12s, box-shadow .12s;
-        }
-
-        .btn-submit-rosters:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(34, 197, 94, .42);
-        }
-
-        .btn-submit-rosters:active {
-            transform: scale(.97);
-        }
-
-        /* ── PASSWORD MODAL ─────────────────────────────────────────── */
-        .pw-modal-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .75);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .pw-modal-backdrop.show {
-            display: flex;
-        }
-
-        .pw-modal-card {
-            background: linear-gradient(145deg, var(--surface), var(--surface-2));
-            border: 1px solid rgba(var(--gold-rgb), .2);
-            border-radius: 20px;
-            padding: 28px 22px 22px;
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, .5), var(--shadow-gold);
-        }
-
-        .pw-close {
-            position: absolute;
-            top: 14px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: var(--ink-faint);
-            font-size: 18px;
-            cursor: pointer;
-            transition: color .15s;
-        }
-
-        .pw-close:hover {
-            color: var(--ink);
-        }
-
-        .pw-icon {
-            font-size: 40px;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .pw-title {
-            font-size: 22px;
-            color: var(--gold);
-            text-align: center;
-            margin-bottom: 6px;
-        }
-
-        .pw-sub {
-            font-size: 13px;
-            color: var(--ink-dim);
-            text-align: center;
-            margin-bottom: 18px;
-            line-height: 1.5;
-        }
-
-        .pw-input-wrap {
-            position: relative;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .pw-input {
-            flex: 1;
-            background: var(--bg-alt);
-            border: 1.5px solid rgba(var(--gold-rgb), .2);
-            border-radius: 10px;
-            padding: 12px 44px 12px 14px;
-            color: var(--ink);
-            font-size: 15px;
-            font-family: 'Space Mono', monospace;
-            outline: none;
-            transition: border-color .15s;
-        }
-
-        .pw-input:focus {
-            border-color: var(--gold);
-        }
-
-        .pw-eye {
-            position: absolute;
-            right: 10px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            opacity: .6;
-            transition: opacity .15s;
-        }
-
-        .pw-eye:hover {
-            opacity: 1;
-        }
-
-        .pw-error {
-            color: var(--live);
-            font-size: 12px;
-            min-height: 18px;
-            margin-bottom: 8px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .pw-teams-preview {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-
-        .pw-team-chip {
-            background: rgba(var(--gold-rgb), .06);
-            border: 1px solid rgba(var(--gold-rgb), .14);
-            border-radius: 8px;
-            padding: 7px 10px;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .pw-team-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .pw-team-name {
-            font-weight: 700;
-            color: var(--ink);
-        }
-
-        .pw-team-count {
-            color: var(--ink-faint);
-            font-size: 10px;
-        }
-
-        .pw-hint {
-            font-size: 11px;
-            color: var(--ink-faint);
-            text-align: center;
-            margin-top: 12px;
-            line-height: 1.5;
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            20% {
-                transform: translateX(-6px);
-            }
-
-            40% {
-                transform: translateX(6px);
-            }
-
-            60% {
-                transform: translateX(-4px);
-            }
-
-            80% {
-                transform: translateX(4px);
-            }
-        }
-
-        .pw-input.shake {
-            animation: shake .35s ease;
-            border-color: var(--live) !important;
-        }
-
-        /* ── SUCCESS OVERLAY ────────────────────────────────────────── */
-        .submit-success-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .85);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .submit-success-overlay.show {
-            display: flex;
-        }
-
-        .submit-success-card {
-            background: linear-gradient(145deg, var(--surface), var(--surface-2));
-            border: 1px solid rgba(34, 197, 94, .35);
-            border-radius: 20px;
-            padding: 32px 22px 22px;
-            width: 100%;
-            max-width: 440px;
-            text-align: center;
-            box-shadow: 0 0 60px rgba(34, 197, 94, .18);
-        }
-
-        .submit-success-icon {
-            font-size: 56px;
-            margin-bottom: 12px;
-            animation: popIn .4s cubic-bezier(.2, 1.4, .4, 1) both;
-        }
-
-        @keyframes popIn {
-            from {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .submit-success-title {
-            font-size: 28px;
-            color: #22c55e;
-            margin-bottom: 8px;
-        }
-
-        .submit-success-sub {
-            font-size: 14px;
-            color: var(--ink-dim);
-            margin-bottom: 18px;
-            line-height: 1.5;
-        }
-
-        .submit-prompt-box {
-            background: var(--bg-alt);
-            border: 1px solid rgba(var(--gold-rgb), .18);
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 11.5px;
-            color: var(--ink-dim);
-            text-align: left;
-            line-height: 1.6;
-            max-height: 220px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-break: break-word;
-            position: relative;
-        }
-
-        .copy-prompt-btn {
-            position: sticky;
-            bottom: 0;
-            left: 100%;
-            background: var(--gold);
-            color: var(--on-accent);
-            border: none;
-            border-radius: 6px;
-            padding: 4px 10px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            float: right;
-            margin-top: -4px;
-        }
+        @keyframes _popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+        @keyframes _glowPulse { from{transform:scale(.85);opacity:.6} to{transform:scale(1.15);opacity:1} }
+        @keyframes _trophyBob { from{transform:translateY(0) scale(1)} to{transform:translateY(-12px) scale(1.06)} }
+        @keyframes _shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
+        @keyframes _redFlicker { 0%,100%{text-shadow:0 0 12px rgba(255,68,51,.8)} 50%{text-shadow:0 0 28px rgba(255,68,51,1),0 0 50px rgba(255,68,51,.5)} }
+        @keyframes _floatUp { 0%{transform:translateY(110vh) rotate(0deg);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(-20vh) rotate(360deg);opacity:0} }
+        @keyframes _pwShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
 
         @media (prefers-reduced-motion: reduce) {
             * {
@@ -3515,77 +2771,66 @@
         }
 
         /* big buys marquee */
-        .bigbuy-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 14px;
-        }
+        /* ── TOP 5 MARQUEE — PREMIUM CARDS ── */
+        .bigbuy-list { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
 
         .bigbuy-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 11px 13px;
-            border-radius: 14px;
-            border: 1px solid var(--line);
-            background: var(--surface);
+            display:flex; align-items:center; gap:0;
+            border-radius:16px;
+            border:1px solid rgba(var(--gold-rgb),.14);
+            background:linear-gradient(135deg,var(--surface-2),var(--surface));
+            overflow:hidden; position:relative;
+            transition:transform .15s, box-shadow .15s;
         }
-
-        .bigbuy-rank {
-            flex-shrink: 0;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 12px;
-            background: rgba(var(--gold-rgb), .12);
-            color: var(--gold-pale);
+        .bigbuy-row:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.3); }
+        .bigbuy-row::before {
+            content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
+            background:var(--bb-bar, var(--gold));
         }
-
-        .bigbuy-rank.r1 {
-            background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep));
-            color: var(--on-accent);
+        .bigbuy-row.r1 {
+            border-color:rgba(255,215,0,.35);
+            background:linear-gradient(135deg,rgba(255,215,0,.08),var(--surface-2) 55%,rgba(255,215,0,.04));
+            box-shadow:0 0 24px rgba(255,215,0,.1);
         }
+        .bigbuy-row.r1::before { background:linear-gradient(180deg,#FFD700,#a87000); }
+        .bigbuy-row.r2::before { background:linear-gradient(180deg,#C0C0C0,#707070); }
+        .bigbuy-row.r3::before { background:linear-gradient(180deg,#CD7F32,#7a3f10); }
 
-        .bigbuy-info {
-            flex: 1;
-            min-width: 0;
+        .bigbuy-medal-col {
+            flex-shrink:0; width:52px; display:flex; flex-direction:column;
+            align-items:center; justify-content:center; padding:14px 4px 14px 10px; gap:3px;
         }
+        .bigbuy-medal { font-size:22px; line-height:1; }
+        .bigbuy-rank-num { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; color:var(--ink-faint); }
 
-        .bigbuy-info b {
-            display: block;
-            font-size: 12.5px;
-            color: var(--ink);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .bigbuy-info { flex:1; min-width:0; padding:14px 8px; }
+        .bigbuy-name {
+            font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:700;
+            color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.2;
         }
-
-        .bigbuy-info span {
-            display: block;
-            margin-top: 1px;
-            font-size: 10px;
-            color: var(--ink-faint);
+        .bigbuy-row.r1 .bigbuy-name { color:#FFD700; font-size:17px; }
+        .bigbuy-meta { display:flex; align-items:center; gap:5px; margin-top:4px; flex-wrap:wrap; }
+        .bigbuy-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+        .bigbuy-team-lbl { font-size:11px; color:var(--ink-dim); font-weight:600; }
+        .bigbuy-tier-tag {
+            font-size:9px; font-weight:700; letter-spacing:.06em;
+            padding:2px 5px; border-radius:4px;
+            background:rgba(var(--gold-rgb),.12); color:var(--gold);
         }
+        .bigbuy-rnd { font-size:10px; color:var(--ink-faint); }
 
+        .bigbuy-price-col { flex-shrink:0; text-align:right; padding:14px 14px 14px 6px; }
         .bigbuy-amt {
-            flex-shrink: 0;
-            text-align: right;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
-            color: var(--gold-pale);
-            font-size: 14px;
+            font-family:'Anton',sans-serif; font-size:22px;
+            color:var(--gold-pale); line-height:1; letter-spacing:.02em;
         }
+        .bigbuy-row.r1 .bigbuy-amt { font-size:26px; color:#FFD700; text-shadow:0 0 14px rgba(255,215,0,.5); }
+        .bigbuy-amt-lbl { font-size:9px; color:var(--ink-faint); letter-spacing:.08em; text-transform:uppercase; margin-top:2px; }
 
         .bigbuy-empty {
-            padding: 20px;
-            text-align: center;
-            font-size: 11.5px;
-            color: var(--ink-faint);
+            padding:22px 20px; text-align:center; font-size:12px; color:var(--ink-faint);
+            background:var(--surface); border-radius:14px;
+            border:1px dashed rgba(var(--gold-rgb),.1);
         }
 
         /* mini stage strip (captain / admin) — kept sticky just under the header so the
@@ -4787,105 +4032,84 @@
             <div class="summary-sub" id="summarySub"></div>
             <div class="summary-stats" id="summaryStats"></div>
             <div class="summary-swipe" id="summarySwipe"></div>
-            <!-- SUBMIT ROSTERS — only shown on final summary, only for admin -->
-            <div id="submitRostersWrap" style="display:none;margin-top:12px;">
-                <div class="submit-info-box">
-                    <span>✅ All rosters look good?</span><br>
-                    <small>Submitting locks Season 12 rosters into the teams table and generates the Teams page data.
-                        This action cannot be undone.</small>
+            <!-- SUBMIT ROSTERS — admin only, final summary only -->
+            <div id="submitRostersWrap" style="display:none;margin-top:14px;">
+                <div style="background:rgba(var(--gold-rgb),.07);border:1px solid rgba(var(--gold-rgb),.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--ink-dim);line-height:1.5;margin-bottom:10px;">
+                    <span style="color:var(--gold);font-weight:700;font-size:14px;">✅ All rosters look good?</span><br>
+                    <small>This locks Season 12 rosters permanently into the teams table. Cannot be undone.</small>
                 </div>
-                <button class="btn btn-submit-rosters" id="btnSubmitRosters">🚀 Submit Season 12 Rosters</button>
+                <button id="btnSubmitRosters" style="width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-family:'Anton',sans-serif;font-size:16px;letter-spacing:.04em;cursor:pointer;box-shadow:0 6px 20px rgba(34,197,94,.3);">🚀 Submit Season 12 Rosters</button>
             </div>
             <button class="btn btn-primary summary-close" id="summaryClose"
                 style="width:100%;margin-top:16px;">Close</button>
         </div>
     </div>
 
-    <!-- PASSWORD GATE MODAL -->
-    <div class="pw-modal-backdrop" id="pwModalBackdrop">
-        <div class="pw-modal-card">
-            <button class="pw-close" id="pwClose">✕</button>
-            <div class="pw-icon">🔐</div>
-            <div class="pw-title display">CONFIRM SUBMISSION</div>
-            <div class="pw-sub">Enter the Season 12 admin password to lock rosters and push data to the teams table.
+    <!-- PASSWORD MODAL -->
+    <div id="pwBackdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:linear-gradient(145deg,var(--surface),var(--surface-2));border:1px solid rgba(var(--gold-rgb),.2);border-radius:20px;padding:28px 20px 22px;width:100%;max-width:380px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5);">
+            <button id="pwClose" style="position:absolute;top:14px;right:16px;background:none;border:none;color:var(--ink-faint);font-size:18px;cursor:pointer;">✕</button>
+            <div style="text-align:center;margin-bottom:18px;">
+                <div style="font-size:38px;margin-bottom:8px;">🔐</div>
+                <div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);letter-spacing:.04em;">CONFIRM SUBMISSION</div>
+                <div style="font-size:13px;color:var(--ink-dim);margin-top:6px;line-height:1.5;">Enter the Season 12 admin password to lock rosters and push to the teams table.</div>
             </div>
-            <div class="pw-input-wrap">
-                <input type="password" id="pwInput" class="pw-input" placeholder="Enter password…" autocomplete="off">
-                <button class="pw-eye" id="pwEye" title="Show/hide">👁</button>
+            <div id="pwTeamsPreview" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;"></div>
+            <div style="position:relative;display:flex;align-items:center;margin-bottom:8px;">
+                <input id="pwInput" type="password" placeholder="Enter password…" autocomplete="off"
+                    style="flex:1;background:var(--bg-alt);border:1.5px solid rgba(var(--gold-rgb),.2);border-radius:10px;padding:12px 44px 12px 14px;color:var(--ink);font-family:'Space Mono',monospace;font-size:15px;outline:none;">
+                <button id="pwEye" style="position:absolute;right:10px;background:none;border:none;cursor:pointer;font-size:18px;opacity:.6;">👁</button>
             </div>
-            <div class="pw-error" id="pwError"></div>
-            <div class="pw-teams-preview" id="pwTeamsPreview"></div>
-            <button class="btn btn-submit-rosters" id="pwConfirmBtn" style="width:100%;margin-top:16px;">🔒 Lock &amp;
-                Submit</button>
-            <div class="pw-hint">Once submitted a confirmation code is saved to Supabase and a ready-made prompt is
-                copied to your clipboard for generating the Teams page.</div>
+            <div id="pwErr" style="color:var(--live);font-size:12px;min-height:18px;text-align:center;font-weight:600;margin-bottom:10px;"></div>
+            <button id="pwConfirm" style="width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-family:'Anton',sans-serif;font-size:16px;letter-spacing:.04em;cursor:pointer;">🔒 Lock &amp; Submit</button>
+            <div style="font-size:11px;color:var(--ink-faint);text-align:center;margin-top:12px;line-height:1.5;">Once submitted, a Teams-page generation prompt is copied to your clipboard.</div>
         </div>
     </div>
 
-    <!-- SUCCESS OVERLAY after submit -->
-    <div class="submit-success-overlay" id="submitSuccessOverlay">
-        <div class="submit-success-card">
-            <div class="submit-success-icon">🏆</div>
-            <div class="submit-success-title display">ROSTERS LOCKED!</div>
-            <div class="submit-success-sub" id="submitSuccessSub">Season 12 data is live.</div>
-            <div class="submit-prompt-box" id="submitPromptBox"></div>
-            <button class="btn btn-primary" id="submitSuccessClose" style="width:100%;margin-top:16px;">Done</button>
+    <!-- SUCCESS OVERLAY -->
+    <div id="submitSuccessOv" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);z-index:10000;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:linear-gradient(145deg,var(--surface),var(--surface-2));border:1px solid rgba(34,197,94,.35);border-radius:20px;padding:32px 20px 22px;width:100%;max-width:420px;text-align:center;box-shadow:0 0 60px rgba(34,197,94,.15);">
+            <div style="font-size:56px;margin-bottom:12px;animation:_popIn .4s cubic-bezier(.2,1.4,.4,1) both;">🏆</div>
+            <div style="font-family:'Anton',sans-serif;font-size:28px;color:#22c55e;margin-bottom:8px;">ROSTERS LOCKED!</div>
+            <div id="submitSuccessMsg" style="font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.6;"></div>
+            <div id="submitPromptBox" style="background:var(--bg-alt);border:1px solid rgba(var(--gold-rgb),.15);border-radius:10px;padding:14px;font-size:11px;color:var(--ink-dim);text-align:left;line-height:1.6;max-height:200px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;margin-bottom:14px;"></div>
+            <button id="copyPromptBtn" style="width:100%;padding:12px;border:none;border-radius:10px;background:var(--gold);color:var(--on-accent);font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.04em;cursor:pointer;margin-bottom:10px;">📋 Copy Prompt Again</button>
+            <button id="submitSuccessClose" style="width:100%;padding:12px;border:1px solid rgba(var(--gold-rgb),.2);border-radius:10px;background:transparent;color:var(--ink-dim);font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;cursor:pointer;">Done</button>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════════════
-         AUCTION COMPLETED — GLORY SCREEN
-         Shown to EVERYONE once admin submits rosters.
-         Stored in Supabase ffxipl_s12_season_rosters via is_finalized flag.
-         Replaces the page UI. Infinite confetti. Persists every visit until
-         admin unlocks Season 13 (sets a new flag).
-         ══════════════════════════════════════════════════════════════ -->
-    <div id="gloryScreen" class="glory-screen" style="display:none;">
-        <!-- Infinite confetti canvas -->
-        <canvas id="gloryConfetti" class="glory-confetti-canvas"></canvas>
-
-        <!-- Floating trophy particles -->
-        <div class="glory-particles" id="gloryParticles"></div>
-
-        <!-- Main content -->
-        <div class="glory-scroll">
-
-            <!-- 1 ── HURRAY BANNER -->
-            <div class="glory-hero">
-                <div class="glory-trophy-wrap">
-                    <div class="glory-trophy-glow"></div>
-                    <div class="glory-trophy display">🏆</div>
+    <!-- GLORY SCREEN — shown to everyone once finalized -->
+    <div id="gloryScreen" style="display:none;position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#0a0705,#1a0d04 35%,#0d0a1a 70%,#0a0705);overflow-y:auto;overflow-x:hidden;">
+        <canvas id="gloryCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:1;"></canvas>
+        <div id="gloryParticles" style="position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden;"></div>
+        <div style="position:relative;z-index:10;max-width:480px;margin:0 auto;padding:0 0 60px;">
+            <div style="text-align:center;padding:60px 20px 28px;">
+                <div style="position:relative;display:inline-block;margin-bottom:16px;">
+                    <div style="position:absolute;inset:-24px;background:radial-gradient(circle,rgba(240,185,61,.4),transparent 70%);border-radius:50%;animation:_glowPulse 2s ease-in-out infinite alternate;"></div>
+                    <div style="font-size:88px;line-height:1;animation:_trophyBob 1.8s ease-in-out infinite alternate;position:relative;">🏆</div>
                 </div>
-                <div class="glory-headline display">AUCTION COMPLETE!</div>
-                <div class="glory-sub-headline display">NUG TROPHY — BATTLE BEGINS</div>
-                <div class="glory-welcome">
-                    🎉 Season 12 Auction concluded grandly!<br>
-                    Welcome all players to <span class="glory-gold">FREEFIRE XIPL SEASON 12</span>
+                <div style="font-family:'Anton',sans-serif;font-size:36px;background:linear-gradient(135deg,#f0b93d,#fbe4a6,#f0b93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:_shimmer 2.5s linear infinite;margin-bottom:6px;">AUCTION COMPLETE!</div>
+                <div style="font-family:'Anton',sans-serif;font-size:20px;color:#ff4433;letter-spacing:.08em;margin-bottom:18px;animation:_redFlicker 3s ease-in-out infinite;">NUG TROPHY — BATTLE BEGINS</div>
+                <div style="font-size:15px;color:#a9997d;line-height:1.7;background:rgba(240,185,61,.06);border:1px solid rgba(240,185,61,.18);border-radius:12px;padding:14px 16px;margin:0 0 24px;">
+                    🎉 Season 12 Auction concluded grandly!<br>Welcome all players to <b style="color:#f0b93d;">FREEFIRE XIPL SEASON 12</b>
                 </div>
-                <div class="glory-divider"></div>
             </div>
-
-            <!-- 2 ── TOP 5 MARQUEE SIGNINGS -->
-            <div class="glory-section">
-                <div class="glory-eyebrow">👑 TOP 5 MARQUEE SIGNINGS</div>
-                <div class="glory-section-title display">THE NIGHT'S BIGGEST BUYS</div>
-                <div class="glory-top5" id="gloryTop5"></div>
+            <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(240,185,61,.35),transparent);margin:0 20px 28px;"></div>
+            <div style="padding:0 16px 8px;">
+                <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#6b5f4c;margin-bottom:6px;">👑 TOP 5 MARQUEE SIGNINGS</div>
+                <div style="font-family:'Anton',sans-serif;font-size:22px;color:#f0b93d;margin-bottom:18px;">THE NIGHT'S BIGGEST BUYS</div>
+                <div id="gloryTop5" style="display:flex;flex-direction:column;gap:10px;"></div>
             </div>
-
-            <div class="glory-divider"></div>
-
-            <!-- 3 ── ALL TEAMS FULL ROSTERS -->
-            <div class="glory-section">
-                <div class="glory-eyebrow">📋 ALL 8 TEAMS — SEASON 12 ROSTERS</div>
-                <div class="glory-section-title display">FULL SQUADS & PURCHASE VALUES</div>
-                <div class="glory-teams" id="gloryTeams"></div>
+            <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(240,185,61,.35),transparent);margin:24px 20px 28px;"></div>
+            <div style="padding:0 16px 8px;">
+                <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#6b5f4c;margin-bottom:6px;">📋 ALL 8 TEAMS — SEASON 12</div>
+                <div style="font-family:'Anton',sans-serif;font-size:22px;color:#f0b93d;margin-bottom:18px;">FULL SQUADS & PURCHASE VALUES</div>
+                <div id="gloryTeams" style="display:flex;flex-direction:column;gap:14px;"></div>
             </div>
-
-            <!-- Footer -->
-            <div class="glory-footer">
-                <div class="glory-footer-brand display">FREEFIRE XIPL</div>
-                <div class="glory-footer-tag">Season 12 — Auction Night Official Record</div>
-                <div class="glory-footer-note">🔒 Rosters are locked. Next update: when Season 13 begins.</div>
+            <div style="text-align:center;padding:40px 20px 20px;">
+                <div style="font-family:'Anton',sans-serif;font-size:22px;color:#f0b93d;margin-bottom:6px;">FREEFIRE XIPL</div>
+                <div style="font-size:13px;color:#6b5f4c;margin-bottom:10px;">Season 12 — Auction Night Official Record</div>
+                <div style="font-size:11px;color:#4a3f2e;background:rgba(255,255,255,.03);border:1px solid rgba(240,185,61,.1);border-radius:8px;padding:8px 12px;display:inline-block;">🔒 Rosters are locked. Next update when Season 13 begins.</div>
             </div>
         </div>
     </div>
@@ -5037,8 +4261,8 @@
 
         /* ---------- SOUND ---------- */
         const SOUND_KEY = 'xipl-sound-muted';
-        let soundMuted = false;
-        try { soundMuted = localStorage.getItem(SOUND_KEY) === '1'; } catch (e) { }
+        let soundMuted = true; // ALWAYS starts muted — no exceptions, no localStorage restore
+        let soundWelcomePlayed = false;
         let audioCtx = null;
         function ensureAudioCtx() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { } } return audioCtx; }
         function playTone(freq, durationMs, type, gainPeak) {
@@ -5063,7 +4287,19 @@
         const soundBtn = $('soundBtn');
         function refreshSoundBtn() { soundBtn.textContent = soundMuted ? '🔇' : '🔊'; soundBtn.classList.toggle('muted', soundMuted); }
         refreshSoundBtn();
-        soundBtn.addEventListener('click', () => { soundMuted = !soundMuted; try { localStorage.setItem(SOUND_KEY, soundMuted ? '1' : '0'); } catch (e) { } refreshSoundBtn(); if (!soundMuted) { ensureAudioCtx(); playTickSound(); } });
+        soundBtn.addEventListener('click', () => {
+            soundMuted = !soundMuted;
+            try { localStorage.setItem(SOUND_KEY, soundMuted ? '1' : '0'); } catch (e) { }
+            refreshSoundBtn();
+            if (!soundMuted) {
+                ensureAudioCtx();
+                playTickSound();
+                if (!soundWelcomePlayed) {
+                    soundWelcomePlayed = true;
+                    setTimeout(() => speak('Welcome to FREEFIRE XIPL Season 12 Auction Room! Let the bidding begin!'), 500);
+                }
+            }
+        });
 
         /* ---------- TOAST ---------- */
         function toast(message, type) {
@@ -5330,6 +4566,7 @@
 
         /* ---------- RENDER: STAGE ---------- */
         let lastAnnouncedPlayerId = undefined;
+        let _lastAnnouncedRound = null;
         function renderStage() {
             if (!stateCache) return;
             const s = stateCache;
@@ -5378,7 +4615,13 @@
             if (s.current_bid_team_id) { tvFrame.classList.add('hot-bid'); tvFrame.style.setProperty('--bid-glow', TEAM_META[s.current_bid_team_id]?.color || 'var(--gold)'); }
             else tvFrame.classList.remove('hot-bid');
 
-            if (s.phase === 'round_countdown') startCountdownDisplay(s.countdown_target, `Round ${s.current_round} begins in`);
+            if (s.phase === 'round_countdown') {
+                startCountdownDisplay(s.countdown_target, `Round ${s.current_round} begins in`);
+                if (s.current_round !== _lastAnnouncedRound) {
+                    _lastAnnouncedRound = s.current_round;
+                    speak(`Round ${s.current_round} begins! Captains, get ready to bid!`);
+                }
+            }
             else if (s.phase === 'unsold') $('unsoldOverlay').classList.add('show');
 
             const playerChanged = (player ? player.id : null) !== lastAnnouncedPlayerId;
@@ -5454,7 +4697,20 @@
         }
         function startCountdownDisplay(targetTs, label) {
             $('countdownLabel').textContent = label; $('countdownOverlay').classList.add('show');
-            function tick() { const secs = Math.max(0, Math.ceil((targetTs - Date.now()) / 1000)); $('countdownNum').textContent = secs; if (secs <= 0) { clearInterval(countdownTimer); $('countdownOverlay').classList.remove('show'); } }
+            let _lastSpoken = -1;
+            function tick() {
+                const secs = Math.max(0, Math.ceil((targetTs - Date.now()) / 1000));
+                $('countdownNum').textContent = secs;
+                if (secs !== _lastSpoken && secs > 0 && secs <= 10) {
+                    _lastSpoken = secs;
+                    speak(String(secs));
+                }
+                if (secs <= 0) {
+                    clearInterval(countdownTimer);
+                    $('countdownOverlay').classList.remove('show');
+                    speak('Go!');
+                }
+            }
             tick(); countdownTimer = setInterval(tick, 250);
         }
         function flashBid() { const valEl = $('stageBid'); valEl.classList.add('tick'); setTimeout(() => valEl.classList.remove('tick'), 220); playBidSound(); }
@@ -5493,12 +4749,23 @@
             const list = $('bigBuyList'); if (!list) return;
             const sold = Object.values(playersCache).filter(p => p.team_id && p.final_bid_price != null).sort((a, b) => b.final_bid_price - a.final_bid_price).slice(0, 5);
             if (!sold.length) { list.innerHTML = '<div class="bigbuy-empty">No sales yet — the marquee board fills in as lots close.</div>'; return; }
-            list.innerHTML = sold.map((p, i) => `
-                <div class="bigbuy-row">
-                    <div class="bigbuy-rank${i === 0 ? ' r1' : ''}">${i + 1}</div>
-                    <div class="bigbuy-info"><b>${p.ign || p.real_name}</b><span style="color:${TEAM_META[p.team_id]?.color || 'var(--ink-faint)'}">${p.team_id} · ${TIER_LABEL[p.auction_tier]?.split(' — ')[0] || ''}</span></div>
-                    <div class="bigbuy-amt">${fmtCr(p.final_bid_price)}</div>
-                </div>`).join('');
+            const _M=['🥇','🥈','🥉','4️⃣','5️⃣'], _RC=['r1','r2','r3','r4','r5'], _TL={top10:'T1',top20:'T2',top30:'T3',top40:'T4'};
+            list.innerHTML = sold.map((p,i)=>{
+                const col=TEAM_META[p.team_id]?.color||'var(--gold)';
+                return `<div class="bigbuy-row ${_RC[i]}" style="--bb-bar:${col}">
+                    <div class="bigbuy-medal-col"><div class="bigbuy-medal">${_M[i]}</div><div class="bigbuy-rank-num">#${i+1}</div></div>
+                    <div class="bigbuy-info">
+                        <div class="bigbuy-name">${p.ign||p.real_name}</div>
+                        <div class="bigbuy-meta">
+                            <span class="bigbuy-dot" style="background:${col}"></span>
+                            <span class="bigbuy-team-lbl">${p.team_id}</span>
+                            <span class="bigbuy-tier-tag">${_TL[p.auction_tier]||p.auction_tier||''}</span>
+                            ${p.auction_round?`<span class="bigbuy-rnd">Rnd ${p.auction_round}</span>`:''}
+                        </div>
+                    </div>
+                    <div class="bigbuy-price-col"><div class="bigbuy-amt">${fmtCr(p.final_bid_price)}</div><div class="bigbuy-amt-lbl">Purchase</div></div>
+                </div>`;
+            }).join('');
         }
 
         /* ---------- CAPTAIN PANEL ---------- */
@@ -5684,8 +4951,36 @@
         }
         async function undoSale(playerId) {
             const p = playersCache[playerId];
-            const ok = await callAdminRpc('ffxipl_s12_undo_sale', { p_player_id: playerId });
-            if (ok) broadcastToast(`↩ ${p?.ign || p?.real_name || 'Player'}'s sale was undone — back in the pool.`, null);
+            if (!p) return;
+            // Remove any existing confirm overlay
+            const prev = document.getElementById('_undoConfirm');
+            if (prev) prev.remove();
+            const teamColor = TEAM_META[p.team_id]?.color || 'var(--gold)';
+            const ov = document.createElement('div');
+            ov.id = '_undoConfirm';
+            ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;';
+            ov.innerHTML = `<div style="background:linear-gradient(145deg,var(--surface),var(--surface-2));border:1.5px solid rgba(255,68,51,.3);border-radius:20px;padding:28px 20px 20px;width:100%;max-width:340px;text-align:center;box-shadow:0 0 48px rgba(255,68,51,.18);">
+                <div style="font-size:40px;margin-bottom:10px;">↩️</div>
+                <div style="font-family:'Anton',sans-serif;font-size:22px;color:var(--live);letter-spacing:.05em;margin-bottom:8px;">UNDO SALE?</div>
+                <div style="font-size:13px;color:var(--ink-dim);line-height:1.6;margin-bottom:10px;">Are you sure you want to undo the sale of<br><b style="color:var(--ink);font-size:16px;">${p.ign || p.real_name}</b></div>
+                <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,0,0,.25);border-radius:8px;padding:6px 14px;margin-bottom:16px;">
+                    <span style="width:9px;height:9px;border-radius:50%;background:${teamColor};display:inline-block;flex-shrink:0;"></span>
+                    <span style="font-size:12px;color:var(--ink-dim);">${p.team_id} &nbsp;·&nbsp; ${fmtCr(p.final_bid_price)}</span>
+                </div>
+                <div style="font-size:11px;color:var(--ink-faint);margin-bottom:18px;">Player returns to the pool and team purse is restored.</div>
+                <div style="display:flex;gap:10px;">
+                    <button id="_undoCancel" style="flex:1;padding:13px;border:1px solid rgba(var(--gold-rgb),.18);border-radius:10px;background:transparent;color:var(--ink-dim);font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;cursor:pointer;">Cancel</button>
+                    <button id="_undoYes" style="flex:1;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,#ff4433,#c01f10);color:#fff;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.04em;cursor:pointer;">YES, UNDO</button>
+                </div>
+            </div>`;
+            document.body.appendChild(ov);
+            ov.querySelector('#_undoCancel').onclick = () => ov.remove();
+            ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+            ov.querySelector('#_undoYes').onclick = async () => {
+                ov.remove();
+                const ok = await callAdminRpc('ffxipl_s12_undo_sale', { p_player_id: playerId });
+                if (ok) broadcastToast(`↩ ${p.ign || p.real_name}'s sale was undone — back in the pool.`, null);
+            };
         }
         document.querySelectorAll('[data-start-round]').forEach(btn => {
             btn.addEventListener('click', async () => {
@@ -5693,7 +4988,10 @@
                 const prevDone = roundNum === 1 || decidedCountForRound(roundNum - 1) >= ROUND_SIZE;
                 if (!prevDone) { toast(`Round ${roundNum - 1} must finish (all ${ROUND_SIZE} decided) before Round ${roundNum} can start.`, 'error'); return; }
                 const ok = await callAdminRpc('ffxipl_s12_start_round_countdown', { p_round: roundNum });
-                if (ok) broadcastToast(`⏱️ Round ${roundNum} is starting!`, 'success');
+                if (ok) {
+                    broadcastToast(`⏱️ Round ${roundNum} is starting!`, 'success');
+                    speak(`Round ${roundNum} begins! Get ready for the countdown!`);
+                }
             });
         });
 
@@ -5760,343 +5058,189 @@
             $('summarySwipe').innerHTML = TEAM_IDS.map(id => summaryTeamCard(id, allSold.filter(p => p.team_id === id))).join('');
             $('summaryTitle').textContent = '🏆 FINAL SUMMARY'; $('summarySub').textContent = 'All 8 teams — full rosters';
             $('summaryStats').innerHTML = summaryStatChip(allSold.length, 'Players sold') + summaryStatChip(fmtCr(totalSpent), 'Total spent');
-            if (isAdmin) { $('submitRostersWrap').style.display = 'block'; renderPwTeamsPreview(); }
+            $('submitRostersWrap').style.display = isAdmin ? 'block' : 'none';
             $('summaryModal').classList.add('show');
         }
         $('summaryClose').addEventListener('click', () => $('summaryModal').classList.remove('show'));
         $('summaryCloseX').addEventListener('click', () => $('summaryModal').classList.remove('show'));
 
-        /* ================================================================
-           GLORY SCREEN — shown to ALL visitors once auction is finalized.
-           Checks ffxipl_s12_season_rosters for season=12, is_finalized=true
-           on every page load. If found, hides normal page, shows glory mode.
-           Infinite confetti runs forever (requestAnimationFrame loop).
-           ================================================================ */
+        /* ── SUBMIT ROSTERS ── */
+        const SUBMIT_PW = 'XIPL12LOCK';
 
-        let gloryConfettiPieces = [];
-        let gloryAnimFrame = null;
-        let gloryActive = false;
-
-        async function checkAuctionCompleted() {
-            try {
-                const { data, error } = await sb
-                    .from('ffxipl_s12_season_rosters')
-                    .select('team_id, team_name, team_color, captain_name, purse_spent, purse_remaining, players_json, submitted_at')
-                    .eq('season', 12)
-                    .eq('is_finalized', true);
-                if (error || !data || data.length === 0) return;   // not finalized yet
-                activateGloryScreen(data);
-            } catch (e) { /* silent — normal page loads if check fails */ }
-        }
-
-        function activateGloryScreen(rosterRows) {
-            gloryActive = true;
-            // Hide everything else
-            document.querySelectorAll('header, main, section, footer, #splash, .back-to-top, #toastStack,\
- #announceOverlay, #celebrateOverlay, #lightboxOverlay, #summaryModal, #pwModalBackdrop, #submitSuccessOverlay')
-                .forEach(el => { if (el) el.style.display = 'none'; });
-
-            const gs = $('gloryScreen');
-            gs.style.display = 'block';
-
-            // Parse all players across all teams
-            const allPlayers = [];
-            const teamsData = {};
-            rosterRows.forEach(row => {
-                teamsData[row.team_id] = row;
-                try {
-                    const players = JSON.parse(row.players_json || '[]');
-                    players.forEach(p => allPlayers.push({ ...p, team_id: row.team_id, team_color: row.team_color, team_name: row.team_name }));
-                } catch (e) { }
-            });
-
-            renderGloryTop5(allPlayers);
-            renderGloryTeams(rosterRows, teamsData, allPlayers);
-            startInfiniteConfetti();
-            spawnGloryParticles();
-
-            // Speak on load
-            setTimeout(() => speak('Season 12 Auction Complete! Welcome to FREEFIRE XIPL Season 12! Battle begins!'), 1800);
-        }
-
-        function renderGloryTop5(allPlayers) {
-            const top5 = [...allPlayers]
-                .filter(p => p.price != null)
-                .sort((a, b) => b.price - a.price)
-                .slice(0, 5);
-
-            const rankEmoji = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
-            $('gloryTop5').innerHTML = top5.map((p, i) => `
-                <div class="glory-top5-card ${i === 0 ? 'rank-1-card' : ''}" style="--team-color:${p.team_color}">
-                    <div class="glory-top5-rank rank-${i + 1}">${rankEmoji[i]}</div>
-                    <div class="glory-top5-info">
-                        <div class="glory-top5-name">${p.ign || p.real_name}</div>
-                        <div class="glory-top5-team">${p.team_name} (${p.team_id}) · ${(p.tier || '').replace('top', 'T')} · Round ${p.round || '—'}</div>
-                    </div>
-                    <div class="glory-top5-price">₹${p.price}Cr</div>
-                </div>`).join('');
-        }
-
-        function renderGloryTeams(rosterRows, teamsData, allPlayers) {
-            // Use the same TEAM_IDS order
-            const order = typeof TEAM_IDS !== 'undefined' ? TEAM_IDS
-                : rosterRows.map(r => r.team_id);
-
-            $('gloryTeams').innerHTML = order.map(id => {
-                const row = teamsData[id]; if (!row) return '';
-                const players = allPlayers.filter(p => p.team_id === id)
-                    .sort((a, b) => b.price - a.price);
-                const tierLabel = { top10: 'T1', top20: 'T2', top30: 'T3', top40: 'T4' };
-                const pRows = players.map(p => `
-                    <div class="glory-player-row">
-                        <div>
-                            <div class="glory-player-ign">${p.ign || p.real_name}<span class="glory-player-tier">${tierLabel[p.tier] || p.tier}</span></div>
-                            <div class="glory-player-meta">${p.real_name} · Lvl ${p.level || '—'}</div>
-                        </div>
-                        <div class="glory-player-price">₹${p.price}Cr</div>
-                    </div>`).join('') || '<div style="color:#6b5f4c;font-size:13px;padding:8px;">No players recorded</div>';
-
-                return `<div class="glory-team-card">
-                    <div class="glory-team-header">
-                        <div class="glory-team-color-bar" style="background:${row.team_color}"></div>
-                        <div class="glory-team-badge" style="background:${row.team_color}">${id}</div>
-                        <div class="glory-team-info">
-                            <div class="glory-team-id">${id}</div>
-                            <div class="glory-team-fullname">${row.team_name}</div>
-                            <div class="glory-team-captain">👑 ${row.captain_name || 'TBD'}</div>
-                        </div>
-                        <div class="glory-team-purse">
-                            <b>₹${row.purse_spent || 0}Cr</b>spent
-                        </div>
-                    </div>
-                    <div class="glory-player-list">${pRows}</div>
-                </div>`;
-            }).join('');
-        }
-
-        /* ── Infinite Confetti (canvas, requestAnimationFrame) ───── */
-        function startInfiniteConfetti() {
-            const canvas = $('gloryConfetti');
-            const ctx = canvas.getContext('2d');
-            const COLORS = ['#f0b93d', '#fbe4a6', '#ff4433', '#5fd97e', '#29d3ff', '#b366ff', '#ff8fc2', '#ff7a45'];
-            let W, H, pieces;
-
-            function resize() {
-                W = canvas.width = window.innerWidth;
-                H = canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            function makePiece() {
-                return {
-                    x: Math.random() * W,
-                    y: -20 - Math.random() * H,
-                    w: 6 + Math.random() * 10,
-                    h: 4 + Math.random() * 6,
-                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                    rot: Math.random() * Math.PI * 2,
-                    rotV: (Math.random() - .5) * .12,
-                    vx: (Math.random() - .5) * 1.4,
-                    vy: 1.2 + Math.random() * 2.2,
-                    alpha: .85 + Math.random() * .15,
-                };
-            }
-
-            pieces = Array.from({ length: 140 }, () => {
-                const p = makePiece();
-                p.y = Math.random() * H;  // seed screen on start
-                return p;
-            });
-
-            function loop() {
-                ctx.clearRect(0, 0, W, H);
-                pieces.forEach(p => {
-                    p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
-                    if (p.y > H + 20) { Object.assign(p, makePiece()); p.x = Math.random() * W; }
-                    ctx.save();
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate(p.rot);
-                    ctx.globalAlpha = p.alpha;
-                    ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-                    ctx.restore();
-                });
-                gloryAnimFrame = requestAnimationFrame(loop);
-            }
-            loop();
-        }
-
-        /* ── Floating emoji particles ─────────────────────────────── */
-        function spawnGloryParticles() {
-            const EMOJIS = ['🏆', '🔥', '⚡', '🎉', '💥', '🎊', '👑', '🎯', '💫', '🌟'];
-            const container = $('gloryParticles');
-            function spawn() {
-                const el = document.createElement('div');
-                el.className = 'glory-particle';
-                el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-                el.style.left = (Math.random() * 100) + '%';
-                el.style.fontSize = (20 + Math.random() * 24) + 'px';
-                const dur = 6 + Math.random() * 8;
-                el.style.animationDuration = dur + 's';
-                el.style.animationDelay = (Math.random() * 3) + 's';
-                container.appendChild(el);
-                setTimeout(() => el.remove(), (dur + 3) * 1000);
-            }
-            // Seed initial batch
-            for (let i = 0; i < 18; i++) setTimeout(spawn, i * 300);
-            // Keep spawning forever
-            setInterval(spawn, 800);
-        }
-
-        /* ================================================================
-           SUBMIT ROSTERS — password-gated, pushes season data to Supabase
-           ffxipl_s12_season_rosters table and generates the Teams-page prompt
-           ================================================================ */
-        const SUBMIT_PASSWORD = 'FREEFIREXIPLS12LOCK';   // ← change this any time
-
-        function renderPwTeamsPreview() {
-            const allSold = Object.values(playersCache).filter(p => p.team_id);
-            $('pwTeamsPreview').innerHTML = TEAM_IDS.map(id => {
-                const count = allSold.filter(p => p.team_id === id).length;
-                return `<div class="pw-team-chip"><div class="pw-team-dot" style="background:${TEAM_META[id].color}"></div><div><div class="pw-team-name">${id}</div><div class="pw-team-count">${count} player${count !== 1 ? 's' : ''}</div></div></div>`;
-            }).join('');
-        }
-
-        $('btnSubmitRosters').addEventListener('click', () => {
+        document.getElementById('btnSubmitRosters').addEventListener('click', () => {
             if (!isAdmin) return;
-            renderPwTeamsPreview();
-            $('pwInput').value = '';
-            $('pwError').textContent = '';
-            $('pwModalBackdrop').classList.add('show');
-            setTimeout(() => $('pwInput').focus(), 120);
+            // populate teams preview
+            const all = Object.values(playersCache).filter(p => p.team_id);
+            document.getElementById('pwTeamsPreview').innerHTML = TEAM_IDS.map(id => {
+                const cnt = all.filter(p => p.team_id === id).length;
+                return `<div style="background:rgba(var(--gold-rgb),.06);border:1px solid rgba(var(--gold-rgb),.14);border-radius:8px;padding:7px 10px;font-size:11px;display:flex;align-items:center;gap:7px;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:${TEAM_META[id].color};flex-shrink:0;display:inline-block;"></span>
+                    <span style="font-weight:700;color:var(--ink);">${id}</span>
+                    <span style="color:var(--ink-faint);">${cnt} player${cnt!==1?'s':''}</span></div>`;
+            }).join('');
+            document.getElementById('pwInput').value = '';
+            document.getElementById('pwErr').textContent = '';
+            const bd = document.getElementById('pwBackdrop');
+            bd.style.display = 'flex';
         });
-
-        $('pwClose').addEventListener('click', () => $('pwModalBackdrop').classList.remove('show'));
-        $('pwModalBackdrop').addEventListener('click', (e) => { if (e.target.id === 'pwModalBackdrop') $('pwModalBackdrop').classList.remove('show'); });
-
-        // Eye toggle
-        $('pwEye').addEventListener('click', () => {
-            const inp = $('pwInput');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-        });
-
-        $('pwConfirmBtn').addEventListener('click', async () => {
-            const entered = $('pwInput').value;
-            if (entered !== SUBMIT_PASSWORD) {
-                $('pwError').textContent = '❌ Wrong password — try again.';
-                $('pwInput').classList.add('shake');
-                setTimeout(() => $('pwInput').classList.remove('shake'), 400);
+        document.getElementById('pwClose').addEventListener('click', () => { document.getElementById('pwBackdrop').style.display = 'none'; });
+        document.getElementById('pwBackdrop').addEventListener('click', e => { if (e.target.id === 'pwBackdrop') e.target.style.display = 'none'; });
+        document.getElementById('pwEye').addEventListener('click', () => { const i = document.getElementById('pwInput'); i.type = i.type === 'password' ? 'text' : 'password'; });
+        document.getElementById('pwConfirm').addEventListener('click', async () => {
+            const entered = document.getElementById('pwInput').value;
+            if (entered !== SUBMIT_PW) {
+                document.getElementById('pwErr').textContent = '❌ Wrong password — try again.';
+                document.getElementById('pwInput').style.animation = '_pwShake .35s ease';
+                setTimeout(() => { document.getElementById('pwInput').style.animation = ''; }, 400);
                 return;
             }
-            $('pwError').textContent = '';
-            $('pwConfirmBtn').disabled = true;
-            $('pwConfirmBtn').textContent = '⏳ Submitting…';
-
+            document.getElementById('pwErr').textContent = '';
+            document.getElementById('pwConfirm').disabled = true;
+            document.getElementById('pwConfirm').textContent = '⏳ Submitting…';
             try {
-                await submitRostersToSupabase();
-            } catch (err) {
-                $('pwError').textContent = `⚠️ ${err.message || 'Submit failed — try again.'}`;
-                $('pwConfirmBtn').disabled = false;
-                $('pwConfirmBtn').textContent = '🔒 Lock & Submit';
-            }
-        });
-
-        async function submitRostersToSupabase() {
-            const allSold = Object.values(playersCache).filter(p => p.team_id);
-            const submittedAt = new Date().toISOString();
-
-            // Build one row per team
-            const rows = TEAM_IDS.map(id => {
-                const players = allSold.filter(p => p.team_id === id);
-                return {
+                const allSold = Object.values(playersCache).filter(p => p.team_id);
+                const submittedAt = new Date().toISOString();
+                const rows = TEAM_IDS.map(id => ({
                     season: 12,
                     team_id: id,
-                    team_name: TEAM_META[id].name,
+                    team_name: TEAM_META[id].name || id,
                     team_color: TEAM_META[id].color,
                     captain_name: teamsCache[id]?.captain_name || null,
                     purse_spent: teamsCache[id]?.purse_spent || 0,
                     purse_remaining: 100 - (teamsCache[id]?.purse_spent || 0),
                     is_finalized: true,
-                    players_json: JSON.stringify(players.map(p => ({
-                        id: p.id,
-                        ign: p.ign || p.real_name,
-                        real_name: p.real_name,
-                        level: p.level,
-                        tier: p.auction_tier,
-                        price: p.final_bid_price,
-                        round: p.auction_round,
+                    players_json: JSON.stringify(allSold.filter(p => p.team_id === id).map(p => ({
+                        id: p.id, ign: p.ign || p.real_name, real_name: p.real_name,
+                        level: p.level, tier: p.auction_tier, price: p.final_bid_price, round: p.auction_round
                     }))),
-                    submitted_at: submittedAt,
+                    submitted_at: submittedAt
+                }));
+                const { error } = await sb.from('ffxipl_s12_season_rosters').upsert(rows, { onConflict: 'season,team_id' });
+                if (error) throw new Error(error.message);
+                const prompt = buildTeamsPrompt(allSold, submittedAt);
+                try { await navigator.clipboard.writeText(prompt); } catch(e) {}
+                document.getElementById('pwBackdrop').style.display = 'none';
+                document.getElementById('summaryModal').classList.remove('show');
+                const msg = document.getElementById('submitSuccessMsg');
+                msg.textContent = `${allSold.length} players locked across 8 teams. Data saved to Supabase. Prompt copied to clipboard — paste into Claude to generate the Teams page!`;
+                const pb = document.getElementById('submitPromptBox');
+                pb.textContent = prompt;
+                document.getElementById('copyPromptBtn').onclick = async () => {
+                    try { await navigator.clipboard.writeText(prompt); document.getElementById('copyPromptBtn').textContent = '✅ Copied!'; setTimeout(() => { document.getElementById('copyPromptBtn').textContent = '📋 Copy Prompt Again'; }, 2000); } catch(e) {}
                 };
+                const so = document.getElementById('submitSuccessOv');
+                so.style.display = 'flex';
+                toast('🏆 Season 12 rosters locked!', 'success');
+                speak('Rosters locked. Season twelve is official!');
+            } catch(err) {
+                document.getElementById('pwErr').textContent = `⚠️ ${err.message || 'Submit failed — try again.'}`;
+                document.getElementById('pwConfirm').disabled = false;
+                document.getElementById('pwConfirm').textContent = '🔒 Lock & Submit';
+            }
+        });
+        document.getElementById('submitSuccessClose').addEventListener('click', () => { document.getElementById('submitSuccessOv').style.display = 'none'; });
+
+        function buildTeamsPrompt(allSold, ts) {
+            var out = [];
+            out.push('FREEFIRE XIPL SEASON 12 — TEAMS PAGE PROMPT');
+            out.push('Submitted: ' + ts);
+            out.push('Supabase: https://ndioutmihxodqknvgfju.supabase.co');
+            out.push('Table: ffxipl_s12_season_rosters (season=12, is_finalized=true)');
+            out.push('');
+            out.push('ROSTERS:');
+            TEAM_IDS.forEach(function(id) {
+                var ps = allSold.filter(function(p) { return p.team_id === id; });
+                var spent = teamsCache[id] ? (teamsCache[id].purse_spent || 0) : 0;
+                var cap = teamsCache[id] ? (teamsCache[id].captain_name || 'TBD') : 'TBD';
+                out.push('');
+                out.push('  ' + id + ' — ' + (TEAM_META[id].name || id));
+                out.push('  Captain: ' + cap + ' | Spent: ₹' + spent + 'Cr | Remaining: ₹' + (100 - spent) + 'Cr');
+                ps.forEach(function(p) {
+                    var tier = (p.auction_tier || '').replace('top', 'T');
+                    out.push('    - ' + (p.ign || p.real_name) + ' (' + p.real_name + ') Tier ' + tier + ' Rs.' + p.final_bid_price + 'Cr Round ' + (p.auction_round || '?'));
+                });
             });
-
-            // Upsert into ffxipl_s12_season_rosters (season + team_id as PK)
-            const { error } = await sb.from('ffxipl_s12_season_rosters').upsert(rows, { onConflict: 'season,team_id' });
-            if (error) throw new Error(error.message);
-
-            // Build the Teams-page generation prompt
-            const prompt = buildTeamsPagePrompt(allSold, submittedAt);
-
-            // Copy prompt to clipboard
-            try { await navigator.clipboard.writeText(prompt); } catch (e) { /* clipboard not available in all envs */ }
-
-            // Close pw modal, show success
-            $('pwModalBackdrop').classList.remove('show');
-            $('summaryModal').classList.remove('show');
-            showSubmitSuccess(allSold.length, prompt);
+            out.push('');
+            out.push('Generate teams.html — see full prompt in chat.');
+            return out.join('\n');
         }
 
-        function buildTeamsPagePrompt(allSold, submittedAt) {
-            const teamLines = TEAM_IDS.map(id => {
-                const players = allSold.filter(p => p.team_id === id);
-                const pList = players.map(p =>
-                    `    • ${p.ign || p.real_name} (${p.real_name}) — Tier ${p.auction_tier?.replace('top', 'T')} — ₹${p.final_bid_price}Cr — Round ${p.auction_round}`
-                ).join('\n');
-                const spent = teamsCache[id]?.purse_spent || 0;
-                return `\n  ${id} — ${TEAM_META[id].name}\n  Captain: ${teamsCache[id]?.captain_name || 'TBD'} | Purse Spent: ₹${spent}Cr | Remaining: ₹${100 - spent}Cr\n${pList}`;
-            }).join('\n');
-
-            return `FREEFIRE XIPL SEASON 12 — TEAMS PAGE GENERATION PROMPT
-Submitted: ${submittedAt}
-Supabase project: ndioutmihxodqknvgfju
-Table: ffxipl_s12_season_rosters (season=12)
-
-You are a web developer building the Season 12 Teams page for FREEFIRE XIPL.
-The auction is complete. Here are the 8 confirmed team rosters:
-${teamLines}
-
-REQUIREMENTS:
-• Single HTML file, matching the existing XIPL site design system (Anton + Rajdhani fonts, the golden-fire / og-bar / neon-cyber etc. theme variables)
-• One hero card per team showing: team color accent, team name, captain, purse stats
-• Expandable player roster per team (5 players each) with tier badge, price, and IGN
-• Supabase data source: ffxipl_s12_season_rosters table, season=12, real-time subscription
-• Mobile-first, max-width 480px, same nav/footer/theme-switcher as other XIPL pages
-• On load: pull live from Supabase and render; fall back to embedded JSON above if offline
-• Include a "Generate Schedule" CTA button at the bottom (link to schedule.html, not yet built)
-• Leaderboard stub section: "Season 12 standings will appear here once matches begin"
-• Password to generate this was: XIPL12LOCK (do not expose in public HTML)
-
-Supabase URL: https://ndioutmihxodqknvgfju.supabase.co
-Anon key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk
-
-Generate the complete teams.html file.`;
+        /* ── GLORY SCREEN ── */
+        let _gloryActive = false;
+        async function checkGlory() {
+            try {
+                const { data } = await sb.from('ffxipl_s12_season_rosters').select('*').eq('season', 12).eq('is_finalized', true);
+                if (!data || data.length === 0) return;
+                _gloryActive = true;
+                document.querySelectorAll('header,main,section,footer').forEach(el => { if (el) el.style.display = 'none'; });
+                const gs = document.getElementById('gloryScreen');
+                gs.style.display = 'block';
+                const allPlayers = [];
+                const teamsMap = {};
+                data.forEach(row => {
+                    teamsMap[row.team_id] = row;
+                    try { JSON.parse(row.players_json||'[]').forEach(p => allPlayers.push({...p, team_id:row.team_id, team_color:row.team_color, team_name:row.team_name})); } catch(e) {}
+                });
+                // Top 5
+                const top5 = [...allPlayers].filter(p=>p.price!=null).sort((a,b)=>b.price-a.price).slice(0,5);
+                const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+                document.getElementById('gloryTop5').innerHTML = top5.map((p,i)=>`
+                    <div style="display:flex;align-items:center;gap:12px;background:${i===0?'rgba(255,215,0,.07)':'rgba(255,255,255,.03)'};border:1px solid ${i===0?'rgba(255,215,0,.3)':'rgba(240,185,61,.1)'};border-radius:14px;padding:14px;position:relative;overflow:hidden;">
+                        <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${p.team_color||'#f0b93d'};"></div>
+                        <div style="text-align:center;min-width:38px;"><div style="font-size:${i===0?28:22}px;">${medals[i]}</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:#6b5f4c;">#${i+1}</div></div>
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-family:'Rajdhani',sans-serif;font-size:${i===0?17:15}px;font-weight:700;color:${i===0?'#FFD700':'#f4ecd8'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.ign||p.real_name}</div>
+                            <div style="display:flex;align-items:center;gap:5px;margin-top:3px;flex-wrap:wrap;">
+                                <span style="width:7px;height:7px;border-radius:50%;background:${p.team_color||'#f0b93d'};display:inline-block;"></span>
+                                <span style="font-size:11px;color:#a9997d;font-weight:600;">${p.team_id}</span>
+                                <span style="font-size:9px;padding:2px 5px;border-radius:4px;background:rgba(240,185,61,.12);color:#f0b93d;font-weight:700;">${({top10:'T1',top20:'T2',top30:'T3',top40:'T4'})[p.tier]||p.tier}</span>
+                            </div>
+                        </div>
+                        <div style="text-align:right;"><div style="font-family:'Anton',sans-serif;font-size:${i===0?24:20}px;color:${i===0?'#FFD700':'#fbe4a6'};${i===0?'text-shadow:0 0 14px rgba(255,215,0,.5);':''}">₹${p.price}Cr</div></div>
+                    </div>`).join('');
+                // All teams
+                document.getElementById('gloryTeams').innerHTML = TEAM_IDS.map(id => {
+                    const row = teamsMap[id]; if (!row) return '';
+                    const ps = allPlayers.filter(p=>p.team_id===id).sort((a,b)=>b.price-a.price);
+                    const pRows = ps.map(p=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 8px;border-radius:8px;background:rgba(255,255,255,.02);">
+                        <div><div style="font-size:14px;color:#f4ecd8;font-weight:600;">${p.ign||p.real_name}<span style="font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;background:rgba(240,185,61,.12);color:#f0b93d;margin-left:6px;">${({top10:'T1',top20:'T2',top30:'T3',top40:'T4'})[p.tier]||p.tier}</span></div>
+                        <div style="font-size:11px;color:#6b5f4c;">${p.real_name} · Lvl ${p.level||'—'}</div></div>
+                        <div style="font-family:'Space Mono',monospace;font-size:13px;color:#f0b93d;font-weight:700;">₹${p.price}Cr</div>
+                    </div>`).join('') || '<div style="color:#6b5f4c;font-size:13px;padding:8px;">No players recorded</div>';
+                    return `<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);">
+                        <div style="height:3px;background:${row.team_color};"></div>
+                        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px 10px;">
+                            <div style="width:44px;height:44px;border-radius:10px;background:${row.team_color};display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:13px;color:#fff;flex-shrink:0;">${id}</div>
+                            <div style="flex:1;"><div style="font-family:'Anton',sans-serif;font-size:20px;color:#f4ecd8;">${id}</div><div style="font-size:11px;color:#6b5f4c;text-transform:uppercase;letter-spacing:.08em;">${row.team_name||''}</div><div style="font-size:12px;color:#a9997d;margin-top:1px;">👑 ${row.captain_name||'TBD'}</div></div>
+                            <div style="text-align:right;font-size:12px;color:#a9997d;font-family:'Space Mono',monospace;"><b style="color:#f0b93d;font-size:14px;display:block;">₹${row.purse_spent||0}Cr</b>spent</div>
+                        </div>
+                        <div style="padding:8px 12px 12px;">${pRows}</div>
+                    </div>`;
+                }).join('');
+                startGloryConfetti();
+                spawnGloryEmoji();
+                setTimeout(() => speak('Season 12 Auction Complete! Welcome to FREEFIRE XIPL Season 12! Battle begins!'), 1800);
+            } catch(e) { /* silent */ }
         }
 
-        function showSubmitSuccess(soldCount, prompt) {
-            $('submitSuccessSub').textContent = `${soldCount} players locked across 8 teams. Data saved to Supabase. Prompt copied to clipboard — paste it into Claude or any AI to generate the Teams page!`;
-            $('submitPromptBox').innerHTML = `<button class="copy-prompt-btn" id="copyPromptBtn">📋 Copy</button>${escHtml(prompt)}`;
-            $('copyPromptBtn').addEventListener('click', async () => {
-                try { await navigator.clipboard.writeText(prompt); $('copyPromptBtn').textContent = '✅ Copied!'; setTimeout(() => { $('copyPromptBtn').textContent = '📋 Copy'; }, 1800); } catch (e) { }
-            });
-            $('submitSuccessOverlay').classList.add('show');
-            toast('🏆 Season 12 rosters locked and submitted!', 'success');
-            speak('Rosters locked. Season twelve is official!');
+        function startGloryConfetti() {
+            const cv = document.getElementById('gloryCanvas');
+            const ctx = cv.getContext('2d');
+            const COLS = ['#f0b93d','#fbe4a6','#ff4433','#5fd97e','#29d3ff','#b366ff','#ff8fc2','#ff7a45'];
+            let W, H, pieces;
+            function resize() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
+            resize(); addEventListener('resize', resize);
+            function mkPiece() { return { x:Math.random()*W, y:-20-Math.random()*H, w:6+Math.random()*10, h:4+Math.random()*6, c:COLS[Math.floor(Math.random()*COLS.length)], r:Math.random()*Math.PI*2, rv:(Math.random()-.5)*.12, vx:(Math.random()-.5)*1.4, vy:1.2+Math.random()*2.2, a:.85+Math.random()*.15 }; }
+            pieces = Array.from({length:140}, () => { const p=mkPiece(); p.y=Math.random()*H; return p; });
+            (function loop() { ctx.clearRect(0,0,W,H); pieces.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.r+=p.rv; if(p.y>H+20){Object.assign(p,mkPiece());p.x=Math.random()*W;} ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.globalAlpha=p.a;ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore(); }); requestAnimationFrame(loop); })();
         }
-
-        function escHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
-
-        $('submitSuccessClose').addEventListener('click', () => $('submitSuccessOverlay').classList.remove('show'));
+        function spawnGloryEmoji() {
+            const c = document.getElementById('gloryParticles');
+            const EM = ['🏆','🔥','⚡','🎉','💥','🎊','👑','🎯','💫','🌟'];
+            function spawn() { const el=document.createElement('div'); el.style.cssText=`position:absolute;font-size:${20+Math.random()*24}px;left:${Math.random()*100}%;animation:_floatUp ${6+Math.random()*8}s linear ${Math.random()*3}s both;`; el.textContent=EM[Math.floor(Math.random()*EM.length)]; c.appendChild(el); setTimeout(()=>el.remove(),(12+Math.random()*8)*1000); }
+            for(let i=0;i<18;i++) setTimeout(spawn,i*300);
+            setInterval(spawn, 800);
+        }
 
         /* ---------- BOOT ---------- */
         (async function boot() {
@@ -6104,8 +5248,8 @@ Generate the complete teams.html file.`;
             if (session?.user) { currentUser = session.user; await resolveRole(); }
             sb.auth.onAuthStateChange((event) => { if (event === 'SIGNED_OUT') { currentUser = null; isAdmin = false; myTeamId = null; refreshAccountUI(); } });
             await loadTeams(); await loadPlayers(); await loadState();
-            await checkAuctionCompleted();   // ← Glory Screen check (runs after data loads)
-            if (!gloryActive) subscribeRealtime();  // don't subscribe realtime in glory mode
+            await checkGlory();
+            if (!_gloryActive) subscribeRealtime();
         })();
     </script>
 </body>
