@@ -1,2180 +1,989 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <script>(function () { try { var s = localStorage.getItem('xipl-theme'); if (s) document.documentElement.setAttribute('data-theme', s); } catch (e) { } }());</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <title>Leaderboard — FREEFIRE XIPL S12</title>
-    <meta name="theme-color" content="#0a0a0a">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        /* ═══ THEMES ═══ */
-        :root,
-        [data-theme="golden-fire"] {
-            --bg: #0a0705;
-            --bg-alt: #120c07;
-            --surface: #1a130b;
-            --surface-2: #221909;
-            --gold: #f0b93d;
-            --gold-deep: #b3811f;
-            --gold-pale: #fbe4a6;
-            --ink: #f4ecd8;
-            --ink-dim: #a9997d;
-            --ink-faint: #6b5f4c;
-            --live: #ff4433;
-            --line: rgba(var(--gold-rgb), 0.14);
-            --bg-rgb: 10, 7, 5;
-            --gold-rgb: 240, 185, 61;
-            --live-rgb: 255, 68, 51;
-            --on-accent: #1a1206;
-            --card-a: #1d1509;
-            --card-b: #100b06;
-            --nav-a: #160f08;
-            --nav-b: #0c0805;
-            --btt-bg: rgba(15, 10, 5, 0.85);
-            --amb1: rgba(240, 185, 61, .20);
-            --amb2: rgba(251, 228, 166, .14);
-            --amb3: rgba(179, 129, 31, .10);
-            --body-1: #0a0705;
-            --body-2: #120c07;
-            --body-3: #1a130b;
-            --body-4: #060402;
-        }
+<script>(function(){try{var s=localStorage.getItem('xipl-theme');if(s)document.documentElement.setAttribute('data-theme',s);}catch(e){}}());</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Leaderboard — FREEFIRE XIPL S12</title>
+<meta name="theme-color" content="#0a0a0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ═══ THEMES ═══ */
+:root,[data-theme="golden-fire"]{--bg:#0a0705;--bg-alt:#120c07;--surface:#1a130b;--surface-2:#221909;--gold:#f0b93d;--gold-deep:#b3811f;--gold-pale:#fbe4a6;--ink:#f4ecd8;--ink-dim:#a9997d;--ink-faint:#6b5f4c;--live:#ff4433;--line:rgba(var(--gold-rgb),0.14);--bg-rgb:10,7,5;--gold-rgb:240,185,61;--live-rgb:255,68,51;--on-accent:#1a1206;--card-a:#1d1509;--card-b:#100b06;--nav-a:#160f08;--nav-b:#0c0805;--btt-bg:rgba(15,10,5,0.85);--amb1:rgba(240,185,61,.20);--amb2:rgba(251,228,166,.14);--amb3:rgba(179,129,31,.10);--body-1:#0a0705;--body-2:#120c07;--body-3:#1a130b;--body-4:#060402;}
+[data-theme="og-bar"]{--bg:#0a0705;--bg-alt:#120c07;--surface:#1a130b;--surface-2:#221909;--gold:#f0b93d;--gold-deep:#b3811f;--gold-pale:#fbe4a6;--ink:#f4ecd8;--ink-dim:#a9997d;--ink-faint:#6b5f4c;--live:#ff4433;--line:rgba(var(--gold-rgb),0.14);--bg-rgb:10,7,5;--gold-rgb:240,185,61;--live-rgb:255,68,51;--on-accent:#1a1206;--card-a:#1d1509;--card-b:#100b06;--nav-a:#160f08;--nav-b:#0c0805;--btt-bg:rgba(15,10,5,0.85);--amb1:rgba(0,180,255,.18);--amb2:rgba(130,80,255,.16);--amb3:rgba(0,255,180,.08);--body-1:#040814;--body-2:#08101F;--body-3:#0B1628;--body-4:#05070D;}
+[data-theme="crystal-light"]{--bg:#eef6fb;--bg-alt:#fff;--surface:#fff;--surface-2:#e4f2fa;--gold:#2ea8e0;--gold-deep:#1c7fb0;--gold-pale:#8fd6ff;--ink:#10344a;--ink-dim:#4d7286;--ink-faint:#86a4b3;--live:#ff5252;--line:rgba(28,127,176,.16);--bg-rgb:238,246,251;--gold-rgb:46,168,224;--live-rgb:255,82,82;--on-accent:#fff;--card-a:#fff;--card-b:#dcf0fb;--nav-a:#fff;--nav-b:#dcf0fb;--btt-bg:rgba(255,255,255,.85);--amb1:rgba(46,168,224,.16);--amb2:rgba(120,190,255,.14);--amb3:rgba(150,230,255,.12);--body-1:#eaf6ff;--body-2:#f2fbff;--body-3:#e6f4fd;--body-4:#eef6fb;}
+[data-theme="neon-cyber"]{--bg:#05060f;--bg-alt:#0a0d1c;--surface:#0d1226;--surface-2:#131a35;--gold:#29d3ff;--gold-deep:#7c3aed;--gold-pale:#9fe8ff;--ink:#eaf2ff;--ink-dim:#93a7d6;--ink-faint:#5a6796;--live:#ff3b7a;--line:rgba(41,211,255,.18);--bg-rgb:5,6,15;--gold-rgb:41,211,255;--live-rgb:255,59,122;--on-accent:#05060f;--card-a:#131a35;--card-b:#0a0d1c;--nav-a:#131a35;--nav-b:#05060f;--btt-bg:rgba(10,13,28,.85);--amb1:rgba(41,211,255,.22);--amb2:rgba(124,58,237,.22);--amb3:rgba(0,255,220,.1);--body-1:#05060f;--body-2:#0a0d21;--body-3:#0c1230;--body-4:#04050d;}
+[data-theme="royal-purple"]{--bg:#140a24;--bg-alt:#1b0f30;--surface:#1f1236;--surface-2:#2a1948;--gold:#b366ff;--gold-deep:#7c2fd6;--gold-pale:#ffb3ec;--ink:#f3e8ff;--ink-dim:#b79bd9;--ink-faint:#7c5fa3;--live:#ff4d8d;--line:rgba(179,102,255,.18);--bg-rgb:20,10,36;--gold-rgb:179,102,255;--live-rgb:255,77,141;--on-accent:#1a0630;--card-a:#2a1948;--card-b:#180b2b;--nav-a:#2a1948;--nav-b:#140a24;--btt-bg:rgba(24,11,43,.85);--amb1:rgba(179,102,255,.24);--amb2:rgba(255,143,224,.18);--amb3:rgba(120,80,255,.14);--body-1:#140a24;--body-2:#1c0f36;--body-3:#200f3f;--body-4:#100819;}
+[data-theme="emerald-forest"]{--bg:#06170f;--bg-alt:#0a2016;--surface:#0d2419;--surface-2:#123222;--gold:#22c58e;--gold-deep:#0e8f63;--gold-pale:#a7f3d0;--ink:#eafff5;--ink-dim:#9fcbb2;--ink-faint:#5f8f77;--live:#ff5a4d;--line:rgba(34,197,142,.18);--bg-rgb:6,23,15;--gold-rgb:34,197,142;--live-rgb:255,90,77;--on-accent:#042014;--card-a:#123222;--card-b:#08190f;--nav-a:#123222;--nav-b:#06170f;--btt-bg:rgba(8,25,15,.85);--amb1:rgba(34,197,142,.2);--amb2:rgba(167,243,208,.14);--amb3:rgba(80,220,150,.12);--body-1:#06170f;--body-2:#0a2318;--body-3:#0c2a1c;--body-4:#04120b;}
+[data-theme="sunset-orange"]{--bg:#1f0f08;--bg-alt:#29140a;--surface:#2b160c;--surface-2:#391d0f;--gold:#ff7a45;--gold-deep:#d9481f;--gold-pale:#ffcba4;--ink:#fff1e6;--ink-dim:#d9ab8f;--ink-faint:#9c6f57;--live:#ff3b3b;--line:rgba(255,122,69,.18);--bg-rgb:31,15,8;--gold-rgb:255,122,69;--live-rgb:255,59,59;--on-accent:#2a0e04;--card-a:#391d0f;--card-b:#200f07;--nav-a:#391d0f;--nav-b:#1f0f08;--btt-bg:rgba(32,15,7,.85);--amb1:rgba(255,122,69,.22);--amb2:rgba(255,187,130,.16);--amb3:rgba(255,90,90,.1);--body-1:#1f0f08;--body-2:#2a1509;--body-3:#2f170b;--body-4:#170a05;}
+[data-theme="ocean-blue"]{--bg:#02121f;--bg-alt:#052235;--surface:#06263b;--surface-2:#0a3550;--gold:#00b4d8;--gold-deep:#0077b6;--gold-pale:#90e0ef;--ink:#eafcff;--ink-dim:#9fd0e0;--ink-faint:#5f8fa3;--live:#ff5c5c;--line:rgba(0,180,216,.18);--bg-rgb:2,18,31;--gold-rgb:0,180,216;--live-rgb:255,92,92;--on-accent:#011520;--card-a:#0a3550;--card-b:#041c2b;--nav-a:#0a3550;--nav-b:#02121f;--btt-bg:rgba(4,28,43,.85);--amb1:rgba(0,180,216,.22);--amb2:rgba(144,224,239,.16);--amb3:rgba(0,119,182,.16);--body-1:#02121f;--body-2:#062338;--body-3:#082b43;--body-4:#010b13;}
+[data-theme="sakura-pink"]{--bg:#fdf3f7;--bg-alt:#fff8fb;--surface:#fff;--surface-2:#ffe9f2;--gold:#ff8fc2;--gold-deep:#e05a95;--gold-pale:#ffd6e8;--ink:#4a2540;--ink-dim:#93677f;--ink-faint:#bb96a9;--live:#ff5577;--line:rgba(224,90,149,.18);--bg-rgb:253,243,247;--gold-rgb:255,143,194;--live-rgb:255,85,119;--on-accent:#fff;--card-a:#fff;--card-b:#ffe4f0;--nav-a:#fff;--nav-b:#ffe4f0;--btt-bg:rgba(255,255,255,.85);--amb1:rgba(255,143,194,.2);--amb2:rgba(220,180,255,.16);--amb3:rgba(255,210,230,.18);--body-1:#fff5f9;--body-2:#fef0f6;--body-3:#fdeaf3;--body-4:#fdf3f7;}
+[data-theme="midnight-black"]{--bg:#0a0a0a;--bg-alt:#111;--surface:#141414;--surface-2:#1c1c1c;--gold:#d4d4d4;--gold-deep:#8a8a8a;--gold-pale:#f5f5f5;--ink:#f5f5f5;--ink-dim:#a3a3a3;--ink-faint:#666;--live:#ff4d4d;--line:rgba(255,255,255,.12);--bg-rgb:10,10,10;--gold-rgb:212,212,212;--live-rgb:255,77,77;--on-accent:#0a0a0a;--card-a:#1c1c1c;--card-b:#0d0d0d;--nav-a:#1c1c1c;--nav-b:#0a0a0a;--btt-bg:rgba(13,13,13,.85);--amb1:rgba(255,255,255,.08);--amb2:rgba(200,200,200,.06);--amb3:rgba(255,255,255,.04);--body-1:#0a0a0a;--body-2:#101010;--body-3:#131313;--body-4:#070707;}
+[data-theme="crimson-blood"]{--bg:#1a0505;--bg-alt:#240808;--surface:#2b0a0a;--surface-2:#3a0f0f;--gold:#e0304a;--gold-deep:#a3182d;--gold-pale:#ff8fa3;--ink:#ffeef0;--ink-dim:#d99aa3;--ink-faint:#8f5860;--live:#ffcc00;--line:rgba(224,48,74,.18);--bg-rgb:26,5,5;--gold-rgb:224,48,74;--live-rgb:255,204,0;--on-accent:#1a0505;--card-a:#3a0f0f;--card-b:#200808;--nav-a:#3a0f0f;--nav-b:#1a0505;--btt-bg:rgba(32,8,8,.85);--amb1:rgba(224,48,74,.22);--amb2:rgba(255,143,163,.16);--amb3:rgba(163,24,45,.12);--body-1:#1a0505;--body-2:#240909;--body-3:#2a0a0a;--body-4:#120404;}
+[data-theme="arena-pro"]{--bg:#FEF5EF;--bg-alt:#F3EAF4;--surface:#FFF;--surface-2:#EADDE1;--gold:#9D5C63;--gold-deep:#584B53;--gold-pale:#8B4B54;--ink:#584B53;--ink-dim:#8F9491;--ink-faint:#BCA3AC;--live:#9D5C63;--line:rgba(88,75,83,.14);--bg-rgb:254,245,239;--gold-rgb:157,92,99;--live-rgb:157,92,99;--on-accent:#FEF5EF;--card-a:#FFF;--card-b:#EADDE1;--nav-a:#FEF5EF;--nav-b:#F3EAF4;--btt-bg:rgba(254,245,239,.9);--amb1:rgba(157,92,99,.08);--amb2:rgba(243,234,244,.45);--amb3:rgba(88,75,83,.06);--body-1:#FEF5EF;--body-2:#F3EAF4;--body-3:#FFF;--body-4:#EADDE1;}
+[data-theme="arena-pro"] body{background:linear-gradient(180deg,#FEF5EF,#F3EAF4 50%,#FEF5EF);}
+html.theme-tr,html.theme-tr *{transition:background-color .5s,border-color .5s,color .5s,box-shadow .5s !important;}
 
-        [data-theme="og-bar"] {
-            --bg: #0a0705;
-            --bg-alt: #120c07;
-            --surface: #1a130b;
-            --surface-2: #221909;
-            --gold: #f0b93d;
-            --gold-deep: #b3811f;
-            --gold-pale: #fbe4a6;
-            --ink: #f4ecd8;
-            --ink-dim: #a9997d;
-            --ink-faint: #6b5f4c;
-            --live: #ff4433;
-            --line: rgba(var(--gold-rgb), 0.14);
-            --bg-rgb: 10, 7, 5;
-            --gold-rgb: 240, 185, 61;
-            --live-rgb: 255, 68, 51;
-            --on-accent: #1a1206;
-            --card-a: #1d1509;
-            --card-b: #100b06;
-            --nav-a: #160f08;
-            --nav-b: #0c0805;
-            --btt-bg: rgba(15, 10, 5, 0.85);
-            --amb1: rgba(0, 180, 255, .18);
-            --amb2: rgba(130, 80, 255, .16);
-            --amb3: rgba(0, 255, 180, .08);
-            --body-1: #040814;
-            --body-2: #08101F;
-            --body-3: #0B1628;
-            --body-4: #05070D;
-        }
+/* ═══ BASE ═══ */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{background:var(--bg);}
+body{color:var(--ink);font-family:'Rajdhani',sans-serif;overflow-x:hidden;min-height:100vh;
+  background:
+    linear-gradient(rgba(var(--gold-rgb),.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--gold-rgb),.05) 1px,transparent 1px),
+    radial-gradient(circle at 15% 20%,var(--amb1),transparent 28%),
+    radial-gradient(circle at 85% 15%,var(--amb2),transparent 30%),
+    radial-gradient(circle at 50% 85%,var(--amb3),transparent 35%),
+    linear-gradient(180deg,var(--body-1),var(--body-2) 30%,var(--body-3) 60%,var(--body-4));
+  background-size:40px 40px,40px 40px,auto,auto,auto,auto;
+  background-attachment:fixed;}
+::selection{background:var(--gold);color:var(--on-accent);}
 
-        [data-theme="crystal-light"] {
-            --bg: #eef6fb;
-            --bg-alt: #fff;
-            --surface: #fff;
-            --surface-2: #e4f2fa;
-            --gold: #2ea8e0;
-            --gold-deep: #1c7fb0;
-            --gold-pale: #8fd6ff;
-            --ink: #10344a;
-            --ink-dim: #4d7286;
-            --ink-faint: #86a4b3;
-            --live: #ff5252;
-            --line: rgba(28, 127, 176, .16);
-            --bg-rgb: 238, 246, 251;
-            --gold-rgb: 46, 168, 224;
-            --live-rgb: 255, 82, 82;
-            --on-accent: #fff;
-            --card-a: #fff;
-            --card-b: #dcf0fb;
-            --nav-a: #fff;
-            --nav-b: #dcf0fb;
-            --btt-bg: rgba(255, 255, 255, .85);
-            --amb1: rgba(46, 168, 224, .16);
-            --amb2: rgba(120, 190, 255, .14);
-            --amb3: rgba(150, 230, 255, .12);
-            --body-1: #eaf6ff;
-            --body-2: #f2fbff;
-            --body-3: #e6f4fd;
-            --body-4: #eef6fb;
-        }
-
-        [data-theme="neon-cyber"] {
-            --bg: #05060f;
-            --bg-alt: #0a0d1c;
-            --surface: #0d1226;
-            --surface-2: #131a35;
-            --gold: #29d3ff;
-            --gold-deep: #7c3aed;
-            --gold-pale: #9fe8ff;
-            --ink: #eaf2ff;
-            --ink-dim: #93a7d6;
-            --ink-faint: #5a6796;
-            --live: #ff3b7a;
-            --line: rgba(41, 211, 255, .18);
-            --bg-rgb: 5, 6, 15;
-            --gold-rgb: 41, 211, 255;
-            --live-rgb: 255, 59, 122;
-            --on-accent: #05060f;
-            --card-a: #131a35;
-            --card-b: #0a0d1c;
-            --nav-a: #131a35;
-            --nav-b: #05060f;
-            --btt-bg: rgba(10, 13, 28, .85);
-            --amb1: rgba(41, 211, 255, .22);
-            --amb2: rgba(124, 58, 237, .22);
-            --amb3: rgba(0, 255, 220, .1);
-            --body-1: #05060f;
-            --body-2: #0a0d21;
-            --body-3: #0c1230;
-            --body-4: #04050d;
-        }
-
-        [data-theme="royal-purple"] {
-            --bg: #140a24;
-            --bg-alt: #1b0f30;
-            --surface: #1f1236;
-            --surface-2: #2a1948;
-            --gold: #b366ff;
-            --gold-deep: #7c2fd6;
-            --gold-pale: #ffb3ec;
-            --ink: #f3e8ff;
-            --ink-dim: #b79bd9;
-            --ink-faint: #7c5fa3;
-            --live: #ff4d8d;
-            --line: rgba(179, 102, 255, .18);
-            --bg-rgb: 20, 10, 36;
-            --gold-rgb: 179, 102, 255;
-            --live-rgb: 255, 77, 141;
-            --on-accent: #1a0630;
-            --card-a: #2a1948;
-            --card-b: #180b2b;
-            --nav-a: #2a1948;
-            --nav-b: #140a24;
-            --btt-bg: rgba(24, 11, 43, .85);
-            --amb1: rgba(179, 102, 255, .24);
-            --amb2: rgba(255, 143, 224, .18);
-            --amb3: rgba(120, 80, 255, .14);
-            --body-1: #140a24;
-            --body-2: #1c0f36;
-            --body-3: #200f3f;
-            --body-4: #100819;
-        }
-
-        [data-theme="emerald-forest"] {
-            --bg: #06170f;
-            --bg-alt: #0a2016;
-            --surface: #0d2419;
-            --surface-2: #123222;
-            --gold: #22c58e;
-            --gold-deep: #0e8f63;
-            --gold-pale: #a7f3d0;
-            --ink: #eafff5;
-            --ink-dim: #9fcbb2;
-            --ink-faint: #5f8f77;
-            --live: #ff5a4d;
-            --line: rgba(34, 197, 142, .18);
-            --bg-rgb: 6, 23, 15;
-            --gold-rgb: 34, 197, 142;
-            --live-rgb: 255, 90, 77;
-            --on-accent: #042014;
-            --card-a: #123222;
-            --card-b: #08190f;
-            --nav-a: #123222;
-            --nav-b: #06170f;
-            --btt-bg: rgba(8, 25, 15, .85);
-            --amb1: rgba(34, 197, 142, .2);
-            --amb2: rgba(167, 243, 208, .14);
-            --amb3: rgba(80, 220, 150, .12);
-            --body-1: #06170f;
-            --body-2: #0a2318;
-            --body-3: #0c2a1c;
-            --body-4: #04120b;
-        }
-
-        [data-theme="sunset-orange"] {
-            --bg: #1f0f08;
-            --bg-alt: #29140a;
-            --surface: #2b160c;
-            --surface-2: #391d0f;
-            --gold: #ff7a45;
-            --gold-deep: #d9481f;
-            --gold-pale: #ffcba4;
-            --ink: #fff1e6;
-            --ink-dim: #d9ab8f;
-            --ink-faint: #9c6f57;
-            --live: #ff3b3b;
-            --line: rgba(255, 122, 69, .18);
-            --bg-rgb: 31, 15, 8;
-            --gold-rgb: 255, 122, 69;
-            --live-rgb: 255, 59, 59;
-            --on-accent: #2a0e04;
-            --card-a: #391d0f;
-            --card-b: #200f07;
-            --nav-a: #391d0f;
-            --nav-b: #1f0f08;
-            --btt-bg: rgba(32, 15, 7, .85);
-            --amb1: rgba(255, 122, 69, .22);
-            --amb2: rgba(255, 187, 130, .16);
-            --amb3: rgba(255, 90, 90, .1);
-            --body-1: #1f0f08;
-            --body-2: #2a1509;
-            --body-3: #2f170b;
-            --body-4: #170a05;
-        }
-
-        [data-theme="ocean-blue"] {
-            --bg: #02121f;
-            --bg-alt: #052235;
-            --surface: #06263b;
-            --surface-2: #0a3550;
-            --gold: #00b4d8;
-            --gold-deep: #0077b6;
-            --gold-pale: #90e0ef;
-            --ink: #eafcff;
-            --ink-dim: #9fd0e0;
-            --ink-faint: #5f8fa3;
-            --live: #ff5c5c;
-            --line: rgba(0, 180, 216, .18);
-            --bg-rgb: 2, 18, 31;
-            --gold-rgb: 0, 180, 216;
-            --live-rgb: 255, 92, 92;
-            --on-accent: #011520;
-            --card-a: #0a3550;
-            --card-b: #041c2b;
-            --nav-a: #0a3550;
-            --nav-b: #02121f;
-            --btt-bg: rgba(4, 28, 43, .85);
-            --amb1: rgba(0, 180, 216, .22);
-            --amb2: rgba(144, 224, 239, .16);
-            --amb3: rgba(0, 119, 182, .16);
-            --body-1: #02121f;
-            --body-2: #062338;
-            --body-3: #082b43;
-            --body-4: #010b13;
-        }
-
-        [data-theme="sakura-pink"] {
-            --bg: #fdf3f7;
-            --bg-alt: #fff8fb;
-            --surface: #fff;
-            --surface-2: #ffe9f2;
-            --gold: #ff8fc2;
-            --gold-deep: #e05a95;
-            --gold-pale: #ffd6e8;
-            --ink: #4a2540;
-            --ink-dim: #93677f;
-            --ink-faint: #bb96a9;
-            --live: #ff5577;
-            --line: rgba(224, 90, 149, .18);
-            --bg-rgb: 253, 243, 247;
-            --gold-rgb: 255, 143, 194;
-            --live-rgb: 255, 85, 119;
-            --on-accent: #fff;
-            --card-a: #fff;
-            --card-b: #ffe4f0;
-            --nav-a: #fff;
-            --nav-b: #ffe4f0;
-            --btt-bg: rgba(255, 255, 255, .85);
-            --amb1: rgba(255, 143, 194, .2);
-            --amb2: rgba(220, 180, 255, .16);
-            --amb3: rgba(255, 210, 230, .18);
-            --body-1: #fff5f9;
-            --body-2: #fef0f6;
-            --body-3: #fdeaf3;
-            --body-4: #fdf3f7;
-        }
-
-        [data-theme="midnight-black"] {
-            --bg: #0a0a0a;
-            --bg-alt: #111;
-            --surface: #141414;
-            --surface-2: #1c1c1c;
-            --gold: #d4d4d4;
-            --gold-deep: #8a8a8a;
-            --gold-pale: #f5f5f5;
-            --ink: #f5f5f5;
-            --ink-dim: #a3a3a3;
-            --ink-faint: #666;
-            --live: #ff4d4d;
-            --line: rgba(255, 255, 255, .12);
-            --bg-rgb: 10, 10, 10;
-            --gold-rgb: 212, 212, 212;
-            --live-rgb: 255, 77, 77;
-            --on-accent: #0a0a0a;
-            --card-a: #1c1c1c;
-            --card-b: #0d0d0d;
-            --nav-a: #1c1c1c;
-            --nav-b: #0a0a0a;
-            --btt-bg: rgba(13, 13, 13, .85);
-            --amb1: rgba(255, 255, 255, .08);
-            --amb2: rgba(200, 200, 200, .06);
-            --amb3: rgba(255, 255, 255, .04);
-            --body-1: #0a0a0a;
-            --body-2: #101010;
-            --body-3: #131313;
-            --body-4: #070707;
-        }
-
-        [data-theme="crimson-blood"] {
-            --bg: #1a0505;
-            --bg-alt: #240808;
-            --surface: #2b0a0a;
-            --surface-2: #3a0f0f;
-            --gold: #e0304a;
-            --gold-deep: #a3182d;
-            --gold-pale: #ff8fa3;
-            --ink: #ffeef0;
-            --ink-dim: #d99aa3;
-            --ink-faint: #8f5860;
-            --live: #ffcc00;
-            --line: rgba(224, 48, 74, .18);
-            --bg-rgb: 26, 5, 5;
-            --gold-rgb: 224, 48, 74;
-            --live-rgb: 255, 204, 0;
-            --on-accent: #1a0505;
-            --card-a: #3a0f0f;
-            --card-b: #200808;
-            --nav-a: #3a0f0f;
-            --nav-b: #1a0505;
-            --btt-bg: rgba(32, 8, 8, .85);
-            --amb1: rgba(224, 48, 74, .22);
-            --amb2: rgba(255, 143, 163, .16);
-            --amb3: rgba(163, 24, 45, .12);
-            --body-1: #1a0505;
-            --body-2: #240909;
-            --body-3: #2a0a0a;
-            --body-4: #120404;
-        }
-
-        [data-theme="arena-pro"] {
-            --bg: #FEF5EF;
-            --bg-alt: #F3EAF4;
-            --surface: #FFF;
-            --surface-2: #EADDE1;
-            --gold: #9D5C63;
-            --gold-deep: #584B53;
-            --gold-pale: #8B4B54;
-            --ink: #584B53;
-            --ink-dim: #8F9491;
-            --ink-faint: #BCA3AC;
-            --live: #9D5C63;
-            --line: rgba(88, 75, 83, .14);
-            --bg-rgb: 254, 245, 239;
-            --gold-rgb: 157, 92, 99;
-            --live-rgb: 157, 92, 99;
-            --on-accent: #FEF5EF;
-            --card-a: #FFF;
-            --card-b: #EADDE1;
-            --nav-a: #FEF5EF;
-            --nav-b: #F3EAF4;
-            --btt-bg: rgba(254, 245, 239, .9);
-            --amb1: rgba(157, 92, 99, .08);
-            --amb2: rgba(243, 234, 244, .45);
-            --amb3: rgba(88, 75, 83, .06);
-            --body-1: #FEF5EF;
-            --body-2: #F3EAF4;
-            --body-3: #FFF;
-            --body-4: #EADDE1;
-        }
-
-        [data-theme="arena-pro"] body {
-            background: linear-gradient(180deg, #FEF5EF, #F3EAF4 50%, #FEF5EF);
-        }
-
-        html.theme-tr,
-        html.theme-tr * {
-            transition: background-color .5s, border-color .5s, color .5s, box-shadow .5s !important;
-        }
-
-        /* ═══ BASE ═══ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            background: var(--bg);
-        }
-
-        body {
-            color: var(--ink);
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            background:
-                linear-gradient(rgba(var(--gold-rgb), .05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--gold-rgb), .05) 1px, transparent 1px),
-                radial-gradient(circle at 15% 20%, var(--amb1), transparent 28%),
-                radial-gradient(circle at 85% 15%, var(--amb2), transparent 30%),
-                radial-gradient(circle at 50% 85%, var(--amb3), transparent 35%),
-                linear-gradient(180deg, var(--body-1), var(--body-2) 30%, var(--body-3) 60%, var(--body-4));
-            background-size: 40px 40px, 40px 40px, auto, auto, auto, auto;
-            background-attachment: fixed;
-        }
-
-        ::selection {
-            background: var(--gold);
-            color: var(--on-accent);
-        }
-
-        /* ═══════════════════════════════════════════
+/* ═══════════════════════════════════════════
    SPLASH — KILL COUNTER DROP ANIMATION
    Numbers rain down, tally up, then BOOM
 ═══════════════════════════════════════════ */
-        #splash {
-            position: fixed;
-            inset: 0;
-            z-index: 999;
-            background: #060408;
-            max-width: 480px;
-            margin: 0 auto;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Particle rain of numbers */
-        .sp-rain {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .sp-drop {
-            position: absolute;
-            top: -40px;
-            font-family: 'Space Mono', monospace;
-            font-size: 13px;
-            font-weight: 700;
-            opacity: 0;
-            animation: _dropFall linear infinite;
-        }
-
-        @keyframes _dropFall {
-            0% {
-                opacity: 0;
-                transform: translateY(0);
-            }
-
-            8% {
-                opacity: .7;
-            }
-
-            90% {
-                opacity: .2;
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateY(110vh);
-            }
-        }
-
-        /* Central kill counter */
-        .sp-counter-wrap {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-        }
-
-        .sp-counter-ring {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            border: 2px solid rgba(240, 185, 61, .15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            animation: _ringRotate 8s linear infinite;
-        }
-
-        @keyframes _ringRotate {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .sp-counter-ring::before {
-            content: '';
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 1px solid rgba(240, 185, 61, .08);
-            animation: _ringRotate 6s linear infinite reverse;
-        }
-
-        .sp-counter-ring::after {
-            content: '';
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 1px dashed rgba(240, 185, 61, .12);
-        }
-
-        /* Rotating tick marks */
-        .sp-tick {
-            position: absolute;
-            width: 6px;
-            height: 2px;
-            background: rgba(240, 185, 61, .5);
-            border-radius: 1px;
-            transform-origin: 80px 1px;
-        }
-
-        .sp-kill-num {
-            position: absolute;
-            font-family: 'Anton', sans-serif;
-            font-size: 56px;
-            letter-spacing: .02em;
-            color: #f0b93d;
-            line-height: 1;
-            text-shadow: 0 0 40px rgba(240, 185, 61, .6), 0 0 80px rgba(240, 185, 61, .25);
-            z-index: 2;
-        }
-
-        .sp-kill-lbl {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 8px;
-            letter-spacing: .28em;
-            color: rgba(240, 185, 61, .5);
-            white-space: nowrap;
-        }
-
-        /* Gun crosshair accent */
-        .sp-crosshair {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            opacity: 0;
-            animation: _xhIn .4s ease forwards .2s;
-        }
-
-        @keyframes _xhIn {
-            to {
-                opacity: .18;
-            }
-        }
-
-        .sp-ch-line {
-            position: absolute;
-            background: rgba(240, 185, 61, .6);
-        }
-
-        .sp-ch-h {
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            margin-top: -.5px;
-        }
-
-        .sp-ch-v {
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            margin-left: -.5px;
-        }
-
-        .sp-ch-circ {
-            position: absolute;
-            inset: 30px;
-            border-radius: 50%;
-            border: 1px solid rgba(240, 185, 61, .5);
-        }
-
-        .sp-ch-dot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 4px;
-            height: 4px;
-            background: #f0b93d;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px rgba(240, 185, 61, .9);
-        }
-
-        /* Burst flash on zero */
-        .sp-burst {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, rgba(240, 185, 61, .35), transparent 60%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .sp-burst.fire {
-            animation: _burstFire .6s ease forwards;
-        }
-
-        @keyframes _burstFire {
-            0% {
-                opacity: 0;
-                transform: scale(.5)
-            }
-
-            40% {
-                opacity: 1;
-                transform: scale(1.1)
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(1.6)
-            }
-        }
-
-        /* Bottom text block */
-        .sp-text-block {
-            position: relative;
-            z-index: 3;
-            text-align: center;
-            margin-top: 28px;
-            opacity: 0;
-            transform: translateY(16px);
-            animation: _tbIn .55s ease forwards 2.4s;
-        }
-
-        @keyframes _tbIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .sp-lb-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 36px;
-            letter-spacing: .05em;
-            background: linear-gradient(180deg, #fff6da, #f0b93d 55%, #b3811f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-        }
-
-        .sp-lb-sub {
-            font-size: 11px;
-            letter-spacing: .3em;
-            color: rgba(255, 255, 255, .3);
-            margin-top: 7px;
-        }
-
-        /* Top 8 banner */
-        .sp-top8 {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 16px;
-            opacity: 0;
-            animation: _tbIn .45s ease forwards 2.8s;
-        }
-
-        .sp-t8-line {
-            width: 40px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(240, 185, 61, .5));
-        }
-
-        .sp-t8-line:last-child {
-            background: linear-gradient(270deg, transparent, rgba(240, 185, 61, .5));
-        }
-
-        .sp-t8-txt {
-            font-size: 10px;
-            letter-spacing: .24em;
-            color: rgba(240, 185, 61, .7);
-            font-weight: 700;
-        }
-
-        /* Scanlines */
-        .sp-scan {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 4;
-            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, .06) 3px, rgba(0, 0, 0, .06) 4px);
-        }
-
-        /* Load bar */
-        .sp-load {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: rgba(240, 185, 61, .07);
-        }
-
-        .sp-load-fill {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, #f0b93d, #fbe4a6);
-            animation: _lfill 3.8s ease forwards .15s;
-        }
-
-        @keyframes _lfill {
-            to {
-                width: 100%;
-            }
-        }
-
-        .sp-flash {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            background: #fff;
-            opacity: 0;
-            pointer-events: none;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        /* ═══ SCROLL PROGRESS ═══ */
-        .sp-prog {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 80;
-            width: 100%;
-            max-width: 480px;
-            height: 2px;
-        }
-
-        .sp-prog-fill {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            box-shadow: 0 0 8px rgba(var(--gold-rgb), .5);
-            transition: width .05s linear;
-        }
-
-        /* ═══ HEADER ═══ */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 18px;
-            background: rgba(var(--bg-rgb), .88);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--line);
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-
-        .crest {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
-        }
-
-        .brand-text {
-            font-size: 16px;
-            letter-spacing: .06em;
-            font-family: 'Anton', sans-serif;
-        }
-
-        .brand-text b {
-            color: var(--gold);
-        }
-
-        .h-right {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .ico-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            color: var(--gold);
-            font-size: 15px;
-            cursor: pointer;
-            transition: transform .15s;
-        }
-
-        .ico-btn:active {
-            transform: scale(.92);
-        }
-
-        /* ═══ NAV ═══ */
-        .ov {
-            position: fixed;
-            inset: 0;
-            z-index: 90;
-            max-width: 480px;
-            margin: 0 auto;
-            background: rgba(var(--bg-rgb), .55);
-            backdrop-filter: blur(4px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .3s;
-        }
-
-        .ov.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .side-panel {
-            position: fixed;
-            z-index: 95;
-            top: 62px;
-            right: 14px;
-            left: 14px;
-            max-width: 452px;
-            margin: 0 auto;
-            background: linear-gradient(160deg, var(--nav-a), var(--nav-b) 80%);
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
-            transform: translateY(-12px) scale(.97);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform .28s cubic-bezier(.2, .9, .25, 1), opacity .22s;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .side-panel.show {
-            transform: none;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .panel-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 14px 10px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: .04em;
-            color: var(--ink);
-            border-bottom: 1px solid var(--line);
-            flex-shrink: 0;
-        }
-
-        .close-x {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--gold);
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .theme-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            padding: 12px;
-            overflow-y: auto;
-        }
-
-        .th-opt {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 9px;
-            border-radius: 11px;
-            border: 1px solid var(--line);
-            background: rgba(var(--bg-rgb), .3);
-            cursor: pointer;
-            text-align: left;
-            transition: border-color .18s, background .18s;
-        }
-
-        .th-opt.active {
-            border-color: var(--gold);
-            background: rgba(var(--gold-rgb), .1);
-        }
-
-        .th-sw {
-            display: flex;
-            width: 24px;
-            height: 24px;
-            border-radius: 7px;
-            overflow: hidden;
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, .1);
-        }
-
-        .th-sw i {
-            flex: 1;
-        }
-
-        .th-nm {
-            font-size: 11px;
-            color: var(--ink-dim);
-        }
-
-        .th-opt.active .th-nm {
-            color: var(--gold-pale);
-            font-weight: 700;
-        }
-
-        .nav-drw {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 95;
-            width: 76%;
-            max-width: 300px;
-            background: linear-gradient(160deg, var(--nav-a), var(--nav-b) 80%);
-            border-left: 1px solid var(--line);
-            display: flex;
-            flex-direction: column;
-            padding: 18px 16px 20px;
-            transform: translateX(100%);
-            transition: transform .36s cubic-bezier(.2, .9, .25, 1);
-            box-shadow: -20px 0 60px rgba(0, 0, 0, .5);
-            overflow-y: auto;
-        }
-
-        .nav-drw.show {
-            transform: none;
-        }
-
-        .nav-drw-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .nav-links {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-top: 18px;
-        }
-
-        .nav-lnk {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            padding: 12px;
-            border-radius: 11px;
-            color: var(--ink);
-            font-size: 14px;
-            text-decoration: none;
-            border: 1px solid transparent;
-            transition: background .18s;
-        }
-
-        .nav-lnk[aria-current="page"] {
-            background: rgba(var(--gold-rgb), .1);
-            border-color: rgba(var(--gold-rgb), .3);
-            color: var(--gold-pale);
-        }
-
-        .nav-ic {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            background: rgba(var(--gold-rgb), .08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            flex-shrink: 0;
-        }
-
-        .nav-foot {
-            margin-top: auto;
-            padding-top: 14px;
-            border-top: 1px solid var(--line);
-            font-size: 9px;
-            letter-spacing: .2em;
-            color: var(--ink-faint);
-            text-align: center;
-        }
-
-        /* ═══ PAGE ═══ */
-        .page {
-            max-width: 480px;
-            margin: 0 auto;
-            padding-bottom: 60px;
-        }
-
-        /* ═══ MASTHEAD ═══ */
-        .masthead {
-            padding: 36px 20px 24px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .masthead-bg-glow {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 200px;
-            background: radial-gradient(ellipse, rgba(var(--gold-rgb), .1), transparent 68%);
-            pointer-events: none;
-        }
-
-        .mast-eyebrow {
-            font-size: 9.5px;
-            letter-spacing: .36em;
-            color: var(--gold-deep);
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .mast-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 40px;
-            line-height: .95;
-            color: var(--ink);
-            margin-bottom: 6px;
-        }
-
-        .mast-title b {
-            color: var(--gold);
-        }
-
-        .mast-sub {
-            font-size: 13px;
-            color: var(--ink-dim);
-            line-height: 1.6;
-            max-width: 280px;
-            margin: 0 auto;
-        }
-
-        /* ═══ SEASON STATS STRIP ═══ */
-        .stat-strip {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            margin: 0 20px;
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            overflow: hidden;
-            background: var(--surface);
-        }
-
-        .sc {
-            padding: 14px 8px;
-            text-align: center;
-            border-right: 1px solid var(--line);
-            position: relative;
-        }
-
-        .sc:last-child {
-            border-right: none;
-        }
-
-        .sc::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 15%;
-            right: 15%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), .45), transparent);
-        }
-
-        .sv {
-            font-family: 'Anton', sans-serif;
-            font-size: 24px;
-            color: var(--gold);
-            line-height: 1;
-        }
-
-        .sl {
-            font-size: 9px;
-            letter-spacing: .1em;
-            color: var(--ink-faint);
-            margin-top: 3px;
-            text-transform: uppercase;
-        }
-
-        /* ═══ SECTION HEAD ═══ */
-        .sec-head {
-            padding: 30px 20px 16px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-        }
-
-        .sec-eyebrow {
-            font-size: 9.5px;
-            letter-spacing: .32em;
-            color: var(--gold-deep);
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .sec-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 26px;
-            color: var(--ink);
-        }
-
-        .sec-title b {
-            color: var(--gold);
-        }
-
-        .sec-updated {
-            font-size: 10px;
-            color: var(--ink-faint);
-            letter-spacing: .06em;
-        }
-
-        /* ═══ #1 HERO CARD ═══ */
-        .hero-wrap {
-            padding: 0 20px;
-            margin-bottom: 10px;
-        }
-
-        .hero-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            background: linear-gradient(145deg, var(--card-a), var(--card-b));
-            border: 1px solid rgba(var(--gold-rgb), .3);
-            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), .08), 0 16px 48px rgba(var(--gold-rgb), .1);
-        }
-
-        .hero-top-shine {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold-pale), var(--gold), var(--gold-pale), transparent);
-        }
-
-        .hero-glow {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            width: 140%;
-            height: 140px;
-            background: radial-gradient(ellipse, rgba(var(--gold-rgb), .16), transparent 65%);
-            transform: translateX(-50%);
-            pointer-events: none;
-        }
-
-        .hero-rank-badge {
-            position: absolute;
-            top: 14px;
-            left: 14px;
-            z-index: 3;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 18px;
-            color: var(--on-accent);
-            box-shadow: 0 4px 12px rgba(var(--gold-rgb), .4);
-        }
-
-        .hero-inner {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 18px 16px 0;
-        }
-
-        .hero-photo-wrap {
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .hero-photo {
-            width: 90px;
-            height: 90px;
-            border-radius: 16px;
-            object-fit: cover;
-            object-position: top center;
-            border: 2px solid rgba(var(--gold-rgb), .35);
-            cursor: pointer;
-            transition: transform .2s;
-        }
-
-        .hero-photo:active {
-            transform: scale(.96);
-        }
-
-        .hero-photo-placeholder {
-            width: 90px;
-            height: 90px;
-            border-radius: 16px;
-            background: var(--surface-2);
-            border: 2px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
-
-        .hero-crown {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 20px;
-            animation: _crownFloat 2.6s ease-in-out infinite;
-        }
-
-        @keyframes _crownFloat {
-
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0)
-            }
-
-            50% {
-                transform: translateX(-50%) translateY(-5px)
-            }
-        }
-
-        .hero-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .hero-ign {
-            font-family: 'Anton', sans-serif;
-            font-size: 24px;
-            color: var(--gold-pale);
-            letter-spacing: .03em;
-            line-height: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .hero-real {
-            font-size: 11px;
-            color: var(--ink-dim);
-            margin-top: 2px;
-            letter-spacing: .04em;
-        }
-
-        .hero-team-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 7px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: .1em;
-            border: 1px solid;
-        }
-
-        .hero-stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1px 1fr 1px 1fr;
-            gap: 0;
-            padding: 14px 16px;
-            margin-top: 12px;
-            border-top: 1px solid var(--line);
-        }
-
-        .hsr-divider {
-            background: var(--line);
-        }
-
-        .hsr-cell {
-            text-align: center;
-            padding: 0 6px;
-        }
-
-        .hsr-val {
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            color: var(--gold);
-            line-height: 1;
-        }
-
-        .hsr-lbl {
-            font-size: 9px;
-            letter-spacing: .12em;
-            color: var(--ink-faint);
-            margin-top: 3px;
-            text-transform: uppercase;
-        }
-
-        .hero-mvp-bar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px 14px;
-        }
-
-        .mvp-badge {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(178, 110, 224, .14);
-            border: 1px solid rgba(178, 110, 224, .3);
-            border-radius: 20px;
-            padding: 3px 10px;
-        }
-
-        .mvp-star {
-            font-size: 11px;
-        }
-
-        .mvp-txt {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: .08em;
-            color: #c084fc;
-        }
-
-        .hero-rank1-label {
-            font-size: 10px;
-            letter-spacing: .2em;
-            color: var(--gold-deep);
-            font-weight: 700;
-        }
-
-        /* ═══ LIST CARDS (rank 2–8) ═══ */
-        .lb-list {
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .lb-card {
-            position: relative;
-            background: linear-gradient(145deg, var(--card-a), var(--card-b));
-            border: 1px solid var(--line);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            gap: (12px);
-            padding: 0;
-            overflow: hidden;
-            transition: border-color .2s;
-            cursor: pointer;
-        }
-
-        .lb-card:active {
-            transform: scale(.99);
-        }
-
-        .lb-card-accent {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-        }
-
-        .lb-rank-num {
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            color: var(--ink-faint);
-            width: 46px;
-            text-align: center;
-            flex-shrink: 0;
-            padding: 14px 0 14px 14px;
-        }
-
-        .lb-rank-num.r2 {
-            color: #c0c0c0;
-            text-shadow: 0 0 10px rgba(192, 192, 192, .4);
-        }
-
-        .lb-rank-num.r3 {
-            color: #cd7f32;
-            text-shadow: 0 0 10px rgba(205, 127, 50, .4);
-        }
-
-        .lb-photo {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
-            object-fit: cover;
-            object-position: top;
-            border: 1.5px solid var(--line);
-            flex-shrink: 0;
-            cursor: pointer;
-            transition: transform .15s;
-        }
-
-        .lb-photo:active {
-            transform: scale(.94);
-        }
-
-        .lb-photo-ph {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
-            background: var(--surface-2);
-            border: 1.5px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .lb-info {
-            flex: 1;
-            min-width: 0;
-            padding: 14px 0 14px 10px;
-        }
-
-        .lb-ign {
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            color: var(--ink);
-            letter-spacing: .02em;
-            line-height: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .lb-team {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: .08em;
-            margin-top: 3px;
-        }
-
-        .lb-real {
-            font-size: 10px;
-            color: var(--ink-faint);
-            margin-top: 2px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .lb-right {
-            padding: 14px 14px 14px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-
-        .lb-kills {
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            color: var(--gold);
-            line-height: 1;
-        }
-
-        .lb-kills-lbl {
-            font-size: 8.5px;
-            letter-spacing: .1em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .lb-meta {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            margin-top: 3px;
-        }
-
-        .lb-mp {
-            font-size: 10px;
-            color: var(--ink-dim);
-            font-family: 'Space Mono', monospace;
-        }
-
-        .lb-mvp-chip {
-            font-size: 8.5px;
-            font-weight: 700;
-            background: rgba(178, 110, 224, .14);
-            color: #c084fc;
-            border: 1px solid rgba(178, 110, 224, .25);
-            padding: 1px 6px;
-            border-radius: 6px;
-            letter-spacing: .06em;
-        }
-
-        /* ═══ EMPTY / LOADING ═══ */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .empty-icon {
-            font-size: 40px;
-            margin-bottom: 14px;
-        }
-
-        .empty-title {
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            color: var(--ink-dim);
-            margin-bottom: 8px;
-        }
-
-        .empty-sub {
-            font-size: 13px;
-            color: var(--ink-faint);
-            line-height: 1.6;
-        }
-
-        .skeleton {
-            background: linear-gradient(90deg, var(--surface), var(--surface-2), var(--surface));
-            background-size: 200% 100%;
-            animation: _sk 1.4s ease infinite;
-        }
-
-        @keyframes _sk {
-            0% {
-                background-position: 200% 0
-            }
-
-            100% {
-                background-position: -200% 0
-            }
-        }
-
-        /* ═══ LIGHTBOX ═══ */
-        .lb-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9000;
-            background: rgba(0, 0, 0, .92);
-            backdrop-filter: blur(16px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .lb-overlay.show {
-            display: flex;
-        }
-
-        .lb-img-wrap {
-            position: relative;
-            max-width: 90%;
-            max-height: 85vh;
-        }
-
-        .lb-full-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, .1);
-        }
-
-        .lb-close {
-            position: absolute;
-            top: -14px;
-            right: -14px;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .1);
-            border: 1px solid rgba(255, 255, 255, .15);
-            color: #fff;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .lb-player-tag {
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            font-size: 12px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, .7);
-            letter-spacing: .06em;
-        }
-
-        /* ═══ FADE-UP ═══ */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: .55s ease;
-        }
-
-        .fade-up.in {
-            opacity: 1;
-            transform: none;
-        }
-
-        .d1 {
-            transition-delay: .06s
-        }
-
-        .d2 {
-            transition-delay: .13s
-        }
-
-        .d3 {
-            transition-delay: .2s
-        }
-
-        .d4 {
-            transition-delay: .27s
-        }
-
-        .d5 {
-            transition-delay: .34s
-        }
-
-        .d6 {
-            transition-delay: .41s
-        }
-
-        .d7 {
-            transition-delay: .48s
-        }
-
-        .d8 {
-            transition-delay: .55s
-        }
-
-        /* ═══ BTT ═══ */
-        .btt {
-            position: fixed;
-            right: 18px;
-            bottom: 24px;
-            z-index: 70;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(10px) scale(.9);
-            pointer-events: none;
-            transition: opacity .3s, transform .3s;
-        }
-
-        .btt.show {
-            opacity: 1;
-            transform: none;
-            pointer-events: auto;
-        }
-
-        .btt svg {
-            position: absolute;
-            inset: 0;
-            transform: rotate(-90deg);
-        }
-
-        .btt-bg {
-            fill: var(--btt-bg);
-            stroke: rgba(var(--gold-rgb), .18);
-            stroke-width: 2;
-        }
-
-        .btt-arc {
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 2;
-            stroke-linecap: round;
-        }
-
-        .btt span {
-            position: relative;
-            color: var(--gold);
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        /* ═══ FOOTER ═══ */
-        footer {
-            max-width: 480px;
-            margin: 40px auto 0;
-            padding: 24px 20px;
-            border-top: 1px solid var(--line);
-        }
-
-        .foot-brand {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin-bottom: 8px;
-        }
-
-        .foot-copy {
-            font-size: 10px;
-            color: var(--ink-faint);
-            letter-spacing: .03em;
-            margin-top: 14px;
-        }
-
-        @media(prefers-reduced-motion:reduce) {
-            * {
-                animation-duration: .01ms !important;
-                transition-duration: .01ms !important;
-            }
-        }
-    </style>
+#splash{
+  position:fixed;inset:0;z-index:999;
+  background:#060408;
+  max-width:480px;margin:0 auto;
+  overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+
+/* Vignette + directional light sweep for cinematic depth */
+.sp-vignette{position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse at 50% 45%,transparent 35%,rgba(0,0,0,.55) 100%);}
+.sp-sweep{position:absolute;inset:-20%;pointer-events:none;z-index:1;opacity:0;
+  background:linear-gradient(115deg,transparent 40%,rgba(240,185,61,.10) 48%,rgba(255,255,255,.06) 50%,rgba(240,185,61,.10) 52%,transparent 60%);
+  animation:_sweepGo 2.6s ease forwards .1s;}
+@keyframes _sweepGo{0%{opacity:0;transform:translateX(-40%);}15%{opacity:1;}40%{opacity:0;}100%{opacity:0;transform:translateX(40%);}}
+
+/* Particle rain of numbers + kill glyphs */
+.sp-rain{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.sp-drop{
+  position:absolute;top:-40px;
+  font-family:'Space Mono',monospace;
+  font-size:13px;font-weight:700;
+  opacity:0;
+  animation:_dropFall linear infinite;
+}
+.sp-drop.glyph{font-family:'Rajdhani',sans-serif;font-size:15px;}
+@keyframes _dropFall{
+  0%{opacity:0;transform:translateY(0) rotate(0deg);}
+  8%{opacity:.7;}
+  90%{opacity:.2;}
+  100%{opacity:0;transform:translateY(110vh) rotate(20deg);}
+}
+
+/* Central kill counter */
+.sp-counter-wrap{
+  position:relative;z-index:3;
+  display:flex;flex-direction:column;align-items:center;
+  gap:0;
+}
+.sp-counter-ring{
+  width:160px;height:160px;border-radius:50%;
+  border:2px solid rgba(240,185,61,.15);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  animation:_ringRotate 8s linear infinite;
+}
+@keyframes _ringRotate{to{transform:rotate(360deg);}}
+.sp-counter-ring::before{
+  content:'';position:absolute;
+  width:140px;height:140px;border-radius:50%;
+  border:1px solid rgba(240,185,61,.08);
+  animation:_ringRotate 6s linear infinite reverse;
+}
+.sp-counter-ring::after{
+  content:'';position:absolute;
+  width:120px;height:120px;border-radius:50%;
+  border:1px dashed rgba(240,185,61,.12);
+}
+/* Rotating tick marks */
+.sp-tick{
+  position:absolute;width:6px;height:2px;
+  background:rgba(240,185,61,.5);border-radius:1px;
+  transform-origin:80px 1px;
+}
+
+.sp-kill-num{
+  position:absolute;
+  font-family:'Anton',sans-serif;font-size:56px;letter-spacing:.02em;
+  color:#f0b93d;line-height:1;
+  text-shadow:0 0 40px rgba(240,185,61,.6),0 0 80px rgba(240,185,61,.25);
+  z-index:2;
+}
+.sp-kill-lbl{
+  position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+  font-size:8px;letter-spacing:.28em;color:rgba(240,185,61,.5);
+  white-space:nowrap;
+}
+
+/* Gun crosshair accent */
+.sp-crosshair{
+  position:absolute;width:200px;height:200px;
+  opacity:0;animation:_xhIn .4s ease forwards .2s;
+}
+@keyframes _xhIn{to{opacity:.18;}}
+.sp-ch-line{position:absolute;background:rgba(240,185,61,.6);}
+.sp-ch-h{top:50%;left:0;right:0;height:1px;margin-top:-.5px;}
+.sp-ch-v{left:50%;top:0;bottom:0;width:1px;margin-left:-.5px;}
+.sp-ch-circ{position:absolute;inset:30px;border-radius:50%;border:1px solid rgba(240,185,61,.5);}
+.sp-ch-dot{position:absolute;top:50%;left:50%;width:4px;height:4px;background:#f0b93d;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(240,185,61,.9);}
+
+/* Burst flash on zero */
+.sp-burst{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at center,rgba(240,185,61,.35),transparent 60%);
+  opacity:0;pointer-events:none;
+}
+.sp-burst.fire{animation:_burstFire .6s ease forwards;}
+@keyframes _burstFire{0%{opacity:0;transform:scale(.5)}40%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1.6)}}
+
+/* Expanding shockwave rings on kill-count completion */
+.sp-shockwave{position:absolute;top:50%;left:50%;width:160px;height:160px;margin:-80px 0 0 -80px;
+  border-radius:50%;border:2px solid rgba(240,185,61,.7);opacity:0;pointer-events:none;z-index:2;}
+.sp-shockwave.go{animation:_shockGo .8s cubic-bezier(.15,.8,.3,1) forwards;}
+.sp-shockwave.go2{animation:_shockGo .8s cubic-bezier(.15,.8,.3,1) forwards .12s;}
+@keyframes _shockGo{0%{opacity:.9;transform:scale(.6);}100%{opacity:0;transform:scale(2.4);}}
+
+/* Screen shake on impact */
+#splash.shake{animation:_splashShake .32s cubic-bezier(.36,.07,.19,.97);}
+@keyframes _splashShake{
+  10%,90%{transform:translate3d(-1px,0,0);}
+  20%,80%{transform:translate3d(2px,0,0);}
+  30%,50%,70%{transform:translate3d(-4px,0,0);}
+  40%,60%{transform:translate3d(4px,0,0);}
+}
+
+/* Bottom text block */
+.sp-text-block{
+  position:relative;z-index:3;
+  text-align:center;margin-top:28px;
+  opacity:0;transform:translateY(16px);
+  animation:_tbIn .55s ease forwards 2.4s;
+}
+@keyframes _tbIn{to{opacity:1;transform:translateY(0);}}
+.sp-lb-title{
+  font-family:'Anton',sans-serif;font-size:36px;letter-spacing:.05em;
+  background:linear-gradient(180deg,#fff6da,#f0b93d 55%,#b3811f);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
+}
+.sp-lb-sub{font-size:11px;letter-spacing:.3em;color:rgba(255,255,255,.3);margin-top:7px;}
+
+/* Top 8 banner */
+.sp-top8{
+  position:relative;z-index:3;
+  display:flex;align-items:center;gap:10px;
+  margin-top:16px;
+  opacity:0;animation:_tbIn .45s ease forwards 2.8s;
+}
+.sp-t8-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(240,185,61,.5));}
+.sp-t8-line:last-child{background:linear-gradient(270deg,transparent,rgba(240,185,61,.5));}
+.sp-t8-txt{font-size:10px;letter-spacing:.24em;color:rgba(240,185,61,.7);font-weight:700;}
+
+/* Scanlines */
+.sp-scan{position:absolute;inset:0;pointer-events:none;z-index:4;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);}
+
+/* Load bar */
+.sp-load{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(240,185,61,.07);}
+.sp-load-fill{height:100%;width:0;background:linear-gradient(90deg,#f0b93d,#fbe4a6);animation:_lfill 3.8s ease forwards .15s;}
+@keyframes _lfill{to{width:100%;}}
+.sp-load-pct{position:absolute;bottom:8px;right:14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;color:rgba(240,185,61,.45);z-index:3;}
+
+.sp-flash{position:fixed;inset:0;z-index:1000;background:#fff;opacity:0;pointer-events:none;max-width:480px;margin:0 auto;}
+
+/* ═══ SCROLL PROGRESS ═══ */
+.sp-prog{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:80;width:100%;max-width:480px;height:2px;}
+.sp-prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-pale));box-shadow:0 0 8px rgba(var(--gold-rgb),.5);transition:width .05s linear;}
+
+/* ═══ HEADER ═══ */
+header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:rgba(var(--bg-rgb),.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);max-width:480px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:9px;}
+.crest{width:30px;height:30px;background:linear-gradient(145deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep));clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 100%,50% 76%,21% 100%,32% 57%,2% 35%,39% 35%);}
+.brand-text{font-size:16px;letter-spacing:.06em;font-family:'Anton',sans-serif;}
+.brand-text b{color:var(--gold);}
+.h-right{display:flex;align-items:center;gap:7px;}
+.ico-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--gold);font-size:15px;cursor:pointer;transition:transform .15s;}
+.ico-btn:active{transform:scale(.92);}
+
+/* ═══ NAV ═══ */
+.ov{position:fixed;inset:0;z-index:90;max-width:480px;margin:0 auto;background:rgba(var(--bg-rgb),.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s;}
+.ov.show{opacity:1;pointer-events:auto;}
+.side-panel{position:fixed;z-index:95;top:62px;right:14px;left:14px;max-width:452px;margin:0 auto;background:linear-gradient(160deg,var(--nav-a),var(--nav-b) 80%);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.45);transform:translateY(-12px) scale(.97);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.9,.25,1),opacity .22s;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;}
+.side-panel.show{transform:none;opacity:1;pointer-events:auto;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--ink);border-bottom:1px solid var(--line);flex-shrink:0;}
+.close-x{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--gold);font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;overflow-y:auto;}
+.th-opt{display:flex;align-items:center;gap:8px;padding:9px;border-radius:11px;border:1px solid var(--line);background:rgba(var(--bg-rgb),.3);cursor:pointer;text-align:left;transition:border-color .18s,background .18s;}
+.th-opt.active{border-color:var(--gold);background:rgba(var(--gold-rgb),.1);}
+.th-sw{display:flex;width:24px;height:24px;border-radius:7px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,.1);}
+.th-sw i{flex:1;}
+.th-nm{font-size:11px;color:var(--ink-dim);}
+.th-opt.active .th-nm{color:var(--gold-pale);font-weight:700;}
+.nav-drw{position:fixed;top:0;right:0;bottom:0;z-index:95;width:76%;max-width:300px;background:linear-gradient(160deg,var(--nav-a),var(--nav-b) 80%);border-left:1px solid var(--line);display:flex;flex-direction:column;padding:18px 16px 20px;transform:translateX(100%);transition:transform .36s cubic-bezier(.2,.9,.25,1);box-shadow:-20px 0 60px rgba(0,0,0,.5);overflow-y:auto;}
+.nav-drw.show{transform:none;}
+.nav-drw-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);}
+.nav-links{display:flex;flex-direction:column;gap:5px;margin-top:18px;}
+.nav-lnk{display:flex;align-items:center;gap:11px;padding:12px;border-radius:11px;color:var(--ink);font-size:14px;text-decoration:none;border:1px solid transparent;transition:background .18s;}
+.nav-lnk[aria-current="page"]{background:rgba(var(--gold-rgb),.1);border-color:rgba(var(--gold-rgb),.3);color:var(--gold-pale);}
+.nav-ic{width:28px;height:28px;border-radius:8px;background:rgba(var(--gold-rgb),.08);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.nav-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);font-size:9px;letter-spacing:.2em;color:var(--ink-faint);text-align:center;}
+
+/* ═══ PAGE ═══ */
+.page{max-width:480px;margin:0 auto;padding-bottom:60px;}
+
+/* ═══ MASTHEAD ═══ */
+.masthead{padding:36px 20px 24px;text-align:center;position:relative;overflow:hidden;}
+.masthead-bg-glow{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:300px;height:200px;background:radial-gradient(ellipse,rgba(var(--gold-rgb),.1),transparent 68%);pointer-events:none;}
+.mast-eyebrow{font-size:9.5px;letter-spacing:.36em;color:var(--gold-deep);font-weight:700;text-transform:uppercase;margin-bottom:10px;}
+.mast-title{font-family:'Anton',sans-serif;font-size:40px;line-height:.95;color:var(--ink);margin-bottom:6px;}
+.mast-title b{color:var(--gold);}
+.mast-sub{font-size:13px;color:var(--ink-dim);line-height:1.6;max-width:280px;margin:0 auto;}
+
+/* ═══ SEASON STATS STRIP ═══ */
+.stat-strip{display:grid;grid-template-columns:repeat(3,1fr);margin:0 20px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);}
+.sc{padding:14px 8px;text-align:center;border-right:1px solid var(--line);position:relative;}
+.sc:last-child{border-right:none;}
+.sc::before{content:'';position:absolute;top:0;left:15%;right:15%;height:2px;background:linear-gradient(90deg,transparent,rgba(var(--gold-rgb),.45),transparent);}
+.sv{font-family:'Anton',sans-serif;font-size:24px;color:var(--gold);line-height:1;}
+.sl{font-size:9px;letter-spacing:.1em;color:var(--ink-faint);margin-top:3px;text-transform:uppercase;}
+
+/* ═══ SECTION HEAD ═══ */
+.sec-head{padding:30px 20px 16px;display:flex;align-items:flex-end;justify-content:space-between;}
+.sec-eyebrow{font-size:9.5px;letter-spacing:.32em;color:var(--gold-deep);font-weight:700;text-transform:uppercase;margin-bottom:5px;}
+.sec-title{font-family:'Anton',sans-serif;font-size:26px;color:var(--ink);}
+.sec-title b{color:var(--gold);}
+.sec-updated{font-size:10px;color:var(--ink-faint);letter-spacing:.06em;}
+
+/* ═══ #1 HERO CARD ═══ */
+.hero-wrap{padding:0 20px;margin-bottom:10px;}
+.hero-card{
+  position:relative;border-radius:20px;overflow:hidden;
+  background:linear-gradient(145deg,var(--card-a),var(--card-b));
+  border:1px solid rgba(var(--gold-rgb),.3);
+  box-shadow:0 0 0 1px rgba(var(--gold-rgb),.08),0 16px 48px rgba(var(--gold-rgb),.1);
+}
+.hero-top-shine{position:absolute;top:0;left:-100%;width:300%;height:2px;background:linear-gradient(90deg,transparent,var(--gold-pale),var(--gold),var(--gold-pale),transparent);animation:_shineSweep 5s ease-in-out infinite;}
+@keyframes _shineSweep{0%,40%{transform:translateX(0);}70%,100%{transform:translateX(33.3%);}}
+.hero-glow{position:absolute;top:-40px;left:50%;width:140%;height:140px;background:radial-gradient(ellipse,rgba(var(--gold-rgb),.16),transparent 65%);transform:translateX(-50%);pointer-events:none;}
+.hero-rank-badge{
+  position:absolute;top:14px;left:14px;z-index:3;
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Anton',sans-serif;font-size:18px;color:var(--on-accent);
+  box-shadow:0 4px 12px rgba(var(--gold-rgb),.4);
+  animation:_badgePulse 2.4s ease-in-out infinite;
+}
+@keyframes _badgePulse{0%,100%{box-shadow:0 4px 12px rgba(var(--gold-rgb),.4);}50%{box-shadow:0 4px 22px rgba(var(--gold-rgb),.7);}}
+.hero-inner{display:flex;align-items:center;gap:16px;padding:18px 16px 0;}
+.hero-photo-wrap{position:relative;flex-shrink:0;}
+.hero-photo{
+  width:90px;height:90px;border-radius:16px;
+  object-fit:cover;object-position:top center;
+  border:2px solid rgba(var(--gold-rgb),.35);
+  cursor:pointer;transition:transform .2s;
+}
+.hero-photo:active{transform:scale(.96);}
+.hero-photo-placeholder{
+  width:90px;height:90px;border-radius:16px;
+  background:var(--surface-2);border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;
+}
+.hero-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:20px;animation:_crownFloat 2.6s ease-in-out infinite;}
+@keyframes _crownFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+.hero-info{flex:1;min-width:0;}
+.hero-ign{font-family:'Anton',sans-serif;font-size:24px;color:var(--gold-pale);letter-spacing:.03em;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hero-real{font-size:11px;color:var(--ink-dim);margin-top:2px;letter-spacing:.04em;}
+.hero-team-pill{display:inline-flex;align-items:center;gap:5px;margin-top:7px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.1em;border:1px solid;}
+.hero-stats-row{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;padding:14px 16px;margin-top:12px;border-top:1px solid var(--line);}
+.hsr-divider{background:var(--line);}
+.hsr-cell{text-align:center;padding:0 6px;}
+.hsr-val{font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);line-height:1;}
+.hsr-lbl{font-size:9px;letter-spacing:.12em;color:var(--ink-faint);margin-top:3px;text-transform:uppercase;}
+.hero-mvp-bar{display:flex;align-items:center;gap:8px;padding:8px 16px 14px;}
+.mvp-badge{display:flex;align-items:center;gap:4px;background:rgba(178,110,224,.14);border:1px solid rgba(178,110,224,.3);border-radius:20px;padding:3px 10px;}
+.mvp-star{font-size:11px;}
+.mvp-txt{font-size:10px;font-weight:700;letter-spacing:.08em;color:#c084fc;}
+.hero-rank1-label{font-size:10px;letter-spacing:.2em;color:var(--gold-deep);font-weight:700;}
+
+/* ═══ LIST CARDS (rank 2–8) ═══ */
+.lb-list{padding:0 20px;display:flex;flex-direction:column;gap:8px;}
+.lb-card{
+  position:relative;
+  background:linear-gradient(145deg,var(--card-a),var(--card-b));
+  border:1px solid var(--line);border-radius:16px;
+  display:flex;align-items:center;gap:12px;
+  padding:0;overflow:hidden;
+  transition:border-color .2s,transform .15s;
+  cursor:pointer;
+}
+.lb-card:active{transform:scale(.99);}
+.lb-card-accent{position:absolute;left:0;top:0;bottom:0;width:3px;}
+.lb-rank-num{
+  font-family:'Anton',sans-serif;font-size:22px;
+  color:var(--ink-faint);width:46px;text-align:center;
+  flex-shrink:0;padding:14px 0 14px 14px;
+}
+.lb-rank-num.r2{color:#c0c0c0;text-shadow:0 0 10px rgba(192,192,192,.4);}
+.lb-rank-num.r3{color:#cd7f32;text-shadow:0 0 10px rgba(205,127,50,.4);}
+.lb-photo{width:52px;height:52px;border-radius:12px;object-fit:cover;object-position:top;border:1.5px solid var(--line);flex-shrink:0;cursor:pointer;transition:transform .15s;}
+.lb-photo:active{transform:scale(.94);}
+.lb-photo-ph{width:52px;height:52px;border-radius:12px;background:var(--surface-2);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.lb-info{flex:1;min-width:0;padding:14px 0 14px 10px;}
+.lb-ign{font-family:'Anton',sans-serif;font-size:16px;color:var(--ink);letter-spacing:.02em;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lb-team{font-size:10px;font-weight:700;letter-spacing:.08em;margin-top:3px;}
+.lb-real{font-size:10px;color:var(--ink-faint);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lb-right{padding:14px 14px 14px 0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.lb-kills{font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);line-height:1;}
+.lb-kills-lbl{font-size:8.5px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;}
+.lb-meta{display:flex;gap:6px;align-items:center;margin-top:3px;}
+.lb-mp{font-size:10px;color:var(--ink-dim);font-family:'Space Mono',monospace;}
+.lb-mvp-chip{font-size:8.5px;font-weight:700;background:rgba(178,110,224,.14);color:#c084fc;border:1px solid rgba(178,110,224,.25);padding:1px 6px;border-radius:6px;letter-spacing:.06em;}
+
+/* ═══ EMPTY / LOADING ═══ */
+.empty-state{text-align:center;padding:60px 20px;}
+.empty-icon{font-size:40px;margin-bottom:14px;}
+.empty-title{font-family:'Anton',sans-serif;font-size:22px;color:var(--ink-dim);margin-bottom:8px;}
+.empty-sub{font-size:13px;color:var(--ink-faint);line-height:1.6;}
+.skeleton{background:linear-gradient(90deg,var(--surface),var(--surface-2),var(--surface));background-size:200% 100%;animation:_sk 1.4s ease infinite;}
+@keyframes _sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ═══ LIGHTBOX ═══ */
+.lb-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;max-width:480px;margin:0 auto;}
+.lb-overlay.show{display:flex;}
+.lb-img-wrap{position:relative;max-width:90%;max-height:85vh;}
+.lb-full-img{width:100%;height:100%;object-fit:contain;border-radius:14px;border:1px solid rgba(255,255,255,.1);}
+.lb-close{position:absolute;top:-14px;right:-14px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.lb-player-tag{position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.06em;}
+
+/* ═══ FADE-UP ═══ */
+.fade-up{opacity:0;transform:translateY(20px);transition:.55s ease;}
+.fade-up.in{opacity:1;transform:none;}
+.d1{transition-delay:.06s}.d2{transition-delay:.13s}.d3{transition-delay:.2s}
+.d4{transition-delay:.27s}.d5{transition-delay:.34s}.d6{transition-delay:.41s}
+.d7{transition-delay:.48s}.d8{transition-delay:.55s}
+
+/* ═══ BTT ═══ */
+.btt{position:fixed;right:18px;bottom:24px;z-index:70;width:48px;height:48px;border-radius:50%;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;transition:opacity .3s,transform .3s;}
+.btt.show{opacity:1;transform:none;pointer-events:auto;}
+.btt svg{position:absolute;inset:0;transform:rotate(-90deg);}
+.btt-bg{fill:var(--btt-bg);stroke:rgba(var(--gold-rgb),.18);stroke-width:2;}
+.btt-arc{fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;}
+.btt span{position:relative;color:var(--gold);font-size:16px;font-weight:700;}
+
+/* ═══ FOOTER ═══ */
+footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid var(--line);}
+.foot-brand{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+.foot-copy{font-size:10px;color:var(--ink-faint);letter-spacing:.03em;margin-top:14px;}
+
+/* ═══ ADMIN PILL / BAR ═══ */
+.admin-pill{display:none;align-items:center;gap:5px;background:rgba(var(--gold-rgb),.1);border:1px solid rgba(var(--gold-rgb),.3);border-radius:20px;padding:4px 11px;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--gold);cursor:pointer;}
+.admin-pill.show{display:flex;}
+.adot{width:6px;height:6px;border-radius:50%;background:var(--live);animation:_adot 1.2s ease-in-out infinite;}
+@keyframes _adot{0%,100%{opacity:1}50%{opacity:.2}}
+.admin-bar{display:none;background:rgba(var(--gold-rgb),.06);border-bottom:1px solid rgba(var(--gold-rgb),.15);padding:10px 18px;align-items:center;justify-content:space-between;max-width:480px;margin:0 auto;}
+.admin-bar.show{display:flex;}
+.ab-label{font-size:11px;letter-spacing:.1em;color:var(--gold-deep);font-weight:700;}
+.ab-actions{display:flex;gap:7px;}
+.ab-btn{font-size:11px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(var(--gold-rgb),.3);background:rgba(var(--gold-rgb),.1);color:var(--gold);cursor:pointer;letter-spacing:.06em;}
+.ab-btn:active{background:rgba(var(--gold-rgb),.2);}
+
+/* ADMIN OVERLAY BUTTONS on player cards — always visible when rendered (mobile has no hover) */
+.lb-admin-btns,.hero-admin-btns{position:absolute;top:10px;right:10px;z-index:4;display:flex;gap:5px;}
+.lb-edit-btn{background:rgba(var(--gold-rgb),.15);border:1px solid rgba(var(--gold-rgb),.3);color:var(--gold);border-radius:8px;font-size:9.5px;font-weight:700;padding:4px 10px;cursor:pointer;letter-spacing:.06em;}
+
+/* ═══ MODALS ═══ */
+.modal-bg{display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);align-items:flex-end;justify-content:center;max-width:480px;margin:0 auto;}
+.modal-bg.show{display:flex;}
+.modal-sheet{background:linear-gradient(160deg,var(--surface),var(--bg-alt));border:1px solid rgba(var(--gold-rgb),.2);border-top-left-radius:24px;border-top-right-radius:24px;padding:6px 20px 36px;width:100%;max-height:92vh;overflow-y:auto;}
+.modal-handle{width:36px;height:4px;background:var(--line);border-radius:2px;margin:14px auto 18px;}
+.modal-title{font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);margin-bottom:3px;}
+.modal-sub{font-size:12px;color:var(--ink-dim);margin-bottom:18px;line-height:1.5;}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:10px;letter-spacing:.12em;color:var(--ink-faint);font-weight:700;text-transform:uppercase;display:block;margin-bottom:7px;}
+.form-input{width:100%;background:var(--bg);border:1.5px solid rgba(var(--gold-rgb),.18);border-radius:11px;padding:11px 14px;color:var(--ink);font-family:'Space Mono',monospace;font-size:14px;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--gold);}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a9997d' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.modal-actions{display:flex;gap:10px;margin-top:18px;}
+.btn{flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:none;cursor:pointer;font-family:'Rajdhani',sans-serif;transition:transform .12s;}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));color:var(--on-accent);}
+.btn-ghost{background:transparent;color:var(--ink-dim);border:1px solid var(--line);}
+.btn-danger{background:rgba(var(--live-rgb),.1);color:var(--live);border:1px solid rgba(var(--live-rgb),.25);}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(16px);z-index:9999;background:var(--surface);border:1px solid rgba(var(--gold-rgb),.3);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:600;color:var(--gold-pale);white-space:nowrap;max-width:88%;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .3s,transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.4);pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{border-color:rgba(var(--live-rgb),.4);color:var(--live);}
+
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+</style>
 </head>
-
 <body>
 
-    <!-- ═══════════════════════════
+<!-- ═══════════════════════════
      SPLASH — KILL COUNTER DROP
 ═══════════════════════════ -->
-    <div id="splash">
-        <div class="sp-scan"></div>
-        <div class="sp-rain" id="spRain"></div>
-        <div class="sp-burst" id="spBurst"></div>
+<div id="splash">
+  <div class="sp-scan"></div>
+  <div class="sp-sweep"></div>
+  <div class="sp-rain" id="spRain"></div>
+  <div class="sp-shockwave" id="spShock1"></div>
+  <div class="sp-shockwave" id="spShock2"></div>
+  <div class="sp-burst" id="spBurst"></div>
+  <div class="sp-vignette"></div>
 
-        <div class="sp-counter-wrap">
-            <!-- rotating ring with ticks -->
-            <div class="sp-counter-ring" id="spRing">
-                <div class="sp-kill-num" id="spKillNum">0</div>
-                <div class="sp-kill-lbl">TOTAL KILLS</div>
-            </div>
-            <svg class="sp-crosshair" viewBox="0 0 200 200">
-                <line x1="100" y1="0" x2="100" y2="200" stroke="rgba(240,185,61,.5)" stroke-width="1" />
-                <line x1="0" y1="100" x2="200" y2="100" stroke="rgba(240,185,61,.5)" stroke-width="1" />
-                <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(240,185,61,.35)" stroke-width="1" />
-                <circle cx="100" cy="100" r="35" fill="none" stroke="rgba(240,185,61,.2)" stroke-width="1"
-                    stroke-dasharray="4 4" />
-                <circle cx="100" cy="100" r="3" fill="#f0b93d" />
-                <line x1="85" y1="100" x2="93" y2="100" stroke="#f0b93d" stroke-width="1.5" />
-                <line x1="107" y1="100" x2="115" y2="100" stroke="#f0b93d" stroke-width="1.5" />
-                <line x1="100" y1="85" x2="100" y2="93" stroke="#f0b93d" stroke-width="1.5" />
-                <line x1="100" y1="107" x2="100" y2="115" stroke="#f0b93d" stroke-width="1.5" />
-            </svg>
-        </div>
-
-        <div class="sp-text-block">
-            <div class="sp-lb-title">LEADERBOARD</div>
-            <div class="sp-lb-sub">SEASON 12 · KILL RANKINGS</div>
-            <div class="sp-top8">
-                <div class="sp-t8-line"></div>
-                <div class="sp-t8-txt">TOP 8 FRAGGERS</div>
-                <div class="sp-t8-line"></div>
-            </div>
-        </div>
-
-        <div class="sp-load">
-            <div class="sp-load-fill"></div>
-        </div>
+  <div class="sp-counter-wrap">
+    <!-- rotating ring with ticks -->
+    <div class="sp-counter-ring" id="spRing">
+      <div class="sp-kill-num" id="spKillNum">0</div>
+      <div class="sp-kill-lbl">TOTAL KILLS</div>
     </div>
-    <div class="sp-flash" id="spFlash"></div>
+    <svg class="sp-crosshair" viewBox="0 0 200 200">
+      <line x1="100" y1="0" x2="100" y2="200" stroke="rgba(240,185,61,.5)" stroke-width="1"/>
+      <line x1="0" y1="100" x2="200" y2="100" stroke="rgba(240,185,61,.5)" stroke-width="1"/>
+      <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(240,185,61,.35)" stroke-width="1"/>
+      <circle cx="100" cy="100" r="35" fill="none" stroke="rgba(240,185,61,.2)" stroke-width="1" stroke-dasharray="4 4"/>
+      <circle cx="100" cy="100" r="3" fill="#f0b93d"/>
+      <line x1="85" y1="100" x2="93" y2="100" stroke="#f0b93d" stroke-width="1.5"/>
+      <line x1="107" y1="100" x2="115" y2="100" stroke="#f0b93d" stroke-width="1.5"/>
+      <line x1="100" y1="85" x2="100" y2="93" stroke="#f0b93d" stroke-width="1.5"/>
+      <line x1="100" y1="107" x2="100" y2="115" stroke="#f0b93d" stroke-width="1.5"/>
+    </svg>
+  </div>
 
-    <!-- SCROLL PROGRESS -->
-    <div class="sp-prog">
-        <div class="sp-prog-fill" id="scrollFill"></div>
+  <div class="sp-text-block">
+    <div class="sp-lb-title">LEADERBOARD</div>
+    <div class="sp-lb-sub">SEASON 12 · KILL RANKINGS</div>
+    <div class="sp-top8">
+      <div class="sp-t8-line"></div>
+      <div class="sp-t8-txt">TOP 8 FRAGGERS</div>
+      <div class="sp-t8-line"></div>
     </div>
+  </div>
 
-    <!-- HEADER -->
-    <header>
-        <div class="brand">
-            <div class="crest"></div>
-            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
-        </div>
-        <div class="h-right">
-            <button class="ico-btn" id="themeBtn">🎨</button>
-            <button class="ico-btn" id="menuBtn">☰</button>
-        </div>
-    </header>
+  <div class="sp-load"><div class="sp-load-fill"></div></div>
+  <div class="sp-load-pct" id="spLoadPct">0%</div>
+</div>
+<div class="sp-flash" id="spFlash"></div>
 
-    <!-- THEME PANEL -->
-    <div class="ov" id="themeOv"></div>
-    <div class="side-panel" id="themePanel">
-        <div class="panel-head"><span>🎨 Theme</span><button class="close-x" id="themeClose">✕</button></div>
-        <div class="theme-grid">
-            <button class="th-opt" data-theme="golden-fire"><span class="th-sw"><i style="background:#0a0705"></i><i
-                        style="background:#f0b93d"></i><i style="background:#b88f20"></i></span><span
-                    class="th-nm">Golden Fire 🔥</span></button>
-            <button class="th-opt" data-theme="og-bar"><span class="th-sw"><i style="background:#22a6df"></i><i
-                        style="background:#250505"></i><i style="background:#49310d"></i></span><span
-                    class="th-nm">Disco Blue ❤️</span></button>
-            <button class="th-opt" data-theme="neon-cyber"><span class="th-sw"><i style="background:#05060f"></i><i
-                        style="background:#29d3ff"></i><i style="background:#49199b"></i></span><span class="th-nm">Neon
-                    Cyber 💙</span></button>
-            <button class="th-opt" data-theme="royal-purple"><span class="th-sw"><i style="background:#140a24"></i><i
-                        style="background:#b366ff"></i><i style="background:#911b73"></i></span><span
-                    class="th-nm">Royal Purple 💜</span></button>
-            <button class="th-opt" data-theme="emerald-forest"><span class="th-sw"><i style="background:#06170f"></i><i
-                        style="background:#22c58e"></i><i style="background:#147749"></i></span><span
-                    class="th-nm">Emerald Forest 💚</span></button>
-            <button class="th-opt" data-theme="sunset-orange"><span class="th-sw"><i style="background:#1f0f08"></i><i
-                        style="background:#ff7a45"></i><i style="background:#824619"></i></span><span
-                    class="th-nm">Sunset Orange 🧡</span></button>
-            <button class="th-opt" data-theme="ocean-blue"><span class="th-sw"><i style="background:#02121f"></i><i
-                        style="background:#00b4d8"></i><i style="background:#147282"></i></span><span
-                    class="th-nm">Ocean Blue 🌊</span></button>
-            <button class="th-opt" data-theme="sakura-pink"><span class="th-sw"><i style="background:#fdf3f7"></i><i
-                        style="background:#ff8fc2"></i><i style="background:#97184f"></i></span><span
-                    class="th-nm">Sakura Pink 🌸</span></button>
-            <button class="th-opt" data-theme="midnight-black"><span class="th-sw"><i style="background:#0a0a0a"></i><i
-                        style="background:#d4d4d4"></i><i style="background:#a22222"></i></span><span
-                    class="th-nm">Midnight Black ⚫</span></button>
-            <button class="th-opt" data-theme="crystal-light"><span class="th-sw"><i style="background:#eef6fb"></i><i
-                        style="background:#2ea8e0"></i><i style="background:#058ede"></i></span><span
-                    class="th-nm">Crystal Light ☀️</span></button>
-            <button class="th-opt" data-theme="crimson-blood"><span class="th-sw"><i style="background:#1a0505"></i><i
-                        style="background:#e0304a"></i><i style="background:#ff8fa3"></i></span><span
-                    class="th-nm">Crimson Blood 🩸</span></button>
-            <button class="th-opt" data-theme="arena-pro"><span class="th-sw"><i style="background:#FEF5EF"></i><i
-                        style="background:#9D5C63"></i><i style="background:#584B53"></i></span><span
-                    class="th-nm">Arena Pro ⚔️</span></button>
-        </div>
+<!-- SCROLL PROGRESS -->
+<div class="sp-prog"><div class="sp-prog-fill" id="scrollFill"></div></div>
+
+<!-- HEADER -->
+<header>
+  <div class="brand"><div class="crest"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
+  <div class="h-right">
+    <div class="admin-pill" id="adminPill" title="Tap to sign out"><div class="adot"></div>ADMIN</div>
+    <button class="ico-btn" id="loginBtn" title="Admin Login">🔐</button>
+    <button class="ico-btn" id="themeBtn">🎨</button>
+    <button class="ico-btn" id="menuBtn">☰</button>
+  </div>
+</header>
+
+<!-- THEME PANEL -->
+<div class="ov" id="themeOv"></div>
+<div class="side-panel" id="themePanel">
+  <div class="panel-head"><span>🎨 Theme</span><button class="close-x" id="themeClose">✕</button></div>
+  <div class="theme-grid">
+    <button class="th-opt" data-theme="golden-fire"><span class="th-sw"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i style="background:#b88f20"></i></span><span class="th-nm">Golden Fire 🔥</span></button>
+    <button class="th-opt" data-theme="og-bar"><span class="th-sw"><i style="background:#22a6df"></i><i style="background:#250505"></i><i style="background:#49310d"></i></span><span class="th-nm">Disco Blue ❤️</span></button>
+    <button class="th-opt" data-theme="neon-cyber"><span class="th-sw"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i style="background:#49199b"></i></span><span class="th-nm">Neon Cyber 💙</span></button>
+    <button class="th-opt" data-theme="royal-purple"><span class="th-sw"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i style="background:#911b73"></i></span><span class="th-nm">Royal Purple 💜</span></button>
+    <button class="th-opt" data-theme="emerald-forest"><span class="th-sw"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i style="background:#147749"></i></span><span class="th-nm">Emerald Forest 💚</span></button>
+    <button class="th-opt" data-theme="sunset-orange"><span class="th-sw"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i style="background:#824619"></i></span><span class="th-nm">Sunset Orange 🧡</span></button>
+    <button class="th-opt" data-theme="ocean-blue"><span class="th-sw"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i style="background:#147282"></i></span><span class="th-nm">Ocean Blue 🌊</span></button>
+    <button class="th-opt" data-theme="sakura-pink"><span class="th-sw"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i style="background:#97184f"></i></span><span class="th-nm">Sakura Pink 🌸</span></button>
+    <button class="th-opt" data-theme="midnight-black"><span class="th-sw"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i style="background:#a22222"></i></span><span class="th-nm">Midnight Black ⚫</span></button>
+    <button class="th-opt" data-theme="crystal-light"><span class="th-sw"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i style="background:#058ede"></i></span><span class="th-nm">Crystal Light ☀️</span></button>
+    <button class="th-opt" data-theme="crimson-blood"><span class="th-sw"><i style="background:#1a0505"></i><i style="background:#e0304a"></i><i style="background:#ff8fa3"></i></span><span class="th-nm">Crimson Blood 🩸</span></button>
+    <button class="th-opt" data-theme="arena-pro"><span class="th-sw"><i style="background:#FEF5EF"></i><i style="background:#9D5C63"></i><i style="background:#584B53"></i></span><span class="th-nm">Arena Pro ⚔️</span></button>
+  </div>
+</div>
+
+<!-- NAV DRAWER -->
+<div class="ov" id="navOv"></div>
+<nav class="nav-drw" id="navDrw">
+  <div class="nav-drw-head">
+    <div class="brand"><div class="crest" style="width:26px;height:26px"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
+    <button class="close-x" id="navClose">✕</button>
+  </div>
+  <div class="nav-links">
+    <a href="home.html" class="nav-lnk"><span class="nav-ic">🔥</span>Home</a>
+    <a href="registration-center.html" class="nav-lnk"><span class="nav-ic">👤</span>Registration</a>
+    <a href="play-ins.html" class="nav-lnk"><span class="nav-ic">🎮</span>Play-Ins</a>
+    <a href="auction-center.html" class="nav-lnk"><span class="nav-ic">🔨</span>Auction</a>
+    <a href="teams.html" class="nav-lnk"><span class="nav-ic">🛡️</span>Teams</a>
+    <a href="schedule.html" class="nav-lnk"><span class="nav-ic">📅</span>Schedule</a>
+    <a href="points.html" class="nav-lnk"><span class="nav-ic">📊</span>Points</a>
+    <a href="leaderboard.html" class="nav-lnk" aria-current="page"><span class="nav-ic">🏆</span>Leaderboard</a>
+    <a href="hall-of-fame.html" class="nav-lnk"><span class="nav-ic">👑</span>Hall of Fame</a>
+    <a href="announcements.html" class="nav-lnk"><span class="nav-ic">📣</span>Announcements</a>
+    <a href="rules.html" class="nav-lnk"><span class="nav-ic">📖</span>Rules</a>
+    <a href="about.html" class="nav-lnk"><span class="nav-ic">ℹ️</span>About</a>
+  </div>
+  <div class="nav-foot">FREEFIREXIPL · SEASON 12</div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- MASTHEAD -->
+  <div class="masthead fade-up">
+    <div class="masthead-bg-glow"></div>
+    <div class="mast-eyebrow">SEASON 12 · KILL RANKINGS</div>
+    <h1 class="mast-title">Top <b>Fraggers</b></h1>
+    <p class="mast-sub">Top 8 players ranked by total kills across all league matches.</p>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip fade-up d1" id="statStrip">
+    <div class="sc"><div class="sv" id="sTotalKills">—</div><div class="sl">Total Kills</div></div>
+    <div class="sc"><div class="sv" id="sTotalMatches">—</div><div class="sl">Matches</div></div>
+    <div class="sc"><div class="sv" id="sMvpCount">—</div><div class="sl">MVPs</div></div>
+  </div>
+
+  <!-- ADMIN BAR -->
+  <div class="admin-bar" id="adminBar">
+    <span class="ab-label">⚙ ADMIN MODE</span>
+    <div class="ab-actions">
+      <button class="ab-btn" onclick="openAddPlayer()">+ Add Player</button>
     </div>
+  </div>
 
-    <!-- NAV DRAWER -->
-    <div class="ov" id="navOv"></div>
-    <nav class="nav-drw" id="navDrw">
-        <div class="nav-drw-head">
-            <div class="brand">
-                <div class="crest" style="width:26px;height:26px"></div>
-                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
-            </div>
-            <button class="close-x" id="navClose">✕</button>
-        </div>
-        <div class="nav-links">
-            <a href="home.html" class="nav-lnk"><span class="nav-ic">🔥</span>Home</a>
-            <a href="registration-center.html" class="nav-lnk"><span class="nav-ic">👤</span>Registration</a>
-            <a href="play-ins.html" class="nav-lnk"><span class="nav-ic">🎮</span>Play-Ins</a>
-            <a href="auction-center.html" class="nav-lnk"><span class="nav-ic">🔨</span>Auction</a>
-            <a href="teams.html" class="nav-lnk"><span class="nav-ic">🛡️</span>Teams</a>
-            <a href="schedule.html" class="nav-lnk"><span class="nav-ic">📅</span>Schedule</a>
-            <a href="points.html" class="nav-lnk"><span class="nav-ic">📊</span>Points</a>
-            <a href="leaderboard.html" class="nav-lnk" aria-current="page"><span class="nav-ic">🏆</span>Leaderboard</a>
-            <a href="hall-of-fame.html" class="nav-lnk"><span class="nav-ic">👑</span>Hall of Fame</a>
-            <a href="announcements.html" class="nav-lnk"><span class="nav-ic">📣</span>Announcements</a>
-            <a href="rules.html" class="nav-lnk"><span class="nav-ic">📖</span>Rules</a>
-            <a href="about.html" class="nav-lnk"><span class="nav-ic">ℹ️</span>About</a>
-        </div>
-        <div class="nav-foot">FREEFIREXIPL · SEASON 12</div>
-    </nav>
-
-    <!-- PAGE -->
-    <div class="page">
-
-        <!-- MASTHEAD -->
-        <div class="masthead fade-up">
-            <div class="masthead-bg-glow"></div>
-            <div class="mast-eyebrow">SEASON 12 · KILL RANKINGS</div>
-            <h1 class="mast-title">Top <b>Fraggers</b></h1>
-            <p class="mast-sub">Top 8 players ranked by total kills across all league matches.</p>
-        </div>
-
-        <!-- STAT STRIP -->
-        <div class="stat-strip fade-up d1" id="statStrip">
-            <div class="sc">
-                <div class="sv" id="sTotalKills">—</div>
-                <div class="sl">Total Kills</div>
-            </div>
-            <div class="sc">
-                <div class="sv" id="sTotalMatches">—</div>
-                <div class="sl">Matches</div>
-            </div>
-            <div class="sc">
-                <div class="sv" id="sMvpCount">—</div>
-                <div class="sl">MVPs</div>
-            </div>
-        </div>
-
-        <!-- SECTION HEAD -->
-        <div class="sec-head fade-up d2">
-            <div>
-                <div class="sec-eyebrow">KILL LEADERBOARD</div>
-                <div class="sec-title">Top <b>8</b></div>
-            </div>
-            <div class="sec-updated" id="lastUpdated">Loading…</div>
-        </div>
-
-        <!-- #1 HERO CARD -->
-        <div class="hero-wrap fade-up d3" id="heroWrap"></div>
-
-        <!-- RANK 2–8 LIST -->
-        <div class="lb-list" id="lbList"></div>
-
-        <!-- EMPTY STATE -->
-        <div class="empty-state" id="emptyState" style="display:none">
-            <div class="empty-icon">🎮</div>
-            <div class="empty-title">No Match Data Yet</div>
-            <div class="empty-sub">Kill rankings will appear here once match results are entered by the admin after each
-                game.</div>
-        </div>
-
+  <!-- SECTION HEAD -->
+  <div class="sec-head fade-up d2">
+    <div>
+      <div class="sec-eyebrow">KILL LEADERBOARD</div>
+      <div class="sec-title">Top <b>8</b></div>
     </div>
+    <div class="sec-updated" id="lastUpdated">Loading…</div>
+  </div>
 
-    <!-- LIGHTBOX -->
-    <div class="lb-overlay" id="lbOverlay">
-        <div class="lb-img-wrap">
-            <img class="lb-full-img" id="lbFullImg" src="" alt="">
-            <button class="lb-close" id="lbClose">✕</button>
-            <div class="lb-player-tag" id="lbTag"></div>
-        </div>
+  <!-- #1 HERO CARD -->
+  <div class="hero-wrap fade-up d3" id="heroWrap"></div>
+
+  <!-- RANK 2–8 LIST -->
+  <div class="lb-list" id="lbList"></div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState" style="display:none">
+    <div class="empty-icon">🎮</div>
+    <div class="empty-title">No Match Data Yet</div>
+    <div class="empty-sub">Kill rankings will appear here once match results are entered by the admin after each game.</div>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lb-overlay" id="lbOverlay">
+  <div class="lb-img-wrap">
+    <img class="lb-full-img" id="lbFullImg" src="" alt="">
+    <button class="lb-close" id="lbClose">✕</button>
+    <div class="lb-player-tag" id="lbTag"></div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN LOGIN MODAL ═══ -->
+<div class="modal-bg" id="loginModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Admin Login</div>
+    <div class="modal-sub">Sign in to manage the leaderboard</div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" id="loginEmail" type="email" placeholder="you@example.com" autocomplete="username">
     </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="loginPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="loginCancel">Cancel</button>
+      <button class="btn btn-primary" id="loginSubmit">Sign In</button>
+    </div>
+  </div>
+</div>
 
-    <!-- BTT -->
-    <button class="btt" id="btt">
-        <svg viewBox="0 0 48 48" fill="none">
-            <circle class="btt-bg" cx="24" cy="24" r="22" />
-            <circle class="btt-arc" cx="24" cy="24" r="22" id="bttArc" />
-        </svg>
-        <span>↑</span>
-    </button>
+<!-- ═══ EDIT PLAYER MODAL ═══ -->
+<div class="modal-bg" id="playerModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="pModalTitle">Edit Player</div>
+    <div class="modal-sub" id="pModalSub">Update stats — changes sync live to the leaderboard</div>
+    <div class="form-group">
+      <label class="form-label">IGN</label>
+      <input class="form-input" id="pIgn" type="text" placeholder="In-game name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Real Name <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
+      <input class="form-input" id="pRealName" type="text" placeholder="Real name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Screenshot / Profile URL <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
+      <input class="form-input" id="pPhotoUrl" type="text" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kills · Matches · MVPs</label>
+      <div class="form-row3">
+        <input class="form-input" id="pKills" type="number" min="0" placeholder="Kills" style="text-align:center;">
+        <input class="form-input" id="pMatches" type="number" min="0" placeholder="Matches" style="text-align:center;">
+        <input class="form-input" id="pMvps" type="number" min="0" placeholder="MVPs" style="text-align:center;">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="pCancel">Cancel</button>
+      <button class="btn btn-danger" id="pDelete" style="flex:.8">Delete</button>
+      <button class="btn btn-primary" id="pSave">Save</button>
+    </div>
+  </div>
+</div>
 
-    <footer>
-        <div class="foot-brand">
-            <div class="crest" style="width:26px;height:26px"></div>
-            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
-        </div>
-        <p style="font-size:12px;color:var(--ink-faint);line-height:1.6;margin-top:6px;">Season 12 kill rankings.
-            Updated live after each match result is entered.</p>
-        <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub.</div>
-    </footer>
+<!-- ═══ ADD PLAYER MODAL ═══ -->
+<div class="modal-bg" id="addPlayerModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Add Player</div>
+    <div class="modal-sub">Add a new player to a team roster</div>
+    <div class="form-group">
+      <label class="form-label">Team</label>
+      <select class="form-input form-select" id="apTeam"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">IGN</label>
+      <input class="form-input" id="apIgn" type="text" placeholder="In-game name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Real Name <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
+      <input class="form-input" id="apRealName" type="text" placeholder="Real name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Screenshot / Profile URL <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
+      <input class="form-input" id="apPhotoUrl" type="text" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kills · Matches · MVPs</label>
+      <div class="form-row3">
+        <input class="form-input" id="apKills" type="number" min="0" placeholder="0" style="text-align:center;">
+        <input class="form-input" id="apMatches" type="number" min="0" placeholder="0" style="text-align:center;">
+        <input class="form-input" id="apMvps" type="number" min="0" placeholder="0" style="text-align:center;">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="apCancel">Cancel</button>
+      <button class="btn btn-primary" id="apSave">Add Player</button>
+    </div>
+  </div>
+</div>
 
-    <script>
-        // ═══════════════════════════════════════════
-        //  CONFIG
-        // ═══════════════════════════════════════════
-        const SB_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
-        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
-        const sb = supabase.createClient(SB_URL, SB_KEY);
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
 
-        const TEAM_META = {
-            RCB: { name: 'Royal Challengers Bangalore', color: '#e2394a' },
-            CSK: { name: 'Chennai Super Kings', color: '#f5c518' },
-            MI: { name: 'Mumbai Indians', color: '#045d9e' },
-            DC: { name: 'Delhi Capitals', color: '#1f5fc4' },
-            KKR: { name: 'Kolkata Knight Riders', color: '#7d4bb0' },
-            SRH: { name: 'Sunrisers Hyderabad', color: '#f26522' },
-            RR: { name: 'Rajasthan Royals', color: '#e03daf' },
-            PBKS: { name: 'Punjab Kings', color: '#c31d1d' },
-        };
+<!-- BTT -->
+<button class="btt" id="btt">
+  <svg viewBox="0 0 48 48" fill="none"><circle class="btt-bg" cx="24" cy="24" r="22"/><circle class="btt-arc" cx="24" cy="24" r="22" id="bttArc"/></svg>
+  <span>↑</span>
+</button>
 
-        function $(id) { return document.getElementById(id); }
-        function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+<footer>
+  <div class="foot-brand"><div class="crest" style="width:26px;height:26px"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
+  <p style="font-size:12px;color:var(--ink-faint);line-height:1.6;margin-top:6px;">Season 12 kill rankings. Updated live after each match result is entered.</p>
+  <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub.</div>
+</footer>
 
-        // ═══════════════════════════════════════════
-        //  SPLASH — KILL COUNTER ANIMATION
-        // ═══════════════════════════════════════════
-        (function () {
-            // Spawn falling number drops
-            const rain = $('spRain');
-            const colors = ['#f0b93d', '#fbe4a6', '#b3811f', '#ffffff22', '#f0b93d88'];
-            for (let i = 0; i < 28; i++) {
-                const d = document.createElement('div');
-                d.className = 'sp-drop';
-                d.textContent = Math.floor(Math.random() * 20);
-                d.style.left = Math.random() * 100 + '%';
-                d.style.color = colors[Math.floor(Math.random() * colors.length)];
-                d.style.animationDuration = (2.5 + Math.random() * 3) + 's';
-                d.style.animationDelay = (Math.random() * 3) + 's';
-                rain.appendChild(d);
-            }
+<script>
+// ═══════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════
+const SB_URL='https://ndioutmihxodqknvgfju.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+const sb=supabase.createClient(SB_URL,SB_KEY);
 
-            // Count up kill number
-            const el = $('spKillNum');
-            const target = 256; // dramatic placeholder — real total loads after
-            let cur = 0;
-            const dur = 2000, start = Date.now();
-            function tick() {
-                const elapsed = Date.now() - start;
-                const progress = Math.min(elapsed / dur, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                cur = Math.floor(eased * target);
-                el.textContent = cur;
-                if (progress < 1) {
-                    requestAnimationFrame(tick);
-                } else {
-                    el.textContent = target;
-                    // Burst on finish
-                    setTimeout(() => {
-                        $('spBurst').classList.add('fire');
-                        el.style.color = '#fbe4a6';
-                        el.style.textShadow = '0 0 60px rgba(240,185,61,.9),0 0 120px rgba(240,185,61,.4)';
-                    }, 100);
-                }
-            }
-            setTimeout(() => requestAnimationFrame(tick), 300);
+const TEAM_META={
+  RCB:{name:'Royal Challengers Bangalore',color:'#e2394a'},
+  CSK:{name:'Chennai Super Kings',color:'#f5c518'},
+  MI: {name:'Mumbai Indians',color:'#045d9e'},
+  DC: {name:'Delhi Capitals',color:'#1f5fc4'},
+  KKR:{name:'Kolkata Knight Riders',color:'#7d4bb0'},
+  SRH:{name:'Sunrisers Hyderabad',color:'#f26522'},
+  RR: {name:'Rajasthan Royals',color:'#e03daf'},
+  PBKS:{name:'Punjab Kings',color:'#c31d1d'},
+};
 
-            // Dismiss
-            setTimeout(() => {
-                const sp = $('splash'), fl = $('spFlash');
-                fl.animate([{ opacity: 0 }, { opacity: .85 }, { opacity: 0 }], { duration: 420, easing: 'ease' });
-                setTimeout(() => { sp.style.transition = 'opacity .5s'; sp.style.opacity = '0'; setTimeout(() => sp.style.display = 'none', 500); }, 180);
-            }, 3900);
-        })();
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-        // ═══════════════════════════════════════════
-        //  DATA LOAD
-        // ═══════════════════════════════════════════
-        async function loadLeaderboard() {
-            // Fetch all team rosters
-            const { data, error } = await sb
-                .from('ffxipl_s12_season_rosters')
-                .select('team_id,players_json')
-                .eq('season', 12)
-                .eq('is_finalized', true);
+// ═══════════════════════════════════════════
+//  ADMIN STATE
+// ═══════════════════════════════════════════
+let isAdmin=false;
+let teamsRosters={};   // teamId -> full players array as stored in DB (uncut)
+let editingPlayer=null; // {teamId, idx}
+function showToast(msg,err=false){
+  const t=$('toast');t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
 
-            if (error || !data || data.length === 0) {
-                $('emptyState').style.display = 'block';
-                $('heroWrap').style.display = 'none';
-                $('lastUpdated').textContent = 'No data';
-                return;
-            }
+async function checkAdmin(){
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session?.user)return;
+    const {data}=await sb.from('ffxipl_s12_admins').select('user_id').eq('user_id',session.user.id).maybeSingle();
+    if(data){
+      isAdmin=true;
+      $('adminPill').classList.add('show');
+      $('adminBar').classList.add('show');
+      $('loginBtn').style.display='none';
+    }
+  }catch(e){}
+}
 
-            // Flatten all players from all teams
-            const allPlayers = [];
-            data.forEach(row => {
-                let players = [];
-                try { players = JSON.parse(row.players_json || '[]'); } catch (e) { }
-                players.slice(0, 6).forEach(p => {
-                    allPlayers.push({
-                        ...p,
-                        teamId: row.team_id,
-                        teamMeta: TEAM_META[row.team_id] || { name: row.team_id, color: '#888' },
-                    });
-                });
-            });
+// ═══════════════════════════════════════════
+//  ADMIN LOGIN / LOGOUT
+// ═══════════════════════════════════════════
+$('loginBtn').addEventListener('click',()=>{ $('loginModal').classList.add('show'); });
+$('loginCancel').addEventListener('click',()=>$('loginModal').classList.remove('show'));
+$('loginModal').addEventListener('click',e=>{ if(e.target===$('loginModal'))$('loginModal').classList.remove('show'); });
 
-            // Sort by kills_total desc, then matches_played asc (fewer matches = better), then mvp_count desc
-            allPlayers.sort((a, b) => {
-                const ka = parseInt(a.kills_total) || 0, kb = parseInt(b.kills_total) || 0;
-                if (kb !== ka) return kb - ka;
-                const ma = parseInt(a.matches_played) || 0, mb = parseInt(b.matches_played) || 0;
-                if (ma !== mb) return ma - mb;
-                return (parseInt(b.mvp_count) || 0) - (parseInt(a.mvp_count) || 0);
-            });
+$('loginSubmit').addEventListener('click',async()=>{
+  const email=$('loginEmail').value.trim();
+  const password=$('loginPassword').value;
+  if(!email||!password){ showToast('Enter email and password',true); return; }
+  $('loginSubmit').textContent='Signing in…';$('loginSubmit').disabled=true;
+  try{
+    const {error}=await sb.auth.signInWithPassword({email,password});
+    if(error){
+      showToast(error.message||'Login failed',true);
+    }else{
+      await checkAdmin();
+      if(isAdmin){
+        showToast('✓ Signed in as admin');
+        $('loginModal').classList.remove('show');
+        $('loginEmail').value='';$('loginPassword').value='';
+        loadLeaderboard();
+      }else{
+        showToast('This account is not an admin',true);
+        await sb.auth.signOut();
+      }
+    }
+  }catch(e){
+    console.error(e);
+    showToast('Login failed — check console',true);
+  }
+  $('loginSubmit').textContent='Sign In';$('loginSubmit').disabled=false;
+});
 
-            const top8 = allPlayers.slice(0, 8);
+$('adminPill').addEventListener('click',async()=>{
+  if(!isAdmin) return;
+  try{ await sb.auth.signOut(); }catch(e){}
+  isAdmin=false;
+  $('adminPill').classList.remove('show');
+  $('adminBar').classList.remove('show');
+  $('loginBtn').style.display='';
+  showToast('Signed out');
+  loadLeaderboard();
+});
 
-            // Season totals
-            const totalKills = allPlayers.reduce((s, p) => s + (parseInt(p.kills_total) || 0), 0);
-            const totalMatches = Math.max(...allPlayers.map(p => parseInt(p.matches_played) || 0), 0);
-            const totalMvps = allPlayers.reduce((s, p) => s + (parseInt(p.mvp_count) || 0), 0);
+// ═══════════════════════════════════════════
+//  SPLASH — KILL COUNTER ANIMATION
+// ═══════════════════════════════════════════
+(function(){
+  // Spawn falling number + glyph drops for depth
+  const rain=$('spRain');
+  const colors=['#f0b93d','#fbe4a6','#b3811f','#ffffff22','#f0b93d88'];
+  const glyphs=['✕','◆','▲','—'];
+  for(let i=0;i<32;i++){
+    const d=document.createElement('div');
+    const isGlyph=i%5===0;
+    d.className='sp-drop'+(isGlyph?' glyph':'');
+    d.textContent=isGlyph?glyphs[Math.floor(Math.random()*glyphs.length)]:Math.floor(Math.random()*20);
+    d.style.left=Math.random()*100+'%';
+    d.style.color=colors[Math.floor(Math.random()*colors.length)];
+    d.style.animationDuration=(2.5+Math.random()*3)+'s';
+    d.style.animationDelay=(Math.random()*3)+'s';
+    rain.appendChild(d);
+  }
 
-            $('sTotalKills').textContent = totalKills || '—';
-            $('sTotalMatches').textContent = totalMatches || '—';
-            $('sMvpCount').textContent = totalMvps || '—';
-            $('lastUpdated').textContent = 'Updated live';
+  // Kick off a fast real-data fetch in parallel — falls back to a
+  // placeholder target if it doesn't resolve before the count starts.
+  let realTotal=null;
+  sb.from('ffxipl_s12_season_rosters').select('players_json').eq('season',12).eq('is_finalized',true)
+    .then(({data})=>{
+      if(!data) return;
+      let sum=0;
+      data.forEach(row=>{
+        try{ (JSON.parse(row.players_json||'[]')).forEach(p=>{ sum+=parseInt(p.kills_total)||0; }); }catch(e){}
+      });
+      if(sum>0) realTotal=sum;
+    }).catch(()=>{});
 
-            if (top8.length === 0 || totalKills === 0) {
-                $('emptyState').style.display = 'block';
-                $('heroWrap').style.display = 'none';
-                return;
-            }
+  // Count up kill number
+  const el=$('spKillNum');
+  const fallbackTarget=256;
+  let cur=0;
+  const dur=2000, start=Date.now();
+  function tick(){
+    const elapsed=Date.now()-start;
+    const progress=Math.min(elapsed/dur,1);
+    const eased=1-Math.pow(1-progress,3);
+    const target=realTotal!==null?realTotal:fallbackTarget;
+    cur=Math.floor(eased*target);
+    el.textContent=cur;
+    if(progress<1){
+      requestAnimationFrame(tick);
+    } else {
+      el.textContent=realTotal!==null?realTotal:fallbackTarget;
+      // Impact — shockwave rings, screen shake, burst flash
+      setTimeout(()=>{
+        $('spBurst').classList.add('fire');
+        $('spShock1').classList.add('go');
+        $('spShock2').classList.add('go2');
+        $('splash').classList.add('shake');
+        el.style.color='#fbe4a6';
+        el.style.textShadow='0 0 60px rgba(240,185,61,.9),0 0 120px rgba(240,185,61,.4)';
+      },100);
+    }
+  }
+  setTimeout(()=>requestAnimationFrame(tick), 300);
 
-            renderHero(top8[0], 1);
-            renderList(top8.slice(1));
+  // Percentage readout tied to the load bar (3.8s fill + .15s delay)
+  const pctEl=$('spLoadPct');
+  const loadDur=3950, loadStart=Date.now();
+  function pctTick(){
+    const p=Math.min(100,Math.floor((Date.now()-loadStart)/loadDur*100));
+    pctEl.textContent=p+'%';
+    if(p<100) requestAnimationFrame(pctTick);
+  }
+  requestAnimationFrame(pctTick);
 
-            // Real-time
-            sb.channel('lb-rt')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_season_rosters' }, () => loadLeaderboard())
-                .subscribe();
-        }
+  // Dismiss
+  setTimeout(()=>{
+    const sp=$('splash'),fl=$('spFlash');
+    fl.animate([{opacity:0},{opacity:.85},{opacity:0}],{duration:420,easing:'ease'});
+    setTimeout(()=>{sp.style.transition='opacity .5s';sp.style.opacity='0';setTimeout(()=>sp.style.display='none',500);},180);
+  },3900);
+})();
 
-        // ═══════════════════════════════════════════
-        //  RENDER #1 HERO
-        // ═══════════════════════════════════════════
-        function renderHero(p, rank) {
-            const kills = parseInt(p.kills_total) || 0;
-            const mp = parseInt(p.matches_played) || 0;
-            const mvps = parseInt(p.mvp_count) || 0;
-            const kpm = mp > 0 ? (kills / mp).toFixed(1) : '—';
-            const ss = p.profile_url || p.ss_url || p.screenshot_url || '';
-            const col = p.teamMeta.color;
+// ═══════════════════════════════════════════
+//  DATA LOAD
+// ═══════════════════════════════════════════
+async function loadLeaderboard(){
+  // Fetch all team rosters
+  const {data,error}=await sb
+    .from('ffxipl_s12_season_rosters')
+    .select('team_id,players_json')
+    .eq('season',12)
+    .eq('is_finalized',true);
 
-            const photoHTML = ss
-                ? `<img class="hero-photo" src="${esc(ss)}" alt="${esc(p.ign)}" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')">`
-                : `<div class="hero-photo-placeholder">🎮</div>`;
+  Object.keys(TEAM_META).forEach(t=>{ if(!(t in teamsRosters)) teamsRosters[t]=[]; });
 
-            $('heroWrap').innerHTML = `
+  if(error||!data||data.length===0){
+    $('emptyState').style.display='block';
+    $('heroWrap').style.display='none';
+    $('lastUpdated').textContent='No data';
+    return;
+  }
+
+  // Flatten all players from all teams
+  const allPlayers=[];
+  data.forEach(row=>{
+    let players=[];
+    try{ players=JSON.parse(row.players_json||'[]'); }catch(e){}
+    teamsRosters[row.team_id]=players; // keep full uncut roster for admin editing
+    players.slice(0,6).forEach((p,idx)=>{
+      allPlayers.push({
+        ...p,
+        teamId:row.team_id,
+        rosterIdx:idx,
+        teamMeta:TEAM_META[row.team_id]||{name:row.team_id,color:'#888'},
+      });
+    });
+  });
+
+  // Sort by kills_total desc, then matches_played asc (fewer matches = better), then mvp_count desc
+  allPlayers.sort((a,b)=>{
+    const ka=parseInt(a.kills_total)||0, kb=parseInt(b.kills_total)||0;
+    if(kb!==ka) return kb-ka;
+    const ma=parseInt(a.matches_played)||0, mb=parseInt(b.matches_played)||0;
+    if(ma!==mb) return ma-mb;
+    return (parseInt(b.mvp_count)||0)-(parseInt(a.mvp_count)||0);
+  });
+
+  const top8=allPlayers.slice(0,8);
+
+  // Season totals
+  const totalKills=allPlayers.reduce((s,p)=>s+(parseInt(p.kills_total)||0),0);
+  const totalMatches=Math.max(...allPlayers.map(p=>parseInt(p.matches_played)||0),0);
+  const totalMvps=allPlayers.reduce((s,p)=>s+(parseInt(p.mvp_count)||0),0);
+
+  $('sTotalKills').textContent=totalKills||'—';
+  $('sTotalMatches').textContent=totalMatches||'—';
+  $('sMvpCount').textContent=totalMvps||'—';
+  $('lastUpdated').textContent='Updated live';
+
+  if(top8.length===0||totalKills===0){
+    $('emptyState').style.display='block';
+    $('heroWrap').style.display='none';
+    return;
+  }
+
+  renderHero(top8[0],1);
+  renderList(top8.slice(1));
+}
+
+// Real-time — subscribe once, not on every load
+let _lbRtSubscribed=false;
+function subscribeRealtime(){
+  if(_lbRtSubscribed) return;
+  _lbRtSubscribed=true;
+  sb.channel('lb-rt')
+    .on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_season_rosters'},()=>loadLeaderboard())
+    .subscribe();
+}
+
+// ═══════════════════════════════════════════
+//  RENDER #1 HERO
+// ═══════════════════════════════════════════
+function renderHero(p,rank){
+  const kills=parseInt(p.kills_total)||0;
+  const mp=parseInt(p.matches_played)||0;
+  const mvps=parseInt(p.mvp_count)||0;
+  const kpm=mp>0?(kills/mp).toFixed(1):'—';
+  const ss=p.profile_url||p.ss_url||p.screenshot_url||'';
+  const col=p.teamMeta.color;
+
+  const photoHTML=ss
+    ? `<img class="hero-photo" src="${esc(ss)}" alt="${esc(p.ign)}" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')">`
+    : `<div class="hero-photo-placeholder">🎮</div>`;
+
+  $('heroWrap').innerHTML=`
   <div class="hero-card">
     <div class="hero-top-shine"></div>
     <div class="hero-glow"></div>
     <div class="hero-rank-badge">1</div>
+    ${isAdmin?`<div class="hero-admin-btns"><button class="lb-edit-btn" onclick="openEditPlayer('${esc(p.teamId)}',${p.rosterIdx})">✎ Edit</button></div>`:''}
     <div class="hero-inner">
       <div class="hero-photo-wrap">
         <div class="hero-crown">👑</div>
         ${photoHTML}
       </div>
       <div class="hero-info">
-        <div class="hero-ign">${esc(p.ign || p.real_name)}</div>
-        ${p.real_name ? `<div class="hero-real">${esc(p.real_name)}</div>` : ''}
+        <div class="hero-ign">${esc(p.ign||p.real_name)}</div>
+        ${p.real_name?`<div class="hero-real">${esc(p.real_name)}</div>`:''}
         <div class="hero-team-pill" style="color:${col};border-color:${col}40;background:${col}14">
           <span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block"></span>
-          ${esc(p.teamId)} · ${esc(p.teamMeta.name.split(' ').slice(0, 2).join(' '))}
+          ${esc(p.teamId)} · ${esc(p.teamMeta.name.split(' ').slice(0,2).join(' '))}
         </div>
       </div>
     </div>
@@ -2185,123 +994,251 @@
       <div class="hsr-divider"></div>
       <div class="hsr-cell"><div class="hsr-val">${kpm}</div><div class="hsr-lbl">K/Match</div></div>
     </div>
-    ${mvps > 0 ? `<div class="hero-mvp-bar">
+    ${mvps>0?`<div class="hero-mvp-bar">
       <div class="mvp-badge"><span class="mvp-star">⭐</span><span class="mvp-txt">MVP ×${mvps}</span></div>
       <div class="hero-rank1-label">#1 FRAGGER · SEASON 12</div>
-    </div>`: '<div style="height:14px"></div>'}
+    </div>`:'<div style="height:14px"></div>'}
   </div>`;
-        }
+}
 
-        // ═══════════════════════════════════════════
-        //  RENDER RANK 2–8
-        // ═══════════════════════════════════════════
-        function renderList(players) {
-            $('lbList').innerHTML = players.map((p, i) => {
-                const rank = i + 2;
-                const kills = parseInt(p.kills_total) || 0;
-                const mp = parseInt(p.matches_played) || 0;
-                const mvps = parseInt(p.mvp_count) || 0;
-                const col = p.teamMeta.color;
-                const ss = p.profile_url || p.ss_url || p.screenshot_url || '';
-                const rankCls = rank === 2 ? 'r2' : rank === 3 ? 'r3' : '';
-                const delayClass = `d${rank}`;
+// ═══════════════════════════════════════════
+//  RENDER RANK 2–8
+// ═══════════════════════════════════════════
+function renderList(players){
+  $('lbList').innerHTML=players.map((p,i)=>{
+    const rank=i+2;
+    const kills=parseInt(p.kills_total)||0;
+    const mp=parseInt(p.matches_played)||0;
+    const mvps=parseInt(p.mvp_count)||0;
+    const col=p.teamMeta.color;
+    const ss=p.profile_url||p.ss_url||p.screenshot_url||'';
+    const rankCls=rank===2?'r2':rank===3?'r3':'';
+    const delayClass=`d${rank}`;
 
-                const photoHTML = ss
-                    ? `<img class="lb-photo" src="${esc(ss)}" alt="${esc(p.ign)}" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')">`
-                    : `<div class="lb-photo-ph">🎮</div>`;
+    const photoHTML=ss
+      ? `<img class="lb-photo" src="${esc(ss)}" alt="${esc(p.ign)}" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')">`
+      : `<div class="lb-photo-ph">🎮</div>`;
 
-                return `<div class="lb-card fade-up ${delayClass}">
+    return `<div class="lb-card fade-up ${delayClass}" style="position:relative">
+      ${isAdmin?`<div class="lb-admin-btns"><button class="lb-edit-btn" onclick="openEditPlayer('${esc(p.teamId)}',${p.rosterIdx})">✎ Edit</button></div>`:''}
       <div class="lb-card-accent" style="background:${col}"></div>
       <div class="lb-rank-num ${rankCls}">${rank}</div>
       ${photoHTML}
       <div class="lb-info">
-        <div class="lb-ign">${esc(p.ign || p.real_name)}</div>
-        <div class="lb-team" style="color:${col}">${esc(p.teamId)} · ${esc(p.teamMeta.name.split(' ').slice(0, 2).join(' '))}</div>
-        ${p.real_name ? `<div class="lb-real">${esc(p.real_name)}</div>` : ''}
+        <div class="lb-ign">${esc(p.ign||p.real_name)}</div>
+        <div class="lb-team" style="color:${col}">${esc(p.teamId)} · ${esc(p.teamMeta.name.split(' ').slice(0,2).join(' '))}</div>
+        ${p.real_name?`<div class="lb-real">${esc(p.real_name)}</div>`:''}
       </div>
       <div class="lb-right">
         <div class="lb-kills">${kills}</div>
         <div class="lb-kills-lbl">Kills</div>
         <div class="lb-meta">
           <span class="lb-mp">${mp} matches</span>
-          ${mvps > 0 ? `<span class="lb-mvp-chip">MVP×${mvps}</span>` : ''}
+          ${mvps>0?`<span class="lb-mvp-chip">MVP×${mvps}</span>`:''}
         </div>
       </div>
     </div>`;
-            }).join('');
+  }).join('');
 
-            $('lbList').querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-        }
+  $('lbList').querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+}
 
-        // ═══════════════════════════════════════════
-        //  LIGHTBOX
-        // ═══════════════════════════════════════════
-        function openLightbox(src, name) {
-            $('lbFullImg').src = src;
-            $('lbTag').textContent = name || '';
-            $('lbOverlay').classList.add('show');
-        }
-        $('lbClose').addEventListener('click', () => $('lbOverlay').classList.remove('show'));
-        $('lbOverlay').addEventListener('click', e => { if (e.target === $('lbOverlay')) $('lbOverlay').classList.remove('show'); });
+// ═══════════════════════════════════════════
+//  LIGHTBOX
+// ═══════════════════════════════════════════
+function openLightbox(src,name){
+  $('lbFullImg').src=src;
+  $('lbTag').textContent=name||'';
+  $('lbOverlay').classList.add('show');
+}
+$('lbClose').addEventListener('click',()=>$('lbOverlay').classList.remove('show'));
+$('lbOverlay').addEventListener('click',e=>{ if(e.target===$('lbOverlay'))$('lbOverlay').classList.remove('show'); });
 
-        // ═══════════════════════════════════════════
-        //  SCROLL / BTT
-        // ═══════════════════════════════════════════
-        const bttEl = $('btt'), arcEl = $('bttArc');
-        const C = 2 * Math.PI * 22;
-        arcEl.style.strokeDasharray = C; arcEl.style.strokeDashoffset = C;
-        window.addEventListener('scroll', () => {
-            const sc = document.documentElement.scrollTop;
-            const sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const p = sh > 0 ? sc / sh : 0;
-            $('scrollFill').style.width = (p * 100) + '%';
-            arcEl.style.strokeDashoffset = C - C * p;
-            bttEl.classList.toggle('show', sc > 300);
-        }, { passive: true });
-        bttEl.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+// ═══════════════════════════════════════════
+//  SCROLL / BTT
+// ═══════════════════════════════════════════
+const bttEl=$('btt'),arcEl=$('bttArc');
+const C=2*Math.PI*22;
+arcEl.style.strokeDasharray=C;arcEl.style.strokeDashoffset=C;
+window.addEventListener('scroll',()=>{
+  const sc=document.documentElement.scrollTop;
+  const sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+  const p=sh>0?sc/sh:0;
+  $('scrollFill').style.width=(p*100)+'%';
+  arcEl.style.strokeDashoffset=C-C*p;
+  bttEl.classList.toggle('show',sc>300);
+},{passive:true});
+bttEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-        // ═══════════════════════════════════════════
-        //  FADE-UP OBSERVER
-        // ═══════════════════════════════════════════
-        const obs = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-        }, { threshold: .07 });
-        document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+// ═══════════════════════════════════════════
+//  FADE-UP OBSERVER
+// ═══════════════════════════════════════════
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.07});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
 
-        // ═══════════════════════════════════════════
-        //  THEME
-        // ═══════════════════════════════════════════
-        const themeBtn = $('themeBtn'), themePanel = $('themePanel'), themeOv = $('themeOv'), themeClose = $('themeClose');
-        themeBtn.addEventListener('click', () => { themePanel.classList.add('show'); themeOv.classList.add('show'); });
-        [themeClose, themeOv].forEach(el => el.addEventListener('click', () => { themePanel.classList.remove('show'); themeOv.classList.remove('show'); }));
-        document.querySelectorAll('.th-opt').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const t = btn.dataset.theme;
-                document.documentElement.classList.add('theme-tr');
-                document.documentElement.setAttribute('data-theme', t);
-                try { localStorage.setItem('xipl-theme', t); } catch (e) { }
-                document.querySelectorAll('.th-opt').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
-                setTimeout(() => document.documentElement.classList.remove('theme-tr'), 600);
-                themePanel.classList.remove('show'); themeOv.classList.remove('show');
-            });
-        });
-        const at = document.documentElement.getAttribute('data-theme') || 'golden-fire';
-        document.querySelectorAll('.th-opt').forEach(b => b.classList.toggle('active', b.dataset.theme === at));
+// ═══════════════════════════════════════════
+//  THEME
+// ═══════════════════════════════════════════
+const themeBtn=$('themeBtn'),themePanel=$('themePanel'),themeOv=$('themeOv'),themeClose=$('themeClose');
+themeBtn.addEventListener('click',()=>{themePanel.classList.add('show');themeOv.classList.add('show');});
+[themeClose,themeOv].forEach(el=>el.addEventListener('click',()=>{themePanel.classList.remove('show');themeOv.classList.remove('show');}));
+document.querySelectorAll('.th-opt').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const t=btn.dataset.theme;
+    document.documentElement.classList.add('theme-tr');
+    document.documentElement.setAttribute('data-theme',t);
+    try{localStorage.setItem('xipl-theme',t);}catch(e){}
+    document.querySelectorAll('.th-opt').forEach(b=>b.classList.toggle('active',b.dataset.theme===t));
+    setTimeout(()=>document.documentElement.classList.remove('theme-tr'),600);
+    themePanel.classList.remove('show');themeOv.classList.remove('show');
+  });
+});
+const at=document.documentElement.getAttribute('data-theme')||'golden-fire';
+document.querySelectorAll('.th-opt').forEach(b=>b.classList.toggle('active',b.dataset.theme===at));
 
-        // ═══════════════════════════════════════════
-        //  NAV
-        // ═══════════════════════════════════════════
-        const menuBtn = $('menuBtn'), navDrw = $('navDrw'), navOv = $('navOv'), navClose = $('navClose');
-        menuBtn.addEventListener('click', () => { navDrw.classList.add('show'); navOv.classList.add('show'); });
-        [navClose, navOv].forEach(el => el.addEventListener('click', () => { navDrw.classList.remove('show'); navOv.classList.remove('show'); }));
+// ═══════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════
+const menuBtn=$('menuBtn'),navDrw=$('navDrw'),navOv=$('navOv'),navClose=$('navClose');
+menuBtn.addEventListener('click',()=>{navDrw.classList.add('show');navOv.classList.add('show');});
+[navClose,navOv].forEach(el=>el.addEventListener('click',()=>{navDrw.classList.remove('show');navOv.classList.remove('show');}));
 
-        // ═══════════════════════════════════════════
-        //  INIT
-        // ═══════════════════════════════════════════
-        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-        window.scrollTo(0, 0);
-        loadLeaderboard();
-    </script>
+// ═══════════════════════════════════════════
+//  ADMIN — EDIT / DELETE PLAYER
+// ═══════════════════════════════════════════
+function openEditPlayer(teamId,idx){
+  if(!isAdmin) return;
+  const roster=teamsRosters[teamId]||[];
+  const p=roster[idx];
+  if(!p){ showToast('Player not found',true); return; }
+  editingPlayer={teamId,idx};
+  $('pModalTitle').textContent='Edit Player';
+  $('pModalSub').textContent=`${teamId} · ${(TEAM_META[teamId]||{}).name||teamId}`;
+  $('pIgn').value=p.ign||'';
+  $('pRealName').value=p.real_name||'';
+  $('pPhotoUrl').value=p.profile_url||p.ss_url||p.screenshot_url||'';
+  $('pKills').value=parseInt(p.kills_total)||0;
+  $('pMatches').value=parseInt(p.matches_played)||0;
+  $('pMvps').value=parseInt(p.mvp_count)||0;
+  $('playerModal').classList.add('show');
+}
+$('pCancel').addEventListener('click',()=>$('playerModal').classList.remove('show'));
+$('playerModal').addEventListener('click',e=>{ if(e.target===$('playerModal'))$('playerModal').classList.remove('show'); });
+
+async function persistRoster(teamId){
+  const players=teamsRosters[teamId]||[];
+  // Matches the pattern used on the schedule page: update the existing roster row for this team.
+  const {data,error}=await sb.from('ffxipl_s12_season_rosters')
+    .update({players_json:JSON.stringify(players)})
+    .eq('season',12)
+    .eq('team_id',teamId)
+    .select('team_id');
+  if(error) throw error;
+  if(!data||data.length===0){
+    // No finalized roster row exists yet for this team — create one.
+    const {error:insErr}=await sb.from('ffxipl_s12_season_rosters')
+      .insert({team_id:teamId,season:12,is_finalized:true,players_json:JSON.stringify(players)});
+    if(insErr) throw insErr;
+  }
+}
+
+$('pSave').addEventListener('click',async()=>{
+  if(!editingPlayer) return;
+  const {teamId,idx}=editingPlayer;
+  const roster=teamsRosters[teamId]||[];
+  const p=roster[idx];
+  if(!p) return;
+  const ign=$('pIgn').value.trim();
+  if(!ign){ showToast('IGN is required',true); return; }
+  roster[idx]={
+    ...p,
+    ign,
+    real_name:$('pRealName').value.trim(),
+    profile_url:$('pPhotoUrl').value.trim(),
+    kills_total:parseInt($('pKills').value)||0,
+    matches_played:parseInt($('pMatches').value)||0,
+    mvp_count:parseInt($('pMvps').value)||0,
+  };
+  $('pSave').textContent='Saving…';$('pSave').disabled=true;
+  try{
+    await persistRoster(teamId);
+    showToast('✓ Player updated');
+    $('playerModal').classList.remove('show');
+    loadLeaderboard();
+  }catch(e){
+    console.error(e);
+    showToast('Save failed — check console',true);
+  }
+  $('pSave').textContent='Save';$('pSave').disabled=false;
+});
+
+$('pDelete').addEventListener('click',async()=>{
+  if(!editingPlayer) return;
+  const {teamId,idx}=editingPlayer;
+  const roster=teamsRosters[teamId]||[];
+  if(!roster[idx]) return;
+  $('pDelete').textContent='Deleting…';$('pDelete').disabled=true;
+  try{
+    roster.splice(idx,1);
+    await persistRoster(teamId);
+    showToast('Player removed');
+    $('playerModal').classList.remove('show');
+    loadLeaderboard();
+  }catch(e){
+    console.error(e);
+    showToast('Delete failed — check console',true);
+  }
+  $('pDelete').textContent='Delete';$('pDelete').disabled=false;
+});
+
+// ═══════════════════════════════════════════
+//  ADMIN — ADD PLAYER
+// ═══════════════════════════════════════════
+function openAddPlayer(){
+  if(!isAdmin) return;
+  const sel=$('apTeam');
+  sel.innerHTML=Object.keys(TEAM_META).map(t=>`<option value="${t}">${t} · ${TEAM_META[t].name}</option>`).join('');
+  $('apIgn').value='';$('apRealName').value='';$('apPhotoUrl').value='';
+  $('apKills').value='0';$('apMatches').value='0';$('apMvps').value='0';
+  $('addPlayerModal').classList.add('show');
+}
+$('apCancel').addEventListener('click',()=>$('addPlayerModal').classList.remove('show'));
+$('addPlayerModal').addEventListener('click',e=>{ if(e.target===$('addPlayerModal'))$('addPlayerModal').classList.remove('show'); });
+
+$('apSave').addEventListener('click',async()=>{
+  const teamId=$('apTeam').value;
+  const ign=$('apIgn').value.trim();
+  if(!ign){ showToast('IGN is required',true); return; }
+  if(!teamsRosters[teamId]) teamsRosters[teamId]=[];
+  teamsRosters[teamId].push({
+    ign,
+    real_name:$('apRealName').value.trim(),
+    profile_url:$('apPhotoUrl').value.trim(),
+    kills_total:parseInt($('apKills').value)||0,
+    matches_played:parseInt($('apMatches').value)||0,
+    mvp_count:parseInt($('apMvps').value)||0,
+  });
+  $('apSave').textContent='Adding…';$('apSave').disabled=true;
+  try{
+    await persistRoster(teamId);
+    showToast('✓ Player added');
+    $('addPlayerModal').classList.remove('show');
+    loadLeaderboard();
+  }catch(e){
+    console.error(e);
+    showToast('Add failed — check console',true);
+  }
+  $('apSave').textContent='Add Player';$('apSave').disabled=false;
+});
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+checkAdmin().then(loadLeaderboard).then(subscribeRealtime);
+</script>
 </body>
-
 </html>
