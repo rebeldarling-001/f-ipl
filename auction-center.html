@@ -1603,11 +1603,11 @@
         .stage-card {
             position: relative;
             z-index: 1;
-            padding: 22px 20px 0;
+            padding: 16px 20px 0;
             overflow: hidden;
             background: radial-gradient(ellipse 140% 90% at 50% -10%, rgba(var(--gold-rgb), .16), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
             text-align: center;
-            min-height: 220px;
+            min-height: 180px;
         }
 
         .round-badge-row {
@@ -1712,10 +1712,10 @@
         }
 
         .player-photo-img {
-            width: 88px;
-            height: 88px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
-            margin: 16px auto 0;
+            margin: 12px auto 0;
             border: 3px solid var(--gold-deep);
             background-size: cover;
             background-position: center;
@@ -1723,16 +1723,16 @@
             align-items: center;
             justify-content: center;
             font-family: 'Anton', sans-serif;
-            font-size: 28px;
+            font-size: 24px;
             color: var(--gold-pale);
-            box-shadow: 0 0 0 6px rgba(var(--gold-rgb), .08);
+            box-shadow: 0 0 0 5px rgba(var(--gold-rgb), .08);
             cursor: pointer;
         }
 
         .player-name {
-            margin-top: 12px;
+            margin-top: 9px;
             font-family: 'Anton', sans-serif;
-            font-size: 22px;
+            font-size: 20px;
             letter-spacing: .02em;
             color: var(--ink);
         }
@@ -1922,10 +1922,10 @@
         }
 
         .tv-lower-third {
-            margin: 14px -20px 0;
-            padding: 12px 18px 14px;
-            background: linear-gradient(90deg, rgba(0, 0, 0, .62), rgba(0, 0, 0, .22) 75%);
-            clip-path: polygon(0 18%, 100% 0, 100% 100%, 0% 100%);
+            margin: 12px -20px 0;
+            padding: 10px 18px 12px;
+            background: linear-gradient(90deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .28) 60%, transparent 100%);
+            border-top: 1px solid rgba(var(--gold-rgb), .1);
             position: relative;
             z-index: 1;
         }
@@ -2214,6 +2214,421 @@
             text-transform: uppercase;
         }
 
+        /* ═══════════════════════════════════════════════════════
+           CAPTAIN WAR ROOM — complete premium redesign
+           ═══════════════════════════════════════════════════════ */
+
+        /* Outer shell — the whole captain section */
+        #panel-captain {
+            padding-top: 8px !important;
+        }
+
+        /* ── Identity header bar ── */
+        .cap-identity {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 16px 14px;
+            border-radius: 20px 20px 0 0;
+            background: linear-gradient(135deg,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 18%, var(--surface)),
+                var(--surface) 60%
+            );
+            border: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 35%, transparent);
+            border-bottom: none;
+            overflow: hidden;
+        }
+        .cap-identity::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 100% 80% at 0% 50%,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 22%, transparent),
+                transparent 65%);
+            pointer-events: none;
+        }
+        .cap-identity-crest {
+            position: relative;
+            width: 52px; height: 52px;
+            border-radius: 16px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background:
+                radial-gradient(circle at 35% 30%,
+                    color-mix(in srgb, var(--cap-color, var(--gold)) 35%, transparent),
+                    transparent 70%),
+                var(--surface-2);
+            border: 1.5px solid color-mix(in srgb, var(--cap-color, var(--gold)) 50%, transparent);
+            box-shadow:
+                0 0 0 4px color-mix(in srgb, var(--cap-color, var(--gold)) 10%, transparent),
+                0 8px 20px -6px rgba(0,0,0,.5);
+        }
+        .cap-identity-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .cap-identity-label {
+            font-size: 9px;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--cap-color, var(--gold)) 70%, var(--ink-faint));
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        .cap-identity-name {
+            font-family: 'Anton', sans-serif;
+            font-size: 22px;
+            letter-spacing: .03em;
+            color: var(--ink);
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cap-identity-name b {
+            color: var(--cap-color, var(--gold));
+        }
+        /* Colour accent bar — top edge */
+        .cap-identity::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2.5px;
+            background: linear-gradient(90deg,
+                var(--cap-color, var(--gold)),
+                color-mix(in srgb, var(--cap-color, var(--gold)) 40%, transparent) 80%,
+                transparent
+            );
+        }
+
+        /* ── Purse + Slots — horizontal pill row ── */
+        .cap-vitals {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border-left: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
+            border-right: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
+            background: color-mix(in srgb, var(--surface-2) 80%, transparent);
+        }
+        .cap-vital {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 8px;
+            position: relative;
+        }
+        .cap-vital + .cap-vital {
+            border-left: 1px solid var(--line);
+        }
+        .cap-vital-val {
+            font-family: 'Anton', sans-serif;
+            font-size: 26px;
+            letter-spacing: .02em;
+            color: var(--cap-color, var(--gold));
+            line-height: 1;
+        }
+        .cap-vital-lbl {
+            font-size: 8.5px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-top: 3px;
+        }
+        /* Purse track bar inside vital */
+        .cap-purse-track {
+            width: 70%;
+            height: 2px;
+            border-radius: 2px;
+            background: rgba(var(--gold-rgb), .12);
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .cap-purse-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--cap-color, var(--gold-deep)), var(--cap-color, var(--gold)));
+            transition: width .5s ease;
+        }
+
+        /* ── Status banner — leads / outbid / locked ── */
+        .cap-status-bar {
+            padding: 0 14px;
+            min-height: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease, padding .3s ease;
+            border-left: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
+            border-right: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
+            background: color-mix(in srgb, var(--surface-2) 80%, transparent);
+        }
+        .cap-status-bar.visible {
+            max-height: 60px;
+            padding: 8px 14px;
+        }
+        .cap-status-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: .02em;
+        }
+        .cap-status-inner.lead {
+            background: rgba(95,217,126,.1);
+            border: 1px solid rgba(95,217,126,.3);
+            color: #5fd97e;
+        }
+        .cap-status-inner.outbid {
+            background: rgba(var(--live-rgb),.1);
+            border: 1px solid rgba(var(--live-rgb),.3);
+            color: var(--live);
+            animation: capStatusPulse 1.6s ease-in-out infinite;
+        }
+        .cap-status-inner.locked {
+            background: rgba(var(--gold-rgb),.07);
+            border: 1px solid rgba(var(--gold-rgb),.2);
+            color: var(--gold-pale);
+        }
+        @keyframes capStatusPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(var(--live-rgb), .25); }
+            50%       { box-shadow: 0 0 0 4px rgba(var(--live-rgb), 0); }
+        }
+
+        /* ── Bid cockpit ── */
+        .cap-cockpit {
+            padding: 18px 16px 20px;
+            background:
+                radial-gradient(ellipse 110% 70% at 50% -5%,
+                    color-mix(in srgb, var(--cap-color, var(--gold)) 18%, transparent),
+                    transparent 60%),
+                radial-gradient(ellipse 80% 50% at 100% 100%,
+                    color-mix(in srgb, var(--cap-color, var(--gold)) 8%, transparent),
+                    transparent 65%),
+                linear-gradient(175deg, var(--surface), var(--surface-2) 90%);
+            border: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 35%, transparent);
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Top separator line in team colour */
+        .cap-cockpit::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 12%; right: 12%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 60%, transparent) 40%,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 60%, transparent) 60%,
+                transparent
+            );
+            pointer-events: none;
+        }
+        /* Corner glow accent */
+        .cap-cockpit::before {
+            content: '';
+            position: absolute;
+            bottom: -40px; right: -40px;
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 16%, transparent),
+                transparent 65%);
+            pointer-events: none;
+        }
+
+        .cap-cockpit-label {
+            font-size: 8.5px;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* The bid amount — big, dramatic */
+        .cap-bid-display {
+            text-align: center;
+            padding: 10px 0 10px;
+            position: relative;
+        }
+        .cap-bid-amount {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(38px, 12vw, 48px);
+            letter-spacing: .02em;
+            line-height: 1;
+            background: linear-gradient(155deg,
+                #fff 5%,
+                color-mix(in srgb, var(--cap-color, var(--gold-pale)) 85%, white 15%) 35%,
+                var(--cap-color, var(--gold)) 65%,
+                color-mix(in srgb, var(--cap-color, var(--gold-deep)) 80%, black 20%) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 18px color-mix(in srgb, var(--cap-color, var(--gold)) 45%, transparent));
+        }
+        .cap-bid-reset {
+            position: absolute;
+            top: 8px; right: 0;
+            background: none;
+            border: none;
+            color: var(--ink-faint);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px 6px;
+            line-height: 1;
+            transition: color .15s, transform .2s;
+        }
+        .cap-bid-reset:hover { color: color-mix(in srgb, var(--cap-color, var(--gold)) 80%, white 20%); }
+        .cap-bid-reset:active { transform: rotate(-80deg); }
+        .cap-bid-reset:disabled { opacity: .2; pointer-events: none; }
+
+        /* Step button */
+        .cap-step-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 13px;
+            border: 1.5px solid color-mix(in srgb, var(--cap-color, var(--gold)) 50%, transparent);
+            background: color-mix(in srgb, var(--cap-color, var(--gold)) 12%, transparent);
+            color: color-mix(in srgb, var(--cap-color, var(--gold)) 90%, white 10%);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: .04em;
+            cursor: pointer;
+            transition: transform .1s ease, background .15s ease, border-color .15s ease;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cap-step-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .cap-step-btn:hover {
+            background: color-mix(in srgb, var(--cap-color, var(--gold)) 20%, transparent);
+            border-color: color-mix(in srgb, var(--cap-color, var(--gold)) 70%, transparent);
+        }
+        .cap-step-btn:active { transform: scale(.97); }
+        .cap-step-btn:disabled { opacity: .25; pointer-events: none; }
+
+        /* Place bid — the main CTA */
+        .cap-place-btn {
+            width: 100%;
+            padding: 17px 15px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg,
+                color-mix(in srgb, var(--cap-color, var(--gold-pale)) 95%, white 5%) 0%,
+                var(--cap-color, var(--gold)) 40%,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 75%, black 25%) 75%,
+                color-mix(in srgb, var(--cap-color, var(--gold-deep)) 85%, black 15%) 100%
+            );
+            color: var(--on-accent);
+            font-family: 'Anton', sans-serif;
+            font-size: 17px;
+            letter-spacing: .08em;
+            cursor: pointer;
+            box-shadow:
+                0 2px 0 color-mix(in srgb, var(--cap-color, var(--gold-deep)) 80%, black 20%),
+                0 8px 28px -4px color-mix(in srgb, var(--cap-color, var(--gold)) 60%, transparent),
+                0 20px 50px -12px color-mix(in srgb, var(--cap-color, var(--gold)) 30%, transparent),
+                inset 0 1px 0 rgba(255,255,255,.35),
+                inset 0 -1px 0 rgba(0,0,0,.15);
+            transition: transform .1s ease, box-shadow .15s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Glass sheen — top half highlight */
+        .cap-place-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 52%;
+            background: linear-gradient(180deg, rgba(255,255,255,.22) 0%, transparent 100%);
+            border-radius: 15px 15px 50% 50%;
+            pointer-events: none;
+        }
+        /* Right-side radial glow */
+        .cap-place-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 55% 90% at 85% 50%,
+                rgba(255,255,255,.14),
+                transparent 65%
+            );
+            pointer-events: none;
+        }
+        .cap-place-btn:hover {
+            transform: translateY(-1px);
+            box-shadow:
+                0 3px 0 color-mix(in srgb, var(--cap-color, var(--gold-deep)) 80%, black 20%),
+                0 12px 36px -4px color-mix(in srgb, var(--cap-color, var(--gold)) 72%, transparent),
+                0 26px 60px -12px color-mix(in srgb, var(--cap-color, var(--gold)) 38%, transparent),
+                inset 0 1px 0 rgba(255,255,255,.35),
+                inset 0 -1px 0 rgba(0,0,0,.15);
+        }
+        .cap-place-btn:active {
+            transform: translateY(1px);
+            box-shadow:
+                0 0 0 color-mix(in srgb, var(--cap-color, var(--gold-deep)) 80%, black 20%),
+                0 4px 14px -4px color-mix(in srgb, var(--cap-color, var(--gold)) 45%, transparent),
+                inset 0 1px 0 rgba(255,255,255,.2),
+                inset 0 2px 8px rgba(0,0,0,.2);
+        }
+        .cap-place-btn:disabled {
+            opacity: .3;
+            pointer-events: none;
+            box-shadow: none;
+        }
+        .cap-bid-note {
+            margin-top: 10px;
+            font-size: 10px;
+            color: var(--ink-faint);
+            text-align: center;
+            line-height: 1.5;
+        }
+        .cap-bid-note b { color: var(--gold-pale); }
+
+        /* ── Roster section ── */
+        .cap-roster-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0 10px;
+        }
+        .cap-roster-eyebrow {
+            font-size: 9px;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            font-weight: 700;
+        }
+
+        /* keep original stat-ic */
+        .stat-ic {
+            font-size: 15px;
+            margin-bottom: 4px;
+            opacity: .85;
+        }
+        .cap-deck .bid-builder { margin-bottom: 0; }
+
         /* ---- ONE console: 3-step sequence, official desk ---- */
         .console {
             margin-top: 14px;
@@ -2326,6 +2741,52 @@
             display: flex;
             gap: 8px;
             margin-top: 8px;
+        }
+
+        /* ═══ CONFETTI FX TOGGLE ═══ */
+        .confetti-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+        .confetti-toggle-lbl {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .confetti-toggle-note {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            margin-top: 2px;
+        }
+        .confetti-switch {
+            flex-shrink: 0;
+            width: 50px;
+            height: 28px;
+            border-radius: 20px;
+            border: 1px solid var(--line);
+            background: var(--surface-2);
+            position: relative;
+            cursor: pointer;
+            transition: background .2s ease, border-color .2s ease;
+        }
+        .confetti-switch-knob {
+            position: absolute;
+            top: 2px; left: 2px;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: var(--ink-faint);
+            transition: transform .22s cubic-bezier(.2, .9, .3, 1), background .2s ease;
+        }
+        .confetti-switch.on {
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), .35), rgba(var(--gold-rgb), .15));
+            border-color: var(--gold);
+        }
+        .confetti-switch.on .confetti-switch-knob {
+            transform: translateX(22px);
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            box-shadow: 0 0 10px rgba(var(--gold-rgb), .5);
         }
 
         .console-btn {
@@ -2846,31 +3307,32 @@
         .mini-stage {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             margin-top: 14px;
-            padding: 12px 14px;
-            border-radius: 16px;
+            padding: 14px 16px;
+            border-radius: 18px;
             background: linear-gradient(120deg, var(--card-a), var(--card-b) 85%);
             border: 1px solid var(--gold-deep);
             position: sticky;
             top: 58px;
             z-index: 40;
-            box-shadow: 0 10px 24px -8px rgba(0, 0, 0, .55);
+            box-shadow: 0 14px 30px -10px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .04);
         }
 
         .mini-stage-photo {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             flex-shrink: 0;
             background-size: cover;
             background-position: center;
             border: 2px solid var(--gold-deep);
+            box-shadow: 0 0 0 3px rgba(var(--gold-rgb), .1);
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Anton', sans-serif;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--gold-pale);
         }
 
@@ -2880,8 +3342,10 @@
         }
 
         .mini-stage-name {
-            font-size: 13px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 15px;
             font-weight: 700;
+            letter-spacing: .01em;
             color: var(--ink);
             white-space: nowrap;
             overflow: hidden;
@@ -2892,7 +3356,8 @@
             font-size: 9.5px;
             color: var(--ink-faint);
             text-transform: uppercase;
-            margin-top: 2px;
+            letter-spacing: .06em;
+            margin-top: 3px;
         }
 
         .mini-stage-bid {
@@ -2903,13 +3368,14 @@
         .mini-stage-bid .amt {
             font-family: 'Space Mono', monospace;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--gold-pale);
         }
 
         .mini-stage-bid .lead {
             font-size: 8.5px;
             text-transform: uppercase;
+            letter-spacing: .04em;
             margin-top: 2px;
         }
 
@@ -2923,220 +3389,184 @@
             box-shadow: 0 0 0 1px var(--cap-color, var(--gold-deep)), 0 0 40px -10px var(--cap-color, var(--gold));
         }
 
-        .you-lead-banner {
-            display: none;
+        .status-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
             margin-top: 10px;
-            padding: 9px 12px;
-            border-radius: 12px;
-            background: linear-gradient(120deg, rgba(95, 217, 126, .16), rgba(95, 217, 126, .06));
-            border: 1px solid rgba(95, 217, 126, .4);
-            color: #5fd97e;
-            font-size: 11.5px;
-            font-weight: 600;
+        }
+
+        .you-lead-banner,
+        .outbid-banner,
+        .lock-banner {
+            display: none;
+            padding: 7px 13px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .01em;
             text-align: center;
         }
 
-        .you-lead-banner.show {
-            display: block;
+        .you-lead-banner.show,
+        .outbid-banner.show,
+        .lock-banner.show {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .you-lead-banner {
+            background: linear-gradient(120deg, rgba(95, 217, 126, .18), rgba(95, 217, 126, .07));
+            border: 1px solid rgba(95, 217, 126, .45);
+            color: #5fd97e;
+            box-shadow: 0 0 16px -4px rgba(95, 217, 126, .5);
         }
 
         .outbid-banner {
-            display: none;
-            margin-top: 10px;
-            padding: 9px 12px;
-            border-radius: 12px;
-            background: linear-gradient(120deg, rgba(var(--live-rgb), .16), rgba(var(--live-rgb), .06));
-            border: 1px solid rgba(var(--live-rgb), .4);
+            background: linear-gradient(120deg, rgba(var(--live-rgb), .18), rgba(var(--live-rgb), .07));
+            border: 1px solid rgba(var(--live-rgb), .45);
             color: var(--live);
-            font-size: 11.5px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .outbid-banner.show {
-            display: block;
+            box-shadow: 0 0 16px -4px rgba(var(--live-rgb), .5);
         }
 
         .lock-banner {
-            display: none;
-            margin-top: 10px;
-            padding: 9px 12px;
-            border-radius: 12px;
-            background: linear-gradient(120deg, rgba(var(--gold-rgb), .14), rgba(var(--gold-rgb), .04));
-            border-color: var(--gold-deep);
-            color: var(--gold-pale);
-            font-size: 11.5px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .lock-banner.show {
-            display: block;
-        }
-
-        .paddle-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-            margin-top: 14px;
-            width: 100%;
-        }
-
-        .paddle-btn {
-            position: relative;
-            min-width: 0;
-            width: 100%;
-            padding: 11px 4px 9px;
-            border-radius: 13px;
+            background: linear-gradient(120deg, rgba(var(--gold-rgb), .16), rgba(var(--gold-rgb), .05));
             border: 1px solid var(--gold-deep);
-            background: linear-gradient(160deg, rgba(var(--gold-rgb), .12), rgba(var(--gold-rgb), .04));
             color: var(--gold-pale);
-            cursor: pointer;
-            transition: transform .12s ease;
-            text-align: center;
         }
 
-        .paddle-btn:active {
-            transform: scale(.94);
+        /* ═══ BID BUILDER — one card, one stepper, one bid ═══ */
+        .bid-builder {
+            margin-top: 12px;
+            padding: 13px 14px 12px;
+            border-radius: 17px;
+            background: linear-gradient(165deg, rgba(20, 15, 6, .9), rgba(12, 9, 4, .96));
+            border: 1px solid var(--gold-deep);
+            box-shadow: 0 14px 30px -12px rgba(0, 0, 0, .65), inset 0 1px 0 rgba(255, 255, 255, .04);
+            position: relative;
+            overflow: hidden;
         }
 
-        .paddle-btn:disabled {
-            opacity: .35;
+        .bid-builder::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(120% 90% at 50% -10%, rgba(var(--gold-rgb), .1), transparent 60%);
             pointer-events: none;
         }
 
-        .paddle-btn .inc {
-            display: block;
+        .bb-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .bb-label {
+            font-size: 10px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            font-weight: 700;
+        }
+
+        .bb-reset {
+            background: none;
+            border: none;
+            color: var(--ink-faint);
+            font-size: 15px;
+            cursor: pointer;
+            padding: 2px 4px;
+            line-height: 1;
+            transition: color .15s ease, transform .15s ease;
+        }
+
+        .bb-reset:disabled {
+            opacity: .25;
+            pointer-events: none;
+        }
+
+        .bb-reset:active {
+            transform: rotate(-70deg);
+        }
+
+        .bb-amt {
+            margin-top: 4px;
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(28px, 9vw, 36px);
+            letter-spacing: .01em;
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            position: relative;
+            text-align: center;
+        }
+
+        .bb-step {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px 10px;
+            border-radius: 13px;
+            border: 1px solid rgba(var(--gold-rgb), .3);
+            background: linear-gradient(160deg, rgba(var(--gold-rgb), .16), rgba(var(--gold-rgb), .05));
+            color: var(--gold-pale);
             font-family: 'Space Mono', monospace;
             font-weight: 700;
-            font-size: clamp(11px, 3.4vw, 14px);
-            white-space: nowrap;
+            font-size: 15px;
+            letter-spacing: .04em;
+            cursor: pointer;
+            transition: transform .1s ease, background .15s ease;
+            position: relative;
         }
 
-        .paddle-btn .to {
-            display: block;
-            margin-top: 3px;
-            font-size: 8px;
-            color: var(--ink-faint);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .bb-step:active {
+            transform: scale(.97);
         }
 
-        .paddle-btn .to b {
-            color: var(--gold-pale);
-            font-weight: 700;
+        .bb-step:disabled {
+            opacity: .3;
+            pointer-events: none;
         }
 
-        .paddle-btn.selected {
-            border-color: var(--gold);
-            background: linear-gradient(160deg, rgba(var(--gold-rgb), .34), rgba(var(--gold-rgb), .14));
-            box-shadow: 0 0 0 2px var(--gold);
+        .bb-place {
+            width: 100%;
+            margin-top: 8px;
+            padding: 13px 10px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            color: var(--on-accent);
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            letter-spacing: .03em;
+            cursor: pointer;
+            box-shadow: 0 8px 22px -8px rgba(var(--gold-rgb), .55);
+            transition: transform .1s ease, box-shadow .15s ease;
         }
 
-        .paddle-btn.selected::after {
-            content: '✓';
-            position: absolute;
-            top: 3px;
-            right: 5px;
-            font-size: 8px;
-            color: var(--gold);
+        .bb-place:active {
+            transform: scale(.98);
         }
 
-        .paddle-hint {
-            margin-top: 9px;
+        .bb-place:disabled {
+            opacity: .35;
+            pointer-events: none;
+            box-shadow: none;
+        }
+
+        .bb-note {
+            margin-top: 10px;
             font-size: 10.5px;
             color: var(--ink-faint);
             text-align: center;
             line-height: 1.5;
+            position: relative;
         }
 
-        .confirm-bid-btn:disabled {
-            opacity: .4;
-            pointer-events: none;
-        }
-
-        .custom-bid-row {
-            margin-top: 11px;
-            padding: 11px 12px 12px;
-            border-radius: 14px;
-            background: var(--surface);
-            border: 1px solid var(--line);
-        }
-
-        .custom-bid-label {
-            font-size: 9.5px;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--ink-faint);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .custom-bid-input-wrap {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: var(--surface-2);
-            border: 1px solid var(--line);
-            border-radius: 11px;
-            padding: 3px 3px 3px 12px;
-        }
-
-        .custom-bid-input-wrap:focus-within {
-            border-color: var(--gold-deep);
-        }
-
-        .custom-bid-prefix,
-        .custom-bid-suffix {
-            font-family: 'Space Mono', monospace;
-            font-size: 12.5px;
-            color: var(--ink-faint);
-            flex-shrink: 0;
-        }
-
-        .custom-bid-input {
-            flex: 1;
-            min-width: 0;
-            width: 100%;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--ink);
-            font-family: 'Space Mono', monospace;
-            font-size: 15px;
-            font-weight: 700;
-            padding: 9px 4px;
-        }
-
-        .custom-bid-btn {
-            flex-shrink: 0;
-            padding: 10px 15px;
-            border-radius: 9px;
-            border: none;
-            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
-            color: var(--on-accent);
-            font-weight: 700;
-            font-size: 11.5px;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .custom-bid-btn:disabled {
-            opacity: .4;
-            pointer-events: none;
-        }
-
-        .custom-bid-note {
-            margin-top: 7px;
-            font-size: 9.5px;
-            color: var(--ink-faint);
-            line-height: 1.4;
-            min-height: 13px;
-        }
-
-        .custom-bid-note b {
+        .bb-note b {
             color: var(--gold-pale);
         }
 
@@ -3151,17 +3581,63 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 9px 11px;
-            border-radius: 10px;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 13px;
             background: var(--surface);
             border: 1px solid var(--line);
-            font-size: 11.5px;
+            font-size: 13px;
+        }
+
+        .pl-row .pl-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .pl-row .pl-name span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pl-avatar {
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 12px;
+            color: var(--gold-pale);
+            background: linear-gradient(150deg, rgba(var(--gold-rgb), .2), rgba(var(--gold-rgb), .06));
+            border: 1px solid var(--gold-deep);
         }
 
         .pl-row .p {
-            color: var(--gold-pale);
+            flex-shrink: 0;
+            color: var(--on-accent);
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
             font-family: 'Space Mono', monospace;
-            font-size: 11px;
+            font-weight: 700;
+            font-size: 11.5px;
+            padding: 5px 9px;
+            border-radius: 999px;
+        }
+
+        .pl-empty {
+            padding: 16px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--ink-faint);
+            background: var(--surface);
+            border-radius: 13px;
+            border: 1px dashed rgba(var(--gold-rgb), .18);
         }
 
         /* summary modal */
@@ -3461,6 +3937,138 @@
             text-transform: uppercase;
         }
 
+        /* ═══ PREMIUM SOLD CARD — redesigned for real impact ═══ */
+        .cc-card {
+            position: relative;
+            z-index: 2;
+            width: min(88vw, 330px);
+            background:
+                radial-gradient(ellipse 110% 55% at 50% 0%, color-mix(in srgb, var(--burst-color, var(--gold)) 22%, transparent), transparent 65%),
+                linear-gradient(165deg, color-mix(in srgb, var(--bg) 60%, var(--surface)), var(--bg) 85%);
+            border: 1px solid color-mix(in srgb, var(--burst-color, var(--gold)) 55%, transparent);
+            border-radius: 28px;
+            padding: 0 0 20px;
+            text-align: center;
+            box-shadow:
+                0 0 0 1px color-mix(in srgb, var(--burst-color, var(--gold)) 18%, transparent),
+                0 28px 70px rgba(0, 0, 0, .65),
+                0 0 80px color-mix(in srgb, var(--burst-color, var(--gold)) 28%, transparent);
+            animation: ccPop .55s cubic-bezier(.2, .9, .25, 1.12);
+            overflow: hidden;
+        }
+        @keyframes ccPop {
+            0% { transform: scale(.72) translateY(28px); opacity: 0; }
+            60% { transform: scale(1.03) translateY(-3px); opacity: 1; }
+            100% { transform: scale(1) translateY(0); }
+        }
+        /* Top accent bar */
+        .cc-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--burst-color, var(--gold)), transparent);
+        }
+        /* Sheen sweep */
+        .cc-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -130%;
+            width: 50%; height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .11), transparent);
+            animation: ccSheen 2.6s ease-in-out .4s;
+            pointer-events: none;
+        }
+        @keyframes ccSheen {
+            0% { left: -130%; }
+            100% { left: 150%; }
+        }
+        .cc-ribbon {
+            display: block;
+            font-family: 'Anton', sans-serif;
+            font-size: 10px;
+            letter-spacing: .3em;
+            color: color-mix(in srgb, var(--burst-color, var(--gold)) 80%, white 20%);
+            background: color-mix(in srgb, var(--burst-color, var(--gold)) 14%, transparent);
+            border-bottom: 1px solid color-mix(in srgb, var(--burst-color, var(--gold)) 30%, transparent);
+            padding: 10px 18px 9px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .cc-badge-wrap {
+            position: relative;
+            width: 72px; height: 72px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 800;
+            background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--burst-color, var(--gold)) 30%, var(--surface)), var(--surface-2));
+            border: 2px solid var(--burst-color, var(--gold));
+            box-shadow:
+                0 0 0 5px color-mix(in srgb, var(--burst-color, var(--gold)) 12%, transparent),
+                0 0 32px color-mix(in srgb, var(--burst-color, var(--gold)) 50%, transparent);
+            color: var(--burst-color, var(--gold));
+            font-family: 'Anton', sans-serif;
+        }
+        .cc-name {
+            font-family: 'Anton', sans-serif;
+            font-size: 25px;
+            letter-spacing: .03em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            word-break: break-word;
+            padding: 0 18px;
+            background: linear-gradient(180deg, var(--ink) 40%, var(--ink-dim));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cc-team {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .07em;
+            padding: 5px 13px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+            border: 1px solid;
+        }
+        .cc-price-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 18px;
+            margin: 0 16px 12px;
+            background: color-mix(in srgb, var(--burst-color, var(--gold)) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--burst-color, var(--gold)) 22%, transparent);
+            border-radius: 14px;
+        }
+        .cc-price-val {
+            font-family: 'Anton', sans-serif;
+            font-size: 30px;
+            color: var(--burst-color, var(--gold));
+            line-height: 1;
+            text-shadow: 0 0 20px color-mix(in srgb, var(--burst-color, var(--gold)) 50%, transparent);
+        }
+        .cc-price-lbl {
+            font-size: 8px;
+            letter-spacing: .14em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        .cc-payout {
+            font-size: 11.5px;
+            color: var(--ink-dim);
+            line-height: 1.5;
+            padding: 0 18px;
+        }
+        .cc-payout b {
+            color: var(--gold-pale);
+        }
+
         .confetti-piece {
             position: absolute;
             top: -20px;
@@ -3470,16 +4078,19 @@
             animation-name: confettiFall;
             animation-timing-function: cubic-bezier(.4, 0, .6, 1);
             animation-iteration-count: 1;
+            box-shadow: 0 0 6px currentColor;
         }
+        .confetti-piece.round { border-radius: 50%; }
+        .confetti-piece.square { border-radius: 2px; }
+        .confetti-piece.shard { border-radius: 1px; }
 
         @keyframes confettiFall {
             0% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0) translateX(0) rotate(0deg);
                 opacity: 1;
             }
-
             100% {
-                transform: translateY(720px) rotate(540deg);
+                transform: translateY(720px) translateX(var(--drift, 0px)) rotate(var(--spin, 540deg));
                 opacity: 0;
             }
         }
@@ -3827,13 +4438,70 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- THE WIRE — always-on official bid feed, everyone sees the same record -->
-            <div class="wire-strip fade-up">
-                <div class="wire-head"><span class="dot"></span>THE WIRE — LIVE BID FEED</div>
-                <div class="wire-body" id="wireBody">
-                    <div class="wire-empty">Waiting for the first bid of the night…</div>
-                </div>
+    <!-- CAPTAIN WAR ROOM — premium redesign -->
+    <section class="role-panel" id="panel-captain">
+
+        <!-- Identity strip -->
+        <div class="cap-identity fade-up">
+            <div class="cap-identity-crest">👑</div>
+            <div class="cap-identity-info">
+                <div class="cap-identity-label">Captain's Console</div>
+                <div class="cap-identity-name" id="capTeamTitle">Team <b>—</b></div>
+            </div>
+        </div>
+
+        <!-- Purse + Slots vitals -->
+        <div class="cap-vitals fade-up">
+            <div class="cap-vital">
+                <div class="cap-vital-val" id="capPurseLeft">₹100Cr</div>
+                <div class="cap-vital-lbl">Purse Remaining</div>
+                <div class="cap-purse-track"><div class="cap-purse-fill" id="capPurseFill" style="width:100%"></div></div>
+            </div>
+            <div class="cap-vital">
+                <div class="cap-vital-val" id="capPlayersLeft">5</div>
+                <div class="cap-vital-lbl">Roster Slots Left</div>
+            </div>
+        </div>
+
+        <!-- Status bar (lead / outbid / locked) -->
+        <div class="cap-status-bar" id="capStatusBar">
+            <div class="cap-status-inner" id="capStatusInner">
+                <span id="capStatusText"></span>
+            </div>
+        </div>
+
+        <!-- Bid cockpit -->
+        <div class="cap-cockpit fade-up" id="bidBuilder">
+            <div class="cap-cockpit-label">
+                <span>Your Bid</span>
+                <button class="cap-bid-reset" id="bbReset" aria-label="Reset bid" title="Reset">↺</button>
+            </div>
+            <div class="cap-bid-display">
+                <div class="cap-bid-amount" id="bbAmt">—</div>
+            </div>
+            <button class="cap-step-btn" id="bbStep">+ 2 Cr</button>
+            <button class="cap-place-btn" id="placeBidBtn" disabled>Waiting for a player…</button>
+            <div class="cap-bid-note" id="bbNote">Waiting for a player on the block…</div>
+        </div>
+
+        <!-- Roster -->
+        <div class="cap-roster-header fade-up">
+            <span class="cap-roster-eyebrow">My Roster</span>
+        </div>
+        <div class="players-left-list" id="capRosterList"></div>
+
+    </section>
+
+    <!-- LIVE FEED & OVERALL STATS -->
+    <section id="stageStatsSection" style="padding-top:10px;">
+        <!-- THE WIRE — always-on official bid feed, everyone sees the same record -->
+        <div class="wire-strip fade-up">
+            <div class="wire-head"><span class="dot"></span>THE WIRE — LIVE BID FEED</div>
+            <div class="wire-body" id="wireBody">
+                <div class="wire-empty">Waiting for the first bid of the night…</div>
             </div>
         </div>
 
@@ -3857,67 +4525,6 @@
                 <div class="stat-label">Top Sale</div>
             </div>
         </div>
-    </section>
-
-    <!-- CAPTAIN PANEL -->
-    <section class="role-panel" id="panel-captain" style="padding-top:8px;">
-        <div class="eyebrow">YOUR SQUAD</div>
-        <h2 class="sec-title" id="capTeamTitle">Team <b>—</b></h2>
-        <div class="stat-strip fade-up">
-            <div class="stat-card">
-                <div class="stat-num" id="capPurseLeft">₹100Cr</div>
-                <div class="stat-label">Purse Left</div>
-            </div>
-            <div class="stat-card" style="grid-column:span 2;">
-                <div class="stat-num" id="capPlayersLeft">5</div>
-                <div class="stat-label">Slots Left</div>
-            </div>
-        </div>
-
-        <div class="mini-stage fade-up" id="capMiniStage">
-            <div class="mini-stage-photo" id="capMiniPhoto">?</div>
-            <div class="mini-stage-info">
-                <div class="mini-stage-name" id="capMiniName">No player on the block yet</div>
-                <div class="mini-stage-sub" id="capMiniSub">Waiting for admin</div>
-            </div>
-            <div class="mini-stage-bid">
-                <div class="amt" id="capMiniBid">—</div>
-                <div class="lead" id="capMiniLead" style="color:var(--ink-faint);">Base price</div>
-            </div>
-        </div>
-        <div class="you-lead-banner" id="youLeadBanner">🏆 You're leading this bid!</div>
-        <div class="outbid-banner" id="outbidBanner">⚡ You've been outbid — raise your paddle!</div>
-        <div class="lock-banner" id="biddingLockedBanner">🔒 Waiting for the auctioneer to open bidding…</div>
-
-        <div class="paddle-grid fade-up" id="paddleGrid">
-            <button class="paddle-btn bid-btn open-bid-btn" id="openBidBtn" data-inc="0"><span
-                    class="inc">Open</span><span class="to">at <b id="openBidAmt">—</b></span></button>
-            <button class="paddle-btn bid-btn" data-inc="2"><span class="inc">+2 Cr</span><span class="to">→ <b
-                        class="to-amt"></b></span></button>
-            <button class="paddle-btn bid-btn" data-inc="4"><span class="inc">+4 Cr</span><span class="to">→ <b
-                        class="to-amt"></b></span></button>
-            <button class="paddle-btn bid-btn" data-inc="6"><span class="inc">+6 Cr</span><span class="to">→ <b
-                        class="to-amt"></b></span></button>
-            <button class="paddle-btn bid-btn" data-inc="10"><span class="inc">+10 Cr</span><span class="to">→ <b
-                        class="to-amt"></b></span></button>
-            <button class="paddle-btn bid-btn" data-inc="20"><span class="inc">+20 Cr</span><span class="to">→ <b
-                        class="to-amt"></b></span></button>
-        </div>
-        <div class="paddle-hint" id="capBidHint">Tap an amount to select it, then confirm below.</div>
-        <button class="btn btn-primary confirm-bid-btn" id="confirmBidBtn" disabled
-            style="width:100%;margin-top:12px;">Select an amount above</button>
-
-        <div class="custom-bid-row fade-up" id="customBidRow">
-            <div class="custom-bid-label">✏️ Or enter your own bid</div>
-            <div class="custom-bid-input-wrap"><span class="custom-bid-prefix">₹</span><input type="number"
-                    id="customBidInput" class="custom-bid-input" placeholder="0" min="0" inputmode="numeric"><span
-                    class="custom-bid-suffix">Cr</span><button class="custom-bid-btn" id="customBidBtn"
-                    disabled>Bid</button></div>
-            <div class="custom-bid-note" id="customBidNote">Waiting for a player on the block…</div>
-        </div>
-
-        <div class="eyebrow" style="margin-top:22px;">MY ROSTER</div>
-        <div class="players-left-list" id="capRosterList"></div>
     </section>
 
     <!-- ADMIN PANEL — simplified, three steps, official desk -->
@@ -3978,6 +4585,19 @@
                 <button class="round-step" data-start-round="5">R5</button>
             </div>
             <div class="round-lock-note" id="roundLockNote">Round 1 is next.</div>
+        </div>
+
+        <div class="console fade-up">
+            <div class="console-title">🎉 CELEBRATION FX</div>
+            <div class="confetti-toggle-row">
+                <div>
+                    <div class="confetti-toggle-lbl" id="confettiToggleLbl">Confetti FX — ON</div>
+                    <div class="confetti-toggle-note">Applies to every viewer's "Sold!" screen, live.</div>
+                </div>
+                <button class="confetti-switch on" id="confettiToggleSwitch" aria-label="Toggle celebration confetti">
+                    <span class="confetti-switch-knob"></span>
+                </button>
+            </div>
         </div>
 
         <div class="eyebrow" style="margin-top:22px;">FIND A PLAYER — PICK A TIER, THEN A LOT</div>
@@ -4083,18 +4703,23 @@
 
     <!-- GLORY SCREEN — shown to everyone once finalized -->
     <div id="gloryScreen" style="display:none;position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#0a0705,#1a0d04 35%,#0d0a1a 70%,#0a0705);overflow-y:auto;overflow-x:hidden;">
+        <!-- Admin re-entry — lets an admin log in and undo the roster lock -->
+        <button id="gloryAdminToggle" style="position:fixed;top:14px;right:14px;z-index:100001;background:rgba(10,7,5,.75);border:1px solid rgba(240,185,61,.3);color:#a9997d;font-size:11px;padding:6px 12px;border-radius:20px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:.04em;backdrop-filter:blur(6px);">🛡️ Admin</button>
+        <div id="gloryAdminPanel" style="display:none;position:fixed;top:52px;right:14px;z-index:100001;width:270px;max-width:calc(100vw - 28px);background:linear-gradient(145deg,#171009,#1d1408);border:1px solid rgba(240,185,61,.25);border-radius:14px;padding:16px;box-shadow:0 16px 44px rgba(0,0,0,.55);">
+            <div id="gloryAdminInner"></div>
+        </div>
         <canvas id="gloryCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:1;"></canvas>
         <div id="gloryParticles" style="position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden;"></div>
         <div style="position:relative;z-index:10;max-width:480px;margin:0 auto;padding:0 0 60px;">
-            <div style="text-align:center;padding:60px 20px 28px;">
-                <div style="position:relative;display:inline-block;margin-bottom:16px;">
+            <div style="text-align:center;padding:56px 20px 0;">
+                <div style="position:relative;display:inline-block;margin-bottom:14px;">
                     <div style="position:absolute;inset:-24px;background:radial-gradient(circle,rgba(240,185,61,.4),transparent 70%);border-radius:50%;animation:_glowPulse 2s ease-in-out infinite alternate;"></div>
-                    <div style="font-size:88px;line-height:1;animation:_trophyBob 1.8s ease-in-out infinite alternate;position:relative;">🏆</div>
+                    <div style="font-size:78px;line-height:1;animation:_trophyBob 1.8s ease-in-out infinite alternate;position:relative;">🏆</div>
                 </div>
-                <div style="font-family:'Anton',sans-serif;font-size:36px;background:linear-gradient(135deg,#f0b93d,#fbe4a6,#f0b93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:_shimmer 2.5s linear infinite;margin-bottom:6px;">AUCTION COMPLETE!</div>
-                <div style="font-family:'Anton',sans-serif;font-size:20px;color:#ff4433;letter-spacing:.08em;margin-bottom:18px;animation:_redFlicker 3s ease-in-out infinite;">NUG TROPHY — BATTLE BEGINS</div>
-                <div style="font-size:15px;color:#a9997d;line-height:1.7;background:rgba(240,185,61,.06);border:1px solid rgba(240,185,61,.18);border-radius:12px;padding:14px 16px;margin:0 0 24px;">
-                    🎉 Season 12 Auction concluded grandly!<br>Welcome all players to <b style="color:#f0b93d;">FREEFIRE XIPL SEASON 12</b>
+                <div style="font-family:'Anton',sans-serif;font-size:34px;background:linear-gradient(135deg,#f0b93d,#fbe4a6,#f0b93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:_shimmer 2.5s linear infinite;margin-bottom:8px;letter-spacing:.02em;">AUCTION COMPLETE</div>
+                <div style="font-size:11px;letter-spacing:.24em;color:#e0304a;text-transform:uppercase;font-weight:700;margin-bottom:22px;">Season 12 · Rosters Locked</div>
+                <div style="font-size:14.5px;color:#d9cbb0;line-height:1.7;background:linear-gradient(160deg,rgba(240,185,61,.09),rgba(240,185,61,.03));border:1px solid rgba(240,185,61,.22);border-radius:16px;padding:16px 18px;margin:0 0 24px;box-shadow:0 12px 32px rgba(0,0,0,.3);">
+                    🎉 Season 12's auction has concluded — every roster is set.<br>Welcome to <b style="color:#f0b93d;">FREEFIRE XIPL SEASON 12</b>.
                 </div>
             </div>
             <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(240,185,61,.35),transparent);margin:0 20px 28px;"></div>
@@ -4250,12 +4875,25 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // Put a direct image URL in "logo" to show a team's own logo instead
+        // of the colored text abbreviation — leave it '' to keep the text.
+        // Transparent PNGs work best (badges keep a colored tint background).
         const TEAM_META = {
-            RCB: { name: 'Royal Challengers', color: '#e2394a' }, CSK: { name: 'Chennai Super Kings', color: '#f5c518' },
-            MI: { name: 'Mumbai Indians', color: '#045d9e' }, DC: { name: 'Delhi Capitals', color: '#1f5fc4' },
-            KKR: { name: 'Kolkata Knight Riders', color: '#7d4bb0' }, SRH: { name: 'Sunrisers', color: '#f26522' },
-            RR: { name: 'Rajasthan Royals', color: '#e03daf' }, PBKS: { name: 'Punjab Kings', color: '#c31d1d' },
+            RCB: { name: 'Royal Challengers', color: '#e2394a', logo: '' }, CSK: { name: 'Chennai Super Kings', color: '#f5c518', logo: '' },
+            MI: { name: 'Mumbai Indians', color: '#045d9e', logo: '' }, DC: { name: 'Delhi Capitals', color: '#1f5fc4', logo: '' },
+            KKR: { name: 'Kolkata Knight Riders', color: '#7d4bb0', logo: '' }, SRH: { name: 'Sunrisers', color: '#f26522', logo: '' },
+            RR: { name: 'Rajasthan Royals', color: '#e03daf', logo: '' }, PBKS: { name: 'Punjab Kings', color: '#c31d1d', logo: '' },
         };
+        // Renders a team badge — image if TEAM_META[id].logo is set, else the
+        // colored text abbreviation fallback. Use everywhere a team badge shows.
+        function teamBadgeHTML(id) {
+            const t = TEAM_META[id] || { color: '#888', logo: '' };
+            if (t.logo) {
+                const safeLogo = String(t.logo).replace(/"/g, '&quot;');
+                return `<img src="${safeLogo}" alt="${id}" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;border-radius:4px;">`;
+            }
+            return id;
+        }
         const TEAM_IDS = Object.keys(TEAM_META);
         const TIER_PRICE = { top10: 10, top20: 6, top30: 4, top40: 2 };
         const TIER_LABEL = { top10: 'TIER 1 — TOP 10', top20: 'TIER 2 — TOP 20', top30: 'TIER 3 — TOP 30', top40: 'TIER 4 — TOP 40' };
@@ -4347,15 +4985,39 @@
         function openLightbox(url) { $('lightboxImg').src = url; $('lightboxOverlay').classList.add('show'); }
 
         const CONFETTI_COLORS = ['#f0b93d', '#fbe4a6', '#ff4433', '#5fd97e', '#29d3ff'];
+        const CONFETTI_SHAPES = ['round', 'square', 'shard'];
+        // Admin-controlled celebration FX toggle. Defaults from this device's
+        // last known setting; synced live to every viewer via broadcast so the
+        // admin can turn it off for the whole room (e.g. late-night sessions).
+        let confettiEnabled = (() => { try { const v = localStorage.getItem('xipl-confetti-enabled'); return v === null ? true : v === 'true'; } catch (e) { return true; } })();
+        function setConfettiEnabled(val, doBroadcast) {
+            confettiEnabled = val;
+            try { localStorage.setItem('xipl-confetti-enabled', val ? 'true' : 'false'); } catch (e) {}
+            updateConfettiToggleUI();
+            if (doBroadcast) broadcastChannel?.send({ type: 'broadcast', event: 'confetti_toggle', payload: { enabled: val } });
+        }
+        function updateConfettiToggleUI() {
+            const sw = $('confettiToggleSwitch'), lbl = $('confettiToggleLbl');
+            if (sw) sw.classList.toggle('on', confettiEnabled);
+            if (lbl) lbl.textContent = confettiEnabled ? 'Confetti FX — ON' : 'Confetti FX — OFF';
+        }
         function fireConfetti(container, burstColor) {
             const palette = burstColor ? [burstColor, ...CONFETTI_COLORS] : CONFETTI_COLORS;
-            for (let i = 0; i < 34; i++) {
-                const p = document.createElement('div'); p.className = 'confetti-piece';
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                const shape = CONFETTI_SHAPES[Math.floor(Math.random() * CONFETTI_SHAPES.length)];
+                p.className = 'confetti-piece ' + shape;
+                const size = 5 + Math.random() * 7;
+                p.style.width = (shape === 'round' ? size : size) + 'px';
+                p.style.height = (shape === 'shard' ? size * 2.2 : size * (shape === 'round' ? 1 : 1.6)) + 'px';
                 p.style.left = Math.random() * 100 + '%';
-                p.style.background = palette[Math.floor(Math.random() * palette.length)];
-                p.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
+                const c = palette[Math.floor(Math.random() * palette.length)];
+                p.style.background = c; p.style.color = c;
+                p.style.setProperty('--drift', (Math.random() * 140 - 70) + 'px');
+                p.style.setProperty('--spin', (360 + Math.random() * 540) + 'deg');
+                p.style.animationDuration = (1.8 + Math.random() * 1.6) + 's';
                 p.style.animationDelay = (Math.random() * 0.5) + 's';
-                container.appendChild(p); setTimeout(() => p.remove(), 3500);
+                container.appendChild(p); setTimeout(() => p.remove(), 4000);
             }
         }
         function showCelebration(wordHtml, subHtml, durationMs, burstColor) {
@@ -4363,9 +5025,36 @@
             overlay.style.setProperty('--burst-color', burstColor || 'var(--gold)');
             overlay.innerHTML = `<div class="celebrate-word display">${wordHtml}</div><div class="celebrate-sub">${subHtml}</div><div class="celebrate-tap">Tap anywhere to dismiss</div>`;
             overlay.classList.remove('show'); void overlay.offsetWidth; overlay.classList.add('show');
-            fireConfetti(overlay, burstColor);
+            if (confettiEnabled) fireConfetti(overlay, burstColor);
             const dismiss = () => overlay.classList.remove('show');
             overlay.onclick = dismiss; if (durationMs) setTimeout(dismiss, durationMs);
+        }
+        // Premium "sold" reveal — a trophy-style card with the team badge,
+        // player name and sale price, instead of plain floating text.
+        function renderSoldCard(payload, iWon) {
+            const overlay = $('celebrateOverlay');
+            const col = TEAM_META[payload.teamId]?.color || null;
+            overlay.style.setProperty('--burst-color', col || 'var(--gold)');
+            const badge = teamBadgeHTML(payload.teamId);
+            const teamName = TEAM_META[payload.teamId]?.name?.split(' ').slice(0, 2).join(' ') || payload.teamId;
+            overlay.innerHTML = `
+                <div class="cc-card">
+                    <div class="cc-ribbon">${iWon ? "🎉 HE'S YOURS" : '🔨 SOLD'}</div>
+                    <div class="cc-badge-wrap">${badge}</div>
+                    <div class="cc-name">${payload.playerName}</div>
+                    <div class="cc-team" style="color:${col};border-color:${col}55;background:${col}14">
+                        <span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block"></span>${payload.teamId} · ${teamName}
+                    </div>
+                    <div class="cc-price-row">
+                        <div><div class="cc-price-val">${fmtCr(payload.price)}</div><div class="cc-price-lbl">Sale Price</div></div>
+                    </div>
+                    <div class="cc-payout">Player payout: <b>${fmtPayout(payload.price)}</b></div>
+                </div>
+                <div class="celebrate-tap">Tap anywhere to dismiss</div>`;
+            overlay.classList.remove('show'); void overlay.offsetWidth; overlay.classList.add('show');
+            if (confettiEnabled) fireConfetti(overlay, col);
+            const dismiss = () => overlay.classList.remove('show');
+            overlay.onclick = dismiss; setTimeout(dismiss, 4200);
         }
         function announceNewPlayer(player, round) {
             const overlay = $('announceOverlay');
@@ -4387,12 +5076,14 @@
             document.querySelectorAll('.role-panel').forEach(p => p.classList.remove('active'));
             if (role === 'public') return;
             if (role === 'account') { $('panel-login').classList.add('active'); refreshAccountUI(); }
-            if (role === 'captain') { $('panel-captain').classList.add('active'); scrollToMiniStage('capMiniStage'); }
+            if (role === 'captain') { $('panel-captain').classList.add('active'); scrollToId('stageSection'); }
             if (role === 'admin') { $('panel-admin').classList.add('active'); scrollToMiniStage('adminMiniStage'); }
         }
-        // Jumps straight to the bidding/console mini-stage instead of leaving the
-        // captain/admin near the top of the page, above the full TV block — this is
-        // what keeps the bid paddles / auctioneer steps "right by the TV" feel.
+        // Captains land on the TV itself — the bid deck sits right below it in the
+        // DOM now, so one scroll shows the lot on screen and the bid controls together.
+        function scrollToId(id) {
+            setTimeout(() => { const el = $(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+        }
         function scrollToMiniStage(id) {
             setTimeout(() => { const el = $(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
         }
@@ -4430,6 +5121,8 @@
                 tabs.appendChild(t);
                 $('capTeamTitle').innerHTML = `Team <b>${myTeamId}</b>`;
                 $('panel-captain').classList.add('themed'); $('panel-captain').style.setProperty('--cap-color', TEAM_META[myTeamId].color);
+                const capCrestEl = document.querySelector('#panel-captain .cap-deck-crest');
+                if (capCrestEl) { capCrestEl.textContent = myTeamId; capCrestEl.style.color = TEAM_META[myTeamId].color; capCrestEl.style.fontSize = '13px'; capCrestEl.style.fontFamily = "'Anton',sans-serif"; }
                 renderCaptainPanel();
             }
             if (isAdmin) {
@@ -4553,6 +5246,7 @@
                 .on('broadcast', { event: 'toast_all' }, ({ payload }) => toast(payload.message, payload.type))
                 .on('broadcast', { event: 'wire' }, ({ payload }) => pushWire(payload.msg))
                 .on('broadcast', { event: 'auction_complete' }, () => showCelebration('🔥 SEASON 12 🔥', "The auction is complete — every roster is set. Let's go!", 6000))
+                .on('broadcast', { event: 'confetti_toggle' }, ({ payload }) => setConfettiEnabled(payload.enabled, false))
                 .subscribe();
 
             clearInterval(pollTimer);
@@ -4571,12 +5265,7 @@
         }
         function handleSoldBroadcast(payload) {
             const iWon = myTeamId && payload.teamId === myTeamId;
-            const teamColor = TEAM_META[payload.teamId]?.color || null;
-            const word = iWon ? "🎉 HE'S YOURS! 🎉" : '🎉 SOLD! 🎉';
-            const sub = iWon
-                ? `Congratulations! <b>${payload.playerName}</b> just joined <b>${payload.teamId}</b> for <b>${fmtCr(payload.price)}</b>! Player payout: <b>${fmtPayout(payload.price)}</b>.`
-                : `<b>${payload.playerName}</b> sold to <b style="color:${teamColor}">${payload.teamId}</b> for <b>${fmtCr(payload.price)}</b>! Player payout: <b>${fmtPayout(payload.price)}</b>.`;
-            showCelebration(word, sub, 4200, teamColor);
+            renderSoldCard(payload, iWon);
             pushWire(`<b>SOLD</b> — ${payload.playerName} to <b>${payload.teamId}</b> for ${fmtCr(payload.price)}`);
             loadPlayers(); loadTeams();
         }
@@ -4650,7 +5339,6 @@
             if (playerChanged) {
                 biddingLocked = !(s.current_bid !== null && s.current_bid !== undefined);
                 renderGavelBanner('reset');
-                const cbInput = $('customBidInput'); if (cbInput) cbInput.value = '';
             }
             lastAnnouncedPlayerId = player ? player.id : null;
             refreshBiddingGate(player);
@@ -4752,7 +5440,7 @@
                 const el = document.createElement('div'); el.className = 'tp-card'; el.id = 'tp-' + id; el.style.setProperty('--team-color', TEAM_META[id].color);
                 const rosterHtml = roster.length ? roster.map(p => `<div class="prow"><span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span></div>`).join('') : '<div class="empty">No players purchased yet</div>';
                 el.innerHTML = `${done ? '<span class="tp-done">Squad Full</span>' : ''}
-                    <div class="tp-head"><span class="tp-abbr display">${id}</span><span class="tp-cap">Captain<br>${t.captain_name || '—'}</span></div>
+                    <div class="tp-head"><span class="tp-abbr display">${teamBadgeHTML(id)}</span><span class="tp-cap">Captain<br>${t.captain_name || '—'}</span></div>
                     <div class="tp-purse-track"><div class="tp-purse-fill" style="width:${pct}%"></div></div>
                     <div class="tp-nums"><span>Spent <b>${fmtCr(t.purse_spent ?? 0)}</b></span><span>Left <b>${fmtCr(remaining)}</b></span></div>
                     <div class="tp-players">${t.players_bought ?? 0}/5 players bought</div>
@@ -4813,78 +5501,95 @@
             const { purseLeft, maxSpendable, reserve, slotsAfterThis, playersBought } = budget;
             $('capPurseLeft').textContent = fmtCr(purseLeft);
             $('capPlayersLeft').textContent = 5 - playersBought;
+            const pursePct = Math.max(0, Math.min(100, (purseLeft / 100) * 100));
+            const fillEl = $('capPurseFill'); if (fillEl) fillEl.style.width = pursePct + '%';
             const player = playersCache[stateCache?.current_player_id];
             const base = player ? (player.auction_base_price ?? TIER_PRICE[player.auction_tier]) : null;
             const current = stateCache?.current_bid;
             const floor = current == null ? base : current;
-            const reserveNote = reserve > 0 ? ` You're holding back <b>${fmtCr(reserve)}</b> for your remaining ${slotsAfterThis} pick${slotsAfterThis === 1 ? '' : 's'} (min ₹5Cr each), so your real ceiling on this lot is <b>${fmtCr(maxSpendable)}</b>.` : '';
-            $('capBidHint').innerHTML = biddingLocked ? "The auctioneer hasn't opened bidding for this player yet." : (current == null && player ? `No bids yet — open the bidding at the base price, or above it, then raise in even ₹Cr steps.${reserveNote}` : `Pick a step to raise above the current bid of <b>${fmtCr(current)}</b>.${reserveNote}`);
 
-            if (player?.id !== lastCapPlayerId) { selectedInc = null; lastCapPlayerId = player?.id; }
-            if (biddingLocked) selectedInc = null;
+            if (player?.id !== lastCapPlayerId) { resetBuilder(current); lastCapPlayerId = player?.id; }
+            if (biddingLocked) resetBuilder(current);
 
-            const openBtn = $('openBidBtn');
-            if (openBtn) {
-                $('openBidAmt').textContent = base != null ? fmtCr(base) : '—';
-                const openValid = player && current == null && base != null && base <= maxSpendable;
-                openBtn.disabled = !openValid || biddingLocked; openBtn.classList.toggle('selected', selectedInc === 0);
-                openBtn.style.display = current == null ? '' : 'none';
-            }
-            const increments = [2, 4, 6, 10, 20]; let cheapestValidSet = false;
-            increments.forEach(inc => {
-                const btn = document.querySelector(`.paddle-btn[data-inc="${inc}"]`); if (!btn) return;
-                if (floor == null) { btn.disabled = true; btn.classList.remove('hot', 'selected'); return; }
-                const resultAmt = floor + inc; const affordable = resultAmt <= maxSpendable; const valid = affordable;
-                const toAmtEl = btn.querySelector('.to-amt'); if (toAmtEl) toAmtEl.textContent = fmtCr(resultAmt);
-                btn.disabled = !player || !valid || biddingLocked;
-                btn.classList.toggle('hot', valid && !biddingLocked && !cheapestValidSet && (cheapestValidSet = true));
-                if (btn.disabled && selectedInc === inc) selectedInc = null;
-                btn.classList.toggle('selected', selectedInc === inc);
-            });
-            updateConfirmBidBtn(floor); updateCustomBidUI(floor, maxSpendable, player, reserve, slotsAfterThis);
+            renderBidBuilder({ player, base, current, floor, maxSpendable, reserve, slotsAfterThis });
 
             const leadingNow = stateCache?.current_bid_team_id === myTeamId;
-            $('youLeadBanner').classList.toggle('show', leadingNow && !!stateCache?.current_bid_team_id);
-            if (lastLeaderForMe === true && !leadingNow && stateCache?.current_bid_team_id) { $('outbidBanner').classList.add('show'); setTimeout(() => $('outbidBanner').classList.remove('show'), 5000); }
-            else if (leadingNow) $('outbidBanner').classList.remove('show');
+            const statusBar = $('capStatusBar'), statusInner = $('capStatusInner'), statusText = $('capStatusText');
+            let statusMode = '';
+            if (!!player && biddingLocked) {
+                statusMode = 'locked';
+                statusText.textContent = '🔒 Waiting for the auctioneer…';
+            } else if (leadingNow && !!stateCache?.current_bid_team_id) {
+                statusMode = 'lead';
+                statusText.textContent = '🏆 You\'re leading!';
+            } else if (lastLeaderForMe === true && !leadingNow && stateCache?.current_bid_team_id) {
+                statusMode = 'outbid';
+                statusText.textContent = '⚡ Outbid — raise it!';
+                setTimeout(() => { if (statusInner.classList.contains('outbid')) { statusBar.classList.remove('visible'); statusInner.className = 'cap-status-inner'; } }, 5000);
+            }
+            if (statusMode) {
+                statusBar.classList.add('visible');
+                statusInner.className = 'cap-status-inner ' + statusMode;
+            } else if (!statusMode && statusInner.classList.contains('lead')) {
+                statusBar.classList.remove('visible');
+                statusInner.className = 'cap-status-inner';
+            }
             lastLeaderForMe = leadingNow;
-            $('biddingLockedBanner').classList.toggle('show', !!player && biddingLocked);
 
             const roster = Object.values(playersCache).filter(p => p.team_id === myTeamId);
             const list = $('capRosterList');
-            list.innerHTML = roster.length ? '' : '<div class="pl-row"><span>No players purchased yet</span></div>';
-            roster.forEach(p => { const row = document.createElement('div'); row.className = 'pl-row'; row.innerHTML = `<span>${p.ign || p.real_name}</span><span class="p">${fmtCr(p.final_bid_price)}</span>`; list.appendChild(row); });
+            list.innerHTML = roster.length ? '' : '<div class="pl-empty">No players purchased yet</div>';
+            roster.forEach(p => {
+                const row = document.createElement('div'); row.className = 'pl-row';
+                const name = p.ign || p.real_name || '';
+                const initial = name.trim().charAt(0).toUpperCase() || '?';
+                row.innerHTML = `<span class="pl-name"><span class="pl-avatar">${initial}</span><span>${name}</span></span><span class="p">${fmtCr(p.final_bid_price)}</span>`;
+                list.appendChild(row);
+            });
         }
 
-        let selectedInc = null, lastCapPlayerId = undefined;
-        document.querySelectorAll('.bid-btn').forEach(btn => btn.addEventListener('click', () => { const inc = parseFloat(btn.dataset.inc); selectedInc = (selectedInc === inc) ? null : inc; renderCaptainPanel(); }));
-        function updateConfirmBidBtn(floor) {
-            const btn = $('confirmBidBtn'); if (!btn) return;
-            if (selectedInc == null || floor == null) { btn.disabled = true; btn.textContent = 'Select an amount above'; }
-            else { const resultAmt = floor + selectedInc; btn.disabled = false; btn.textContent = selectedInc === 0 ? `Open Bidding — ${fmtCr(resultAmt)}` : `Place Bid — ${fmtCr(resultAmt)}`; }
+        /* ── ONE-TAP BID BUILDER ── start at 0, tap +2 Cr to raise it, tap Place Bid to send it. ── */
+        const BB_STEP = 2;
+        let builderInc = 0, lastCapPlayerId = undefined;
+        function resetBuilder(current) { builderInc = current == null ? 0 : BB_STEP; }
+
+        function renderBidBuilder({ player, base, current, floor, maxSpendable, reserve, slotsAfterThis }) {
+            const amtEl = $('bbAmt'), stepBtn = $('bbStep'), resetBtn = $('bbReset'), placeBtn = $('placeBidBtn'), note = $('bbNote');
+            if (!player) {
+                amtEl.textContent = '—'; stepBtn.disabled = true; resetBtn.disabled = true;
+                placeBtn.disabled = true; placeBtn.textContent = 'Waiting for a player…';
+                note.textContent = 'Waiting for a player on the block…';
+                return;
+            }
+            if (biddingLocked) {
+                amtEl.textContent = floor != null ? fmtCr(floor) : '—'; stepBtn.disabled = true; resetBtn.disabled = true;
+                placeBtn.disabled = true; placeBtn.textContent = 'Bidding not open yet';
+                note.textContent = "The auctioneer hasn't opened bidding for this player yet.";
+                return;
+            }
+            if (floor == null) { amtEl.textContent = '—'; stepBtn.disabled = true; resetBtn.disabled = true; placeBtn.disabled = true; return; }
+
+            const resultAmt = floor + builderInc;
+            amtEl.textContent = fmtCr(resultAmt);
+            const canStepMore = (resultAmt + BB_STEP) <= maxSpendable;
+            stepBtn.disabled = !canStepMore;
+            const atDefault = builderInc === (current == null ? 0 : BB_STEP);
+            resetBtn.disabled = atDefault;
+
+            const valid = resultAmt <= maxSpendable;
+            placeBtn.disabled = !valid;
+            placeBtn.textContent = (current == null && builderInc === 0) ? `Open Bidding — ${fmtCr(resultAmt)}` : `Place Bid — ${fmtCr(resultAmt)}`;
+
+            const reserveTxt = reserve > 0 ? ` Holding back <b>${fmtCr(reserve)}</b> for ${slotsAfterThis} more pick${slotsAfterThis === 1 ? '' : 's'}.` : '';
+            note.innerHTML = current == null
+                ? `No bids yet — base price is <b>${fmtCr(base)}</b>. Ceiling: <b>${fmtCr(maxSpendable)}</b>.${reserveTxt}`
+                : `Must beat <b>${fmtCr(current)}</b> · ceiling <b>${fmtCr(maxSpendable)}</b>.${reserveTxt}`;
         }
-        function updateCustomBidUI(floor, maxSpendable, player, reserve, slotsAfterThis) {
-            const note = $('customBidNote'), btn = $('customBidBtn'), input = $('customBidInput'); if (!note || !btn || !input) return;
-            if (!player) { note.innerHTML = 'Waiting for a player on the block…'; btn.disabled = true; input.disabled = true; return; }
-            if (biddingLocked) { note.innerHTML = "The auctioneer hasn't opened bidding yet."; btn.disabled = true; input.disabled = true; return; }
-            input.disabled = false;
-            const reserveTxt = reserve > 0 ? ` (₹${reserve}Cr held back for ${slotsAfterThis} more pick${slotsAfterThis === 1 ? '' : 's'})` : '';
-            note.innerHTML = `Must beat <b>${fmtCr(floor)}</b> · You can bid up to <b>${fmtCr(maxSpendable)}</b>${reserveTxt}`;
-            input.min = Math.ceil((floor || 0) + 1); input.max = maxSpendable; btn.disabled = false;
-        }
-        $('customBidBtn').addEventListener('click', () => {
-            if (!myTeamId) { toast("Sign in as your team's captain first.", 'error'); return; }
-            if (biddingLocked) { toast("Bidding isn't open for this player yet.", 'error'); return; }
-            const player = playersCache[stateCache?.current_player_id]; if (!player) { toast('No player is on the block right now.', 'error'); return; }
-            const base = player.auction_base_price ?? TIER_PRICE[player.auction_tier]; const current = stateCache?.current_bid; const floor = current == null ? base : current;
-            const input = $('customBidInput'); const val = parseFloat(input.value);
-            if (!val || isNaN(val) || val <= 0) { toast('Enter a valid bid amount.', 'error'); return; }
-            if (val <= floor) { toast(`Your bid must be higher than ${fmtCr(floor)}.`, 'error'); return; }
-            const { maxSpendable, reserve, slotsAfterThis } = getCaptainBudget(myTeamId);
-            if (val > maxSpendable) { toast(reserve > 0 ? `That breaks your ₹5Cr-per-player reserve — you can bid up to ${fmtCr(maxSpendable)} and still cover your remaining ${slotsAfterThis} pick(s).` : `That exceeds your remaining purse of ${fmtCr(maxSpendable)}.`, 'error'); return; }
-            const inc = Math.round((val - floor) * 100) / 100; selectedInc = null; placeBid(inc); input.value = '';
-        });
-        $('confirmBidBtn').addEventListener('click', () => placeBid(selectedInc));
+
+        $('bbStep').addEventListener('click', () => { builderInc += BB_STEP; renderCaptainPanel(); });
+        $('bbReset').addEventListener('click', () => { resetBuilder(stateCache?.current_bid); renderCaptainPanel(); });
+        $('placeBidBtn').addEventListener('click', () => placeBid(builderInc));
+
         async function placeBid(inc) {
             if (inc == null) return;
             if (!myTeamId) { toast("Sign in as your team's captain first.", 'error'); return; }
@@ -4892,11 +5597,12 @@
             const current = stateCache?.current_bid; const player = playersCache[stateCache?.current_player_id];
             const base = player ? (player.auction_base_price ?? TIER_PRICE[player.auction_tier]) : null;
             const floor = current == null ? base : current; if (floor == null) return;
-            if (inc === 0 && current != null) { toast('Bidding already opened — pick a raise instead.', 'error'); return; }
-            document.querySelectorAll('.bid-btn').forEach(b => b.disabled = true); $('confirmBidBtn').disabled = true;
+            if (inc === 0 && current != null) { toast('Bidding already opened — tap +2 Cr to raise it.', 'error'); return; }
+            $('bbStep').disabled = true; $('bbReset').disabled = true; $('placeBidBtn').disabled = true;
             const { error } = await sb.rpc('ffxipl_s12_place_bid', { p_increment: inc });
             if (error) toast(error.message || 'Bid failed.', 'error');
-            selectedInc = null; renderCaptainPanel();
+            else { builderInc = BB_STEP; }
+            renderCaptainPanel();
         }
 
         /* ---------- ADMIN ACTIONS ---------- */
@@ -4965,6 +5671,11 @@
         });
         $('btnVoidBid').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_void_bid')) broadcastToast('↩ The current bid was cleared by the auctioneer.', null); });
         $('btnClearStage').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_clear_stage')) broadcastToast('🧹 Stage cleared.', null); });
+        $('confettiToggleSwitch')?.addEventListener('click', () => {
+            if (!isAdmin) { toast('Admin sign-in required.', 'error'); return; }
+            setConfettiEnabled(!confettiEnabled, true);
+            toast(confettiEnabled ? '🎉 Confetti FX turned on for everyone.' : '🚫 Confetti FX turned off for everyone.', 'success');
+        });
 
         async function putPlayerOnBlock(playerId) {
             const p = playersCache[playerId]; const activeRound = stateCache?.current_round;
@@ -5063,7 +5774,7 @@
         });
         function summaryTeamCard(id, roster) {
             const rosterHtml = roster.length ? roster.map(p => `<div class="prow"><span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span></div>`).join('') : '<div class="empty-slot">No player yet</div>';
-            return `<div class="summary-team-card" style="--team-color:${TEAM_META[id].color}"><div class="h"><span class="abbr display">${id}</span><span class="cap">${teamsCache[id]?.captain_name || 'No captain'}</span></div><div class="spent">Spent <b>${fmtCr(teamsCache[id]?.purse_spent ?? 0)}</b> · ${teamsCache[id]?.players_bought ?? 0}/5 players</div><div class="plist">${rosterHtml}</div></div>`;
+            return `<div class="summary-team-card" style="--team-color:${TEAM_META[id].color}"><div class="h"><span class="abbr display">${teamBadgeHTML(id)}</span><span class="cap">${teamsCache[id]?.captain_name || 'No captain'}</span></div><div class="spent">Spent <b>${fmtCr(teamsCache[id]?.purse_spent ?? 0)}</b> · ${teamsCache[id]?.players_bought ?? 0}/5 players</div><div class="plist">${rosterHtml}</div></div>`;
         }
         function summaryStatChip(num, label) { return `<div class="stat-card"><div class="stat-num">${num}</div><div class="stat-label">${label}</div></div>`; }
         function renderSummaryModal({ round }) {
@@ -5247,27 +5958,107 @@
             } catch(e) { /* silent */ }
         }
 
+        /* ── GLORY SCREEN ADMIN RE-ENTRY (undo the lock) ── */
+        $('gloryAdminToggle').addEventListener('click', () => {
+            const p = $('gloryAdminPanel');
+            p.style.display = p.style.display === 'none' ? 'block' : 'none';
+            if (p.style.display === 'block') renderGloryAdminPanel();
+        });
+
+        function renderGloryAdminPanel() {
+            const wrap = $('gloryAdminInner');
+            if (!currentUser) {
+                wrap.innerHTML = `
+                    <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#a9997d;margin-bottom:10px;font-weight:700;">Admin Sign-In</div>
+                    <input type="email" id="gloryAuthEmail" placeholder="you@team.com" autocomplete="username" style="width:100%;box-sizing:border-box;margin-bottom:6px;padding:9px 10px;border-radius:8px;border:1px solid rgba(240,185,61,.2);background:#0d0904;color:#f4ecd8;font-size:13px;">
+                    <input type="password" id="gloryAuthPassword" placeholder="Password" autocomplete="current-password" style="width:100%;box-sizing:border-box;margin-bottom:10px;padding:9px 10px;border-radius:8px;border:1px solid rgba(240,185,61,.2);background:#0d0904;color:#f4ecd8;font-size:13px;">
+                    <button id="gloryAuthBtn" style="width:100%;padding:10px;border:none;border-radius:8px;background:var(--gold);color:var(--on-accent);font-weight:700;font-size:13px;cursor:pointer;font-family:'Rajdhani',sans-serif;">Sign In</button>
+                    <div id="gloryAuthErr" style="color:#ff6b6b;font-size:11px;margin-top:8px;line-height:1.4;"></div>`;
+                $('gloryAuthBtn').addEventListener('click', async () => {
+                    const email = $('gloryAuthEmail').value.trim(); const password = $('gloryAuthPassword').value;
+                    if (!email || !password) { $('gloryAuthErr').textContent = 'Enter both email and password.'; return; }
+                    $('gloryAuthBtn').disabled = true; $('gloryAuthBtn').textContent = 'Signing in…';
+                    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+                    if ($('gloryAuthBtn')) { $('gloryAuthBtn').disabled = false; $('gloryAuthBtn').textContent = 'Sign In'; }
+                    if (error) { $('gloryAuthErr').textContent = error.message || 'Sign in failed.'; return; }
+                    currentUser = data.user; await resolveRole(); renderGloryAdminPanel();
+                });
+            } else if (!isAdmin) {
+                wrap.innerHTML = `
+                    <div style="font-size:12.5px;color:#d9cbb0;margin-bottom:12px;line-height:1.5;">Signed in as <b>${currentUser.email}</b> — this account isn't linked as an admin.</div>
+                    <button id="gloryAdminSignOut" style="width:100%;padding:9px;border:1px solid rgba(240,185,61,.2);border-radius:8px;background:transparent;color:#a9997d;font-size:12.5px;cursor:pointer;font-family:'Rajdhani',sans-serif;">Sign Out</button>`;
+                $('gloryAdminSignOut').addEventListener('click', async () => { await sb.auth.signOut(); currentUser = null; isAdmin = false; myTeamId = null; renderGloryAdminPanel(); });
+            } else {
+                wrap.innerHTML = `
+                    <div style="font-size:12.5px;color:#d9cbb0;margin-bottom:10px;">Signed in as <b>${currentUser.email}</b> · 🛡️ Admin</div>
+                    <div style="font-size:11px;color:#a9997d;margin-bottom:10px;line-height:1.5;">This reopens Season 12 for editing. Player sale results already recorded are kept — only the final lock is undone.</div>
+                    <input type="password" id="gloryUnlockPw" placeholder="Enter lock password" style="width:100%;box-sizing:border-box;margin-bottom:8px;padding:9px 10px;border-radius:8px;border:1px solid rgba(224,48,74,.3);background:#0d0904;color:#f4ecd8;font-size:13px;">
+                    <button id="gloryUnlockBtn" style="width:100%;padding:10px;border:none;border-radius:8px;background:linear-gradient(135deg,#e0304a,#b91c3c);color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:'Rajdhani',sans-serif;">🔓 Unlock &amp; Undo Lock</button>
+                    <div id="gloryUnlockErr" style="color:#ff6b6b;font-size:11px;margin-top:8px;line-height:1.4;"></div>
+                    <button id="gloryAdminSignOut2" style="width:100%;padding:8px;margin-top:10px;border:1px solid rgba(240,185,61,.15);border-radius:8px;background:transparent;color:#6b5f4c;font-size:12px;cursor:pointer;font-family:'Rajdhani',sans-serif;">Sign Out</button>`;
+                $('gloryUnlockBtn').addEventListener('click', undoRosterLock);
+                $('gloryAdminSignOut2').addEventListener('click', async () => { await sb.auth.signOut(); currentUser = null; isAdmin = false; myTeamId = null; renderGloryAdminPanel(); });
+            }
+        }
+
+        async function undoRosterLock() {
+            const pw = $('gloryUnlockPw').value;
+            if (pw !== SUBMIT_PW) { $('gloryUnlockErr').textContent = '❌ Wrong password.'; return; }
+            $('gloryUnlockBtn').disabled = true; $('gloryUnlockBtn').textContent = '⏳ Unlocking…';
+            try {
+                const { error } = await sb.from('ffxipl_s12_season_rosters').delete().eq('season', 12);
+                if (error) throw new Error(error.message);
+                _gloryActive = false;
+                $('gloryScreen').style.display = 'none';
+                $('gloryAdminPanel').style.display = 'none';
+                document.querySelectorAll('header,main,section,footer').forEach(el => { if (el) el.style.display = ''; });
+                toast('🔓 Rosters unlocked — auction reopened.', 'success');
+                await loadTeams(); await loadPlayers(); await loadState();
+                subscribeRealtime();
+            } catch (err) {
+                $('gloryUnlockErr').textContent = '⚠️ ' + (err.message || 'Unlock failed — try again.');
+                $('gloryUnlockBtn').disabled = false; $('gloryUnlockBtn').textContent = '🔓 Unlock & Undo Lock';
+            }
+        }
+
         function startGloryConfetti() {
+            if (!confettiEnabled) return;
             const cv = document.getElementById('gloryCanvas');
             const ctx = cv.getContext('2d');
             const COLS = ['#f0b93d','#fbe4a6','#ff4433','#5fd97e','#29d3ff','#b366ff','#ff8fc2','#ff7a45'];
-            let W, H, pieces;
+            let W, H, pieces, running = true;
             function resize() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
             resize(); addEventListener('resize', resize);
             function mkPiece() { return { x:Math.random()*W, y:-20-Math.random()*H, w:6+Math.random()*10, h:4+Math.random()*6, c:COLS[Math.floor(Math.random()*COLS.length)], r:Math.random()*Math.PI*2, rv:(Math.random()-.5)*.12, vx:(Math.random()-.5)*1.4, vy:1.2+Math.random()*2.2, a:.85+Math.random()*.15 }; }
-            pieces = Array.from({length:140}, () => { const p=mkPiece(); p.y=Math.random()*H; return p; });
-            (function loop() { ctx.clearRect(0,0,W,H); pieces.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.r+=p.rv; if(p.y>H+20){Object.assign(p,mkPiece());p.x=Math.random()*W;} ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.globalAlpha=p.a;ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore(); }); requestAnimationFrame(loop); })();
+            // A brief celebratory burst rather than a confetti storm that never
+            // stops — pieces stop respawning after ~5s and fade out as they fall,
+            // so the roster summary underneath stays readable.
+            pieces = Array.from({length:90}, () => { const p=mkPiece(); p.y=Math.random()*H; return p; });
+            setTimeout(() => { running = false; }, 5000);
+            (function loop() {
+                ctx.clearRect(0,0,W,H);
+                pieces.forEach(p=>{
+                    p.x+=p.vx; p.y+=p.vy; p.r+=p.rv;
+                    if (p.y>H+20) { if (running) { Object.assign(p,mkPiece()); p.x=Math.random()*W; } else { p.a=0; } }
+                    if (p.a<=0) return;
+                    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.globalAlpha=p.a;ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+                });
+                if (running || pieces.some(p=>p.a>0)) requestAnimationFrame(loop); else ctx.clearRect(0,0,W,H);
+            })();
         }
         function spawnGloryEmoji() {
+            if (!confettiEnabled) return;
             const c = document.getElementById('gloryParticles');
             const EM = ['🏆','🔥','⚡','🎉','💥','🎊','👑','🎯','💫','🌟'];
+            // A one-time burst, not an endless stream — keeps the season
+            // summary below legible once the celebratory moment has passed.
             function spawn() { const el=document.createElement('div'); el.style.cssText=`position:absolute;font-size:${20+Math.random()*24}px;left:${Math.random()*100}%;animation:_floatUp ${6+Math.random()*8}s linear ${Math.random()*3}s both;`; el.textContent=EM[Math.floor(Math.random()*EM.length)]; c.appendChild(el); setTimeout(()=>el.remove(),(12+Math.random()*8)*1000); }
-            for(let i=0;i<18;i++) setTimeout(spawn,i*300);
-            setInterval(spawn, 800);
+            for (let i=0;i<14;i++) setTimeout(spawn,i*300);
         }
 
         /* ---------- BOOT ---------- */
         (async function boot() {
+            updateConfettiToggleUI();
             const { data: { session } } = await sb.auth.getSession();
             if (session?.user) { currentUser = session.user; await resolveRole(); }
             sb.auth.onAuthStateChange((event) => { if (event === 'SIGNED_OUT') { currentUser = null; isAdmin = false; myTeamId = null; refreshAccountUI(); } });
