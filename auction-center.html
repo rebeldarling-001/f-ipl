@@ -2215,137 +2215,179 @@
         }
 
         /* ═══════════════════════════════════════════════════════
-           CAPTAIN WAR ROOM — complete premium redesign
+           CAPTAIN CREDENTIAL — official, compact, premium redesign
            ═══════════════════════════════════════════════════════ */
 
-        /* Outer shell — the whole captain section */
         #panel-captain {
             padding-top: 8px !important;
         }
 
-        /* ── Identity header bar ── */
-        .cap-identity {
+        /* ── Credential card (identity + vitals fused into one compact ID card) ── */
+        .cap-card {
             position: relative;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 16px 14px;
-            border-radius: 20px 20px 0 0;
-            background: linear-gradient(135deg,
-                color-mix(in srgb, var(--cap-color, var(--gold)) 18%, var(--surface)),
-                var(--surface) 60%
-            );
-            border: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 35%, transparent);
-            border-bottom: none;
+            border-radius: 16px;
             overflow: hidden;
+            background:
+                repeating-linear-gradient(115deg,
+                    rgba(255,255,255,.015) 0px,
+                    rgba(255,255,255,.015) 1px,
+                    transparent 1px,
+                    transparent 5px),
+                linear-gradient(135deg,
+                    color-mix(in srgb, var(--cap-color, var(--gold)) 16%, var(--surface)),
+                    var(--surface-2) 65%);
+            border: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 45%, transparent);
+            box-shadow:
+                0 1px 0 rgba(255,255,255,.06) inset,
+                0 14px 30px -14px rgba(0,0,0,.6);
         }
-        .cap-identity::before {
+        /* hairline foil border, inset a hair from the edge — engraved-card look */
+        .cap-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 100% 80% at 0% 50%,
-                color-mix(in srgb, var(--cap-color, var(--gold)) 22%, transparent),
-                transparent 65%);
+            inset: 3px;
+            border-radius: 13px;
+            border: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 22%, transparent);
             pointer-events: none;
         }
-        .cap-identity-crest {
-            position: relative;
-            width: 52px; height: 52px;
-            border-radius: 16px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            background:
-                radial-gradient(circle at 35% 30%,
-                    color-mix(in srgb, var(--cap-color, var(--gold)) 35%, transparent),
-                    transparent 70%),
-                var(--surface-2);
-            border: 1.5px solid color-mix(in srgb, var(--cap-color, var(--gold)) 50%, transparent);
-            box-shadow:
-                0 0 0 4px color-mix(in srgb, var(--cap-color, var(--gold)) 10%, transparent),
-                0 8px 20px -6px rgba(0,0,0,.5);
-        }
-        .cap-identity-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .cap-identity-label {
-            font-size: 9px;
-            letter-spacing: .22em;
-            text-transform: uppercase;
-            color: color-mix(in srgb, var(--cap-color, var(--gold)) 70%, var(--ink-faint));
-            font-weight: 700;
-            margin-bottom: 3px;
-        }
-        .cap-identity-name {
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            letter-spacing: .03em;
-            color: var(--ink);
-            line-height: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .cap-identity-name b {
-            color: var(--cap-color, var(--gold));
-        }
-        /* Colour accent bar — top edge */
-        .cap-identity::after {
+        .cap-card::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 2.5px;
+            height: 2px;
             background: linear-gradient(90deg,
-                var(--cap-color, var(--gold)),
-                color-mix(in srgb, var(--cap-color, var(--gold)) 40%, transparent) 80%,
+                transparent,
+                var(--cap-color, var(--gold)) 30%,
+                var(--cap-color, var(--gold)) 70%,
                 transparent
             );
         }
 
-        /* ── Purse + Slots — horizontal pill row ── */
+        .cap-card-top {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px 10px;
+        }
+        .cap-crest {
+            position: relative;
+            width: 44px; height: 44px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background:
+                radial-gradient(circle at 35% 30%,
+                    color-mix(in srgb, var(--cap-color, var(--gold)) 40%, transparent),
+                    transparent 70%),
+                var(--surface-2);
+            border: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 55%, transparent);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--cap-color, var(--gold)) 10%, transparent);
+        }
+        .cap-crest img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: inherit !important;
+            box-shadow: none !important;
+            vertical-align: top;
+        }
+        .cap-card-id { flex: 1; min-width: 0; }
+        .cap-card-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 7.5px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--cap-color, var(--gold)) 75%, var(--ink-faint));
+            font-weight: 700;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+        .cap-seal {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 11px; height: 11px;
+            border-radius: 50%;
+            background: color-mix(in srgb, var(--cap-color, var(--gold)) 85%, white 15%);
+            color: #1a1408;
+            font-size: 7px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .cap-card-name {
+            font-family: 'Anton', sans-serif;
+            font-size: 17px;
+            letter-spacing: .02em;
+            color: var(--ink);
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cap-card-name b { color: var(--cap-color, var(--gold)); }
+        /* decorative chip — reads like an ID-card smart chip */
+        .cap-card-chip {
+            flex-shrink: 0;
+            width: 24px; height: 18px;
+            border-radius: 4px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.5), transparent 40%),
+                linear-gradient(150deg,
+                    color-mix(in srgb, var(--cap-color, var(--gold-pale)) 90%, white 10%),
+                    color-mix(in srgb, var(--cap-color, var(--gold-deep)) 85%, black 15%));
+            border: 1px solid rgba(0,0,0,.25);
+            position: relative;
+        }
+        .cap-card-chip::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border: 1px solid rgba(0,0,0,.2);
+            border-radius: 2px;
+        }
+
+        /* ── Purse + Slots — dense two-up strip ── */
         .cap-vitals {
+            position: relative;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
-            border-left: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
-            border-right: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
-            background: color-mix(in srgb, var(--surface-2) 80%, transparent);
+            border-top: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 20%, var(--line));
         }
         .cap-vital {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px 8px;
-            position: relative;
+            padding: 8px 6px 9px;
         }
-        .cap-vital + .cap-vital {
-            border-left: 1px solid var(--line);
-        }
+        .cap-vital + .cap-vital { border-left: 1px solid var(--line); }
         .cap-vital-val {
             font-family: 'Anton', sans-serif;
-            font-size: 26px;
-            letter-spacing: .02em;
+            font-size: 19px;
+            letter-spacing: .01em;
             color: var(--cap-color, var(--gold));
             line-height: 1;
         }
         .cap-vital-lbl {
-            font-size: 8.5px;
-            letter-spacing: .14em;
+            font-size: 7.5px;
+            letter-spacing: .12em;
             text-transform: uppercase;
             color: var(--ink-faint);
-            margin-top: 3px;
+            margin-top: 2px;
         }
-        /* Purse track bar inside vital */
         .cap-purse-track {
-            width: 70%;
+            width: 60%;
             height: 2px;
             border-radius: 2px;
             background: rgba(var(--gold-rgb), .12);
-            margin-top: 6px;
+            margin-top: 5px;
             overflow: hidden;
         }
         .cap-purse-fill {
@@ -2357,26 +2399,23 @@
 
         /* ── Status banner — leads / outbid / locked ── */
         .cap-status-bar {
-            padding: 0 14px;
+            padding: 0 2px;
             min-height: 0;
             max-height: 0;
             overflow: hidden;
-            transition: max-height .3s ease, padding .3s ease;
-            border-left: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
-            border-right: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 28%, transparent);
-            background: color-mix(in srgb, var(--surface-2) 80%, transparent);
+            transition: max-height .3s ease, margin .3s ease;
         }
         .cap-status-bar.visible {
-            max-height: 60px;
-            padding: 8px 14px;
+            max-height: 46px;
+            margin-top: 7px;
         }
         .cap-status-inner {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 11.5px;
+            gap: 7px;
+            padding: 6px 11px;
+            border-radius: 9px;
+            font-size: 10.5px;
             font-weight: 700;
             letter-spacing: .02em;
         }
@@ -2401,72 +2440,78 @@
             50%       { box-shadow: 0 0 0 4px rgba(var(--live-rgb), 0); }
         }
 
-        /* ── Bid cockpit ── */
+        /* ── Bid cockpit — trimmed to essentials ── */
         .cap-cockpit {
-            padding: 18px 16px 20px;
+            margin-top: 10px;
+            padding: 13px 14px 14px;
             background:
                 radial-gradient(ellipse 110% 70% at 50% -5%,
-                    color-mix(in srgb, var(--cap-color, var(--gold)) 18%, transparent),
+                    color-mix(in srgb, var(--cap-color, var(--gold)) 16%, transparent),
                     transparent 60%),
-                radial-gradient(ellipse 80% 50% at 100% 100%,
-                    color-mix(in srgb, var(--cap-color, var(--gold)) 8%, transparent),
-                    transparent 65%),
                 linear-gradient(175deg, var(--surface), var(--surface-2) 90%);
             border: 1px solid color-mix(in srgb, var(--cap-color, var(--gold)) 35%, transparent);
-            border-top: none;
-            border-radius: 0 0 20px 20px;
+            border-radius: 15px;
             position: relative;
             overflow: hidden;
         }
-        /* Top separator line in team colour */
         .cap-cockpit::after {
             content: '';
             position: absolute;
-            top: 0; left: 12%; right: 12%;
-            height: 1px;
+            top: 0; left: 0; right: 0;
+            height: 2px;
             background: linear-gradient(90deg,
                 transparent,
-                color-mix(in srgb, var(--cap-color, var(--gold)) 60%, transparent) 40%,
-                color-mix(in srgb, var(--cap-color, var(--gold)) 60%, transparent) 60%,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 55%, transparent) 40%,
+                color-mix(in srgb, var(--cap-color, var(--gold)) 55%, transparent) 60%,
                 transparent
             );
             pointer-events: none;
         }
-        /* Corner glow accent */
         .cap-cockpit::before {
             content: '';
             position: absolute;
-            bottom: -40px; right: -40px;
-            width: 160px; height: 160px;
+            bottom: -30px; right: -30px;
+            width: 120px; height: 120px;
             border-radius: 50%;
             background: radial-gradient(circle,
-                color-mix(in srgb, var(--cap-color, var(--gold)) 16%, transparent),
+                color-mix(in srgb, var(--cap-color, var(--gold)) 14%, transparent),
                 transparent 65%);
             pointer-events: none;
         }
 
         .cap-cockpit-label {
-            font-size: 8.5px;
-            letter-spacing: .22em;
+            font-size: 7.5px;
+            letter-spacing: .18em;
             text-transform: uppercase;
             color: var(--ink-faint);
             font-weight: 700;
-            margin-bottom: 4px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+        .cap-cockpit-logo {
+            display: inline-flex;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .cap-cockpit-logo img {
+            width: 14px !important;
+            height: 14px !important;
+            object-fit: cover !important;
+            border-radius: 4px !important;
+            box-shadow: none !important;
+            vertical-align: middle;
+        }
 
-        /* The bid amount — big, dramatic */
         .cap-bid-display {
             text-align: center;
-            padding: 10px 0 10px;
+            padding: 4px 0 6px;
             position: relative;
         }
         .cap-bid-amount {
             font-family: 'Anton', sans-serif;
-            font-size: clamp(38px, 12vw, 48px);
-            letter-spacing: .02em;
+            font-size: clamp(28px, 9vw, 34px);
+            letter-spacing: .01em;
             line-height: 1;
             background: linear-gradient(155deg,
                 #fff 5%,
@@ -2477,15 +2522,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 4px 18px color-mix(in srgb, var(--cap-color, var(--gold)) 45%, transparent));
+            filter: drop-shadow(0 3px 14px color-mix(in srgb, var(--cap-color, var(--gold)) 40%, transparent));
         }
         .cap-bid-reset {
             position: absolute;
-            top: 8px; right: 0;
+            top: 4px; right: 0;
             background: none;
             border: none;
             color: var(--ink-faint);
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             padding: 4px 6px;
             line-height: 1;
@@ -2495,21 +2540,20 @@
         .cap-bid-reset:active { transform: rotate(-80deg); }
         .cap-bid-reset:disabled { opacity: .2; pointer-events: none; }
 
-        /* Step button */
         .cap-step-btn {
             width: 100%;
-            padding: 14px;
-            border-radius: 13px;
+            padding: 10px;
+            border-radius: 11px;
             border: 1.5px solid color-mix(in srgb, var(--cap-color, var(--gold)) 50%, transparent);
             background: color-mix(in srgb, var(--cap-color, var(--gold)) 12%, transparent);
             color: color-mix(in srgb, var(--cap-color, var(--gold)) 90%, white 10%);
             font-family: 'Space Mono', monospace;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 13px;
             letter-spacing: .04em;
             cursor: pointer;
             transition: transform .1s ease, background .15s ease, border-color .15s ease;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             position: relative;
             overflow: hidden;
         }
@@ -2527,12 +2571,11 @@
         .cap-step-btn:active { transform: scale(.97); }
         .cap-step-btn:disabled { opacity: .25; pointer-events: none; }
 
-        /* Place bid — the main CTA */
         .cap-place-btn {
             width: 100%;
-            padding: 17px 15px;
+            padding: 13px 15px;
             border: none;
-            border-radius: 15px;
+            border-radius: 13px;
             background: linear-gradient(135deg,
                 color-mix(in srgb, var(--cap-color, var(--gold-pale)) 95%, white 5%) 0%,
                 var(--cap-color, var(--gold)) 40%,
@@ -2541,30 +2584,27 @@
             );
             color: var(--on-accent);
             font-family: 'Anton', sans-serif;
-            font-size: 17px;
-            letter-spacing: .08em;
+            font-size: 15px;
+            letter-spacing: .07em;
             cursor: pointer;
             box-shadow:
                 0 2px 0 color-mix(in srgb, var(--cap-color, var(--gold-deep)) 80%, black 20%),
-                0 8px 28px -4px color-mix(in srgb, var(--cap-color, var(--gold)) 60%, transparent),
-                0 20px 50px -12px color-mix(in srgb, var(--cap-color, var(--gold)) 30%, transparent),
+                0 6px 22px -4px color-mix(in srgb, var(--cap-color, var(--gold)) 55%, transparent),
                 inset 0 1px 0 rgba(255,255,255,.35),
                 inset 0 -1px 0 rgba(0,0,0,.15);
             transition: transform .1s ease, box-shadow .15s ease;
             position: relative;
             overflow: hidden;
         }
-        /* Glass sheen — top half highlight */
         .cap-place-btn::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 52%;
             background: linear-gradient(180deg, rgba(255,255,255,.22) 0%, transparent 100%);
-            border-radius: 15px 15px 50% 50%;
+            border-radius: 13px 13px 50% 50%;
             pointer-events: none;
         }
-        /* Right-side radial glow */
         .cap-place-btn::after {
             content: '';
             position: absolute;
@@ -2579,8 +2619,7 @@
             transform: translateY(-1px);
             box-shadow:
                 0 3px 0 color-mix(in srgb, var(--cap-color, var(--gold-deep)) 80%, black 20%),
-                0 12px 36px -4px color-mix(in srgb, var(--cap-color, var(--gold)) 72%, transparent),
-                0 26px 60px -12px color-mix(in srgb, var(--cap-color, var(--gold)) 38%, transparent),
+                0 10px 30px -4px color-mix(in srgb, var(--cap-color, var(--gold)) 65%, transparent),
                 inset 0 1px 0 rgba(255,255,255,.35),
                 inset 0 -1px 0 rgba(0,0,0,.15);
         }
@@ -2598,11 +2637,11 @@
             box-shadow: none;
         }
         .cap-bid-note {
-            margin-top: 10px;
-            font-size: 10px;
+            margin-top: 7px;
+            font-size: 9px;
             color: var(--ink-faint);
             text-align: center;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .cap-bid-note b { color: var(--gold-pale); }
 
@@ -2611,7 +2650,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin: 20px 0 10px;
+            margin: 16px 0 8px;
         }
         .cap-roster-eyebrow {
             font-size: 9px;
@@ -3145,14 +3184,30 @@
         }
 
         .tp-abbr {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            overflow: hidden;
             font-family: 'Anton', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             letter-spacing: .02em;
-            padding: 3px 9px;
-            border-radius: 8px;
             color: color-mix(in srgb, var(--team-color, var(--gold)) 88%, white 12%);
             background: color-mix(in srgb, var(--team-color, var(--gold)) 20%, transparent);
+            border: 1.5px solid color-mix(in srgb, var(--team-color, var(--gold)) 45%, transparent);
+            box-shadow: 0 3px 10px -3px rgba(0,0,0,.5);
+        }
+
+        .tp-abbr img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: inherit !important;
+            box-shadow: none !important;
+            vertical-align: top;
         }
 
         .tp-cap {
@@ -3631,6 +3686,123 @@
         }
 
         .pl-empty {
+            padding: 16px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--ink-faint);
+            background: var(--surface);
+            border-radius: 13px;
+            border: 1px dashed rgba(var(--gold-rgb), .18);
+        }
+
+        /* ── Squad — premium, clickable roster cards ── */
+        .sq-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sq-card {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 8px 12px 8px 8px;
+            border-radius: 14px;
+            background: linear-gradient(160deg, var(--surface), var(--surface-2));
+            border: 1px solid var(--line);
+            cursor: default;
+            transition: transform .12s ease, border-color .15s ease, box-shadow .15s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .sq-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+            pointer-events: none;
+        }
+        .sq-card.has-photo { cursor: pointer; }
+        .sq-card.has-photo:hover {
+            transform: translateY(-1px);
+            border-color: color-mix(in srgb, var(--cap-color, var(--gold)) 45%, transparent);
+            box-shadow: 0 8px 20px -10px rgba(0,0,0,.5);
+        }
+        .sq-card:active { transform: translateY(0) scale(.99); }
+        .sq-thumb {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            overflow: hidden;
+            background: linear-gradient(150deg, color-mix(in srgb, var(--cap-color, var(--gold)) 26%, transparent), color-mix(in srgb, var(--cap-color, var(--gold)) 8%, transparent));
+            border: 1.5px solid color-mix(in srgb, var(--cap-color, var(--gold)) 55%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            color: var(--cap-color, var(--gold-pale));
+            box-shadow: 0 3px 10px -3px rgba(0,0,0,.5);
+        }
+        .sq-thumb img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: inherit !important;
+            box-shadow: none !important;
+            vertical-align: top;
+        }
+        .sq-thumb-zoom {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #fff;
+            background: rgba(0,0,0,.45);
+            opacity: 0;
+            transition: opacity .15s ease;
+        }
+        .sq-card.has-photo:hover .sq-thumb-zoom { opacity: 1; }
+        .sq-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .sq-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sq-tier {
+            align-self: flex-start;
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 8px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .sq-price {
+            flex-shrink: 0;
+            color: var(--on-accent);
+            background: linear-gradient(135deg, color-mix(in srgb, var(--cap-color, var(--gold-pale)) 90%, white 10%), var(--cap-color, var(--gold)) 60%, color-mix(in srgb, var(--cap-color, var(--gold-deep)) 85%, black 15%));
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 11.5px;
+            padding: 5px 9px;
+            border-radius: 999px;
+        }
+        .sq-empty {
             padding: 16px;
             text-align: center;
             font-size: 12px;
@@ -4175,14 +4347,26 @@
         .captain-chip {
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 5px 10px 5px 8px;
+            gap: 6px;
+            padding: 4px 10px 4px 4px;
             border-radius: 100px;
             font-size: 10px;
             font-weight: 700;
             background: rgba(var(--gold-rgb), .08);
             border: 1px solid var(--team-color, var(--gold-deep));
             color: var(--team-color, var(--gold-pale));
+        }
+        .captain-chip .chip-logo {
+            display: inline-flex;
+            flex-shrink: 0;
+        }
+        .captain-chip .chip-logo img {
+            width: 20px !important;
+            height: 20px !important;
+            object-fit: cover !important;
+            border-radius: 50% !important;
+            box-shadow: 0 0 0 1px var(--team-color, var(--gold-deep)) !important;
+            vertical-align: middle;
         }
 
         .captain-chip .dot {
@@ -4441,28 +4625,29 @@
         </div>
     </section>
 
-    <!-- CAPTAIN WAR ROOM — premium redesign -->
+    <!-- CAPTAIN CREDENTIAL — official, compact, premium redesign -->
     <section class="role-panel" id="panel-captain">
 
-        <!-- Identity strip -->
-        <div class="cap-identity fade-up">
-            <div class="cap-identity-crest">👑</div>
-            <div class="cap-identity-info">
-                <div class="cap-identity-label">Captain's Console</div>
-                <div class="cap-identity-name" id="capTeamTitle">Team <b>—</b></div>
+        <!-- Credential card: identity + vitals fused into one compact ID card -->
+        <div class="cap-card fade-up">
+            <div class="cap-card-top">
+                <div class="cap-crest">👑</div>
+                <div class="cap-card-id">
+                    <div class="cap-card-eyebrow"><span class="cap-seal">✓</span>Official Captain Credential</div>
+                    <div class="cap-card-name" id="capTeamTitle">Team <b>—</b></div>
+                </div>
+                <div class="cap-card-chip"></div>
             </div>
-        </div>
-
-        <!-- Purse + Slots vitals -->
-        <div class="cap-vitals fade-up">
-            <div class="cap-vital">
-                <div class="cap-vital-val" id="capPurseLeft">₹100Cr</div>
-                <div class="cap-vital-lbl">Purse Remaining</div>
-                <div class="cap-purse-track"><div class="cap-purse-fill" id="capPurseFill" style="width:100%"></div></div>
-            </div>
-            <div class="cap-vital">
-                <div class="cap-vital-val" id="capPlayersLeft">5</div>
-                <div class="cap-vital-lbl">Roster Slots Left</div>
+            <div class="cap-vitals">
+                <div class="cap-vital">
+                    <div class="cap-vital-val" id="capPurseLeft">₹100Cr</div>
+                    <div class="cap-vital-lbl">Purse Left</div>
+                    <div class="cap-purse-track"><div class="cap-purse-fill" id="capPurseFill" style="width:100%"></div></div>
+                </div>
+                <div class="cap-vital">
+                    <div class="cap-vital-val" id="capPlayersLeft">5</div>
+                    <div class="cap-vital-lbl">Slots Left</div>
+                </div>
             </div>
         </div>
 
@@ -4476,7 +4661,7 @@
         <!-- Bid cockpit -->
         <div class="cap-cockpit fade-up" id="bidBuilder">
             <div class="cap-cockpit-label">
-                <span>Your Bid</span>
+                <span><span class="cap-cockpit-logo" id="capCockpitLogo"></span>Your Bid</span>
                 <button class="cap-bid-reset" id="bbReset" aria-label="Reset bid" title="Reset">↺</button>
             </div>
             <div class="cap-bid-display">
@@ -4487,11 +4672,11 @@
             <div class="cap-bid-note" id="bbNote">Waiting for a player on the block…</div>
         </div>
 
-        <!-- Roster -->
+        <!-- Squad -->
         <div class="cap-roster-header fade-up">
-            <span class="cap-roster-eyebrow">My Roster</span>
+            <span class="cap-roster-eyebrow">Squad</span>
         </div>
-        <div class="players-left-list" id="capRosterList"></div>
+        <div class="sq-list" id="capRosterList"></div>
 
     </section>
 
@@ -4879,18 +5064,21 @@
         // of the colored text abbreviation — leave it '' to keep the text.
         // Transparent PNGs work best (badges keep a colored tint background).
         const TEAM_META = {
-            RCB: { name: 'Royal Challengers', color: '#e2394a', logo: '' }, CSK: { name: 'Chennai Super Kings', color: '#f5c518', logo: '' },
-            MI: { name: 'Mumbai Indians', color: '#045d9e', logo: '' }, DC: { name: 'Delhi Capitals', color: '#1f5fc4', logo: '' },
-            KKR: { name: 'Kolkata Knight Riders', color: '#7d4bb0', logo: '' }, SRH: { name: 'Sunrisers', color: '#f26522', logo: '' },
-            RR: { name: 'Rajasthan Royals', color: '#e03daf', logo: '' }, PBKS: { name: 'Punjab Kings', color: '#c31d1d', logo: '' },
+            RCB: { name: 'Royal Challengers', color: '#e2394a', logo: 'rcb.png' }, CSK: { name: 'Chennai Super Kings', color: '#f5c518', logo: 'csk.png' },
+            MI: { name: 'Mumbai Indians', color: '#045d9e', logo: 'mi.png' }, DC: { name: 'Delhi Capitals', color: '#1f5fc4', logo: 'dc.png' },
+            KKR: { name: 'Kolkata Knight Riders', color: '#7d4bb0', logo: 'kkr.png' }, SRH: { name: 'Sunrisers', color: '#f26522', logo: 'srh.png' },
+            RR: { name: 'Rajasthan Royals', color: '#e03daf', logo: 'rr.png' }, PBKS: { name: 'Punjab Kings', color: '#c31d1d', logo: 'pbks.png' },
         };
-        // Renders a team badge — image if TEAM_META[id].logo is set, else the
-        // colored text abbreviation fallback. Use everywhere a team badge shows.
-        function teamBadgeHTML(id) {
+        // Renders a team badge — image if TEAM_META[id].logo is set (same filenames
+        // used on the schedule page, so both stay in sync), else the colored text
+        // abbreviation fallback. Use everywhere a team badge shows. Pass `size` in
+        // px to scale the image for small contexts like pills/tabs.
+        function teamBadgeHTML(id, size) {
             const t = TEAM_META[id] || { color: '#888', logo: '' };
             if (t.logo) {
+                const px = size || 22;
                 const safeLogo = String(t.logo).replace(/"/g, '&quot;');
-                return `<img src="${safeLogo}" alt="${id}" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;border-radius:4px;">`;
+                return `<img src="${safeLogo}" alt="${id}" style="width:${px}px;height:${px}px;object-fit:contain;vertical-align:middle;border-radius:${Math.max(4, Math.round(px * .27))}px;box-shadow:0 0 0 1.5px color-mix(in srgb, ${t.color} 55%, transparent), 0 2px 6px -2px rgba(0,0,0,.5);">`;
             }
             return id;
         }
@@ -5116,13 +5304,16 @@
             document.querySelectorAll('.role-tab[data-role="captain"], .role-tab[data-role="admin"]').forEach(t => t.remove());
             const tabs = document.querySelector('.role-tabs');
             if (myTeamId) {
-                const t = document.createElement('div'); t.className = 'role-tab'; t.dataset.role = 'captain'; t.textContent = `🎖️ ${myTeamId} Captain`;
+                const t = document.createElement('div'); t.className = 'role-tab'; t.dataset.role = 'captain';
+                t.innerHTML = `<span style="display:block;text-align:center;margin-bottom:4px;">${teamBadgeHTML(myTeamId, 22)}</span>${myTeamId} Captain`;
                 t.addEventListener('click', () => { document.querySelectorAll('.role-tab').forEach(x => x.classList.remove('active')); t.classList.add('active'); showRolePanel('captain'); });
                 tabs.appendChild(t);
                 $('capTeamTitle').innerHTML = `Team <b>${myTeamId}</b>`;
                 $('panel-captain').classList.add('themed'); $('panel-captain').style.setProperty('--cap-color', TEAM_META[myTeamId].color);
-                const capCrestEl = document.querySelector('#panel-captain .cap-deck-crest');
-                if (capCrestEl) { capCrestEl.textContent = myTeamId; capCrestEl.style.color = TEAM_META[myTeamId].color; capCrestEl.style.fontSize = '13px'; capCrestEl.style.fontFamily = "'Anton',sans-serif"; }
+                const capCrestEl = document.querySelector('#panel-captain .cap-crest');
+                if (capCrestEl) capCrestEl.innerHTML = teamBadgeHTML(myTeamId, 40);
+                const cockpitLogoEl = $('capCockpitLogo');
+                if (cockpitLogoEl) cockpitLogoEl.innerHTML = teamBadgeHTML(myTeamId, 14);
                 renderCaptainPanel();
             }
             if (isAdmin) {
@@ -5256,7 +5447,7 @@
         function renderCaptainChips(teamIds) {
             const box = $('captainChips'); if (!box) return;
             if (!teamIds.length) { box.innerHTML = '<span class="captain-chips-empty">No captains signed in yet</span>'; return; }
-            box.innerHTML = teamIds.map(id => `<span class="captain-chip" style="--team-color:${TEAM_META[id]?.color || 'var(--gold)'}"><span class="dot"></span>${id}</span>`).join('');
+            box.innerHTML = teamIds.map(id => `<span class="captain-chip" style="--team-color:${TEAM_META[id]?.color || 'var(--gold)'}"><span class="chip-logo">${teamBadgeHTML(id, 20)}</span>${id}</span>`).join('');
         }
         function announceBid(bidRow) {
             toast(`📢 ${bidRow.team_id} bid ${fmtCr(bidRow.bid_amount)}!`, null);
@@ -5538,13 +5729,23 @@
 
             const roster = Object.values(playersCache).filter(p => p.team_id === myTeamId);
             const list = $('capRosterList');
-            list.innerHTML = roster.length ? '' : '<div class="pl-empty">No players purchased yet</div>';
+            list.innerHTML = roster.length ? '' : '<div class="sq-empty">No players purchased yet</div>';
+            const myBadge = teamBadgeHTML(myTeamId);
             roster.forEach(p => {
-                const row = document.createElement('div'); row.className = 'pl-row';
+                const card = document.createElement('div'); card.className = 'sq-card';
                 const name = p.ign || p.real_name || '';
-                const initial = name.trim().charAt(0).toUpperCase() || '?';
-                row.innerHTML = `<span class="pl-name"><span class="pl-avatar">${initial}</span><span>${name}</span></span><span class="p">${fmtCr(p.final_bid_price)}</span>`;
-                list.appendChild(row);
+                const tierShort = TIER_LABEL[p.auction_tier]?.split(' — ')[0] || '—';
+                const photoUrl = publicUrlForProfile(p.profile_screenshot_path);
+                card.innerHTML = `
+                    <div class="sq-thumb">${myBadge}${photoUrl ? `<span class="sq-thumb-zoom">🔍</span>` : ''}</div>
+                    <div class="sq-info">
+                        <span class="sq-name">${name}</span>
+                        <span class="sq-tier tier-badge ${p.auction_tier || ''}">${tierShort}</span>
+                    </div>
+                    <span class="sq-price">${fmtCr(p.final_bid_price)}</span>
+                `;
+                if (photoUrl) { card.classList.add('has-photo'); card.addEventListener('click', () => openLightbox(photoUrl)); }
+                list.appendChild(card);
             });
         }
 
