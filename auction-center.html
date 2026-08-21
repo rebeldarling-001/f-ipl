@@ -530,6 +530,19 @@
 
         html {
             background: var(--bg);
+            scroll-behavior: smooth;
+        }
+
+        /* Perf: kill the ~300ms tap delay on mobile for anything interactive,
+           and hint the compositor to use its own layer for elements that
+           animate often — this is what stops taps/animations from feeling
+           laggy or "stuck" on lower-end Android devices. */
+        button, a, .role-tab, [onclick], [class*="btn"], .team-badge, .chip-logo {
+            touch-action: manipulation;
+        }
+        .cc-card, .cc-badge-wrap, .confetti-piece, .celebrate-word, .unsold-word,
+        .announce-overlay, .celebrate-overlay, #celebrateOverlay, .toast, .gavel-popup {
+            will-change: transform, opacity;
         }
 
         body {
@@ -4367,11 +4380,11 @@
         }
         .cc-badge-wrap {
             position: relative;
-            width: 72px; height: 72px;
-            margin: 0 auto 12px;
+            width: 96px; height: 96px;
+            margin: 4px auto 14px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: 800;
+            font-size: 16px; font-weight: 800;
             background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--burst-color, var(--gold)) 30%, var(--surface)), var(--surface-2));
             border: 2px solid var(--burst-color, var(--gold));
             box-shadow:
@@ -4379,6 +4392,19 @@
                 0 0 32px color-mix(in srgb, var(--burst-color, var(--gold)) 50%, transparent);
             color: var(--burst-color, var(--gold));
             font-family: 'Anton', sans-serif;
+            animation: ccBadgePulse 1.8s ease-in-out .5s 2;
+        }
+        /* Single ring only — the logo image itself is rendered "plain" (no
+           border/shadow of its own) so it doesn't double up with this wrap's
+           ring, and it's sized to fill almost the whole circle. */
+        .cc-badge-wrap img {
+            width: 82% !important;
+            height: 82% !important;
+            border-radius: 50% !important;
+        }
+        @keyframes ccBadgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.07); }
         }
         .cc-name {
             font-family: 'Anton', sans-serif;
@@ -4437,6 +4463,26 @@
         }
         .cc-payout b {
             color: var(--gold-pale);
+        }
+        /* Unsold variant of the badge — no team logo, just a big gavel mark
+           in the same ring style so it reads as a matching, equally-produced
+           "moment" rather than a lesser afterthought next to the SOLD card. */
+        .cc-badge-wrap.unsold-badge {
+            font-size: 34px;
+            animation: ccBadgeShake .5s ease .5s 1;
+        }
+        @keyframes ccBadgeShake {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-12deg); }
+            40% { transform: rotate(10deg); }
+            60% { transform: rotate(-6deg); }
+            80% { transform: rotate(4deg); }
+        }
+        .cc-unsold-msg {
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.5;
+            padding: 0 22px;
         }
 
         .confetti-piece {
@@ -5259,12 +5305,16 @@
         // used on the schedule page, so both stay in sync), else the colored text
         // abbreviation fallback. Use everywhere a team badge shows. Pass `size` in
         // px to scale the image for small contexts like pills/tabs.
-        function teamBadgeHTML(id, size) {
+        function teamBadgeHTML(id, size, plain) {
             const t = TEAM_META[id] || { color: '#888', logo: '' };
             if (t.logo) {
                 const px = size || 22;
                 const safeLogo = String(t.logo).replace(/"/g, '&quot;');
-                return `<img src="${safeLogo}" alt="${id}" style="width:${px}px;height:${px}px;object-fit:contain;vertical-align:middle;border-radius:${Math.max(4, Math.round(px * .27))}px;box-shadow:0 0 0 1.5px color-mix(in srgb, ${t.color} 55%, transparent), 0 2px 6px -2px rgba(0,0,0,.5);">`;
+                // `plain` drops the badge's own border/shadow — use it when the
+                // logo already sits inside another ring (e.g. the sold-card
+                // badge wrap), so we don't stack two borders on top of each other.
+                const trim = plain ? '' : `border-radius:${Math.max(4, Math.round(px * .27))}px;box-shadow:0 0 0 1.5px color-mix(in srgb, ${t.color} 55%, transparent), 0 2px 6px -2px rgba(0,0,0,.5);`;
+                return `<img src="${safeLogo}" alt="${id}" style="width:${px}px;height:${px}px;object-fit:contain;vertical-align:middle;${trim}">`;
             }
             return id;
         }
@@ -5369,7 +5419,7 @@
             const overlay = $('celebrateOverlay');
             const col = TEAM_META[payload.teamId]?.color || null;
             overlay.style.setProperty('--burst-color', col || 'var(--gold)');
-            const badge = teamBadgeHTML(payload.teamId);
+            const badge = teamBadgeHTML(payload.teamId, 78, true);
             const teamName = TEAM_META[payload.teamId]?.name?.split(' ').slice(0, 2).join(' ') || payload.teamId;
             overlay.innerHTML = `
                 <div class="cc-card">
@@ -5383,6 +5433,27 @@
                         <div><div class="cc-price-val">${fmtCr(payload.price)}</div><div class="cc-price-lbl">Sale Price</div></div>
                     </div>
                     <div class="cc-payout">Player payout: <b>${fmtPayout(payload.price)}</b></div>
+                </div>
+                <div class="celebrate-tap">Tap anywhere to dismiss</div>`;
+            overlay.classList.remove('show'); void overlay.offsetWidth; overlay.classList.add('show');
+            if (confettiEnabled) fireConfetti(overlay, col);
+            const dismiss = () => overlay.classList.remove('show');
+            overlay.onclick = dismiss; setTimeout(dismiss, 4200);
+        }
+        // Same production values as the SOLD reveal (full-screen card + burst),
+        // just re-themed red and broadcast to everyone — so an UNSOLD lot is
+        // just as much of a "moment" for admin/captains/viewers as a sale is,
+        // instead of only the small stage stamp a handful of people might see.
+        function renderUnsoldCard(payload) {
+            const overlay = $('celebrateOverlay');
+            const col = 'var(--live)';
+            overlay.style.setProperty('--burst-color', col);
+            overlay.innerHTML = `
+                <div class="cc-card">
+                    <div class="cc-ribbon">❌ UNSOLD</div>
+                    <div class="cc-badge-wrap unsold-badge">🔨</div>
+                    <div class="cc-name">${payload.playerName}</div>
+                    <div class="cc-unsold-msg">No bids received — <b style="color:var(--gold-pale)">${payload.playerName}</b> stays in the pool for the next round.</div>
                 </div>
                 <div class="celebrate-tap">Tap anywhere to dismiss</div>`;
             overlay.classList.remove('show'); void overlay.offsetWidth; overlay.classList.add('show');
@@ -5629,6 +5700,7 @@
                 .on('broadcast', { event: 'round_summary' }, ({ payload }) => renderSummaryModal(payload))
                 .on('broadcast', { event: 'final_summary' }, () => renderFinalSummaryModal())
                 .on('broadcast', { event: 'player_sold' }, ({ payload }) => handleSoldBroadcast(payload))
+                .on('broadcast', { event: 'player_unsold' }, ({ payload }) => handleUnsoldBroadcast(payload))
                 .on('broadcast', { event: 'bidding_open' }, ({ payload }) => { if (payload.playerId === stateCache?.current_player_id) { biddingLocked = false; refreshBiddingGate(playersCache[payload.playerId]); renderCaptainPanel(); } })
                 .on('broadcast', { event: 'bid_open_countdown' }, ({ payload }) => { if (payload.playerId === stateCache?.current_player_id) startCountdownDisplay(payload.targetTs, 'Bidding opens in', 0); })
                 .on('broadcast', { event: 'gavel_step' }, ({ payload }) => renderGavelBanner(payload.step, payload.bidder, true))
@@ -5673,6 +5745,10 @@
             renderSoldCard(payload, iWon);
             pushWire(`<b>SOLD</b> — ${payload.playerName} to <b>${payload.teamId}</b> for ${fmtCr(payload.price)}`);
             loadPlayers(); loadTeams();
+        }
+        function handleUnsoldBroadcast(payload) {
+            renderUnsoldCard(payload);
+            pushWire(`<b>UNSOLD</b> — ${payload.playerName}`);
         }
 
         /* ---------- RENDER: STAGE ---------- */
@@ -6091,10 +6167,15 @@
         }
         async function unsoldTap() {
             const player = playersCache[stateCache?.current_player_id];
+            const playerName = player?.ign || player?.real_name || 'Player';
             if (await callAdminRpc('ffxipl_s12_mark_unsold')) {
-                broadcastToast(`❌ ${player?.ign || player?.real_name || 'Player'} went unsold — no bids received.`, 'error');
-                pushWire(`<b>UNSOLD</b> — ${player?.ign || player?.real_name || 'Player'}`);
+                broadcastToast(`❌ ${playerName} went unsold — no bids received.`, 'error');
                 speak('Unsold!');
+                // Broadcast the full-screen card to every connected admin/captain/
+                // viewer, the same way a sale does (see markSoldFlow) — not just
+                // the small stamp on the stage TV, which only whoever's looking
+                // at that panel sees.
+                broadcastChannel?.send({ type: 'broadcast', event: 'player_unsold', payload: { playerName } });
             }
             refreshIdleFab();
         }
