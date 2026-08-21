@@ -710,16 +710,29 @@ const SB_URL='https://ndioutmihxodqknvgfju.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
+// Put a direct image URL in "logo" to show a team's own logo instead of the
+// colored initials badge — leave it '' to keep the initials. Transparent
+// PNGs work best (badges have a colored gradient background behind them).
 const TEAM_META={
-  RCB:{name:'Royal Challengers Bangalore',color:'#e2394a'},
-  CSK:{name:'Chennai Super Kings',color:'#f5c518'},
-  MI: {name:'Mumbai Indians',color:'#045d9e'},
-  DC: {name:'Delhi Capitals',color:'#1f5fc4'},
-  KKR:{name:'Kolkata Knight Riders',color:'#7d4bb0'},
-  SRH:{name:'Sunrisers Hyderabad',color:'#f26522'},
-  RR: {name:'Rajasthan Royals',color:'#e03daf'},
-  PBKS:{name:'Punjab Kings',color:'#c31d1d'},
+  RCB:{name:'Royal Challengers Bangalore',color:'#e2394a',logo:'rcb.png'},
+  CSK:{name:'Chennai Super Kings',color:'#f5c518',logo:'csk.png'},
+  MI: {name:'Mumbai Indians',color:'#045d9e',logo:'mi.png'},
+  DC: {name:'Delhi Capitals',color:'#1f5fc4',logo:'dc.png'},
+  KKR:{name:'Kolkata Knight Riders',color:'#7d4bb0',logo:'KKR.png'},
+  SRH:{name:'Sunrisers Hyderabad',color:'#f26522',logo:'srh.png'},
+  RR: {name:'Rajasthan Royals',color:'#e03daf',logo:'rr.png'},
+  PBKS:{name:'Punjab Kings',color:'#c31d1d',logo:'pbks.png'},
 };
+
+// Renders a team badge — image if TEAM_META[id].logo is set, else the
+// colored-initials fallback. Use this everywhere a team badge is shown.
+function teamBadgeHTML(id){
+  const t=TEAM_META[id]||{name:id,color:'#888',logo:''};
+  if(t.logo){
+    return `<img src="${esc(t.logo)}" alt="${esc(id)}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;">`;
+  }
+  return id;
+}
 
 function $(id){return document.getElementById(id);}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -882,7 +895,7 @@ async function loadLeaderboard(){
   // Fetch all team rosters
   const {data,error}=await sb
     .from('ffxipl_s12_season_rosters')
-    .select('team_id,players_json')
+    .select('team_id,players_json,captain_name')
     .eq('season',12)
     .eq('is_finalized',true);
 
@@ -900,6 +913,16 @@ async function loadLeaderboard(){
   data.forEach(row=>{
     let players=[];
     try{ players=JSON.parse(row.players_json||'[]'); }catch(e){}
+    // Captain isn't auctioned, so they're never in players_json on their
+    // own — they're the separate captain_name column. Inject them so their
+    // kills count on the leaderboard too, once they have any recorded.
+    const capName=(row.captain_name||'').trim();
+    if(capName){
+      const already=players.some(p=>(p.ign||'').trim().toLowerCase()===capName.toLowerCase());
+      if(!already){
+        players=[{ign:capName,real_name:capName,kills_total:0,matches_played:0,mvp_count:0,isCaptain:true},...players];
+      }
+    }
     teamsRosters[row.team_id]=players; // keep full uncut roster for admin editing
     players.slice(0,6).forEach((p,idx)=>{
       allPlayers.push({
@@ -963,9 +986,14 @@ function renderHero(p,rank){
   const ss=p.profile_url||p.ss_url||p.screenshot_url||'';
   const col=p.teamMeta.color;
 
+  // Always show team logo as the avatar; tapping opens screenshot if one exists.
+  const _heroLogo=TEAM_META[p.teamId]?.logo;
+  const _heroInner=_heroLogo
+    ? `<img src="${esc(_heroLogo)}" alt="${esc(p.teamId)}" style="width:65%;height:65%;object-fit:contain;">`
+    : `<span style="font-size:32px;">🎮</span>`;
   const photoHTML=ss
-    ? `<img class="hero-photo" src="${esc(ss)}" alt="${esc(p.ign)}" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')">`
-    : `<div class="hero-photo-placeholder">🎮</div>`;
+    ? `<div class="hero-photo-placeholder" style="background:${col}22;cursor:pointer;" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">${_heroInner}</div>`
+    : `<div class="hero-photo-placeholder" style="background:${col}22;">${_heroInner}</div>`;
 
   $('heroWrap').innerHTML=`
   <div class="hero-card">
@@ -979,7 +1007,7 @@ function renderHero(p,rank){
         ${photoHTML}
       </div>
       <div class="hero-info">
-        <div class="hero-ign">${esc(p.ign||p.real_name)}</div>
+        <div class="hero-ign">${p.isCaptain?'👑 ':''}${esc(p.ign||p.real_name)}</div>
         ${p.real_name?`<div class="hero-real">${esc(p.real_name)}</div>`:''}
         <div class="hero-team-pill" style="color:${col};border-color:${col}40;background:${col}14">
           <span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block"></span>
@@ -1015,9 +1043,14 @@ function renderList(players){
     const rankCls=rank===2?'r2':rank===3?'r3':'';
     const delayClass=`d${rank}`;
 
+    // Always show team logo; tapping opens screenshot if one exists.
+    const _logo=TEAM_META[p.teamId]?.logo;
+    const _inner=_logo
+      ? `<img src="${esc(_logo)}" alt="${esc(p.teamId)}" style="width:65%;height:65%;object-fit:contain;">`
+      : `<span style="font-size:20px;">🎮</span>`;
     const photoHTML=ss
-      ? `<img class="lb-photo" src="${esc(ss)}" alt="${esc(p.ign)}" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')">`
-      : `<div class="lb-photo-ph">🎮</div>`;
+      ? `<div class="lb-photo-ph" style="background:${col}22;cursor:pointer;" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">${_inner}</div>`
+      : `<div class="lb-photo-ph" style="background:${col}22;">${_inner}</div>`;
 
     return `<div class="lb-card fade-up ${delayClass}" style="position:relative">
       ${isAdmin?`<div class="lb-admin-btns"><button class="lb-edit-btn" onclick="openEditPlayer('${esc(p.teamId)}',${p.rosterIdx})">✎ Edit</button></div>`:''}
@@ -1025,7 +1058,7 @@ function renderList(players){
       <div class="lb-rank-num ${rankCls}">${rank}</div>
       ${photoHTML}
       <div class="lb-info">
-        <div class="lb-ign">${esc(p.ign||p.real_name)}</div>
+        <div class="lb-ign">${p.isCaptain?'👑 ':''}${esc(p.ign||p.real_name)}</div>
         <div class="lb-team" style="color:${col}">${esc(p.teamId)} · ${esc(p.teamMeta.name.split(' ').slice(0,2).join(' '))}</div>
         ${p.real_name?`<div class="lb-real">${esc(p.real_name)}</div>`:''}
       </div>
