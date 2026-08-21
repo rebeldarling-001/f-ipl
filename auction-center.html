@@ -3233,6 +3233,40 @@
             50% { transform: translateX(-50%) scale(1.045); }
         }
 
+        /* always-on refresh FAB — bottom-right, out of the way of the gavel
+           FAB (bottom-center). Anyone stuck on a stale connection/state can
+           force a hard reload in one tap instead of hunting for the browser's
+           own refresh control. */
+        .refresh-fab {
+            position: fixed;
+            right: 16px;
+            bottom: 22px;
+            z-index: 601;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid var(--line);
+            background: linear-gradient(165deg, var(--card-a), var(--card-b) 80%);
+            color: var(--gold);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, .5), 0 0 0 1px rgba(var(--gold-rgb), .1);
+            touch-action: manipulation;
+            transition: transform .15s ease;
+        }
+        .refresh-fab:active {
+            transform: scale(.9) rotate(90deg);
+        }
+        .refresh-fab.spinning svg {
+            animation: refreshSpin .6s linear;
+        }
+        @keyframes refreshSpin {
+            to { transform: rotate(360deg); }
+        }
+
         /* toast */
         .toast-stack {
             position: fixed;
@@ -4380,27 +4414,20 @@
         }
         .cc-badge-wrap {
             position: relative;
-            width: 96px; height: 96px;
+            width: 128px; height: 128px;
             margin: 4px auto 14px;
-            border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 16px; font-weight: 800;
-            background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--burst-color, var(--gold)) 30%, var(--surface)), var(--surface-2));
-            border: 2px solid var(--burst-color, var(--gold));
-            box-shadow:
-                0 0 0 5px color-mix(in srgb, var(--burst-color, var(--gold)) 12%, transparent),
-                0 0 32px color-mix(in srgb, var(--burst-color, var(--gold)) 50%, transparent);
+            font-size: 20px; font-weight: 800;
             color: var(--burst-color, var(--gold));
             font-family: 'Anton', sans-serif;
             animation: ccBadgePulse 1.8s ease-in-out .5s 2;
         }
-        /* Single ring only — the logo image itself is rendered "plain" (no
-           border/shadow of its own) so it doesn't double up with this wrap's
-           ring, and it's sized to fill almost the whole circle. */
+        /* No ring, no box — just the logo itself, as big as the card allows,
+           with a soft glow instead of a border so it doesn't look boxed in. */
         .cc-badge-wrap img {
-            width: 82% !important;
-            height: 82% !important;
-            border-radius: 50% !important;
+            width: 100% !important;
+            height: 100% !important;
+            filter: drop-shadow(0 0 26px color-mix(in srgb, var(--burst-color, var(--gold)) 65%, transparent));
         }
         @keyframes ccBadgePulse {
             0%, 100% { transform: scale(1); }
@@ -4766,6 +4793,9 @@
          Once → Twice → Sold flow as the console button below, plus Unsold when
          nobody ever bid at all. -->
     <button class="idle-gavel-fab" id="idleGavelFab" style="display:none;"></button>
+    <button class="refresh-fab" id="refreshFab" title="Refresh" aria-label="Refresh">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+    </button>
     <div class="celebrate-overlay" id="celebrateOverlay"></div>
     <div class="announce-overlay" id="announceOverlay">
         <div class="announce-tag">NOW ON THE BLOCK</div>
@@ -5377,6 +5407,13 @@
         $('lightboxOverlay').addEventListener('click', (e) => { if (e.target.id === 'lightboxOverlay') $('lightboxOverlay').classList.remove('show'); });
         function openLightbox(url) { $('lightboxImg').src = url; $('lightboxOverlay').classList.add('show'); }
 
+        // Hard refresh FAB — bypasses bfcache so a stuck/stale client gets a
+        // genuinely fresh load, not just a re-render of cached state.
+        $('refreshFab')?.addEventListener('click', () => {
+            const btn = $('refreshFab'); btn.classList.add('spinning');
+            location.reload();
+        });
+
         const CONFETTI_COLORS = ['#f0b93d', '#fbe4a6', '#ff4433', '#5fd97e', '#29d3ff'];
         const CONFETTI_SHAPES = ['round', 'square', 'shard'];
         // Celebration confetti is always on now — no admin toggle. These stay
@@ -5419,7 +5456,7 @@
             const overlay = $('celebrateOverlay');
             const col = TEAM_META[payload.teamId]?.color || null;
             overlay.style.setProperty('--burst-color', col || 'var(--gold)');
-            const badge = teamBadgeHTML(payload.teamId, 78, true);
+            const badge = teamBadgeHTML(payload.teamId, 118, true);
             const teamName = TEAM_META[payload.teamId]?.name?.split(' ').slice(0, 2).join(' ') || payload.teamId;
             overlay.innerHTML = `
                 <div class="cc-card">
@@ -5694,7 +5731,23 @@
                 const captainTeams = [...new Set(all.filter(p => p.role === 'captain' && p.team).map(p => p.team))];
                 $('captainCount').textContent = captainTeams.length;
                 renderCaptainChips(captainTeams);
-            }).subscribe(async (status) => { if (status === 'SUBSCRIBED') await updatePresence(); });
+            })
+            // Instant "so-and-so is here" / "so-and-so left" pop-ups — sync only
+            // tells you the current headcount, join/leave fire the moment someone
+            // actually connects or drops, which is what makes it feel immediate.
+            .on('presence', { event: 'join' }, ({ newPresences }) => {
+                newPresences.forEach(p => {
+                    if (p.role === 'captain' && p.team) toast(`🟢 ${TEAM_META[p.team]?.name || p.team} captain is in`, null);
+                    else if (p.role === 'admin') toast('🟢 Auctioneer is in', null);
+                });
+            })
+            .on('presence', { event: 'leave' }, ({ leftPresences }) => {
+                leftPresences.forEach(p => {
+                    if (p.role === 'captain' && p.team) toast(`🔴 ${TEAM_META[p.team]?.name || p.team} captain left`, 'error');
+                    else if (p.role === 'admin') toast('🔴 Auctioneer left', 'error');
+                });
+            })
+            .subscribe(async (status) => { if (status === 'SUBSCRIBED') await updatePresence(); });
 
             broadcastChannel = sb.channel('auction-broadcast')
                 .on('broadcast', { event: 'round_summary' }, ({ payload }) => renderSummaryModal(payload))
