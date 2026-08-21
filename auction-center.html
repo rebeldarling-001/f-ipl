@@ -2704,13 +2704,26 @@
         }
         .cap-deck .bid-builder { margin-bottom: 0; }
 
-        /* ---- ONE console: 3-step sequence, official desk ---- */
+        /* ---- ONE console: 3-step sequence, official desk (premium desk look) ---- */
         .console {
             margin-top: 14px;
-            padding: 16px;
-            border-radius: 18px;
-            background: var(--surface);
+            padding: 17px 16px 16px;
+            border-radius: 19px;
+            background:
+                radial-gradient(ellipse 120% 65% at 50% -8%, rgba(var(--gold-rgb), .1), transparent 60%),
+                linear-gradient(175deg, var(--surface), var(--surface-2) 92%);
             border: 1px solid var(--gold-deep);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 28px -18px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .03);
+        }
+        .console::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), .55) 40%, rgba(var(--gold-rgb), .55) 60%, transparent);
+            pointer-events: none;
         }
 
         .console-title {
@@ -2720,25 +2733,61 @@
             color: var(--gold-deep);
             font-weight: 700;
             margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
         }
+        .console-title::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 6px rgba(var(--gold-rgb), .8);
+            flex-shrink: 0;
+        }
+        .console-title-note {
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: 500;
+            color: var(--ink-faint);
+            font-size: 9.5px;
+        }
+
+        .finder-jump-hint {
+            display: none;
+            font-size: 11px;
+            color: var(--ink-faint);
+            background: rgba(var(--gold-rgb), .06);
+            border: 1px dashed var(--gold-deep);
+            border-radius: 11px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .finder-jump-hint.show { display: block; }
 
         .step-row {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            position: relative;
         }
 
         .step-btn {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 14px 14px;
+            gap: 11px;
+            padding: 12px 14px;
             border-radius: 13px;
             border: 1px solid var(--line);
-            background: var(--surface-2);
+            border-left: 3px solid var(--line);
+            background: linear-gradient(165deg, var(--surface-2), var(--surface) 85%);
             cursor: pointer;
             text-align: left;
-            transition: transform .12s ease, border-color .2s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: transform .12s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
         }
 
         .step-btn:active {
@@ -2747,8 +2796,8 @@
 
         .step-btn .num {
             flex-shrink: 0;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -2759,48 +2808,83 @@
             background: rgba(var(--gold-rgb), .12);
             color: var(--gold-pale);
             border: 1px solid var(--gold-deep);
+            transition: background .2s ease, color .2s ease, box-shadow .2s ease;
         }
 
         .step-btn .txt {
             flex: 1;
+            min-width: 0;
         }
 
         .step-btn .txt b {
             display: block;
             font-size: 13px;
             color: var(--ink);
+            letter-spacing: .01em;
         }
 
         .step-btn .txt span {
             display: block;
-            margin-top: 1px;
+            margin-top: 2px;
             font-size: 10.5px;
             color: var(--ink-faint);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
+        /* READY — the step the admin should tap next: calm gold glow, no flicker */
         .step-btn.ready {
             border-color: var(--gold);
-            background: rgba(var(--gold-rgb), .1);
+            border-left-color: var(--gold);
+            background: linear-gradient(165deg, rgba(var(--gold-rgb), .14), rgba(var(--gold-rgb), .05) 85%);
+            box-shadow: 0 4px 18px -8px rgba(var(--gold-rgb), .5), inset 0 1px 0 rgba(255, 255, 255, .04);
         }
 
         .step-btn.ready .num {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
             color: var(--on-accent);
+            border-color: transparent;
+            box-shadow: 0 0 10px rgba(var(--gold-rgb), .55);
         }
 
+        /* DONE — completed step: quiet green, checkmark badge */
         .step-btn.done {
             border-color: rgba(95, 217, 126, .4);
+            border-left-color: #5fd97e;
+            background: linear-gradient(165deg, rgba(95, 217, 126, .08), var(--surface) 85%);
         }
 
         .step-btn.done .num {
             background: #5fd97e;
             color: #042014;
+            border-color: transparent;
         }
 
+        .step-btn.done::after {
+            content: '✓';
+            position: absolute;
+            top: 9px; right: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #5fd97e;
+        }
+
+        /* LOCKED — clearly inert, with a lock glyph so it never reads as "broken" */
         .step-btn:disabled,
         .step-btn.locked {
-            opacity: .4;
+            opacity: .45;
             pointer-events: none;
+            border-left-color: var(--line);
+        }
+        .step-btn:disabled:not(.done)::after,
+        .step-btn.locked:not(.done)::after {
+            content: '🔒';
+            position: absolute;
+            top: 50%; right: 14px;
+            transform: translateY(-50%);
+            font-size: 11px;
+            filter: grayscale(1) opacity(.8);
         }
 
         .step-row-pair {
@@ -2815,7 +2899,7 @@
         .console-row {
             display: flex;
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         /* ═══ CONFETTI FX TOGGLE ═══ */
@@ -2837,8 +2921,8 @@
         }
         .confetti-switch {
             flex-shrink: 0;
-            width: 50px;
-            height: 28px;
+            width: 52px;
+            height: 30px;
             border-radius: 20px;
             border: 1px solid var(--line);
             background: var(--surface-2);
@@ -2849,13 +2933,14 @@
         .confetti-switch-knob {
             position: absolute;
             top: 2px; left: 2px;
-            width: 22px; height: 22px;
+            width: 24px; height: 24px;
             border-radius: 50%;
             background: var(--ink-faint);
+            box-shadow: 0 1px 3px rgba(0,0,0,.3);
             transition: transform .22s cubic-bezier(.2, .9, .3, 1), background .2s ease;
         }
         .confetti-switch.on {
-            background: linear-gradient(135deg, rgba(var(--gold-rgb), .35), rgba(var(--gold-rgb), .15));
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), .4), rgba(var(--gold-rgb), .18));
             border-color: var(--gold);
         }
         .confetti-switch.on .confetti-switch-knob {
@@ -2869,17 +2954,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 4px;
             flex: 1;
-            padding: 12px 6px;
-            border-radius: 11px;
+            padding: 13px 6px;
+            border-radius: 12px;
             border: 1px solid var(--line);
-            background: var(--surface-2);
+            background: linear-gradient(165deg, var(--surface-2), var(--surface) 90%);
             color: var(--ink);
             font-size: 10.5px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: .01em;
             cursor: pointer;
+            transition: transform .12s ease, border-color .2s ease, background .2s ease;
         }
+        .console-btn:active { transform: scale(.96); }
 
         .console-btn .ic {
             font-size: 16px;
@@ -2888,14 +2976,23 @@
         .console-btn.danger {
             border-color: rgba(var(--live-rgb), .45);
             color: var(--live);
-            background: rgba(var(--live-rgb), .07);
+            background: linear-gradient(165deg, rgba(var(--live-rgb), .12), rgba(var(--live-rgb), .04));
         }
 
         .console-btn.neutral {
             border-color: var(--gold-deep);
             color: var(--gold-pale);
-            background: rgba(var(--gold-rgb), .06);
+            background: linear-gradient(165deg, rgba(var(--gold-rgb), .1), rgba(var(--gold-rgb), .03));
         }
+
+        /* ═══ ROUND TIMER — 8 lots per round, auto-tracked ═══ */
+        .round-progress-note {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .round-progress-note b { color: var(--gold-pale); }
 
         .round-stepper {
             display: flex;
@@ -2905,46 +3002,56 @@
 
         .round-step {
             flex: 1;
-            padding: 10px 2px;
-            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 2px 9px;
+            border-radius: 12px;
             border: 1px solid var(--gold-deep);
-            background: transparent;
+            background: linear-gradient(165deg, var(--surface-2), var(--surface) 90%);
             color: var(--gold-pale);
+            cursor: pointer;
+            position: relative;
+            transition: transform .12s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+        }
+        .round-step:active { transform: scale(.95); }
+
+        .round-step-n {
             font-family: 'Space Mono', monospace;
             font-weight: 700;
             font-size: 12px;
-            cursor: pointer;
+        }
+
+        .round-step-c {
+            font-family: 'Space Mono', monospace;
+            font-size: 8.5px;
+            color: var(--ink-faint);
+            letter-spacing: .02em;
         }
 
         .round-step.done {
             border-color: rgba(95, 217, 126, .5);
             color: #5fd97e;
-            background: rgba(95, 217, 126, .08);
+            background: linear-gradient(165deg, rgba(95, 217, 126, .12), rgba(95, 217, 126, .03));
         }
+        .round-step.done .round-step-c { color: rgba(95, 217, 126, .75); }
+        .round-step.done .round-step-n::after { content: ' ✓'; }
 
         .round-step.next-up {
-            animation: nextUpPulse 1.8s ease-in-out infinite;
+            border-color: var(--gold);
+            background: linear-gradient(165deg, rgba(var(--gold-rgb), .22), rgba(var(--gold-rgb), .06));
+            color: var(--gold-pale);
+            box-shadow: 0 4px 16px -6px rgba(var(--gold-rgb), .5);
         }
 
         .round-step:disabled {
-            opacity: .32;
+            opacity: .35;
             pointer-events: none;
         }
 
-        @keyframes nextUpPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(var(--gold-rgb), .35);
-            }
-
-            50% {
-                box-shadow: 0 0 0 5px rgba(var(--gold-rgb), 0);
-            }
-        }
-
         .round-lock-note {
-            margin-top: 7px;
+            margin-top: 10px;
             font-size: 10px;
             color: var(--ink-faint);
             text-align: center;
@@ -3081,6 +3188,36 @@
             border-color: rgba(var(--live-rgb), .4);
             color: var(--live);
             background: rgba(var(--live-rgb), .06);
+        }
+
+        /* idle gavel FAB — admin-only nudge shown when a lot has gone quiet */
+        .idle-gavel-fab {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%) translateY(0);
+            z-index: 600;
+            padding: 15px 26px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ff4433, #c01f10);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: .02em;
+            cursor: pointer;
+            box-shadow: 0 10px 30px -6px rgba(255, 68, 51, .55), 0 0 0 1px rgba(255, 255, 255, .08);
+            animation: fabPulse 1.6s ease-in-out infinite;
+            white-space: nowrap;
+        }
+        .idle-gavel-fab.unsold-flavor {
+            background: linear-gradient(135deg, #6b5f4c, #443c2f);
+            box-shadow: 0 10px 30px -6px rgba(0, 0, 0, .5), 0 0 0 1px rgba(255, 255, 255, .06);
+        }
+        @keyframes fabPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.045); }
         }
 
         /* toast */
@@ -3409,6 +3546,19 @@
             z-index: 40;
             box-shadow: 0 14px 30px -10px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .04);
         }
+        #adminMiniStage {
+            padding: 20px 17px 16px;
+            gap: 15px;
+        }
+        #adminMiniStage::before {
+            content: '● LIVE';
+            position: absolute;
+            top: 8px; right: 14px;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            color: var(--live);
+        }
 
         .mini-stage-photo {
             width: 48px;
@@ -3425,6 +3575,11 @@
             font-family: 'Anton', sans-serif;
             font-size: 15px;
             color: var(--gold-pale);
+        }
+        #adminMiniPhoto {
+            width: 58px;
+            height: 58px;
+            font-size: 18px;
         }
 
         .mini-stage-info {
@@ -3469,6 +3624,13 @@
             letter-spacing: .04em;
             margin-top: 2px;
         }
+
+        #adminMiniName { font-size: 17px; }
+        #adminMiniBid {
+            font-size: 20px;
+            filter: drop-shadow(0 0 8px rgba(var(--gold-rgb), .35));
+        }
+        #adminMiniLead { font-size: 9.5px; font-weight: 700; }
 
         #panel-captain {
             border-radius: 20px;
@@ -4463,7 +4625,6 @@
             </div>
         </div>
         <div class="header-actions">
-            <button class="menu-btn sound-btn" id="soundBtn" aria-label="Toggle auction sound">🔊</button>
             <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
                 aria-expanded="false">🎨</button>
             <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
@@ -4554,6 +4715,11 @@
     </nav>
 
     <div class="toast-stack" id="toastStack"></div>
+    <!-- IDLE GAVEL FAB — admin-only. Appears only while the admin is scrolled to the
+         TV section and 10s pass with no new bid on an open lot. Mirrors the same
+         Once → Twice → Sold flow as the console button below, plus Unsold when
+         nobody ever bid at all. -->
+    <button class="idle-gavel-fab" id="idleGavelFab" style="display:none;"></button>
     <div class="celebrate-overlay" id="celebrateOverlay"></div>
     <div class="announce-overlay" id="announceOverlay">
         <div class="announce-tag">NOW ON THE BLOCK</div>
@@ -4719,6 +4885,79 @@
 
     </section>
 
+    <!-- ADMIN PANEL — simplified, three steps, official desk -->
+    <section class="role-panel" id="panel-admin" style="padding-top:8px;">
+        <div class="eyebrow">AUCTIONEER'S DESK</div>
+        <h2 class="sec-title">Run <b>the sale</b></h2>
+        <p class="sec-desc">One console. Three steps, in order. Pick a lot below, then work down this list.</p>
+
+        <div class="mini-stage fade-up" id="adminMiniStage">
+            <div class="mini-stage-photo" id="adminMiniPhoto">?</div>
+            <div class="mini-stage-info">
+                <div class="mini-stage-name" id="adminMiniName">No player on the block yet</div>
+                <div class="mini-stage-sub" id="adminMiniSub">Choose a lot below to begin</div>
+            </div>
+            <div class="mini-stage-bid">
+                <div class="amt" id="adminMiniBid">—</div>
+                <div class="lead" id="adminMiniLead" style="color:var(--ink-faint);"></div>
+            </div>
+        </div>
+
+        <div class="console fade-up">
+            <div class="console-title">AUCTION CONTROLS <span class="console-title-note">— everything for this lot, in order</span></div>
+            <div class="finder-jump-hint show" id="finderJumpHint">No one's on stage — pick a player from the list
+                below to bring them up. ↓</div>
+            <div class="step-row">
+                <button class="step-btn locked" id="stepOpenBidding" disabled>
+                    <span class="num">🔓</span>
+                    <span class="txt" id="stepOpenBiddingTxt"><b>Open bidding</b><span>3-second countdown, then captain paddles unlock</span></span>
+                </button>
+                <div class="step-row-pair">
+                    <button class="step-btn locked" id="stepGavel" disabled>
+                        <span class="num">🔨</span>
+                        <span class="txt" id="stepGavelTxt"><b>Call it</b><span>Once → Twice → Sold</span></span>
+                    </button>
+                    <button class="step-btn locked" id="btnMarkUnsold" disabled>
+                        <span class="num">✕</span>
+                        <span class="txt"><b>No bids — Unsold</b><span>Return lot to the pool</span></span>
+                    </button>
+                </div>
+            </div>
+            <div class="console-row">
+                <button class="console-btn neutral" id="btnVoidBid"><span class="ic">↩</span>Clear last bid</button>
+                <button class="console-btn danger" id="btnClearStage"><span class="ic">🧹</span>Clear stage</button>
+            </div>
+            <div class="console-divider" style="height:1px;background:var(--line);margin:16px 0 14px;"></div>
+            <div class="console-title" style="margin-bottom:8px;">ROUNDS <span class="console-title-note">— 8 lots per round, then the next round opens</span></div>
+            <div class="round-progress-note" id="roundControlNote">Round 1 — 0/8 decided</div>
+            <button class="btn btn-primary" id="btnStartNextRound" style="width:100%;margin-top:8px;">▶ Start Round 1</button>
+        </div>
+
+
+        <div class="eyebrow" style="margin-top:22px;">FIND A PLAYER — PICK A TIER, THEN A LOT</div>
+        <div class="tier-tabs" id="tierTabs">
+            <button class="tier-tab active" data-tier="top10">Tier 1</button>
+            <button class="tier-tab" data-tier="top20">Tier 2</button>
+            <button class="tier-tab" data-tier="top30">Tier 3</button>
+            <button class="tier-tab" data-tier="top40">Tier 4</button>
+        </div>
+        <input class="finder-search" id="adminFinderSearch" type="text" placeholder="Search by name or IGN…">
+        <div class="finder-list" id="finderList"></div>
+
+        <div class="console fade-up" style="margin-top:22px;">
+            <div class="console-title">📣 BROADCAST A SUMMARY <span class="console-title-note">— every screen, instantly</span></div>
+            <div class="console-row" style="flex-wrap:wrap; gap:8px;">
+                <button class="btn btn-ghost" data-summary-round="1" style="flex:1 1 45%;">🎬 Round 1</button>
+                <button class="btn btn-ghost" data-summary-round="2" style="flex:1 1 45%;">🎬 Round 2</button>
+                <button class="btn btn-ghost" data-summary-round="3" style="flex:1 1 45%;">🎬 Round 3</button>
+                <button class="btn btn-ghost" data-summary-round="4" style="flex:1 1 45%;">🎬 Round 4</button>
+                <button class="btn btn-ghost" data-summary-round="5" style="flex:1 1 45%;">🎬 Round 5</button>
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:10px;" id="btnFinalSummary">🏆 Final Summary —
+                All Teams</button>
+        </div>
+    </section>
+
     <!-- LIVE FEED & OVERALL STATS -->
     <section id="stageStatsSection" style="padding-top:10px;">
         <!-- THE WIRE — always-on official bid feed, everyone sees the same record -->
@@ -4751,103 +4990,6 @@
         </div>
     </section>
 
-    <!-- ADMIN PANEL — simplified, three steps, official desk -->
-    <section class="role-panel" id="panel-admin" style="padding-top:8px;">
-        <div class="eyebrow">AUCTIONEER'S DESK</div>
-        <h2 class="sec-title">Run <b>the sale</b></h2>
-        <p class="sec-desc">One console. Three steps, in order. Pick a lot below, then work down this list.</p>
-
-        <div class="mini-stage fade-up" id="adminMiniStage">
-            <div class="mini-stage-photo" id="adminMiniPhoto">?</div>
-            <div class="mini-stage-info">
-                <div class="mini-stage-name" id="adminMiniName">No player on the block yet</div>
-                <div class="mini-stage-sub" id="adminMiniSub">Choose a lot below to begin</div>
-            </div>
-            <div class="mini-stage-bid">
-                <div class="amt" id="adminMiniBid">—</div>
-                <div class="lead" id="adminMiniLead" style="color:var(--ink-faint);"></div>
-            </div>
-        </div>
-
-        <div class="console fade-up">
-            <div class="console-title">STEP 1–3 · THE SALE SEQUENCE</div>
-            <div class="step-row">
-                <button class="step-btn locked" id="stepPutOnBlock">
-                    <span class="num">1</span>
-                    <span class="txt"><b>Put lot on the block</b><span>Pick a player below to bring on
-                            stage</span></span>
-                </button>
-                <button class="step-btn locked" id="stepOpenBidding" disabled>
-                    <span class="num">2</span>
-                    <span class="txt" id="stepOpenBiddingTxt"><b>Open bidding</b><span>Unlocks captain paddles for this
-                            lot</span></span>
-                </button>
-                <div class="step-row-pair">
-                    <button class="step-btn locked" id="stepGavel" disabled>
-                        <span class="num">3a</span>
-                        <span class="txt" id="stepGavelTxt"><b>Call it</b><span>Once → Twice → Sold</span></span>
-                    </button>
-                    <button class="step-btn locked" id="btnMarkUnsold" disabled>
-                        <span class="num">3b</span>
-                        <span class="txt"><b>No bids — Unsold</b><span>Return lot to the pool</span></span>
-                    </button>
-                </div>
-            </div>
-            <div class="console-row">
-                <button class="console-btn neutral" id="btnVoidBid"><span class="ic">↩</span>Clear last bid</button>
-                <button class="console-btn danger" id="btnClearStage"><span class="ic">🧹</span>Clear stage</button>
-            </div>
-        </div>
-
-        <div class="console fade-up">
-            <div class="console-title">ROUND TIMER</div>
-            <div class="round-stepper" id="roundStepper">
-                <button class="round-step" data-start-round="1">R1</button>
-                <button class="round-step" data-start-round="2">R2</button>
-                <button class="round-step" data-start-round="3">R3</button>
-                <button class="round-step" data-start-round="4">R4</button>
-                <button class="round-step" data-start-round="5">R5</button>
-            </div>
-            <div class="round-lock-note" id="roundLockNote">Round 1 is next.</div>
-        </div>
-
-        <div class="console fade-up">
-            <div class="console-title">🎉 CELEBRATION FX</div>
-            <div class="confetti-toggle-row">
-                <div>
-                    <div class="confetti-toggle-lbl" id="confettiToggleLbl">Confetti FX — ON</div>
-                    <div class="confetti-toggle-note">Applies to every viewer's "Sold!" screen, live.</div>
-                </div>
-                <button class="confetti-switch on" id="confettiToggleSwitch" aria-label="Toggle celebration confetti">
-                    <span class="confetti-switch-knob"></span>
-                </button>
-            </div>
-        </div>
-
-        <div class="eyebrow" style="margin-top:22px;">FIND A PLAYER — PICK A TIER, THEN A LOT</div>
-        <div class="tier-tabs" id="tierTabs">
-            <button class="tier-tab active" data-tier="">All</button>
-            <button class="tier-tab" data-tier="top10">Tier 1</button>
-            <button class="tier-tab" data-tier="top20">Tier 2</button>
-            <button class="tier-tab" data-tier="top30">Tier 3</button>
-            <button class="tier-tab" data-tier="top40">Tier 4</button>
-        </div>
-        <input class="finder-search" id="adminFinderSearch" type="text" placeholder="Search by name or IGN…">
-        <div class="finder-list" id="finderList"></div>
-
-        <div class="console fade-up" style="margin-top:22px;">
-            <div class="console-title">📣 BROADCAST A SUMMARY — everyone sees it instantly</div>
-            <div class="console-row" style="flex-wrap:wrap; gap:8px;">
-                <button class="btn btn-ghost" data-summary-round="1" style="flex:1 1 45%;">Round 1</button>
-                <button class="btn btn-ghost" data-summary-round="2" style="flex:1 1 45%;">Round 2</button>
-                <button class="btn btn-ghost" data-summary-round="3" style="flex:1 1 45%;">Round 3</button>
-                <button class="btn btn-ghost" data-summary-round="4" style="flex:1 1 45%;">Round 4</button>
-                <button class="btn btn-ghost" data-summary-round="5" style="flex:1 1 45%;">Round 5</button>
-            </div>
-            <button class="btn btn-primary" style="width:100%;margin-top:10px;" id="btnFinalSummary">🏆 Final Summary —
-                All Teams</button>
-        </div>
-    </section>
 
     <!-- TEAMS PURSE GRID -->
     <section id="pursesSection">
@@ -5135,6 +5277,8 @@
         let teamsCache = {}, playersCache = {}, stateCache = null;
         let countdownTimer = null, broadcastChannel = null;
         let biddingLocked = true;
+        let lastBidActivityAt = null; // timestamp of last bid / bidding-open — idle FAB counts from this
+        let stageInView = false;      // is #stageSection (the TV) currently on screen for this admin?
         let wireEvents = [];
 
         const fmtCr = (n) => (n === null || n === undefined) ? '—' : `₹${Number(n).toFixed(0)}Cr`;
@@ -5146,47 +5290,14 @@
             return data?.publicUrl || null;
         }
 
-        /* ---------- SOUND ---------- */
-        const SOUND_KEY = 'xipl-sound-muted';
-        let soundMuted = true; // ALWAYS starts muted — no exceptions, no localStorage restore
-        let soundWelcomePlayed = false;
-        let audioCtx = null;
-        function ensureAudioCtx() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { } } return audioCtx; }
-        function playTone(freq, durationMs, type, gainPeak) {
-            if (soundMuted) return;
-            const ctx = ensureAudioCtx(); if (!ctx) return;
-            const osc = ctx.createOscillator(); const gain = ctx.createGain();
-            osc.type = type || 'sine'; osc.frequency.value = freq;
-            gain.gain.setValueAtTime(0, ctx.currentTime);
-            gain.gain.linearRampToValueAtTime(gainPeak || 0.15, ctx.currentTime + 0.01);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + durationMs / 1000);
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.start(); osc.stop(ctx.currentTime + durationMs / 1000);
-        }
-        function playBidSound() { playTone(880, 140, 'square', 0.09); }
-        function playTickSound() { playTone(520, 110, 'triangle', 0.08); }
-        function playGavelSound() { playTone(140, 90, 'square', 0.22); setTimeout(() => playTone(90, 220, 'square', 0.18), 90); }
-        function playAnnounceSound() { playTone(523, 160, 'sine', 0.13); setTimeout(() => playTone(659, 160, 'sine', 0.13), 170); setTimeout(() => playTone(784, 320, 'sine', 0.16), 340); }
-        function speak(text) {
-            if (soundMuted) return;
-            try { if (!('speechSynthesis' in window)) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = 1.05; u.pitch = 0.85; window.speechSynthesis.speak(u); } catch (e) { }
-        }
-        const soundBtn = $('soundBtn');
-        function refreshSoundBtn() { soundBtn.textContent = soundMuted ? '🔇' : '🔊'; soundBtn.classList.toggle('muted', soundMuted); }
-        refreshSoundBtn();
-        soundBtn.addEventListener('click', () => {
-            soundMuted = !soundMuted;
-            try { localStorage.setItem(SOUND_KEY, soundMuted ? '1' : '0'); } catch (e) { }
-            refreshSoundBtn();
-            if (!soundMuted) {
-                ensureAudioCtx();
-                playTickSound();
-                if (!soundWelcomePlayed) {
-                    soundWelcomePlayed = true;
-                    setTimeout(() => speak('Welcome to FREEFIRE XIPL Season 12 Auction Room! Let the bidding begin!'), 500);
-                }
-            }
-        });
+        /* ---------- SOUND — removed entirely per request. These stay as harmless
+           no-ops so every existing call site elsewhere in the file is still safe
+           to call, without playing any tone or speech. ---------- */
+        function playBidSound() { }
+        function playTickSound() { }
+        function playGavelSound() { }
+        function playAnnounceSound() { }
+        function speak() { }
 
         /* ---------- TOAST ---------- */
         function toast(message, type) {
@@ -5218,21 +5329,12 @@
 
         const CONFETTI_COLORS = ['#f0b93d', '#fbe4a6', '#ff4433', '#5fd97e', '#29d3ff'];
         const CONFETTI_SHAPES = ['round', 'square', 'shard'];
-        // Admin-controlled celebration FX toggle. Defaults from this device's
-        // last known setting; synced live to every viewer via broadcast so the
-        // admin can turn it off for the whole room (e.g. late-night sessions).
-        let confettiEnabled = (() => { try { const v = localStorage.getItem('xipl-confetti-enabled'); return v === null ? true : v === 'true'; } catch (e) { return true; } })();
-        function setConfettiEnabled(val, doBroadcast) {
-            confettiEnabled = val;
-            try { localStorage.setItem('xipl-confetti-enabled', val ? 'true' : 'false'); } catch (e) {}
-            updateConfettiToggleUI();
-            if (doBroadcast) broadcastChannel?.send({ type: 'broadcast', event: 'confetti_toggle', payload: { enabled: val } });
-        }
-        function updateConfettiToggleUI() {
-            const sw = $('confettiToggleSwitch'), lbl = $('confettiToggleLbl');
-            if (sw) sw.classList.toggle('on', confettiEnabled);
-            if (lbl) lbl.textContent = confettiEnabled ? 'Confetti FX — ON' : 'Confetti FX — OFF';
-        }
+        // Celebration confetti is always on now — no admin toggle. These stay
+        // as harmless no-ops/constants so every existing call site (the
+        // `if (confettiEnabled)` checks, boot(), realtime listener) still works.
+        const confettiEnabled = true;
+        function setConfettiEnabled() { }
+        function updateConfettiToggleUI() { }
         function fireConfetti(container, burstColor) {
             const palette = burstColor ? [burstColor, ...CONFETTI_COLORS] : CONFETTI_COLORS;
             for (let i = 0; i < 40; i++) {
@@ -5461,17 +5563,30 @@
             });
         }
         function decidedCountForRound(r) { return playersForRound(r).length; }
+        // Single "Start Round N" button — the round order is already enforced
+        // (a round can't start until the one before it has all 8 lots decided),
+        // so admin never has to pick which round; there's only ever one valid
+        // next step and this button is it.
         function updateRoundLocks() {
-            const note = $('roundLockNote'); let nextUp = null;
-            document.querySelectorAll('.round-step').forEach(btn => {
-                const r = parseInt(btn.dataset.startRound, 10);
-                const done = decidedCountForRound(r) >= ROUND_SIZE;
-                const prevDone = r === 1 || decidedCountForRound(r - 1) >= ROUND_SIZE;
-                btn.classList.toggle('done', done); btn.disabled = !prevDone;
-                btn.classList.toggle('next-up', prevDone && !done && nextUp === null);
-                if (prevDone && !done && nextUp === null) nextUp = r;
-            });
-            if (note) note.textContent = nextUp ? `Round ${nextUp} is next — earlier rounds must finish first.` : 'All 5 rounds are complete.';
+            const note = $('roundControlNote'); const btn = $('btnStartNextRound');
+            if (!btn) return;
+            let target = null;
+            for (let r = 1; r <= 5; r++) {
+                if (decidedCountForRound(r) < ROUND_SIZE) { target = r; break; }
+            }
+            if (target === null) {
+                btn.disabled = true; btn.textContent = '✅ All 5 rounds complete'; btn.dataset.round = '';
+                if (note) note.textContent = 'All 40 players have been decided.';
+                return;
+            }
+            const prevDone = target === 1 || decidedCountForRound(target - 1) >= ROUND_SIZE;
+            const decided = decidedCountForRound(target);
+            btn.dataset.round = target;
+            btn.disabled = !prevDone;
+            btn.textContent = prevDone ? `▶ Start Round ${target}` : `Round ${target} locked`;
+            if (note) note.textContent = prevDone
+                ? `Round ${target} — ${decided}/${ROUND_SIZE} decided`
+                : `Round ${target - 1} must finish first (${decidedCountForRound(target - 1)}/${ROUND_SIZE}).`;
         }
 
         /* ---------- REALTIME ---------- */
@@ -5496,7 +5611,7 @@
             stateChannel = sb.channel('auction-state-changes')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_auction_state' }, payload => { stateCache = payload.new; renderStage(); updateRoundProgress(); })
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, payload => { teamsCache[payload.new.id] = payload.new; renderPurseGrid(); if (myTeamId) renderCaptainPanel(); })
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ffxipl_s12_bid_log' }, payload => { flashBid(); announceBid(payload.new); })
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'ffxipl_s12_bid_log' }, payload => { lastBidActivityAt = Date.now(); flashBid(); announceBid(payload.new); })
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_registrations' }, () => loadPlayers())
                 .subscribe();
 
@@ -5515,6 +5630,7 @@
                 .on('broadcast', { event: 'final_summary' }, () => renderFinalSummaryModal())
                 .on('broadcast', { event: 'player_sold' }, ({ payload }) => handleSoldBroadcast(payload))
                 .on('broadcast', { event: 'bidding_open' }, ({ payload }) => { if (payload.playerId === stateCache?.current_player_id) { biddingLocked = false; refreshBiddingGate(playersCache[payload.playerId]); renderCaptainPanel(); } })
+                .on('broadcast', { event: 'bid_open_countdown' }, ({ payload }) => { if (payload.playerId === stateCache?.current_player_id) startCountdownDisplay(payload.targetTs, 'Bidding opens in', 0); })
                 .on('broadcast', { event: 'gavel_step' }, ({ payload }) => renderGavelBanner(payload.step, payload.bidder, true))
                 .on('broadcast', { event: 'toast_all' }, ({ payload }) => toast(payload.message, payload.type))
                 .on('broadcast', { event: 'wire' }, ({ payload }) => pushWire(payload.msg))
@@ -5628,20 +5744,22 @@
             if (playerChanged) {
                 biddingLocked = !(s.current_bid !== null && s.current_bid !== undefined);
                 renderGavelBanner('reset');
+                gavelStep = 0;
+                lastBidActivityAt = Date.now();
             }
             lastAnnouncedPlayerId = player ? player.id : null;
             refreshBiddingGate(player);
             highlightTeamOnBlock(s.current_bid_team_id);
             renderFinderList(); syncMiniStage(player, s);
             if (myTeamId) renderCaptainPanel();
+            refreshIdleFab();
         }
 
         /* ---------- STEP CONSOLE (admin) ---------- */
         function refreshBiddingGate(player) {
-            const stepPut = $('stepPutOnBlock'), stepOpen = $('stepOpenBidding'), stepGavel = $('stepGavel'), stepUnsold = $('btnMarkUnsold');
-            if (!stepPut) return;
-            stepPut.querySelector('.txt span').textContent = player ? `On the block: ${player.ign || player.real_name}` : 'Pick a player below to bring on stage';
-            stepPut.classList.toggle('done', !!player);
+            const stepOpen = $('stepOpenBidding'), stepGavel = $('stepGavel'), stepUnsold = $('btnMarkUnsold'), jumpHint = $('finderJumpHint');
+            if (!stepOpen) return;
+            if (jumpHint) jumpHint.classList.toggle('show', !player);
             if (!player) {
                 stepOpen.disabled = true; stepOpen.classList.add('locked'); stepOpen.classList.remove('ready', 'done');
                 stepGavel.disabled = true; stepGavel.classList.add('locked'); stepGavel.classList.remove('ready');
@@ -5660,17 +5778,26 @@
                 stepUnsold.disabled = false; stepUnsold.classList.remove('locked');
             }
         }
-        $('stepOpenBidding')?.addEventListener('click', () => {
-            const player = playersCache[stateCache?.current_player_id]; if (!player) return;
+        // Admin taps "Open bidding" → everyone sees a 3-second countdown, then
+        // paddles unlock for all captains at the same moment.
+        function openBiddingNow(player) {
+            if (stateCache?.current_player_id !== player.id) return; // lot changed mid-countdown — abort
             biddingLocked = false;
+            lastBidActivityAt = Date.now(); // idle-FAB clock starts counting from here
             broadcastChannel?.send({ type: 'broadcast', event: 'bidding_open', payload: { playerId: player.id } });
             refreshBiddingGate(player); renderCaptainPanel();
             broadcastToast(`🔓 Bidding is open for ${player.ign || player.real_name}!`, 'success');
             pushWire(`Bidding opened for <b>${player.ign || player.real_name}</b>`);
             broadcastChannel?.send({ type: 'broadcast', event: 'wire', payload: { msg: `Bidding opened for <b>${player.ign || player.real_name}</b>` } });
-            speak('Bidding is now open!');
+        }
+        $('stepOpenBidding')?.addEventListener('click', () => {
+            const player = playersCache[stateCache?.current_player_id]; if (!player) return;
+            const btn = $('stepOpenBidding'); btn.disabled = true;
+            const targetTs = Date.now() + 3000;
+            broadcastChannel?.send({ type: 'broadcast', event: 'bid_open_countdown', payload: { playerId: player.id, targetTs } });
+            startCountdownDisplay(targetTs, 'Bidding opens in', 0);
+            setTimeout(() => openBiddingNow(player), 3000);
         });
-        $('stepPutOnBlock')?.addEventListener('click', () => { document.getElementById('adminFinderSearch').focus(); document.getElementById('finderList').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
 
         function syncMiniStage(player, s) {
             [{ p: 'capMiniPhoto', n: 'capMiniName', sub: 'capMiniSub', bid: 'capMiniBid', lead: 'capMiniLead' },
@@ -5941,40 +6068,40 @@
             setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 1500);
         }
         let gavelStep = 0;
-        $('stepGavel')?.addEventListener('click', async () => {
+        async function gavelTap() {
+            lastBidActivityAt = Date.now(); // each step re-arms its own 10s wait before floating again
             const bidder = stateCache?.current_bid_team_id; const btn = $('stepGavel'); const txt = $('stepGavelTxt');
             if (gavelStep === 0) {
-                gavelStep = 1; txt.innerHTML = `<b>Going once…</b><span>Tap again for twice</span>`;
+                gavelStep = 1; if (txt) txt.innerHTML = `<b>Going once…</b><span>Tap again for twice</span>`;
                 renderGavelBanner('once', bidder, true); broadcastChannel?.send({ type: 'broadcast', event: 'gavel_step', payload: { step: 'once', bidder } });
                 speak(bidder ? `Going once to ${bidder}` : 'Going once');
             } else if (gavelStep === 1) {
-                gavelStep = 2; txt.innerHTML = `<b>Going twice…</b><span>Tap again to SELL</span>`;
+                gavelStep = 2; if (txt) txt.innerHTML = `<b>Going twice…</b><span>Tap again to SELL</span>`;
                 renderGavelBanner('twice', bidder, true); broadcastChannel?.send({ type: 'broadcast', event: 'gavel_step', payload: { step: 'twice', bidder } });
                 speak(bidder ? `Going twice to ${bidder}` : 'Going twice');
             } else {
-                txt.innerHTML = `<b>🔨 SOLD!</b><span>Locking it in…</span>`;
+                if (txt) txt.innerHTML = `<b>🔨 SOLD!</b><span>Locking it in…</span>`;
                 renderGavelBanner('reset'); broadcastChannel?.send({ type: 'broadcast', event: 'gavel_step', payload: { step: 'reset' } });
                 speak('Sold!');
                 await markSoldFlow();
                 gavelStep = 0;
-                setTimeout(() => { txt.innerHTML = `<b>Call it</b><span>Once → Twice → Sold</span>`; }, 1200);
+                setTimeout(() => { if (txt) txt.innerHTML = `<b>Call it</b><span>Once → Twice → Sold</span>`; }, 1200);
             }
-        });
-        $('btnMarkUnsold').addEventListener('click', async () => {
+            refreshIdleFab();
+        }
+        async function unsoldTap() {
             const player = playersCache[stateCache?.current_player_id];
             if (await callAdminRpc('ffxipl_s12_mark_unsold')) {
                 broadcastToast(`❌ ${player?.ign || player?.real_name || 'Player'} went unsold — no bids received.`, 'error');
                 pushWire(`<b>UNSOLD</b> — ${player?.ign || player?.real_name || 'Player'}`);
                 speak('Unsold!');
             }
-        });
+            refreshIdleFab();
+        }
+        $('stepGavel')?.addEventListener('click', gavelTap);
+        $('btnMarkUnsold').addEventListener('click', unsoldTap);
         $('btnVoidBid').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_void_bid')) broadcastToast('↩ The current bid was cleared by the auctioneer.', null); });
         $('btnClearStage').addEventListener('click', async () => { if (await callAdminRpc('ffxipl_s12_clear_stage')) broadcastToast('🧹 Stage cleared.', null); });
-        $('confettiToggleSwitch')?.addEventListener('click', () => {
-            if (!isAdmin) { toast('Admin sign-in required.', 'error'); return; }
-            setConfettiEnabled(!confettiEnabled, true);
-            toast(confettiEnabled ? '🎉 Confetti FX turned on for everyone.' : '🚫 Confetti FX turned off for everyone.', 'success');
-        });
 
         async function putPlayerOnBlock(playerId) {
             const p = playersCache[playerId]; const activeRound = stateCache?.current_round;
@@ -6015,23 +6142,19 @@
                 if (ok) broadcastToast(`↩ ${p.ign || p.real_name}'s sale was undone — back in the pool.`, null);
             };
         }
-        document.querySelectorAll('[data-start-round]').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const roundNum = parseInt(btn.dataset.startRound, 10);
-                const prevDone = roundNum === 1 || decidedCountForRound(roundNum - 1) >= ROUND_SIZE;
-                if (!prevDone) { toast(`Round ${roundNum - 1} must finish (all ${ROUND_SIZE} decided) before Round ${roundNum} can start.`, 'error'); return; }
-                const ok = await callAdminRpc('ffxipl_s12_start_round_countdown', { p_round: roundNum });
-                if (ok) {
-                    broadcastToast(`⏱️ Round ${roundNum} is starting!`, 'success');
-                    // speak the announcement — realtime update will handle the countdown numbers
-                    speak(`Round ${roundNum} begins! Captains, get ready to bid!`);
-                }
-            });
+        $('btnStartNextRound')?.addEventListener('click', async () => {
+            const btn = $('btnStartNextRound');
+            const roundNum = parseInt(btn.dataset.round, 10);
+            if (!roundNum) return;
+            const prevDone = roundNum === 1 || decidedCountForRound(roundNum - 1) >= ROUND_SIZE;
+            if (!prevDone) { toast(`Round ${roundNum - 1} must finish (all ${ROUND_SIZE} decided) before Round ${roundNum} can start.`, 'error'); return; }
+            const ok = await callAdminRpc('ffxipl_s12_start_round_countdown', { p_round: roundNum });
+            if (ok) broadcastToast(`⏱️ Round ${roundNum} is starting!`, 'success');
         });
 
         /* ---------- ADMIN: PLAYER FINDER (tier tabs, swipe across 4 tiers + a vertical
            list of that tier's players — easier to scan than one long flat list) ---------- */
-        let finderQuery = '', finderTier = '';
+        let finderQuery = '', finderTier = 'top10';
         document.querySelectorAll('.tier-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tier-tab').forEach(t => t.classList.remove('active'));
@@ -6354,6 +6477,45 @@
             function spawn() { const el=document.createElement('div'); el.style.cssText=`position:absolute;font-size:${20+Math.random()*24}px;left:${Math.random()*100}%;animation:_floatUp ${6+Math.random()*8}s linear ${Math.random()*3}s both;`; el.textContent=EM[Math.floor(Math.random()*EM.length)]; c.appendChild(el); setTimeout(()=>el.remove(),(12+Math.random()*8)*1000); }
             for (let i=0;i<14;i++) setTimeout(spawn,i*300);
         }
+
+        /* ---------- IDLE GAVEL FAB ----------
+           Admin-only nudge: if a lot has been sitting open for 10s with no new
+           bid (or the lot never got a single bid), and the admin is actually
+           looking at the TV section right now, float a big call-it button so
+           they don't have to scroll down to the console. Disappears the moment
+           a new bid lands, the lot changes, or the admin scrolls away. */
+        const IDLE_GAVEL_SECONDS = 10;
+        const stageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(en => { stageInView = en.isIntersecting; });
+            refreshIdleFab();
+        }, { threshold: 0.4 });
+        const _stageEl = $('stageSection');
+        if (_stageEl) stageObserver.observe(_stageEl);
+
+        function refreshIdleFab() {
+            const fab = $('idleGavelFab'); if (!fab) return;
+            const player = playersCache[stateCache?.current_player_id];
+            const eligible = isAdmin && stageInView && player && !biddingLocked && lastBidActivityAt
+                && (Date.now() - lastBidActivityAt >= IDLE_GAVEL_SECONDS * 1000);
+            if (!eligible) { fab.style.display = 'none'; return; }
+            const hasBid = stateCache?.current_bid !== null && stateCache?.current_bid !== undefined;
+            if (!hasBid) {
+                fab.className = 'idle-gavel-fab unsold-flavor';
+                fab.textContent = `✕ No bids yet — Mark ${player.ign || player.real_name} Unsold`;
+                fab.onclick = () => { fab.style.display = 'none'; unsoldTap(); };
+            } else {
+                const bidder = stateCache?.current_bid_team_id;
+                fab.className = 'idle-gavel-fab';
+                if (gavelStep === 0) fab.textContent = `⚒️ Going once — ${bidder}?`;
+                else if (gavelStep === 1) fab.textContent = `⚒️ Going twice — ${bidder}?`;
+                else fab.textContent = `🔨 SOLD to ${bidder}?`;
+                fab.onclick = () => gavelTap();
+            }
+            fab.style.display = 'block';
+        }
+        // Runs once a second — cheap, and it's the only reliable way to notice
+        // "10 seconds of silence have now passed" without a bid or scroll event.
+        setInterval(refreshIdleFab, 1000);
 
         /* ---------- AUTO-REFRESH (data-only, no page reload) ----------
            Re-pulls teams/players/state on a timer as a safety net alongside
