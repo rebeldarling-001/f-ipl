@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FREEFIREXIPL SEASON 12 — Cinematic Esports Trailer</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            gold: '#FFD700',
+                            red: '#FF1E27',
+                            orange: '#FF5722',
+                            cyan: '#00F0FF',
+                            purple: '#A855F7',
+                            dark: '#08080C',
+                            card: '#10121A'
+                        },
+                        team: {
+                            rcb: '#E31E24',
+                            csk: '#FCCA06',
+                            mi: '#004BA0',
+                            dc: '#00008B',
+                            kkr: '#3A225D',
+                            srh: '#F26522',
+                            rr: '#EA1A85',
+                            pbks: '#DD1F2D'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #030305;
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050508;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff1e27;
+            border-radius: 2px;
+        }
+
+        /* Cinematic Letterbox Bars */
+        .letterbox-top, .letterbox-bottom {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            height: 3.5vh;
+            background: #000000;
+            z-index: 90;
+            pointer-events: none;
+            box-shadow: 0 0 25px rgba(0,0,0,0.95);
+        }
+        .letterbox-top { top: 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .letterbox-bottom { bottom: 0; border-top: 1px solid rgba(255,255,255,0.06); }
+
+        /* Canvas Particle Layer */
+        #fx-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Glow Text Utilities */
+        .text-glow-red { text-shadow: 0 0 12px rgba(255, 30, 39, 0.9), 0 0 35px rgba(255, 30, 39, 0.5); }
+        .text-glow-gold { text-shadow: 0 0 14px rgba(255, 215, 0, 0.95), 0 0 40px rgba(255, 215, 0, 0.6); }
+        .text-glow-cyan { text-shadow: 0 0 12px rgba(0, 240, 255, 0.9), 0 0 30px rgba(0, 240, 255, 0.5); }
+
+        /* Glassmorphism Styling */
+        .glass-card {
+            background: rgba(16, 18, 26, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85);
+        }
+
+        /* Screen Shake Animation on Big Events */
+        @keyframes screen-shake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-4px, 3px) rotate(-1deg); }
+            40% { transform: translate(4px, -3px) rotate(1deg); }
+            60% { transform: translate(-3px, -2px) rotate(0deg); }
+            80% { transform: translate(3px, 2px) rotate(1deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        .animate-shake {
+            animation: screen-shake 0.4s ease-in-out;
+        }
+
+        /* Pulse glow for active elements */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 30, 39, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(255, 30, 39, 0.8); }
+        }
+        .pulse-border-red {
+            animation: pulse-glow 2.5s infinite;
+        }
+
+        .scene-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 3.5rem 1rem;
+            opacity: 0.1;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scene-section.active-scene {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Timeline Dot Indicator */
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        .nav-dot.active {
+            background-color: #ff1e27;
+            box-shadow: 0 0 12px #ff1e27;
+            transform: scale(1.5);
+        }
+
+        /* Parachute Drop Floating */
+        @keyframes float-drop {
+            0% { transform: translateY(-12px) rotate(-1.5deg); }
+            50% { transform: translateY(12px) rotate(1.5deg); }
+            100% { transform: translateY(-12px) rotate(-1.5deg); }
+        }
+        .animate-float-drop {
+            animation: float-drop 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-black text-white relative">
+
+    <!-- Cinematic Letterbox Borders -->
+    <div class="letterbox-top"></div>
+    <div class="letterbox-bottom"></div>
+
+    <!-- Interactive Canvas Particles -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- Top Floating HUD Controls -->
+    <div class="fixed top-5 left-4 right-4 z-[100] flex justify-between items-center pointer-events-auto">
+        <!-- Brand Badge -->
+        <div class="flex items-center gap-2.5 glass-card px-3 py-1.5 rounded-full border border-white/10">
+            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-brand-red to-black flex items-center justify-center font-orbitron font-black text-white text-xs border border-brand-red/50">
+                S12
+            </div>
+            <div>
+                <div class="font-orbitron font-black text-xs tracking-wider text-white">FREEFIRE<span class="text-brand-red">X</span>IPL</div>
+                <div class="text-[8px] font-orbitron uppercase text-brand-gold tracking-widest hidden sm:block">Trailer Experience</div>
+            </div>
+        </div>
+
+        <!-- Audio & Register Actions -->
+        <div class="flex items-center gap-2">
+            <button id="sound-toggle" class="glass-card w-9 h-9 sm:w-auto sm:px-3 rounded-full flex items-center justify-center gap-2 border border-brand-red/40 hover:border-brand-red transition-all cursor-pointer">
+                <i id="sound-icon" class="fa-solid fa-volume-xmark text-brand-red text-xs"></i>
+                <span id="sound-text" class="hidden sm:inline font-orbitron text-[10px] tracking-widest font-bold">AUDIO: OFF</span>
+            </button>
+            <button onclick="openRegModal()" class="bg-gradient-to-r from-brand-red to-orange-600 hover:from-red-600 hover:to-orange-500 px-4 py-2 rounded-full font-orbitron text-[11px] font-black tracking-wider uppercase shadow-lg shadow-brand-red/40 active:scale-95 transition-all">
+                REGISTER ₹12
+            </button>
+        </div>
+    </div>
+
+    <!-- Timeline Progress Dots (Right side Desktop, Bottom Mobile) -->
+    <div class="fixed right-3 top-1/2 -translate-y-1/2 z-[80] hidden md:flex flex-col gap-2">
+        <div id="nav-dots-container" class="flex flex-col gap-2">
+            <!-- Dynamic Dots inserted by JS -->
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MAIN STORY EXPERIENCE
+         ========================================== -->
+    <main id="story-container" class="relative z-10">
+
+        <!-- SCENE 1: THE BEGINNING -->
+        <section id="scene-1" class="scene-section active-scene flex-col text-center min-h-screen justify-center">
+            <div class="max-w-4xl mx-auto px-2 relative z-10">
+                <p id="s1-tagline" class="font-cinzel text-base sm:text-2xl tracking-[0.25em] text-gray-400 mb-6 opacity-0 transition-all duration-1000">
+                    EVERY CHAMPION HAS A BEGINNING.
+                </p>
+                <div id="s1-title" class="opacity-0 transition-all duration-1000 transform scale-90">
+                    <h1 class="font-orbitron font-black text-4xl sm:text-7xl md:text-8xl tracking-tight text-white uppercase text-glow-red">
+                        FREEFIRE<span class="text-brand-red">X</span>IPL
+                    </h1>
+                    <div class="font-orbitron font-black text-xl sm:text-4xl tracking-[0.4em] text-brand-gold mt-1">
+                        SEASON 12
+                    </div>
+                </div>
+                <div id="s1-subtitle" class="mt-6 space-y-3 opacity-0 transition-all duration-1000 delay-300">
+                    <div class="font-rajdhani font-extrabold text-lg sm:text-2xl tracking-[0.2em] text-gray-200 uppercase">
+                        "THE ROAD TO THE CUP"
+                    </div>
+                    <div class="inline-block glass-card px-4 py-1.5 rounded-full border border-brand-red/40 font-orbitron text-[10px] sm:text-xs text-brand-cyan tracking-widest mt-2">
+                        8 TEAMS • 40 PLAYERS • ONE CHAMPION
+                    </div>
+                </div>
+                
+                <div class="mt-12 animate-bounce text-gray-500 font-orbitron text-[10px] tracking-widest">
+                    <p class="mb-1 uppercase">SWIPE OR SCROLL TO ENTER</p>
+                    <i class="fa-solid fa-chevron-down text-brand-red text-sm"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 2: WHAT IS FREEFIREXIPL? -->
+        <section id="scene-2" class="scene-section flex-col text-center">
+            <div class="max-w-5xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] sm:text-xs tracking-[0.3em] uppercase mb-1">SCENE 02 // IDENTITY</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white tracking-wide uppercase mb-1">
+                    THIS IS NOT JUST A TOURNAMENT.
+                </h2>
+                <div class="font-cinzel text-xl sm:text-3xl text-brand-gold tracking-widest font-bold mb-6">
+                    THIS IS A FRANCHISE LEAGUE.
+                </div>
+
+                <!-- 8 IPL Franchises Interactive Mobile Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mt-4">
+                    <!-- RCB -->
+                    <div onclick="selectFranchise('RCB')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-team-rcb hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-team-rcb font-orbitron font-black text-xl sm:text-2xl">RCB</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">ROYAL CHALLENGERS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-team-rcb bg-team-rcb/10 py-0.5 rounded font-orbitron font-bold">RED WARRIORS</div>
+                    </div>
+                    <!-- CSK -->
+                    <div onclick="selectFranchise('CSK')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-team-csk hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-team-csk font-orbitron font-black text-xl sm:text-2xl">CSK</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">SUPER KINGS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-team-csk bg-team-csk/10 py-0.5 rounded font-orbitron font-bold">YELLOW PRIDE</div>
+                    </div>
+                    <!-- MI -->
+                    <div onclick="selectFranchise('MI')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-team-mi hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-team-mi font-orbitron font-black text-xl sm:text-2xl">MI</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">MUMBAI INDIANS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-team-mi bg-team-mi/10 py-0.5 rounded font-orbitron font-bold">BLUE LEGION</div>
+                    </div>
+                    <!-- DC -->
+                    <div onclick="selectFranchise('DC')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-team-dc hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-blue-400 font-orbitron font-black text-xl sm:text-2xl">DC</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">DELHI CAPITALS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-blue-400 bg-blue-900/20 py-0.5 rounded font-orbitron font-bold">ROAR AGAIN</div>
+                    </div>
+                    <!-- KKR -->
+                    <div onclick="selectFranchise('KKR')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-purple-500 hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-purple-400 font-orbitron font-black text-xl sm:text-2xl">KKR</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">KNIGHT RIDERS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-purple-400 bg-purple-950/40 py-0.5 rounded font-orbitron font-bold">PURPLE KNIGHTS</div>
+                    </div>
+                    <!-- SRH -->
+                    <div onclick="selectFranchise('SRH')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-team-srh hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-team-srh font-orbitron font-black text-xl sm:text-2xl">SRH</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">SUNRISERS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-team-srh bg-team-srh/10 py-0.5 rounded font-orbitron font-bold">ORANGE ARMY</div>
+                    </div>
+                    <!-- RR -->
+                    <div onclick="selectFranchise('RR')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-team-rr hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-team-rr font-orbitron font-black text-xl sm:text-2xl">RR</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">ROYALS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-team-rr bg-team-rr/10 py-0.5 rounded font-orbitron font-bold">PINK ROYALS</div>
+                    </div>
+                    <!-- PBKS -->
+                    <div onclick="selectFranchise('PBKS')" class="glass-card p-3 sm:p-4 rounded-xl border-t-2 border-team-pbks hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                        <div class="text-team-pbks font-orbitron font-black text-xl sm:text-2xl">PBKS</div>
+                        <div class="text-[9px] sm:text-[11px] text-gray-400">PUNJAB KINGS</div>
+                        <div class="mt-2 text-[8px] sm:text-[10px] text-team-pbks bg-team-pbks/10 py-0.5 rounded font-orbitron font-bold">RED LIONS</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 3: 40 PLAYERS -->
+        <section id="scene-3" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 03 // CONTENDERS</div>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white tracking-wider mb-1">
+                    40 PLAYERS.
+                </h2>
+                <div class="font-cinzel text-base sm:text-2xl text-brand-cyan tracking-widest font-semibold mb-6">
+                    ONE CHANCE. PROVE YOURSELF.
+                </div>
+
+                <!-- Silhouettes Interactive Scouting Module -->
+                <div class="glass-card p-4 sm:p-6 rounded-2xl border border-gray-800 relative">
+                    <div class="text-[10px] font-orbitron text-gray-400 mb-3 uppercase tracking-widest">
+                        <i class="fa-solid fa-radar text-brand-red mr-1 animate-pulse"></i> TAP PLAYER SLOT TO INSPECT PRO-CARD
+                    </div>
+                    <div class="grid grid-cols-5 sm:grid-cols-10 gap-2 max-h-56 overflow-y-auto p-1" id="silhouettes-grid">
+                        <!-- Dynamic Player Nodes -->
+                    </div>
+
+                    <!-- Selected Player Card Viewer -->
+                    <div id="player-card-preview" class="mt-4 bg-black/70 border border-brand-red/40 p-3.5 rounded-xl flex items-center justify-between text-left">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-brand-red/20 border border-brand-red flex items-center justify-center font-orbitron font-black text-brand-red text-sm" id="card-num">
+                                #01
+                            </div>
+                            <div>
+                                <div class="font-orbitron font-extrabold text-white text-sm" id="card-ign">RAJxOP</div>
+                                <div class="text-[10px] text-gray-400 font-rajdhani" id="card-role">RUSH-SPECIALIST • 18 KILLS</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-[9px] font-orbitron text-gray-400 uppercase">TIER TARGET</div>
+                            <div class="text-brand-gold font-orbitron font-black text-xs" id="card-tier">TIER 1 (₹10 Cr)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 4: REGISTRATION -->
+        <section id="scene-4" class="scene-section flex-col text-center">
+            <div class="max-w-3xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 04 // ENTRY</div>
+                <div class="inline-block bg-brand-red/20 border border-brand-red px-3 py-0.5 rounded-full text-brand-red font-orbitron text-[10px] font-bold mb-3">
+                    STEP 01
+                </div>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white uppercase tracking-tight mb-2">
+                    REGISTER NOW.
+                </h2>
+                
+                <div class="glass-card p-5 sm:p-8 rounded-2xl border border-brand-red/40 my-4">
+                    <div class="text-brand-gold font-orbitron font-black text-4xl sm:text-6xl mb-1">
+                        ₹12 <span class="text-xs sm:text-sm font-rajdhani font-normal text-gray-300">ENTRY FEE</span>
+                    </div>
+                    <p class="text-gray-400 font-rajdhani text-xs sm:text-sm max-w-md mx-auto mb-6">
+                        Official tournament registration route. Submit your Free Fire UID to qualify for Play-Ins.
+                    </p>
+
+                    <!-- Interactive Process Tracker -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-left mb-6">
+                        <div class="bg-black/60 p-2.5 rounded-lg border border-gray-800">
+                            <div class="text-[9px] font-orbitron text-brand-red">01</div>
+                            <div class="font-orbitron font-bold text-xs text-white">REGISTER</div>
+                        </div>
+                        <div class="bg-black/60 p-2.5 rounded-lg border border-gray-800">
+                            <div class="text-[9px] font-orbitron text-brand-gold">02</div>
+                            <div class="font-orbitron font-bold text-xs text-white">SUBMIT</div>
+                        </div>
+                        <div class="bg-black/60 p-2.5 rounded-lg border border-gray-800">
+                            <div class="text-[9px] font-orbitron text-brand-cyan">03</div>
+                            <div class="font-orbitron font-bold text-xs text-white">VERIFY</div>
+                        </div>
+                        <div class="bg-black/60 p-2.5 rounded-lg border border-brand-cyan/50 bg-brand-cyan/10">
+                            <div class="text-[9px] font-orbitron text-brand-cyan">04</div>
+                            <div class="font-orbitron font-bold text-xs text-brand-cyan">APPROVED</div>
+                        </div>
+                    </div>
+
+                    <button onclick="openRegModal()" class="w-full bg-gradient-to-r from-brand-red to-orange-600 hover:from-red-600 hover:to-orange-500 py-3.5 rounded-xl font-orbitron font-extrabold text-xs sm:text-sm tracking-widest uppercase shadow-xl shadow-brand-red/30 cursor-pointer transition-all active:scale-95">
+                        <i class="fa-solid fa-gamepad mr-2"></i> CLAIM YOUR PLAY-IN SLOT
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 5: PLAY-INS INTERACTIVE SIMULATOR -->
+        <section id="scene-5" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 05 // THE DROP</div>
+                <div class="inline-block bg-brand-red/20 border border-brand-red px-3 py-0.5 rounded-full text-brand-red font-orbitron text-[10px] font-bold mb-3">
+                    STEP 02
+                </div>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white uppercase tracking-tight mb-1">
+                    PLAY-INS.
+                </h2>
+                <div class="font-cinzel text-base sm:text-xl text-brand-gold mb-6">
+                    3 DAYS • 9 MATCHES • 40 PLAYERS
+                </div>
+
+                <!-- Interactive Parachute Combat Simulation Block -->
+                <div class="glass-card p-5 rounded-2xl border border-gray-800 overflow-hidden mb-4">
+                    <div class="animate-float-drop text-brand-red text-5xl my-2">
+                        <i class="fa-solid fa-parachute-box"></i>
+                    </div>
+
+                    <div id="sim-feed" class="my-4 bg-black/80 border border-brand-red/30 p-3 rounded-xl font-orbitron text-xs text-left min-h-[70px] flex flex-col justify-center">
+                        <div class="text-brand-gold font-bold flex justify-between">
+                            <span><i class="fa-solid fa-crosshairs text-brand-red mr-1"></i> LIVE MATCH SIMULATOR</span>
+                            <span class="text-[9px] text-gray-400">BERMUDA MAP</span>
+                        </div>
+                        <div id="sim-text" class="text-gray-200 mt-1 font-rajdhani text-sm">
+                            Click "TRIGGER COMBAT SIM" to test Play-In battle encounters.
+                        </div>
+                    </div>
+
+                    <button onclick="triggerCombatSim()" class="w-full bg-brand-red/20 border border-brand-red hover:bg-brand-red text-white py-2.5 rounded-xl font-orbitron text-xs font-bold uppercase tracking-wider transition-all active:scale-95">
+                        <i class="fa-solid fa-bolt mr-1"></i> TRIGGER COMBAT SIM
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 6: THE RANKING -->
+        <section id="scene-6" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 06 // EVALUATION</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white uppercase tracking-tight mb-1">
+                    AFTER 9 BATTLES...
+                </h2>
+                <p class="font-cinzel text-base sm:text-xl text-brand-cyan mb-6">
+                    YOUR PERFORMANCE DECIDES YOUR VALUE.
+                </p>
+
+                <!-- Live Ranking Shifting Board -->
+                <div class="glass-card p-4 sm:p-6 rounded-2xl border border-gray-800 max-w-xl mx-auto text-left">
+                    <div class="font-orbitron text-xs font-bold text-gray-400 mb-3 flex justify-between">
+                        <span>PLAY-IN LEADERBOARD</span>
+                        <span class="text-brand-red animate-pulse">LIVE SYNC</span>
+                    </div>
+
+                    <div class="space-y-2 font-orbitron text-xs">
+                        <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/30 p-2.5 rounded-lg">
+                            <span class="text-brand-gold font-bold">#01 RAJxOP</span>
+                            <span class="text-gray-300">142 PTS</span>
+                            <span class="text-[10px] bg-brand-gold/20 text-brand-gold px-2 py-0.5 rounded font-black">TIER 1</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-800/40 p-2.5 rounded-lg border border-gray-700">
+                            <span class="text-gray-200 font-bold">#02 LEGEND_FF</span>
+                            <span class="text-gray-300">128 PTS</span>
+                            <span class="text-[10px] bg-brand-gold/20 text-brand-gold px-2 py-0.5 rounded font-black">TIER 1</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-800/40 p-2.5 rounded-lg border border-gray-700 opacity-80">
+                            <span class="text-gray-300 font-bold">#11 VIPER_X</span>
+                            <span class="text-gray-400">94 PTS</span>
+                            <span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded font-black">TIER 2</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-800/40 p-2.5 rounded-lg border border-gray-700 opacity-60">
+                            <span class="text-gray-400 font-bold">#21 SKULL_KING</span>
+                            <span class="text-gray-500">72 PTS</span>
+                            <span class="text-[10px] bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded font-black">TIER 3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 7: THE FOUR TIERS -->
+        <section id="scene-7" class="scene-section flex-col text-center">
+            <div class="max-w-5xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 07 // VALUATION</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white uppercase tracking-tight mb-1">
+                    THE FOUR TIERS
+                </h2>
+                <p class="font-cinzel text-sm sm:text-xl text-brand-gold mb-6">
+                    YOUR RANK BECOMES YOUR BASE PRICE IN THE AUCTION.
+                </p>
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+                    <!-- Tier 1 -->
+                    <div class="glass-card p-4 rounded-2xl border-t-4 border-brand-gold relative">
+                        <div class="text-brand-gold font-orbitron font-black text-[9px] uppercase tracking-widest mb-1">ELITE</div>
+                        <div class="font-orbitron font-black text-xl sm:text-2xl text-white mb-1">TIER 1</div>
+                        <div class="text-gray-400 text-[10px] font-orbitron mb-2">TOP 1 - 10</div>
+                        <div class="bg-brand-gold/10 border border-brand-gold/30 p-2 rounded-xl">
+                            <div class="text-[8px] text-gray-400 uppercase font-orbitron">BASE PRICE</div>
+                            <div class="text-brand-gold font-orbitron font-extrabold text-lg sm:text-xl">₹10 Cr</div>
+                        </div>
+                    </div>
+
+                    <!-- Tier 2 -->
+                    <div class="glass-card p-4 rounded-2xl border-t-4 border-brand-cyan relative">
+                        <div class="text-brand-cyan font-orbitron font-black text-[9px] uppercase tracking-widest mb-1">PRO</div>
+                        <div class="font-orbitron font-black text-xl sm:text-2xl text-white mb-1">TIER 2</div>
+                        <div class="text-gray-400 text-[10px] font-orbitron mb-2">TOP 11 - 20</div>
+                        <div class="bg-brand-cyan/10 border border-brand-cyan/30 p-2 rounded-xl">
+                            <div class="text-[8px] text-gray-400 uppercase font-orbitron">BASE PRICE</div>
+                            <div class="text-brand-cyan font-orbitron font-extrabold text-lg sm:text-xl">₹6 Cr</div>
+                        </div>
+                    </div>
+
+                    <!-- Tier 3 -->
+                    <div class="glass-card p-4 rounded-2xl border-t-4 border-brand-orange relative">
+                        <div class="text-brand-orange font-orbitron font-black text-[9px] uppercase tracking-widest mb-1">CONTENDER</div>
+                        <div class="font-orbitron font-black text-xl sm:text-2xl text-white mb-1">TIER 3</div>
+                        <div class="text-gray-400 text-[10px] font-orbitron mb-2">TOP 21 - 30</div>
+                        <div class="bg-brand-orange/10 border border-brand-orange/30 p-2 rounded-xl">
+                            <div class="text-[8px] text-gray-400 uppercase font-orbitron">BASE PRICE</div>
+                            <div class="text-brand-orange font-orbitron font-extrabold text-lg sm:text-xl">₹4 Cr</div>
+                        </div>
+                    </div>
+
+                    <!-- Tier 4 -->
+                    <div class="glass-card p-4 rounded-2xl border-t-4 border-gray-500 relative">
+                        <div class="text-gray-400 font-orbitron font-black text-[9px] uppercase tracking-widest mb-1">CHALLENGER</div>
+                        <div class="font-orbitron font-black text-xl sm:text-2xl text-white mb-1">TIER 4</div>
+                        <div class="text-gray-400 text-[10px] font-orbitron mb-2">TOP 31 - 40</div>
+                        <div class="bg-gray-800/40 border border-gray-700 p-2 rounded-xl">
+                            <div class="text-[8px] text-gray-400 uppercase font-orbitron">BASE PRICE</div>
+                            <div class="text-white font-orbitron font-extrabold text-lg sm:text-xl">₹2 Cr</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 8: ULTRA-INTERACTIVE AUCTION ARENA (MOBILE REDESIGNED) -->
+        <section id="scene-8" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 08 // THE AUCTION</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white uppercase tracking-tight mb-1">
+                    PLAYER AUCTION ARENA
+                </h2>
+                <p class="font-cinzel text-xs sm:text-base text-brand-gold mb-4">
+                    8 FRANCHISES • ₹100 Cr PURSE EACH
+                </p>
+
+                <!-- Interactive Auction Machine Module -->
+                <div id="auction-stage-container" class="glass-card p-4 sm:p-6 rounded-2xl border border-brand-gold/40 text-left relative overflow-hidden transition-all">
+                    <!-- Player Header Banner -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 border-b border-gray-800 pb-3 mb-4">
+                        <div>
+                            <div class="text-[9px] text-gray-400 font-orbitron">PLAYER IGN</div>
+                            <div class="font-orbitron font-black text-lg text-brand-red">RAJxOP</div>
+                        </div>
+                        <div>
+                            <div class="text-[9px] text-gray-400 font-orbitron">PLAY-IN RANK</div>
+                            <div class="font-orbitron font-extrabold text-sm text-white">#01 (TIER 1)</div>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <div class="text-[9px] text-gray-400 font-orbitron">BASE PRICE</div>
+                            <div class="text-brand-gold font-orbitron font-black text-sm">₹10 Cr</div>
+                        </div>
+                    </div>
+
+                    <!-- Live Bidding Visual Screen -->
+                    <div class="text-center py-5 bg-black/80 rounded-xl border border-gray-800 mb-4 relative overflow-hidden">
+                        <div class="text-[10px] font-orbitron text-gray-400 mb-1">CURRENT HIGHEST BID</div>
+                        <div id="auction-bid-price" class="font-orbitron font-black text-4xl sm:text-6xl text-brand-gold text-glow-gold">
+                            ₹10 Cr
+                        </div>
+                        <div id="auction-winning-team" class="font-orbitron text-xs sm:text-sm text-team-rcb mt-1 font-black uppercase tracking-widest">
+                            ROYAL CHALLENGERS BENGALURU
+                        </div>
+
+                        <!-- SOLD OVERLAY STAMP -->
+                        <div id="auction-sold-stamp" class="hidden absolute inset-0 bg-red-950/95 border-4 border-brand-red flex flex-col items-center justify-center transform -rotate-6 transition-all z-20">
+                            <span class="font-orbitron font-black text-4xl sm:text-6xl text-white tracking-widest text-glow-red">
+                                SOLD!
+                            </span>
+                            <span id="sold-details-text" class="font-orbitron text-xs text-brand-gold mt-1 font-bold">
+                                SOLD TO RCB FOR ₹24 Cr
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Auto & Manual Bidding Toggle Bar -->
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <button onclick="runAutoAuctionSim()" class="flex-1 bg-gradient-to-r from-brand-red to-orange-600 text-white py-2.5 rounded-lg font-orbitron text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all">
+                            <i class="fa-solid fa-play mr-1"></i> SIMULATE LIVE WAR
+                        </button>
+                        <button onclick="resetAuctionStage()" class="glass-card border border-gray-700 px-3 py-2.5 rounded-lg font-orbitron text-[10px] text-gray-300 uppercase">
+                            <i class="fa-solid fa-rotate-right"></i> RESET
+                        </button>
+                    </div>
+
+                    <!-- Quick Franchise Manual Bid Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <button onclick="manualBid('RCB', 2)" class="bg-team-rcb/20 border border-team-rcb text-white py-2 rounded font-orbitron text-[10px] font-bold active:scale-95">
+                            RCB +₹2 Cr
+                        </button>
+                        <button onclick="manualBid('CSK', 4)" class="bg-team-csk/20 border border-team-csk text-white py-2 rounded font-orbitron text-[10px] font-bold active:scale-95">
+                            CSK +₹4 Cr
+                        </button>
+                        <button onclick="manualBid('MI', 6)" class="bg-team-mi/20 border border-team-mi text-white py-2 rounded font-orbitron text-[10px] font-bold active:scale-95">
+                            MI +₹6 Cr
+                        </button>
+                        <button onclick="manualBid('KKR', 8)" class="bg-purple-900/30 border border-purple-500 text-white py-2 rounded font-orbitron text-[10px] font-bold active:scale-95">
+                            KKR +₹8 Cr
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 9: THE FRANCHISE -->
+        <section id="scene-9" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 09 // SQUAD FORMATION</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white uppercase tracking-tight mb-1">
+                    YOU'RE NO LONGER FIGHTING ALONE.
+                </h2>
+                <p class="font-cinzel text-xs sm:text-base text-brand-cyan mb-6">
+                    8 FRANCHISES • 5 PLAYERS EACH • ONE TEAM
+                </p>
+
+                <!-- 5 Player Squad Mobile Visualizer -->
+                <div class="glass-card p-6 rounded-2xl border border-gray-800">
+                    <div class="flex justify-center items-end gap-2 sm:gap-4 py-4">
+                        <div class="flex flex-col items-center">
+                            <i class="fa-solid fa-user-ninja text-2xl sm:text-4xl text-gray-600"></i>
+                            <span class="text-[8px] font-orbitron text-gray-500 mt-1">P1</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fa-solid fa-user-ninja text-3xl sm:text-5xl text-gray-400"></i>
+                            <span class="text-[8px] font-orbitron text-gray-400 mt-1">P2</span>
+                        </div>
+                        <div class="flex flex-col items-center scale-110 mx-1">
+                            <i class="fa-solid fa-crown text-brand-gold text-[10px] mb-0.5"></i>
+                            <i class="fa-solid fa-user-shield text-4xl sm:text-6xl text-brand-red text-glow-red"></i>
+                            <span class="text-[8px] font-orbitron text-brand-gold font-bold mt-1">YOU (CAP)</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fa-solid fa-user-ninja text-3xl sm:text-5xl text-gray-400"></i>
+                            <span class="text-[8px] font-orbitron text-gray-400 mt-1">P4</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fa-solid fa-user-ninja text-2xl sm:text-4xl text-gray-600"></i>
+                            <span class="text-[8px] font-orbitron text-gray-500 mt-1">P5</span>
+                        </div>
+                    </div>
+                    <div class="font-orbitron font-extrabold text-xs text-gray-300 mt-2 uppercase tracking-widest">
+                        YOUR TEAM AWAITS YOUR ORDERS.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 10: THE MAIN SEASON -->
+        <section id="scene-10" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 10 // LEAGUE LEGS</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white uppercase tracking-tight mb-1">
+                    THE MAIN SEASON BEGINS.
+                </h2>
+                <div class="font-cinzel text-sm sm:text-xl text-brand-gold mb-6">
+                    14 MATCHES PER TEAM • WIN = 2 POINTS
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div class="glass-card p-3 rounded-xl border border-gray-800">
+                        <i class="fa-solid fa-parachute-box text-brand-red text-xl mb-1"></i>
+                        <div class="font-orbitron font-bold text-[10px] text-white">TACTICAL DROPS</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-gray-800">
+                        <i class="fa-solid fa-crosshairs text-brand-gold text-xl mb-1"></i>
+                        <div class="font-orbitron font-bold text-[10px] text-white">FIRE FIGHTS</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-gray-800">
+                        <i class="fa-solid fa-shield-halved text-brand-cyan text-xl mb-1"></i>
+                        <div class="font-orbitron font-bold text-[10px] text-white">CLUTCH MOMENTS</div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-gray-800">
+                        <i class="fa-solid fa-trophy text-yellow-500 text-xl mb-1"></i>
+                        <div class="font-orbitron font-bold text-[10px] text-white">BOOYAH DOMINANCE</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 11: DYNAMIC STANDINGS LADDER -->
+        <section id="scene-11" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 11 // THE RACE</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white uppercase tracking-tight mb-1">
+                    EVERY MATCH CHANGES THE RACE.
+                </h2>
+                <p class="font-cinzel text-xs sm:text-lg text-brand-red font-bold mb-4">
+                    ONLY TOP 5 SURVIVE TO PLAYOFFS.
+                </p>
+
+                <!-- Points Table Ladder Module -->
+                <div class="glass-card p-4 rounded-2xl border border-gray-800 text-left">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] font-orbitron text-gray-400">POINTS TABLE LADDER</span>
+                        <button onclick="shuffleStandings()" class="bg-brand-red/20 border border-brand-red text-brand-red text-[9px] font-orbitron px-2.5 py-1 rounded font-bold">
+                            <i class="fa-solid fa-shuffle mr-1"></i> SIMULATE MATCH
+                        </button>
+                    </div>
+
+                    <div class="space-y-1.5 font-orbitron text-xs" id="points-ladder">
+                        <!-- Dynamic Standings Rows -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 12: PLAYOFF BRACKET VISUALIZER -->
+        <section id="scene-12" class="scene-section flex-col text-center">
+            <div class="max-w-5xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 12 // KNOCKOUTS</div>
+                <h2 class="font-orbitron font-black text-2xl sm:text-4xl text-white uppercase tracking-tight mb-1">
+                    THE PLAYOFF BRACKET
+                </h2>
+                <p class="font-cinzel text-xs sm:text-base text-brand-gold mb-6">
+                    NO SECOND CHANCES. WIN OR GO HOME.
+                </p>
+
+                <div class="glass-card p-4 sm:p-6 rounded-2xl border border-gray-800 text-left font-orbitron text-xs">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="space-y-3">
+                            <div class="bg-black/60 p-3 rounded-lg border border-brand-gold/40">
+                                <div class="text-[9px] text-brand-gold font-bold">QUALIFIER 1</div>
+                                <div class="text-white font-bold mt-0.5 text-xs">#1 RCB vs #2 MI</div>
+                                <div class="text-[9px] text-gray-400 mt-0.5">Winner ➔ Grand Final</div>
+                            </div>
+                            <div class="bg-black/60 p-3 rounded-lg border border-red-800">
+                                <div class="text-[9px] text-brand-red font-bold">ELIMINATOR 1</div>
+                                <div class="text-white font-bold mt-0.5 text-xs">#4 KKR vs #5 SRH</div>
+                                <div class="text-[9px] text-gray-400 mt-0.5">Loser Eliminated</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 my-auto">
+                            <div class="bg-black/60 p-3 rounded-lg border border-brand-cyan/40">
+                                <div class="text-[9px] text-brand-cyan font-bold">QUALIFIER 2</div>
+                                <div class="text-white font-bold mt-0.5 text-xs">Loser Q1 vs Winner Elim 1</div>
+                                <div class="text-[9px] text-gray-400 mt-0.5">Winner ➔ Grand Final</div>
+                            </div>
+                        </div>
+
+                        <div class="my-auto">
+                            <div class="bg-gradient-to-r from-yellow-950/60 to-black p-4 rounded-xl border-2 border-brand-gold text-center">
+                                <i class="fa-solid fa-trophy text-brand-gold text-2xl mb-1 text-glow-gold"></i>
+                                <div class="text-brand-gold font-black text-xs">GRAND FINAL</div>
+                                <div class="text-white font-extrabold text-[10px] mt-0.5">WINNER Q1 vs WINNER Q2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 13: THE FINAL -->
+        <section id="scene-13" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 13 // ULTIMATE CLASH</div>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white uppercase tracking-tight mb-1">
+                    ONE FINAL BATTLE.
+                </h2>
+                <div class="font-cinzel text-lg sm:text-2xl text-brand-gold mb-6">
+                    ONE FINAL TEAM. ONE CHAMPION.
+                </div>
+
+                <div class="glass-card p-6 sm:p-8 rounded-2xl border-2 border-brand-red/60 relative overflow-hidden">
+                    <div class="font-orbitron font-black text-2xl sm:text-4xl text-white mb-1">
+                        CHAMPIONSHIP FINAL
+                    </div>
+                    <div class="text-brand-cyan font-orbitron font-bold text-xs tracking-widest uppercase">
+                        FREEFIREXIPL SEASON 12
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 14: THE PRIZE -->
+        <section id="scene-14" class="scene-section flex-col text-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 14 // REWARD</div>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white uppercase tracking-tight mb-1">
+                    ₹1,000 TOTAL PRIZE POOL
+                </h2>
+                <p class="font-cinzel text-sm sm:text-lg text-brand-gold mb-6">
+                    WHO WILL CLAIM THE CHAMPIONSHIP CUP?
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div class="glass-card p-4 rounded-xl border-t-4 border-brand-gold text-center">
+                        <div class="text-2xl text-brand-gold mb-1">🥇</div>
+                        <div class="font-orbitron font-black text-xl text-white">₹500</div>
+                        <div class="text-[9px] font-orbitron text-brand-gold mt-0.5">CHAMPION</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border-t-4 border-gray-400 text-center">
+                        <div class="text-2xl text-gray-300 mb-1">🥈</div>
+                        <div class="font-orbitron font-black text-xl text-white">₹300</div>
+                        <div class="text-[9px] font-orbitron text-gray-300 mt-0.5">RUNNER-UP</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border-t-4 border-amber-700 text-center">
+                        <div class="text-2xl text-amber-600 mb-1">🥉</div>
+                        <div class="font-orbitron font-black text-xl text-white">₹100</div>
+                        <div class="text-[9px] font-orbitron text-amber-600 mt-0.5">3RD PLACE</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border-t-4 border-brand-red text-center">
+                        <div class="text-2xl text-brand-red mb-1">🔥</div>
+                        <div class="font-orbitron font-black text-xl text-white">₹100</div>
+                        <div class="text-[9px] font-orbitron text-brand-red mt-0.5">MVP / KILLS</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 15: THE MVP -->
+        <section id="scene-15" class="scene-section flex-col text-center">
+            <div class="max-w-3xl mx-auto px-2 w-full">
+                <div class="font-orbitron text-brand-red text-[10px] tracking-[0.3em] uppercase mb-1">SCENE 15 // MVP</div>
+                <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white uppercase tracking-tight mb-1">
+                    MOST KILLS • MVP
+                </h2>
+                <div class="glass-card p-6 rounded-2xl border border-brand-red/50 mt-4">
+                    <i class="fa-solid fa-crosshairs text-4xl text-brand-red mb-2"></i>
+                    <div class="font-orbitron font-black text-3xl text-brand-gold">₹100 PRIZE</div>
+                    <div class="text-gray-300 font-rajdhani text-sm mt-1">Awarded to the top fragger with maximum kills across Season 12.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL SCENE & CTA -->
+        <section id="scene-final" class="scene-section flex-col text-center min-h-screen justify-center">
+            <div class="max-w-4xl mx-auto px-2 w-full">
+                <div class="text-brand-gold text-4xl sm:text-6xl mb-2">🏆</div>
+                <h2 class="font-cinzel text-lg sm:text-2xl text-gray-200 mb-1">WHO WILL LIFT THE CUP?</h2>
+                <h1 class="font-orbitron font-black text-4xl sm:text-6xl text-white uppercase text-glow-red mb-4">
+                    FREEFIRE<span class="text-brand-red">X</span>IPL S12
+                </h1>
+
+                <div class="flex flex-wrap justify-center gap-2 font-orbitron text-[9px] sm:text-xs font-bold text-gray-300 mb-6 uppercase tracking-widest">
+                    <span>REGISTER</span> • <span>PLAY</span> • <span>AUCTION</span> • <span>TEAM</span> • <span>FIGHT</span> • <span>WIN</span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                    <button onclick="openRegModal()" class="w-full sm:w-auto bg-gradient-to-r from-brand-red to-orange-600 hover:from-red-600 hover:to-orange-500 px-8 py-3.5 rounded-xl font-orbitron font-extrabold text-xs tracking-widest uppercase shadow-2xl shadow-brand-red/50 cursor-pointer active:scale-95 transition-all">
+                        <i class="fa-solid fa-fire mr-1"></i> REGISTER NOW (₹12)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- REGISTRATION MODAL -->
+    <div id="reg-modal" class="fixed inset-0 z-[120] bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full p-5 sm:p-7 rounded-2xl border border-brand-red/60 relative">
+            <button onclick="closeRegModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="font-orbitron font-black text-xl text-white mb-0.5 uppercase">OFFICIAL REGISTRATION</div>
+            <div class="text-[10px] font-orbitron text-brand-gold mb-4">ffxipl_s12_registrations // SUPABASE SYNCED</div>
+
+            <form id="reg-form" onsubmit="handleRegistration(event)" class="space-y-3 font-rajdhani">
+                <div>
+                    <label class="block text-[10px] font-orbitron text-gray-300 mb-1">REAL NAME</label>
+                    <input type="text" id="reg-name" required placeholder="Rahul Kumar" class="w-full bg-black/70 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-brand-red">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-orbitron text-gray-300 mb-1">FREE FIRE IGN (IN-GAME NAME)</label>
+                    <input type="text" id="reg-ign" required placeholder="RAJxOP" class="w-full bg-black/70 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-brand-red">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-orbitron text-gray-300 mb-1">FREE FIRE UID</label>
+                    <input type="number" id="reg-uid" required placeholder="1829304918" class="w-full bg-black/70 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-brand-red">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-orbitron text-gray-300 mb-1">WHATSAPP CONTACT</label>
+                    <input type="tel" id="reg-phone" required placeholder="+91 9876543210" class="w-full bg-black/70 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs outline-none focus:border-brand-red">
+                </div>
+                
+                <div class="bg-black/40 border border-brand-gold/30 p-2.5 rounded-lg flex justify-between items-center text-xs font-orbitron">
+                    <span class="text-gray-300">REGISTRATION FEE</span>
+                    <span class="text-brand-gold font-bold">₹12 ONLY</span>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-red to-orange-600 hover:from-red-600 hover:to-orange-500 py-3 rounded-xl font-orbitron font-extrabold text-xs tracking-widest uppercase text-white shadow-lg active:scale-95 transition-all">
+                    SUBMIT & PROCEED TO PAYMENT
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT ENGINE
+         ========================================== -->
+    <script>
+        // --- Canvas Particle System ---
+        const canvas = document.getElementById('fx-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class EmberParticle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = -Math.random() * 1.2 - 0.2;
+                this.alpha = Math.random() * 0.8 + 0.2;
+                this.color = Math.random() > 0.4 ? '#ff1e27' : '#ffd700';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha -= 0.003;
+                if (this.y < 0 || this.alpha <= 0) {
+                    this.reset();
+                    this.y = canvas.height + 10;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const particleList = Array.from({ length: 50 }, () => new EmberParticle());
+        function renderFX() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particleList.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(renderFX);
+        }
+        renderFX();
+
+        // --- Web Audio Synthesizer Engine ---
+        let audioCtx = null;
+        let soundEnabled = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playBassDrop() {
+            if (!soundEnabled || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.8);
+            gain.gain.setValueAtTime(0.7, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.8);
+        }
+
+        function playGavelStrike() {
+            if (!soundEnabled || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(45, audioCtx.currentTime + 0.25);
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.25);
+        }
+
+        document.getElementById('sound-toggle').addEventListener('click', () => {
+            initAudio();
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            const text = document.getElementById('sound-text');
+            if (soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-brand-gold text-xs';
+                text.innerText = 'AUDIO: ON';
+                playBassDrop();
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-brand-red text-xs';
+                text.innerText = 'AUDIO: OFF';
+            }
+        });
+
+        // --- Intersection Observer for Scroll Story Engine ---
+        const scenes = document.querySelectorAll('.scene-section');
+        const navContainer = document.getElementById('nav-dots-container');
+
+        scenes.forEach((scene, index) => {
+            const dot = document.createElement('button');
+            dot.className = `w-2 h-2 rounded-full bg-gray-700 nav-dot cursor-pointer`;
+            dot.onclick = () => scene.scrollIntoView({ behavior: 'smooth' });
+            navContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.nav-dot');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    scenes.forEach(s => s.classList.remove('active-scene'));
+                    entry.target.classList.add('active-scene');
+
+                    const index = Array.from(scenes).indexOf(entry.target);
+                    dots.forEach((d, i) => i === index ? d.classList.add('active') : d.classList.remove('active'));
+
+                    if (entry.target.id === 'scene-1') {
+                        setTimeout(() => document.getElementById('s1-tagline').classList.remove('opacity-0'), 200);
+                        setTimeout(() => document.getElementById('s1-title').classList.remove('opacity-0'), 700);
+                        setTimeout(() => document.getElementById('s1-subtitle').classList.remove('opacity-0'), 1200);
+                    }
+                    if (soundEnabled) playBassDrop();
+                }
+            });
+        }, { threshold: 0.35 });
+
+        scenes.forEach(scene => observer.observe(scene));
+
+        // --- Generate Interactive Player Silhouettes (Scene 3) ---
+        const silhouettesGrid = document.getElementById('silhouettes-grid');
+        const sampleNames = ['RAJxOP', 'LEGEND_FF', 'VIPER_X', 'SKULL_KING', 'BOOYAH_GOD', 'ALPHA_FF', 'HYDRA_OP', 'SHADOW_K', 'TITAN_FF', 'MAVERICK'];
+        
+        for (let i = 1; i <= 40; i++) {
+            const el = document.createElement('div');
+            el.className = 'text-center p-1 rounded hover:bg-brand-red/20 transition-all cursor-pointer';
+            el.onclick = () => inspectPlayer(i);
+            el.innerHTML = `<i class="fa-solid fa-user-ninja text-lg text-gray-400"></i><div class="text-[8px] font-orbitron text-gray-500">#${i}</div>`;
+            silhouettesGrid.appendChild(el);
+        }
+
+        function inspectPlayer(num) {
+            document.getElementById('card-num').innerText = `#${num < 10 ? '0' + num : num}`;
+            document.getElementById('card-ign').innerText = sampleNames[(num - 1) % sampleNames.length];
+            document.getElementById('card-role').innerText = `KILLS: ${25 - (num % 15)} • K/D RATIO: ${(3.5 - num * 0.05).toFixed(1)}`;
+            
+            let tier = 'TIER 4 (₹2 Cr)';
+            if (num <= 10) tier = 'TIER 1 (₹10 Cr)';
+            else if (num <= 20) tier = 'TIER 2 (₹6 Cr)';
+            else if (num <= 30) tier = 'TIER 3 (₹4 Cr)';
+            
+            document.getElementById('card-tier').innerText = tier;
+            if (soundEnabled) playBassDrop();
+        }
+
+        // --- Combat Simulator (Scene 5) ---
+        const simFeeds = [
+            "RAJxOP ELIMINATED VIPER_X WITH M1887 HEADSHOT! [+2 KILLS]",
+            "LEGEND_FF WIPED SQUAD AT CLOCK TOWER! [BOOYAH TRIGGER]",
+            "HYDRA_OP SECURED HIGH GROUND AT PEAK! [+15 PTS]",
+            "SURVIVAL ZONE SHRINKING — 6 PLAYERS REMAINING!"
+        ];
+        let simIdx = 0;
+        function triggerCombatSim() {
+            document.getElementById('sim-text').innerText = simFeeds[simIdx % simFeeds.length];
+            simIdx++;
+            if (soundEnabled) playBassDrop();
+        }
+
+        // --- Interactive Auction Machine Logic (Scene 8) ---
+        let currentBid = 10;
+        let currentTeam = 'ROYAL CHALLENGERS BENGALURU';
+        let auctionInterval = null;
+
+        const teamBidders = [
+            { name: 'ROYAL CHALLENGERS BENGALURU', class: 'text-team-rcb' },
+            { name: 'CHENNAI SUPER KINGS', class: 'text-team-csk' },
+            { name: 'MUMBAI INDIANS', class: 'text-team-mi' },
+            { name: 'KNIGHT RIDERS', class: 'text-purple-400' }
+        ];
+
+        function manualBid(teamCode, inc) {
+            currentBid += inc;
+            currentTeam = teamCode;
+            document.getElementById('auction-bid-price').innerText = `₹${currentBid} Cr`;
+            document.getElementById('auction-winning-team').innerText = `${teamCode} LEADING BID`;
+            
+           // Screen shake FX
+            const stage = document.getElementById('auction-stage-container');
+            stage.classList.add('animate-shake');
+            setTimeout(() => stage.classList.remove('animate-shake'), 400);
+
+            if (soundEnabled) playBassDrop();
+        }
+
+        function runAutoAuctionSim() {
+            if (auctionInterval) clearInterval(auctionInterval);
+            currentBid = 10;
+            let step = 0;
+            
+            auctionInterval = setInterval(() => {
+                step++;
+                const b = teamBidders[step % teamBidders.length];
+                currentBid += 2 + (step % 2) * 2;
+                
+                document.getElementById('auction-bid-price').innerText = `₹${currentBid} Cr`;
+                document.getElementById('auction-winning-team').innerText = `${b.name} BIDDING!`;
+                if (soundEnabled) playBassDrop();
+
+                if (step >= 6) {
+                    clearInterval(auctionInterval);
+                    setTimeout(() => {
+                        document.getElementById('sold-details-text').innerText = `SOLD TO ${b.name} FOR ₹${currentBid} Cr`;
+                        document.getElementById('auction-sold-stamp').classList.remove('hidden');
+                        if (soundEnabled) playGavelStrike();
+                    }, 500);
+                }
+            }, 800);
+        }
+
+        function resetAuctionStage() {
+            if (auctionInterval) clearInterval(auctionInterval);
+            currentBid = 10;
+            document.getElementById('auction-bid-price').innerText = `₹10 Cr`;
+            document.getElementById('auction-winning-team').innerText = `OPENING BID`;
+            document.getElementById('auction-sold-stamp').classList.add('hidden');
+        }
+
+        function selectFranchise(team) {
+            alert(`FRANCHISE SELECTED: ${team}\n\nView franchise details and auction budget.`);
+        }
+
+        // --- Dynamic Ladder Standings (Scene 11) ---
+        let standingsData = [
+            { team: '#1 ROYAL CHALLENGERS (RCB)', pts: '24 PTS [QUALIFIED]', color: 'border-green-500' },
+            { team: '#2 MUMBAI INDIANS (MI)', pts: '22 PTS [QUALIFIED]', color: 'border-green-500' },
+            { team: '#3 SUPER KINGS (CSK)', pts: '20 PTS [QUALIFIED]', color: 'border-green-500/80' },
+            { team: '#4 KNIGHT RIDERS (KKR)', pts: '18 PTS [QUALIFIED]', color: 'border-green-500/60' },
+            { team: '#5 SUNRISERS (SRH)', pts: '16 PTS [QUALIFIED]', color: 'border-green-500/40' },
+            { team: '#6 DELHI CAPITALS (DC)', pts: '12 PTS [ELIMINATED]', color: 'border-red-600' }
+        ];
+
+        function renderLadder() {
+            const container = document.getElementById('points-ladder');
+            container.innerHTML = '';
+            standingsData.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = `flex justify-between p-2 bg-black/50 border-l-4 ${item.color} rounded text-[11px]`;
+                row.innerHTML = `<span class="font-bold text-white">${item.team}</span><span class="font-bold text-gray-300">${item.pts}</span>`;
+                container.appendChild(row);
+            });
+        }
+        renderLadder();
+
+        function shuffleStandings() {
+            standingsData.sort(() => Math.random() - 0.5);
+            renderLadder();
+            if (soundEnabled) playBassDrop();
+        }
+
+        // --- Registration Modal Actions ---
+        function openRegModal() {
+            document.getElementById('reg-modal').classList.remove('hidden');
+        }
+        function closeRegModal() {
+            document.getElementById('reg-modal').classList.add('hidden');
+        }
+
+        function handleRegistration(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const ign = document.getElementById('reg-ign').value;
+            const uid = document.getElementById('reg-uid').value;
+
+            alert(`REGISTRATION CONFIRMED!\n\nPlayer: ${name} (${ign})\nFF UID: ${uid}\nStatus: Approval pending for Play-Ins.\n\nData saved to Supabase Season 12 Database.`);
+            closeRegModal();
+        }
+    </script>
+</body>
+</html>

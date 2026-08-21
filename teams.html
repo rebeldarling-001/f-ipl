@@ -2739,7 +2739,10 @@
                 const spent = row.purse_spent || 0;
                 const remaining = row.purse_remaining != null ? row.purse_remaining : (100 - spent);
                 const pctSpent = Math.min(100, Math.round((spent / 100) * 100));
-                const players = safeParseJson(row.players_json).sort((a, b) => (b.price || 0) - (a.price || 0));
+                const captainKey = (captain || '').trim().toLowerCase();
+                const players = safeParseJson(row.players_json)
+                    .filter(p => ((p.ign || p.real_name || '').trim().toLowerCase()) !== captainKey)
+                    .sort((a, b) => (b.price || 0) - (a.price || 0));
                 const budget = budgets[id];
 
                 // Helper: build a player row (used for both captain and auctioned players)

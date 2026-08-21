@@ -271,6 +271,8 @@ header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-
   border:1px solid rgba(var(--gold-rgb),.3);
   box-shadow:0 0 0 1px rgba(var(--gold-rgb),.08),0 16px 48px rgba(var(--gold-rgb),.1);
 }
+.hero-card::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.05) 45%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.05) 55%,transparent 68%);}
 .hero-top-shine{position:absolute;top:0;left:-100%;width:300%;height:2px;background:linear-gradient(90deg,transparent,var(--gold-pale),var(--gold),var(--gold-pale),transparent);animation:_shineSweep 5s ease-in-out infinite;}
 @keyframes _shineSweep{0%,40%{transform:translateX(0);}70%,100%{transform:translateX(33.3%);}}
 .hero-glow{position:absolute;top:-40px;left:50%;width:140%;height:140px;background:radial-gradient(ellipse,rgba(var(--gold-rgb),.16),transparent 65%);transform:translateX(-50%);pointer-events:none;}
@@ -280,11 +282,11 @@ header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-
   background:linear-gradient(135deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));
   display:flex;align-items:center;justify-content:center;
   font-family:'Anton',sans-serif;font-size:18px;color:var(--on-accent);
-  box-shadow:0 4px 12px rgba(var(--gold-rgb),.4);
+  box-shadow:0 4px 12px rgba(var(--gold-rgb),.4),inset 0 1px 1px rgba(255,255,255,.6),inset 0 -2px 3px rgba(0,0,0,.2);
   animation:_badgePulse 2.4s ease-in-out infinite;
 }
-@keyframes _badgePulse{0%,100%{box-shadow:0 4px 12px rgba(var(--gold-rgb),.4);}50%{box-shadow:0 4px 22px rgba(var(--gold-rgb),.7);}}
-.hero-inner{display:flex;align-items:center;gap:16px;padding:18px 16px 0;}
+@keyframes _badgePulse{0%,100%{box-shadow:0 4px 12px rgba(var(--gold-rgb),.4),inset 0 1px 1px rgba(255,255,255,.6),inset 0 -2px 3px rgba(0,0,0,.2);}50%{box-shadow:0 4px 22px rgba(var(--gold-rgb),.7),inset 0 1px 1px rgba(255,255,255,.6),inset 0 -2px 3px rgba(0,0,0,.2);}}
+.hero-inner{display:flex;align-items:center;gap:16px;padding:18px 16px 0;position:relative;z-index:3;}
 .hero-photo-wrap{position:relative;flex-shrink:0;}
 .hero-photo{
   width:90px;height:90px;border-radius:16px;
@@ -295,22 +297,29 @@ header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-
 .hero-photo:active{transform:scale(.96);}
 .hero-photo-placeholder{
   width:90px;height:90px;border-radius:16px;
-  background:var(--surface-2);border:2px solid var(--line);
+  background:var(--surface-2);
   display:flex;align-items:center;justify-content:center;
-  font-size:32px;
+  font-size:32px;transition:transform .15s;
 }
+.hero-photo-placeholder:active{transform:scale(.95);}
+.cam-badge{position:absolute;bottom:-3px;right:-3px;z-index:4;
+  width:24px;height:24px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep));
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+  box-shadow:0 2px 8px rgba(0,0,0,.4),0 0 0 3px var(--card-a);}
+.cam-badge.sm{width:18px;height:18px;font-size:9px;box-shadow:0 2px 6px rgba(0,0,0,.4),0 0 0 2px var(--card-a);}
 .hero-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:20px;animation:_crownFloat 2.6s ease-in-out infinite;}
 @keyframes _crownFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
 .hero-info{flex:1;min-width:0;}
 .hero-ign{font-family:'Anton',sans-serif;font-size:24px;color:var(--gold-pale);letter-spacing:.03em;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .hero-real{font-size:11px;color:var(--ink-dim);margin-top:2px;letter-spacing:.04em;}
 .hero-team-pill{display:inline-flex;align-items:center;gap:5px;margin-top:7px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.1em;border:1px solid;}
-.hero-stats-row{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;padding:14px 16px;margin-top:12px;border-top:1px solid var(--line);}
+.hero-stats-row{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;padding:14px 16px;margin-top:12px;border-top:1px solid var(--line);position:relative;z-index:3;}
 .hsr-divider{background:var(--line);}
 .hsr-cell{text-align:center;padding:0 6px;}
 .hsr-val{font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);line-height:1;}
 .hsr-lbl{font-size:9px;letter-spacing:.12em;color:var(--ink-faint);margin-top:3px;text-transform:uppercase;}
-.hero-mvp-bar{display:flex;align-items:center;gap:8px;padding:8px 16px 14px;}
+.hero-mvp-bar{display:flex;align-items:center;gap:8px;padding:8px 16px 14px;position:relative;z-index:3;}
 .mvp-badge{display:flex;align-items:center;gap:4px;background:rgba(178,110,224,.14);border:1px solid rgba(178,110,224,.3);border-radius:20px;padding:3px 10px;}
 .mvp-star{font-size:11px;}
 .mvp-txt{font-size:10px;font-weight:700;letter-spacing:.08em;color:#c084fc;}
@@ -327,23 +336,33 @@ header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-
   transition:border-color .2s,transform .15s;
   cursor:pointer;
 }
+.lb-card::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.04) 46%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.04) 54%,transparent 65%);}
 .lb-card:active{transform:scale(.99);}
-.lb-card-accent{position:absolute;left:0;top:0;bottom:0;width:3px;}
+.lb-card-accent{position:absolute;left:0;top:0;bottom:0;width:3px;z-index:2;}
 .lb-rank-num{
-  font-family:'Anton',sans-serif;font-size:22px;
+  position:relative;z-index:2;
+  font-family:'Anton',sans-serif;font-size:20px;
   color:var(--ink-faint);width:46px;text-align:center;
   flex-shrink:0;padding:14px 0 14px 14px;
 }
-.lb-rank-num.r2{color:#c0c0c0;text-shadow:0 0 10px rgba(192,192,192,.4);}
-.lb-rank-num.r3{color:#cd7f32;text-shadow:0 0 10px rgba(205,127,50,.4);}
+.lb-rank-num.r2,.lb-rank-num.r3{
+  width:32px;height:32px;padding:0;margin-left:14px;border-radius:50%;
+  font-size:15px;color:#1a1206;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.5);
+}
+.lb-rank-num.r2{background:linear-gradient(135deg,#f4f4f4,#c0c0c0 55%,#8a8a8a);}
+.lb-rank-num.r3{background:linear-gradient(135deg,#e3a866,#cd7f32 55%,#8a5a22);}
 .lb-photo{width:52px;height:52px;border-radius:12px;object-fit:cover;object-position:top;border:1.5px solid var(--line);flex-shrink:0;cursor:pointer;transition:transform .15s;}
 .lb-photo:active{transform:scale(.94);}
-.lb-photo-ph{width:52px;height:52px;border-radius:12px;background:var(--surface-2);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.lb-info{flex:1;min-width:0;padding:14px 0 14px 10px;}
+.lb-photo-ph{width:52px;height:52px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;transition:transform .15s;}
+.lb-photo-ph:active{transform:scale(.94);}
+.lb-avatar-wrap{position:relative;flex-shrink:0;z-index:2;}
+.lb-info{flex:1;min-width:0;padding:14px 0 14px 10px;position:relative;z-index:2;}
 .lb-ign{font-family:'Anton',sans-serif;font-size:16px;color:var(--ink);letter-spacing:.02em;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .lb-team{font-size:10px;font-weight:700;letter-spacing:.08em;margin-top:3px;}
 .lb-real{font-size:10px;color:var(--ink-faint);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.lb-right{padding:14px 14px 14px 0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.lb-right{padding:14px 14px 14px 0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;position:relative;z-index:2;}
 .lb-kills{font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);line-height:1;}
 .lb-kills-lbl{font-size:8.5px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;}
 .lb-meta{display:flex;gap:6px;align-items:center;margin-top:3px;}
@@ -991,9 +1010,10 @@ function renderHero(p,rank){
   const _heroInner=_heroLogo
     ? `<img src="${esc(_heroLogo)}" alt="${esc(p.teamId)}" style="width:65%;height:65%;object-fit:contain;">`
     : `<span style="font-size:32px;">🎮</span>`;
+  const heroRingStyle=`border:2px solid ${col};box-shadow:0 0 0 1px ${col}30,0 0 18px ${col}55,inset 0 1px 1px rgba(255,255,255,.15);`;
   const photoHTML=ss
-    ? `<div class="hero-photo-placeholder" style="background:${col}22;cursor:pointer;" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">${_heroInner}</div>`
-    : `<div class="hero-photo-placeholder" style="background:${col}22;">${_heroInner}</div>`;
+    ? `<div class="hero-photo-placeholder" style="${heroRingStyle}background:${col}18;cursor:pointer;" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">${_heroInner}</div><div class="cam-badge" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">📷</div>`
+    : `<div class="hero-photo-placeholder" style="${heroRingStyle}background:${col}18;">${_heroInner}</div>`;
 
   $('heroWrap').innerHTML=`
   <div class="hero-card">
@@ -1048,9 +1068,10 @@ function renderList(players){
     const _inner=_logo
       ? `<img src="${esc(_logo)}" alt="${esc(p.teamId)}" style="width:65%;height:65%;object-fit:contain;">`
       : `<span style="font-size:20px;">🎮</span>`;
+    const lbRingStyle=`border:1.5px solid ${col};box-shadow:0 0 0 1px ${col}25,0 0 10px ${col}45;`;
     const photoHTML=ss
-      ? `<div class="lb-photo-ph" style="background:${col}22;cursor:pointer;" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">${_inner}</div>`
-      : `<div class="lb-photo-ph" style="background:${col}22;">${_inner}</div>`;
+      ? `<div class="lb-avatar-wrap"><div class="lb-photo-ph" style="${lbRingStyle}background:${col}18;cursor:pointer;" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">${_inner}</div><div class="cam-badge sm" onclick="openLightbox('${esc(ss)}','${esc(p.ign)}')" title="Tap to view screenshot">📷</div></div>`
+      : `<div class="lb-avatar-wrap"><div class="lb-photo-ph" style="${lbRingStyle}background:${col}18;">${_inner}</div></div>`;
 
     return `<div class="lb-card fade-up ${delayClass}" style="position:relative">
       ${isAdmin?`<div class="lb-admin-btns"><button class="lb-edit-btn" onclick="openEditPlayer('${esc(p.teamId)}',${p.rosterIdx})">✎ Edit</button></div>`:''}
