@@ -483,6 +483,28 @@ footer{margin-top:40px;padding:24px 20px 20px;border-top:1px solid var(--line);m
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
 .lightbox-overlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:20px;}
 .lightbox-overlay.show{display:flex;}
+
+/* ═══ PERF: OFFSCREEN RENDER SKIP (unchanged visuals, cheaper paint/layout for offscreen rows) ═══ */
+.match-day,.bracket-card,.qrow,.st-row,.gf-card,.champion-card{content-visibility:auto;contain:layout paint;contain-intrinsic-size:0 120px;}
+
+/* ═══ PERF: LOW-END / SMALL-SCREEN MOBILE ═══
+   Fixed backgrounds force the browser to repaint the whole viewport-sized
+   layer on scroll/resize on many Android GPUs — switch to normal scrolling
+   background under ~480px. Heavy blur is also one of the priciest paint
+   operations on low-end Android; keep the frosted-glass look everywhere
+   modern hardware handles it, but fall back to a solid-ish background
+   instead of blur on narrow/low-end screens so scrolling under sticky
+   header/tabs/modals stays smooth. Visual result is nearly identical. */
+@media(max-width:480px){
+  body{background-attachment:scroll;}
+}
+@media(max-width:390px){
+  header,.tabs-bar,.modal-bg,.ov{backdrop-filter:none;-webkit-backdrop-filter:none;}
+  header{background:rgba(var(--bg-rgb),.97);}
+  .tabs-bar{background:rgba(var(--bg-rgb),.98);}
+  .modal-bg{background:rgba(0,0,0,.92);}
+  .ov{background:rgba(var(--bg-rgb),.75);}
+}
 </style>
 </head>
 <body>
@@ -829,7 +851,7 @@ footer{margin-top:40px;padding:24px 20px 20px;border-top:1px solid var(--line);m
 <!-- ═══ PLAYER PHOTO LIGHTBOX ═══ -->
 <div class="lightbox-overlay" id="plLightbox" onclick="if(event.target===this||event.target.id==='plLbClose')this.classList.remove('show')">
   <button id="plLbClose" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
-  <img id="plLbImg" style="max-width:100%;max-height:85vh;border-radius:12px;object-fit:contain;" alt="">
+  <img id="plLbImg" decoding="async" style="max-width:100%;max-height:85vh;border-radius:12px;object-fit:contain;" alt="">
 </div>
 <!-- ═══ TOAST ═══ -->
 <div class="toast" id="toast"></div>
@@ -873,7 +895,7 @@ const TEAM_META={
 function teamBadgeHTML(id,sizeClass){
   const t=TEAM_META[id]||{name:id,color:'#888',logo:''};
   if(t.logo){
-    return `<img src="${esc(t.logo)}" alt="${esc(id)}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;">`;
+    return `<img src="${esc(t.logo)}" alt="${esc(id)}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;">`;
   }
   return id;
 }
@@ -1045,9 +1067,14 @@ $('adminPill').addEventListener('click',async()=>{
   renderAll();
 });
 
+let isLoadingMatchData=false;
 async function loadMatchData(){
+  if(isLoadingMatchData) return; // prevent overlapping/duplicate in-flight requests
+  isLoadingMatchData=true;
   try{
-    const {data}=await sb.from('ffxipl_s12_schedule').select('*').eq('season',12);
+    const {data}=await sb.from('ffxipl_s12_schedule')
+      .select('match_id,season,score_a,score_b,match_time,player_scores,locked,holiday,status,winner,is_custom,team_a,team_b,day_num,match_date')
+      .eq('season',12);
     if(data) data.forEach(r=>{
       let ps={};
       try{ ps=typeof r.player_scores==='string'?JSON.parse(r.player_scores||'{}'):(r.player_scores||{}); }catch(e){}
@@ -1066,6 +1093,7 @@ async function loadMatchData(){
       };
     });
   }catch(e){}
+  isLoadingMatchData=false;
   buildCustomFixtures();
 }
 
@@ -1109,8 +1137,14 @@ async function loadRosters(){
   }catch(e){}
 }
 
-// Realtime
-sb.channel('sched-rt').on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_schedule'},()=>{ loadMatchData().then(renderAll); }).subscribe();
+// Realtime — coalesce bursts of rapid postgres_changes events (e.g. a
+// multi-row admin save) into a single reload+render instead of one per event.
+let _rtDebounce=null;
+function scheduleRealtimeRefresh(){
+  clearTimeout(_rtDebounce);
+  _rtDebounce=setTimeout(()=>{ loadMatchData().then(renderAll); },250);
+}
+sb.channel('sched-rt').on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_schedule'},scheduleRealtimeRefresh).subscribe();
 
 // ════════════════════════════════════════════════
 //  LEAGUE SCHEDULE (in-memory, augmented by DB)
@@ -1917,7 +1951,7 @@ bttEl.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 //  FADE-UP OBSERVER
 // ════════════════════════════════════════════════
 const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
 },{threshold:.06});
 document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
 

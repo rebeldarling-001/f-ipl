@@ -834,6 +834,38 @@
             }
         }
 
+        /* =========================================================================
+           PERF: LOW-END / SMALL-SCREEN MOBILE OVERRIDES
+           A fixed background forces the browser to keep repainting a
+           viewport-sized layer on every scroll frame — costly on low-end
+           Android GPUs — so it switches to a normal scrolling background
+           under ~480px. Backdrop blur is one of the most expensive paint
+           operations on those same devices, so under ~390px the sticky
+           header, theme/nav overlays, the notification popup, and the video
+           play buttons fall back to a slightly more opaque solid background
+           instead of blurring what's behind them. The frosted-glass look is
+           kept everywhere hardware can handle it; the !important here only
+           targets this one narrow breakpoint so it can win over the
+           per-theme header/overlay overrides below without duplicating them
+           for all 12 themes. Nothing else about the design changes. */
+        @media (max-width: 480px) {
+            body { background-attachment: scroll; }
+        }
+        @media (max-width: 390px) {
+            header,
+            .theme-overlay,
+            .nav-overlay,
+            .notify-overlay,
+            .clip-thumb .play {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            header { background: rgba(var(--bg-rgb), 0.95) !important; }
+            .theme-overlay { background: rgba(var(--bg-rgb), 0.7) !important; }
+            .nav-overlay { background: rgba(var(--bg-rgb), 0.8) !important; }
+            .notify-overlay { background: rgba(0, 0, 0, 0.85) !important; }
+        }
+
         ::selection {
             background: var(--gold);
             color: var(--on-accent);
@@ -1398,6 +1430,14 @@
             text-transform: uppercase;
         }
 
+
+/* ---------- 2b. PERF: defer offscreen rendering work on long pages ---------- */
+        /* Sections below the hero skip layout/paint until they're near the viewport.
+           Cuts main-thread work on first load and during scroll on long pages. */
+        section:not(.hero) {
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 900px;
+        }
 
 /* ---------- 3. UTILITY: scroll-reveal animation ---------- */
         .fade-up {
@@ -2654,11 +2694,6 @@
             margin-top: 22px;
         }
 
-        .foil-frame.mvp-foil {
-            margin-top: 22px;
-            border-radius: 22px;
-        }
-
         .foil-frame.team-foil {
             flex: 0 0 174px;
             scroll-snap-align: start;
@@ -3061,273 +3096,6 @@
 
         /* ============ CTA BAND ============ */
         /* ============ SCROLL PROGRESS ============ */
-
-        /* ============ MVP SPOTLIGHT ============ */
-        .mvp-card {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 26px 22px 26px;
-            border-radius: 20px;
-            background: radial-gradient(ellipse 120% 90% at 50% 0%, rgba(var(--gold-rgb), 0.10), transparent 65%), var(--surface);
-            overflow: hidden;
-        }
-
-        .mvp-card::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--mvp-glow-rgb), 0.16), rgba(var(--gold-rgb), 0.12) 55%, transparent 75%);
-            animation: haloPulse 3s ease-in-out infinite;
-        }
-
-        .mvp-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -60%;
-            width: 35%;
-            height: 100%;
-            z-index: 2;
-            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
-            animation: shimmerSweep 6.5s ease-in-out infinite;
-        }
-
-        .mvp-badge {
-            position: relative;
-            z-index: 3;
-        }
-
-        .mvp-rating {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            z-index: 3;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            border: 1px solid rgba(var(--gold-rgb), 0.35);
-            background: linear-gradient(160deg, rgba(var(--gold-rgb), 0.14), transparent);
-        }
-
-        .mvp-rating b {
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            color: var(--gold-pale);
-            line-height: 1;
-        }
-
-        .mvp-rating span {
-            font-size: 6.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            margin-top: 1px;
-        }
-
-        .mvp-kills {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            z-index: 3;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            border: 1px solid rgba(var(--gold-rgb), 0.35);
-            background: linear-gradient(200deg, rgba(var(--gold-rgb), 0.14), transparent);
-        }
-
-        .mvp-kills b {
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            color: var(--gold-pale);
-            line-height: 1;
-        }
-
-        .mvp-kills span {
-            font-size: 6.5px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-            margin-top: 1px;
-        }
-
-        .mvp-prize-chip {
-            position: relative;
-            z-index: 3;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 10px;
-            padding: 6px 12px;
-            border-radius: 100px;
-            border: 1px solid rgba(var(--gold-rgb), 0.35);
-            background: rgba(var(--gold-rgb), 0.1);
-            font-family: 'Space Mono', monospace;
-            font-size: 10.5px;
-            font-weight: 700;
-            color: var(--gold-pale);
-        }
-
-        .mvp-avatar-ring {
-            position: relative;
-            z-index: 3;
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            margin: 18px auto 0;
-            padding: 3px;
-            background: conic-gradient(from 0deg, var(--gold-pale), var(--gold-deep), var(--gold), var(--gold-pale));
-            animation: ringSpin 5s linear infinite;
-        }
-
-        @keyframes ringSpin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .mvp-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--surface-2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 23px;
-            color: var(--gold-pale);
-            border: 2px solid var(--bg);
-        }
-
-        .mvp-name {
-            position: relative;
-            z-index: 3;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-family: 'Anton', sans-serif;
-            font-size: 20px;
-            letter-spacing: 0.02em;
-            color: var(--ink);
-        }
-
-        .mvp-verified {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep));
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            color: var(--on-accent);
-            flex-shrink: 0;
-        }
-
-        .mvp-team {
-            position: relative;
-            z-index: 3;
-            margin-top: 3px;
-            font-size: 11.5px;
-            color: var(--ink-faint);
-            letter-spacing: 0.04em;
-        }
-
-        .mvp-quote {
-            position: relative;
-            z-index: 3;
-            margin: 16px auto 0;
-            max-width: 280px;
-            font-size: 12px;
-            font-style: italic;
-            color: var(--ink-dim);
-            line-height: 1.55;
-        }
-
-        .mvp-quote::before {
-            content: '\201C';
-            color: var(--gold-deep);
-            font-family: 'Anton', sans-serif;
-            font-style: normal;
-            margin-right: 2px;
-        }
-
-        .mvp-quote::after {
-            content: '\201D';
-            color: var(--gold-deep);
-            font-family: 'Anton', sans-serif;
-            font-style: normal;
-            margin-left: 2px;
-        }
-
-        .mvp-divider {
-            position: relative;
-            z-index: 3;
-            margin: 20px auto 20px;
-            width: 70%;
-            border-top: 1px dashed rgba(var(--gold-rgb), 0.2);
-        }
-
-        .mvp-bars {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            text-align: left;
-        }
-
-        .mvp-bar-row {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .mvp-bar-head {
-            display: flex;
-            justify-content: space-between;
-            font-size: 9.5px;
-            letter-spacing: 0.08em;
-            color: var(--ink-faint);
-            text-transform: uppercase;
-        }
-
-        .mvp-bar-head b {
-            color: var(--gold-pale);
-            font-family: 'Space Mono', monospace;
-            font-size: 10.5px;
-        }
-
-        .mvp-bar-track {
-            height: 5px;
-            border-radius: 4px;
-            background: rgba(var(--gold-rgb), 0.08);
-            overflow: hidden;
-        }
-
-        .mvp-bar-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            transition: width 1.1s cubic-bezier(.2, .9, .25, 1);
-        }
-
 
         /* ============ PRIZE PODIUM ============ */
         .prize-total {
@@ -3769,7 +3537,8 @@
             <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
         </div>
         <div class="nav-links">
-            <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
+            <a href="home.html" class="nav-link nav-link-primary" aria-current="page"><span class="nav-link-icon">🔥</span> Home</a>
+            <a href="arena.html" class="nav-link"><span class="nav-link-icon">⚔️</span> Arena</a>
             <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
             <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
@@ -3793,7 +3562,7 @@
         <p class="hero-desc fade-up d3">Eight franchises. One battleground. Follow every drop, every clutch and every
             crown
             chase of the season — built for fans who never miss a rotation.</p>
-        <img src="trophy.png" class="hero-trophy" alt="Championship Trophy">
+        <img src="trophy.png" class="hero-trophy" alt="Championship Trophy" decoding="async" fetchpriority="high">
         <div class="ticker-wrap fade-up d4">
             <div class="ticker-head"><span class="dot"></span> LATEST UPDATE</div>
             <div class="ticker-track">
@@ -3811,7 +3580,7 @@
         </div>
 
         <div class="hero-cta fade-up d4">
-            <button class="btn btn-primary" id="ctaEnterArena">Enter Arena</button>
+            <a class="btn btn-primary" href="arena.html">Enter Arena</a>
             <button class="btn btn-ghost" id="ctaMeetSquads">Meet the Squads</button>
         </div>
     </section>
@@ -3925,7 +3694,7 @@
         <div class="teams-scroll" id="teamsScroll">
             <div class="foil-frame team-foil fade-up" style="--foil:#e03db2;">
                 <div class="team-card">
-                    <img src="rr.png" class="team-logo" alt="RR team logo" loading="lazy">
+                    <img src="rr.png" class="team-logo" alt="RR team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#e03daf"></div>
                     <div class="team-crest"
@@ -3943,7 +3712,7 @@
 
             <div class="foil-frame team-foil fade-up d1" style="--foil:#f5c518;">
                 <div class="team-card">
-                    <img src="csk.png" class="team-logo" alt="CSK team logo" loading="lazy">
+                    <img src="csk.png" class="team-logo" alt="CSK team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#f5c518"></div>
                     <div class="team-crest"
@@ -3960,7 +3729,7 @@
             </div>
             <div class="foil-frame team-foil fade-up d2" style="--foil:#e2394a;">
                 <div class="team-card">
-                    <img src="pbks.png" class="team-logo" alt="PBKS team logo" loading="lazy">
+                    <img src="pbks.png" class="team-logo" alt="PBKS team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#e2394a"></div>
                     <div class="team-crest"
@@ -3977,7 +3746,7 @@
             </div>
             <div class="foil-frame team-foil fade-up d3" style="--foil:#7d4bb0;">
                 <div class="team-card">
-                    <img src="kkr.png" class="team-logo" alt="KKR team logo" loading="lazy">
+                    <img src="kkr.png" class="team-logo" alt="KKR team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#7d4bb0"></div>
                     <div class="team-crest"
@@ -3994,7 +3763,7 @@
             </div>
             <div class="foil-frame team-foil fade-up d4" style="--foil:#1f5fc4;">
                 <div class="team-card">
-                    <img src="dc.png" class="team-logo" alt="DC team logo" loading="lazy">
+                    <img src="dc.png" class="team-logo" alt="DC team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#1f5fc4"></div>
                     <div class="team-crest"
@@ -4011,7 +3780,7 @@
             </div>
             <div class="foil-frame team-foil fade-up" style="--foil:#045d9e;">
                 <div class="team-card">
-                    <img src="mi.png" class="team-logo" alt="MI team logo" loading="lazy">
+                    <img src="mi.png" class="team-logo" alt="MI team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#045d9e"></div>
                     <div class="team-crest"
@@ -4028,7 +3797,7 @@
             </div>
             <div class="foil-frame team-foil fade-up" style="--foil:#c31d1d;">
                 <div class="team-card">
-                    <img src="rcb.png" class="team-logo" alt="RCB team logo" loading="lazy">
+                    <img src="rcb.png" class="team-logo" alt="RCB team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#9e0404"></div>
                     <div class="team-crest"
@@ -4045,7 +3814,7 @@
             </div>
             <div class="foil-frame team-foil fade-up d2" style="--foil:#f26522;">
                 <div class="team-card">
-                    <img src="srh.png" class="team-logo" alt="SRH team logo" loading="lazy">
+                    <img src="srh.png" class="team-logo" alt="SRH team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
                     <div class="accent" style="background:#f26522"></div>
                     <div class="team-crest"
@@ -4065,47 +3834,6 @@
             <div class="scroll-indicator-fill" id="teamsScrollFill"></div>
         </div>
     </section>
-
-    <!-- PLAYER SPOTLIGHT -->
-  <section id="mvp">
-    <div class="eyebrow">ONE TO WATCH</div>
-    <h2 class="sec-title">Season 11 <b>MVP recap</b></h2>
-    <div class="foil-frame mvp-foil fade-up" style="--foil:#7d4bb0;">
-      <div class="mvp-card">
-        <span class="season-tag mvp-badge"><span class="dot"></span> PLAYER SPOTLIGHT</span>
-        <div class="mvp-kills"><b>187</b><span>KILLS</span></div>
-        <div class="mvp-rating"><b>94</b><span>RATING</span></div>
-        <div class="mvp-avatar-ring">
-          <div class="mvp-avatar">VX</div>
-        </div>
-        <div class="mvp-name">"Vortex" <span class="mvp-verified">✓</span></div>
-        <div class="mvp-team">Kolkata Knight Riders · Fragger</div>
-        <div class="mvp-prize-chip">🏆 ₹100 MVP AWARD · MOST KILLS, SEASON 11</div>
-        <div class="mvp-quote">"I don't wait for the zone to close in — I make sure I'm already there."</div>
-        <div class="mvp-divider"></div>
-        <div class="mvp-bars">
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Fragging</span><b>96</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="96"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Zone IQ</span><b>91</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="91"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Clutch Factor</span><b>89</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="89"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
     <!-- ROADMAP -->
     <section id="roadmap">
@@ -4449,7 +4177,7 @@
 // ---------- Ambient ember particles ----------
         // Embers
         const emberField = document.getElementById('embers');
-        for (let i = 0; i < 22; i++) {
+        for (let i = 0; i < 14; i++) {
             const e = document.createElement('div');
             e.className = 'ember';
             e.style.left = Math.random() * 100 + '%';
@@ -4482,7 +4210,14 @@ function updateScrollChrome() {
     if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
     if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
 }
-window.addEventListener('scroll', updateScrollChrome, { passive: true });
+// rAF-throttled scroll handling — avoids running layout/paint work more than once per frame
+let scrollTicking = false;
+window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+        requestAnimationFrame(() => { updateScrollChrome(); scrollTicking = false; });
+        scrollTicking = true;
+    }
+}, { passive: true });
 window.addEventListener('load', updateScrollChrome);
 updateScrollChrome();
 
@@ -4533,9 +4268,6 @@ if (backToTopBtn) {
         if (REGISTRATIONS_OPEN) regFillIO.observe(regSlotsFill);
 
         // Hero CTA buttons
-        document.getElementById('ctaEnterArena').addEventListener('click', () => {
-            document.getElementById('countdown').scrollIntoView({ behavior: 'smooth' });
-        });
         document.getElementById('ctaMeetSquads').addEventListener('click', () => {
             document.getElementById('teams').scrollIntoView({ behavior: 'smooth' });
         });
@@ -4621,17 +4353,6 @@ if (backToTopBtn) {
         }, { threshold: 0.4 });
         podiumBars.forEach(b => podiumIO.observe(b));
 
-        // MVP stat bars grow in on scroll
-        const mvpBars = document.querySelectorAll('.mvp-bar-fill');
-        const mvpBarIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.width = en.target.dataset.w + '%';
-                    mvpBarIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        mvpBars.forEach(b => mvpBarIO.observe(b));
 
         // Total prize pool count-up
         const prizeEl = document.getElementById('prizeTotalAmt');

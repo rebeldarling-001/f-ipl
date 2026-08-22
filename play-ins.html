@@ -767,7 +767,7 @@
         body {
             margin: 0;
             color: var(--ink);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Rajdhani', 'Inter', sans-serif;
             overflow-x: hidden;
             position: relative;
 
@@ -2470,38 +2470,139 @@
         }
 
         /* ============ TIER LEGEND ============ */
-        .tier-legend {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            padding: 0 20px;
-            margin-top: 16px;
+        /* ============ TIER GROUPS (premium accordion, replaces flat tier-legend) ============ */
+        .tier-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 14px 20px 6px;
         }
 
-        .tier-legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 9px 10px;
-            border-radius: 11px;
+        .tier-group {
+            position: relative;
+            border-radius: 20px;
             border: 1px solid var(--line);
             background: var(--surface);
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .tier-legend-item .sw {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
+        .tier-group.tg-top10 {
+            border-top: 2px solid var(--gold-pale);
+            border-color: rgba(var(--gold-rgb), 0.35);
+            box-shadow: var(--shadow-gold);
+            background: radial-gradient(ellipse 140% 90% at 50% -20%, rgba(var(--gold-rgb), 0.13), transparent 62%), var(--surface);
+        }
+
+        .tier-group.tg-top20 { border-top: 2px solid #5fd97e; }
+        .tier-group.tg-top30 { border-top: 2px solid #7ba3ff; }
+        .tier-group.tg-top40 { border-top: 2px solid var(--ink-faint); }
+
+        .tier-group-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 16px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tier-group-icon {
             flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
         }
 
-        .tier-legend-item span {
+        .tier-group-icon.top10 { background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep)); box-shadow: 0 4px 16px rgba(var(--gold-rgb), 0.35); }
+        .tier-group-icon.top20 { background: rgba(95, 217, 126, 0.16); }
+        .tier-group-icon.top30 { background: rgba(61, 111, 224, 0.18); }
+        .tier-group-icon.top40 { background: rgba(255, 255, 255, 0.06); }
+
+        .tier-group-info { flex: 1; min-width: 0; }
+
+        .tier-group-info b {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Anton', sans-serif;
+            font-weight: 400;
+            font-size: 15.5px;
+            letter-spacing: 0.01em;
+            color: var(--ink);
+        }
+
+        .tier-group-price {
+            flex-shrink: 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 9.5px;
+            letter-spacing: 0.03em;
+            padding: 2px 8px;
+            border-radius: 100px;
+        }
+
+        .tg-top10 .tier-group-price { background: rgba(var(--gold-rgb), 0.2); color: var(--gold-pale); }
+        .tg-top20 .tier-group-price { background: rgba(95, 217, 126, 0.16); color: #5fd97e; }
+        .tg-top30 .tier-group-price { background: rgba(61, 111, 224, 0.18); color: #7ba3ff; }
+        .tg-top40 .tier-group-price { background: rgba(255, 255, 255, 0.07); color: var(--ink-faint); }
+
+        .tier-group-info span {
+            display: block;
+            margin-top: 3px;
             font-size: 10.5px;
-            color: var(--ink-dim);
+            color: var(--ink-faint);
         }
 
-        .tier-legend-item b {
-            color: var(--gold-pale);
+        .tier-group-count {
+            flex-shrink: 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--ink-dim);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--line);
+            padding: 4px 10px;
+            border-radius: 100px;
+            white-space: nowrap;
+        }
+
+        .tier-group-chevron {
+            flex-shrink: 0;
+            color: var(--ink-faint);
+            font-size: 13px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .tier-group.open .tier-group-chevron {
+            transform: rotate(180deg);
+            color: var(--gold);
+        }
+
+        .tier-group-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(.2, .9, .25, 1);
+        }
+
+        .tier-group.open .tier-group-body {
+            border-top: 1px solid var(--line);
+        }
+
+        .tier-group-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 13px 14px 15px;
+        }
+
+        .tier-group-empty {
+            padding: 16px 14px 18px;
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--ink-faint);
         }
 
         /* ============ ADMIN GATE + PANEL ============ */
@@ -2941,13 +3042,12 @@
             <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
         </div>
         <div class="nav-links">
-            <a href="home.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Home</a>
-
-           <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="home.html" class="nav-link"><span class="nav-link-icon">🔥</span> Home</a>
             <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
-            <a href="play-ins.html" class="nav-link" aria-current="page"><span class="nav-link-icon">🎮</span> Play-Ins</a>
+            <a href="play-ins.html" class="nav-link nav-link-primary" aria-current="page"><span class="nav-link-icon">🎮</span> Play-Ins</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
+            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
             <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
@@ -3024,17 +3124,6 @@
         <p class="sec-desc">All 40 approved players, ranked by total Play-In points. Tap a player to see their
             9-match breakdown.</p>
 
-        <div class="tier-legend fade-up">
-            <div class="tier-legend-item"><span class="sw" style="background:var(--gold-pale);"></span><span><b>Top
-                        10</b> → ₹10 Cr base</span></div>
-            <div class="tier-legend-item"><span class="sw" style="background:#5fd97e;"></span><span><b>11–20</b> → ₹6
-                    Cr base</span></div>
-            <div class="tier-legend-item"><span class="sw" style="background:#7ba3ff;"></span><span><b>21–30</b> → ₹4
-                    Cr base</span></div>
-            <div class="tier-legend-item"><span class="sw" style="background:var(--ink-faint);"></span><span><b>31–40</b>
-                    → ₹2 Cr base</span></div>
-        </div>
-
         <div class="pi-lb-head fade-up">
             <div class="pi-lb-search">
                 <span>🔍</span>
@@ -3042,7 +3131,7 @@
             </div>
         </div>
 
-        <div class="pi-lb-list" id="piLbList">
+        <div class="tier-groups" id="piLbList">
             <div class="loading-strip">Loading standings…</div>
         </div>
     </section>
@@ -3373,11 +3462,12 @@ if (backToTopBtn) {
         let currentAdmin = null;   // { id, email } once verified against ffxipl_s12_admins
 
         const TIER_META = {
-            top10: { label: 'TOP 10 · ₹10 CR', price: 10 },
-            top20: { label: '11–20 · ₹6 CR', price: 6 },
-            top30: { label: '21–30 · ₹4 CR', price: 4 },
-            top40: { label: '31–40 · ₹2 CR', price: 2 },
+            top10: { label: 'TOP 10 · ₹10 CR', price: 10, name: 'Top 10', range: 'Ranks 1–10', icon: '👑', priceLabel: '₹10 Cr base' },
+            top20: { label: '11–20 · ₹6 CR', price: 6, name: 'Elite 20', range: 'Ranks 11–20', icon: '🥈', priceLabel: '₹6 Cr base' },
+            top30: { label: '21–30 · ₹4 CR', price: 4, name: 'Contenders', range: 'Ranks 21–30', icon: '🔷', priceLabel: '₹4 Cr base' },
+            top40: { label: '31–40 · ₹2 CR', price: 2, name: 'Rising Pool', range: 'Ranks 31–40', icon: '⚙️', priceLabel: '₹2 Cr base' },
         };
+        const TIER_ORDER = ['top10', 'top20', 'top30', 'top40'];
 
         function tierForRank(rank) {
             if (rank <= 10) return 'top10';
@@ -3541,7 +3631,48 @@ if (backToTopBtn) {
             });
         });
 
-        // ---------- RENDER: STANDINGS ----------
+        // ---------- RENDER: STANDINGS (grouped into 4 auction tiers) ----------
+        function buildPlayerRow(p, rank, totals) {
+            const rankClass = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : '';
+            let breakdownHtml = '';
+            for (let m = 1; m <= 9; m++) {
+                const r = results.find(x => x.player_id === p.id && x.match_number === m);
+                const isBooyah = r && r.booyah;
+                breakdownHtml += `<div class="pi-mchip${isBooyah ? ' booyah' : ''}"><span>M${m}</span><b>${r ? (r.kills + 'K' + (isBooyah ? ' 🔥' : '')) : '—'}</b></div>`;
+            }
+
+            const rowEl = document.createElement('div');
+            rowEl.className = 'pi-row';
+            rowEl.innerHTML = `
+                <div class="pi-row-head">
+                    <div class="pi-rank ${rankClass}">${rank}</div>
+                    <div class="pi-id">
+                        <b>${escapeHtml(p.real_name || p.ign || 'Unnamed')}</b>
+                        <span>${escapeHtml(p.ign || '')}${p.level ? ' · Lv.' + p.level : ''}</span>
+                    </div>
+                    <div class="pi-pts"><b>${totals.points}</b><span>PTS</span></div>
+                    <div class="pi-chevron">⌄</div>
+                </div>
+                <div class="pi-breakdown">
+                    <div class="pi-breakdown-grid">${breakdownHtml}</div>
+                </div>`;
+
+            rowEl.querySelector('.pi-row-head').addEventListener('click', () => {
+                const body = rowEl.querySelector('.pi-breakdown');
+                const opening = !rowEl.classList.contains('open');
+                rowEl.classList.toggle('open', opening);
+                body.style.maxHeight = opening ? body.scrollHeight + 'px' : '0px';
+                // Re-measure the enclosing tier-group so its own max-height
+                // grows/shrinks to fit this row's breakdown panel too.
+                const groupBody = rowEl.closest('.tier-group-body');
+                if (groupBody && groupBody.parentElement.classList.contains('open')) {
+                    requestAnimationFrame(() => { groupBody.style.maxHeight = groupBody.scrollHeight + 'px'; });
+                }
+            });
+
+            return rowEl;
+        }
+
         function renderStandings(filterText) {
             const listEl = document.getElementById('piLbList');
             if (!players.length) {
@@ -3553,52 +3684,71 @@ if (backToTopBtn) {
             withTotals.sort((a, b) => b.totals.points - a.totals.points || b.totals.kills - a.totals.kills);
 
             const q = (filterText || '').trim().toLowerCase();
-            listEl.innerHTML = '';
 
+            // Bucket every ranked player into their auction tier.
+            const buckets = { top10: [], top20: [], top30: [], top40: [] };
             withTotals.forEach((row, i) => {
                 const rank = i + 1;
                 const p = row.player;
                 if (q && !(String(p.real_name || '').toLowerCase().includes(q) || String(p.ign || '').toLowerCase().includes(q))) return;
-
                 const tier = p.auction_tier || tierForRank(rank);
-                const tierMeta = TIER_META[tier];
-                const rankClass = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : '';
+                buckets[tier].push({ p, rank, totals: row.totals });
+            });
 
-                const rowEl = document.createElement('div');
-                rowEl.className = 'pi-row tier-' + tier;
-                let breakdownHtml = '';
-                for (let m = 1; m <= 9; m++) {
-                    const r = results.find(x => x.player_id === p.id && x.match_number === m);
-                    const isBooyah = r && r.booyah;
-                    breakdownHtml += `<div class="pi-mchip${isBooyah ? ' booyah' : ''}"><span>M${m}</span><b>${r ? (r.kills + 'K' + (isBooyah ? ' 🔥' : '')) : '—'}</b></div>`;
-                }
+            listEl.innerHTML = '';
+            const searching = !!q;
 
-                rowEl.innerHTML = `
-                    <div class="pi-row-head">
-                        <div class="pi-rank ${rankClass}">${rank}</div>
-                        <div class="pi-id">
-                            <b>${escapeHtml(p.real_name || p.ign || 'Unnamed')}</b>
-                            <span>${escapeHtml(p.ign || '')}${p.level ? ' · Lv.' + p.level : ''}</span>
-                        </div>
-                        <div class="pi-tier-badge ${tier}">${tierMeta.label}</div>
-                        <div class="pi-pts"><b>${row.totals.points}</b><span>PTS</span></div>
-                        <div class="pi-chevron">⌄</div>
+            TIER_ORDER.forEach(tier => {
+                const meta = TIER_META[tier];
+                const rows = buckets[tier];
+
+                const group = document.createElement('div');
+                group.className = 'tier-group tg-' + tier + (searching && rows.length ? ' open' : (tier === 'top10' ? ' open' : ''));
+
+                const head = document.createElement('div');
+                head.className = 'tier-group-head';
+                head.innerHTML = `
+                    <div class="tier-group-icon ${tier}">${meta.icon}</div>
+                    <div class="tier-group-info">
+                        <b>${meta.name}<span class="tier-group-price">${meta.priceLabel}</span></b>
+                        <span>${meta.range}</span>
                     </div>
-                    <div class="pi-breakdown">
-                        <div class="pi-breakdown-grid">${breakdownHtml}</div>
-                    </div>`;
+                    <div class="tier-group-count">${rows.length} player${rows.length === 1 ? '' : 's'}</div>
+                    <div class="tier-group-chevron">⌄</div>`;
 
-                rowEl.querySelector('.pi-row-head').addEventListener('click', () => {
-                    const body = rowEl.querySelector('.pi-breakdown');
-                    const opening = !rowEl.classList.contains('open');
-                    rowEl.classList.toggle('open', opening);
+                const body = document.createElement('div');
+                body.className = 'tier-group-body';
+                const listWrap = document.createElement('div');
+                listWrap.className = 'tier-group-list';
+
+                if (rows.length) {
+                    rows.forEach(r => listWrap.appendChild(buildPlayerRow(r.p, r.rank, r.totals)));
+                } else {
+                    listWrap.innerHTML = `<div class="tier-group-empty">${searching ? 'No players match that search in this tier.' : 'No players in this tier yet.'}</div>`;
+                }
+                body.appendChild(listWrap);
+
+                head.addEventListener('click', () => {
+                    const opening = !group.classList.contains('open');
+                    group.classList.toggle('open', opening);
                     body.style.maxHeight = opening ? body.scrollHeight + 'px' : '0px';
                 });
 
-                listEl.appendChild(rowEl);
+                group.appendChild(head);
+                group.appendChild(body);
+                listEl.appendChild(group);
+
+                if (group.classList.contains('open')) {
+                    // Set after insertion so scrollHeight reflects real content.
+                    requestAnimationFrame(() => { body.style.maxHeight = body.scrollHeight + 'px'; });
+                }
             });
 
-            if (!listEl.children.length) {
+            if (searching && !withTotals.some((row, i) => {
+                const rank = i + 1;
+                const p = row.player;
+                return String(p.real_name || '').toLowerCase().includes(q) || String(p.ign || '').toLowerCase().includes(q);
+            })) {
                 listEl.innerHTML = '<div class="pi-empty">No players match that search.</div>';
             }
         }
