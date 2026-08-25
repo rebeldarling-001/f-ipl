@@ -804,9 +804,10 @@
             position: relative;
 
             background:
-                linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px),
-                var(--body-3);
+                linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px),
+                linear-gradient(180deg, var(--body-3) 0%, var(--body-2) 40%, var(--body-3) 100%),
+                var(--body-4);
 
             background-size:
                 40px 40px,
@@ -1076,9 +1077,11 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 18px;
-            background: rgba(var(--bg-rgb), 0.82);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--line);
+            background: rgba(var(--bg-rgb), 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(var(--gold-rgb), 0.10);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.35);
         }
 
         .brand {
@@ -1104,8 +1107,8 @@
         }
 
         .menu-btn {
-            width: 34px;
-            height: 34px;
+            width: 38px;
+            height: 38px;
             border-radius: 9px;
             border: 1px solid var(--line);
             display: flex;
@@ -2329,13 +2332,13 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 120px;
-            /* adjust size */
+            width: 110px;
             transform: translate(-50%, -50%);
-            opacity: 0.50;
-            /* makes it transparent */
+            opacity: 0.72;
             pointer-events: none;
-            /* no click issue */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
         }
 
         .teams-scroll::-webkit-scrollbar {
@@ -2691,7 +2694,7 @@
         }
 
         .foil-frame.team-foil {
-            flex: 0 0 174px;
+            flex: 0 0 clamp(152px, 45vw, 174px);
             scroll-snap-align: start;
             border-radius: 18px;
             padding: 1.5px;
@@ -3421,6 +3424,12 @@
         }
 
     </style>
+    <style>
+        /* ── PAGE TRANSITION ── */
+        body.page-leaving { animation: pageFadeOut .18s ease forwards; pointer-events: none; }
+        @keyframes pageFadeOut { to { opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { body.page-leaving { animation: none !important; } }
+    </style>
 </head>
 
 <body>
@@ -3550,14 +3559,13 @@
         <div class="nav-links">
             <a href="home.html" class="nav-link nav-link-primary" aria-current="page"><span class="nav-link-icon">🔥</span> Home</a>
             <a href="arena.html" class="nav-link"><span class="nav-link-icon">⚔️</span> Arena</a>
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration Center</a>
+            <a href="play-ins.html" class="nav-link"><span class="nav-link-icon">🎮</span> Play-Ins</a>
+            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction Night</a>
             <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
-            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
-                Center</a>
-            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
             <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
-            <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
             <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
             <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
         </div>
@@ -4022,7 +4030,7 @@
                 <button class="faq-q"><span>Where can I watch the matches live?</span><span
                         class="faq-chevron">⌄</span></button>
                 <div class="faq-a">
-                    <p>Follow the <a href="announcements.html">Announcements</a> page for stream links as each
+                    <p>Check back on the home page for stream links as each
                         match day goes live.</p>
                 </div>
             </div>
@@ -4421,6 +4429,20 @@ if (backToTopBtn) {
         
     </script>
     
+    <script>
+        /* ── SMOOTH PAGE TRANSITIONS ── */
+        (function () {
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest('a[href]');
+                if (!a) return;
+                var href = a.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel') || e.ctrlKey || e.metaKey || e.shiftKey) return;
+                e.preventDefault();
+                document.body.classList.add('page-leaving');
+                setTimeout(function () { window.location.href = href; }, 200);
+            });
+        })();
+    </script>
 </body>
 
 </html>

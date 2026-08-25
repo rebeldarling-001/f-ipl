@@ -253,18 +253,20 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html { background: var(--bg); }
         body {
-            margin: 0; color: var(--ink); font-family: 'Inter', sans-serif; overflow-x: hidden; position: relative;
+            margin: 0; color: var(--ink); font-family: 'Rajdhani', 'Inter', sans-serif; overflow-x: hidden; position: relative;
             background:
-                linear-gradient(rgba(var(--gold-rgb), .05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--gold-rgb), .05) 1px, transparent 1px),
-                radial-gradient(circle at 15% 20%, var(--amb1), transparent 28%),
-                radial-gradient(circle at 85% 15%, var(--amb2), transparent 30%),
-                radial-gradient(circle at 50% 85%, var(--amb3), transparent 35%),
-                linear-gradient(180deg, var(--body-1) 0%, var(--body-2) 30%, var(--body-3) 60%, var(--body-4) 100%);
+                linear-gradient(rgba(var(--gold-rgb), .04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--gold-rgb), .04) 1px, transparent 1px),
+                radial-gradient(circle at 20% 55%, var(--amb1), transparent 35%),
+                radial-gradient(circle at 80% 70%, var(--amb2), transparent 32%),
+                radial-gradient(circle at 50% 30%, var(--amb3), transparent 28%),
+                linear-gradient(180deg, var(--body-3) 0%, var(--body-2) 40%, var(--body-3) 100%);
             background-size: 40px 40px, 40px 40px, auto, auto, auto, auto;
             background-attachment: fixed;
         }
         @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+        @media (max-width:480px) { body { background-attachment: scroll; } }
+        @media (max-width:390px) { header, .nav-overlay, .theme-overlay { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; } header { background: rgba(var(--bg-rgb), .96) !important; } }
         ::selection { background: var(--gold); color: var(--on-accent); }
         .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; text-transform: uppercase; }
         .mono { font-family: 'Space Mono', monospace; }
@@ -289,12 +291,12 @@
         .ember { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0; box-shadow: 0 0 6px 1px rgba(var(--gold-rgb), 0.8); animation-name: floatUp; animation-timing-function: ease-in; animation-iteration-count: infinite; }
         @keyframes floatUp { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: 0.9; } 90% { opacity: 0.3; } 100% { transform: translateY(-720px) translateX(var(--drift, 20px)); opacity: 0; } }
 
-        header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(var(--bg-rgb), 0.82); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+        header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(var(--bg-rgb), 0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(var(--gold-rgb), 0.10); box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
         .brand { display: flex; align-items: center; gap: 9px; }
         .crest { width: 30px; height: 30px; background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep)); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%); }
         .brand-text { font-size: 16px; letter-spacing: 0.06em; }
         .brand-text b { color: var(--gold); }
-        .menu-btn { width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; background: var(--surface); color: var(--gold); font-size: 16px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s ease; }
+        .menu-btn { width: 38px; height: 38px; border-radius: 9px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; background: var(--surface); color: var(--gold); font-size: 16px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform 0.15s ease; }
         .menu-btn:active { transform: scale(0.92); }
         .header-actions { display: flex; align-items: center; gap: 8px; }
         .theme-btn { font-size: 15px; }
@@ -502,6 +504,16 @@
         .config-note { margin: 20px; padding: 12px 14px; border-radius: 12px; border: 1px dashed rgba(var(--live-rgb), 0.4); background: rgba(var(--live-rgb), 0.06); font-size: 11px; color: var(--ink-dim); line-height: 1.5; }
         .config-note b { color: var(--live); }
     </style>
+
+    <style>
+        /* ── PAGE TRANSITION ── */
+        /* Splash is fixed z-999 — always visible instantly, never faded */
+        body.page-loaded { animation: pageFadeIn .3s ease forwards; }
+        @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body.page-leaving { opacity: 1; animation: pageFadeOut .18s ease forwards; pointer-events: none; }
+        @keyframes pageFadeOut { to { opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { body.page-loaded, body.page-leaving { animation: none !important; } }
+    </style>
 </head>
 
 <body>
@@ -513,8 +525,8 @@
             <div class="ignite-ring r1"></div><div class="ignite-ring r2"></div><div class="ignite-ring r3"></div>
             <div class="ignite-core"></div>
         </div>
-        <div class="splash-word display">FREEFIREXIPL</div>
-        <div class="splash-sub">REGISTRATION HUB</div>
+        <div class="splash-word display">REGISTRATION</div>
+        <div class="splash-sub">SQUAD UP · LOCK YOUR SLOT</div>
         <div class="splash-bar"><div class="splash-bar-fill"></div></div>
     </div>
 
@@ -557,14 +569,14 @@
         </div>
         <div class="nav-links">
             <a href="home.html" class="nav-link"><span class="nav-link-icon">🔥</span> Home</a>
-            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="arena.html" class="nav-link"><span class="nav-link-icon">⚔️</span> Arena</a>
             <a href="registration-center.html" class="nav-link nav-link-primary" aria-current="page"><span class="nav-link-icon">👤</span> Registration Center</a>
-            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
+            <a href="play-ins.html" class="nav-link"><span class="nav-link-icon">🎮</span> Play-Ins</a>
+            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction Night</a>
+            <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
-            <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
             <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
-            <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
             <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
             <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
         </div>
@@ -874,9 +886,12 @@
         async function refreshRegistrationCap() {
             if (!sb) return;
             try {
-                const { count, error } = await sb.from(TABLE).select('id', { count: 'exact', head: true }).in('status', ['pending', 'approved']);
+                const { data, error } = await sb
+                    .from(TABLE)
+                    .select('id')
+                    .in('status', ['pending', 'approved']);
                 if (error) throw error;
-                const taken = count || 0;
+                const taken = (data || []).length;
                 registrationsFull = taken >= REGISTRATION_CAP;
                 if (registrationsFull) {
                     regFormCard.style.display = 'none';

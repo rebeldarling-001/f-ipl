@@ -508,7 +508,12 @@
             font-family: 'Rajdhani', 'Inter', sans-serif;
             overflow-x: hidden;
             position: relative;
-            background: linear-gradient(rgba(var(--gold-rgb), .05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--gold-rgb), .05) 1px, transparent 1px), radial-gradient(circle at 15% 20%, var(--amb1), transparent 28%), radial-gradient(circle at 85% 15%, var(--amb2), transparent 30%), radial-gradient(circle at 50% 85%, var(--amb3), transparent 35%), linear-gradient(180deg, var(--body-1) 0%, var(--body-2) 30%, var(--body-3) 60%, var(--body-4) 100%);
+            background: linear-gradient(rgba(var(--gold-rgb), .04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--gold-rgb), .04) 1px, transparent 1px),
+                radial-gradient(circle at 20% 55%, var(--amb1), transparent 35%),
+                radial-gradient(circle at 80% 70%, var(--amb2), transparent 32%),
+                radial-gradient(circle at 50% 30%, var(--amb3), transparent 28%),
+                linear-gradient(180deg, var(--body-3) 0%, var(--body-2) 40%, var(--body-3) 100%);
             background-size: 40px 40px, 40px 40px, auto, auto, auto, auto;
             background-attachment: fixed;
         }
@@ -1077,9 +1082,11 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 18px;
-            background: rgba(var(--bg-rgb), .82);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--line);
+            background: rgba(var(--bg-rgb), 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(var(--gold-rgb), 0.10);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.35);
         }
 
         .brand {
@@ -1117,8 +1124,8 @@
         }
 
         .menu-btn {
-            width: 34px;
-            height: 34px;
+            width: 38px;
+            height: 38px;
             border-radius: 9px;
             border: 1px solid var(--line);
             display: flex;
@@ -1501,6 +1508,8 @@
                 transition-duration: .01ms !important;
             }
         }
+        @media (max-width:480px) { body { background-attachment: scroll; } }
+        @media (max-width:390px) { header, .nav-overlay, .theme-overlay { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; } header { background: rgba(var(--bg-rgb), .96) !important; } }
 
         /* ── MASTHEAD ── */
         .masthead {
@@ -2251,6 +2260,16 @@
             letter-spacing: .03em;
         }
     </style>
+
+    <style>
+        /* ── PAGE TRANSITION ── */
+        /* Splash is fixed z-999 — always visible instantly, never faded */
+        body.page-loaded { animation: pageFadeIn .3s ease forwards; }
+        @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body.page-leaving { opacity: 1; animation: pageFadeOut .18s ease forwards; pointer-events: none; }
+        @keyframes pageFadeOut { to { opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { body.page-loaded, body.page-leaving { animation: none !important; } }
+    </style>
 </head>
 
 <body>
@@ -2384,17 +2403,14 @@
         </div>
         <div class="nav-links">
             <a href="home.html" class="nav-link"><span class="nav-link-icon">🔥</span> Home</a>
-            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
-                Center</a>
+            <a href="arena.html" class="nav-link"><span class="nav-link-icon">⚔️</span> Arena</a>
+            <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration Center</a>
             <a href="play-ins.html" class="nav-link"><span class="nav-link-icon">🎮</span> Play-Ins</a>
-            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
-            <a href="teams.html" class="nav-link nav-link-primary" aria-current="page"><span
-                    class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction Night</a>
+            <a href="teams.html" class="nav-link nav-link-primary" aria-current="page"><span class="nav-link-icon">🛡️</span> Teams</a>
             <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
-            <a href="points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
             <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
-            <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
             <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
             <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
         </div>
