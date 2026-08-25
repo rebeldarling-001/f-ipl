@@ -457,14 +457,29 @@
         .player-row { display: flex; align-items: center; gap: 12px; padding: 11px 13px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); -webkit-tap-highlight-color: transparent; }
         .player-row.has-photo { cursor: pointer; }
         .player-row.has-photo:active { background: var(--surface-2); }
-        .player-row-avatar { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.25); box-shadow: 0 3px 8px rgba(0,0,0,0.35); }
+        .player-row-avatar { position: relative; flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; overflow: visible; border: 1.5px solid rgba(255,255,255,0.25); box-shadow: 0 3px 8px rgba(0,0,0,0.35); }
+        .player-row-avatar::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 1.5px solid var(--tier-ring, transparent); opacity: 0.55; }
+        .player-row-avatar.tier-premium::after { animation: tierRingPulse 1.8s ease-in-out infinite; }
+        @keyframes tierRingPulse { 0%, 100% { transform: scale(1); opacity: 0.35; } 50% { transform: scale(1.16); opacity: 0.85; } }
         .player-row-info { flex: 1; min-width: 0; }
         .player-row-name { font-size: 13px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .player-row-ign { margin-top: 1px; font-size: 10.5px; color: var(--ink-faint); font-family: 'Space Mono', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .player-row-right { flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+        .player-row-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .player-row-lvlwrap { display: flex; align-items: center; gap: 6px; }
         .player-row-lvl { font-size: 9.5px; letter-spacing: 0.06em; padding: 4px 9px; border-radius: 100px; background: rgba(var(--gold-rgb), 0.12); color: var(--gold-pale); font-family: 'Space Mono', monospace; white-space: nowrap; }
+        .player-row-tier { font-size: 8.5px; letter-spacing: 0.09em; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
         .player-row-photo-btn { flex-shrink: 0; width: 28px; height: 28px; border-radius: 9px; border: 1px solid var(--line); background: rgba(var(--gold-rgb), 0.08); display: flex; align-items: center; justify-content: center; font-size: 12.5px; color: var(--gold); }
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 30px 16px; color: var(--ink-faint); font-size: 12.5px; }
+        .rank-legend-note { margin: 10px 20px 0; padding: 10px 12px; border-radius: 12px; border: 1px dashed var(--line); background: rgba(var(--gold-rgb), 0.06); font-size: 10.5px; line-height: 1.5; color: var(--ink-dim); }
+        .rank-legend-note b { color: var(--gold-pale); }
+        .rank-legend-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 20px 0; }
+        .rank-legend-card { display: flex; align-items: center; gap: 9px; padding: 9px 10px; border-radius: 13px; border: 1px solid var(--line); background: var(--surface); }
+        .rank-legend-badge { position: relative; flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; border: 1.5px solid rgba(255,255,255,0.25); }
+        .rank-legend-badge::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 1.5px solid var(--tier-ring, transparent); opacity: 0.55; }
+        .rank-legend-badge.tier-premium::after { animation: tierRingPulse 1.8s ease-in-out infinite; }
+        .rank-legend-text { min-width: 0; }
+        .rank-legend-name { font-size: 11px; font-weight: 800; letter-spacing: 0.03em; }
+        .rank-legend-range { margin-top: 1px; font-size: 9.5px; font-family: 'Space Mono', monospace; color: var(--ink-faint); letter-spacing: 0.03em; }
 
         /* ============ SCREENSHOT LIGHTBOX (tap any profile photo to view full size) ============ */
         .lightbox-overlay {
@@ -751,6 +766,8 @@
             <div class="eyebrow">APPROVED ROSTER</div>
             <h2 class="sec-title">Registered <b>players</b></h2>
             <p class="sec-desc">Every approved Level 50+ player is automatically eligible for the Play-Ins. Tap the 📷 on any player to view their profile screenshot.</p>
+            <p class="rank-legend-note" style="margin-bottom:0;">Every approved player also gets a <b>rank badge</b> based on their Free Fire level — a visual prestige indicator only, <b>not a tournament prize or trophy</b>. Here's what each rank looks like:</p>
+            <div class="rank-legend-grid" id="rankLegendGrid"></div>
         </div>
         <div class="players-toolbar">
             <input class="players-search" id="playersSearch" type="text" placeholder="Search by name, IGN or UID…">
@@ -1370,15 +1387,37 @@ setTimeout(() => {
         let allApprovedPlayers = [];
         let playersLoaded = false;
 
-        // Level-based rank tiers — badge shown in the avatar circle instead of the screenshot.
+        // Level-based rank tiers — a prestige indicator only (NOT a prize/trophy), shown in the
+        // avatar circle instead of the screenshot. Each 10-level band (up to 80–90, the top band)
+        // gets a visually distinct, increasingly premium look as level rises.
+        const RANK_TIERS = [
+            { min: 80, max: null, name: 'APEX',     range: '80–90', emoji: '👑', c1: '#f0d9ff', c2: '#7b2ff7', glow: 'rgba(160, 90, 255, 0.75)', premium: true  }, // 80–90 — royal purple, top tier
+            { min: 70, max: 79,   name: 'ELITE',    range: '70–80', emoji: '⚡', c1: '#ffe08a', c2: '#c9931a', glow: 'rgba(255, 200, 60, 0.6)',  premium: false }, // 70–80 — gold
+            { min: 60, max: 69,   name: 'PRO', range: '60–70', emoji: '⚔️', c1: '#a9d8ff', c2: '#1f6fb2', glow: 'rgba(60, 150, 255, 0.5)',  premium: false }, // 60–70 — steel blue
+            { min: 50, max: 59,   name: 'CLASS',  range: '50–60', emoji: '🔥', c1: '#ffcf9e', c2: '#c2540f', glow: 'rgba(255, 130, 50, 0.45)', premium: false }, // 50–60 — ember
+        ];
         function getRankTier(level) {
             const lvl = Number(level) || 0;
-            if (lvl >= 100) return { emoji: '💎', c1: '#8fe3ff', c2: '#0e8fc9' }; // Diamond
-            if (lvl >= 85)  return { emoji: '🏆', c1: '#eef2f5', c2: '#9aa3ad' }; // Platinum
-            if (lvl >= 70)  return { emoji: '🥇', c1: '#ffe08a', c2: '#c9931a' }; // Gold
-            if (lvl >= 60)  return { emoji: '🥈', c1: '#e7ecf2', c2: '#8c96a3' }; // Silver
-            return { emoji: '🥉', c1: '#e8b48b', c2: '#9c6636' };                  // Bronze
+            for (const t of RANK_TIERS) { if (lvl >= t.min) return t; }
+            return RANK_TIERS[RANK_TIERS.length - 1];
         }
+
+        // Render the always-visible legend so everyone can see what each rank badge means,
+        // in level order (lowest → highest) before scrolling into the player list.
+        (function renderRankLegend() {
+            const el = document.getElementById('rankLegendGrid');
+            if (!el) return;
+            const ordered = [...RANK_TIERS].reverse(); // low → high
+            el.innerHTML = ordered.map(t => `
+                <div class="rank-legend-card">
+                    <div class="rank-legend-badge${t.premium ? ' tier-premium' : ''}" style="background: radial-gradient(circle at 35% 30%, ${t.c1}, ${t.c2}); box-shadow: 0 3px 8px rgba(0,0,0,0.35), 0 0 12px ${t.glow}; --tier-ring: ${t.glow};">${t.emoji}</div>
+                    <div class="rank-legend-text">
+                        <div class="rank-legend-name" style="color:${t.c1}">${t.name}</div>
+                        <div class="rank-legend-range">LVL ${t.range}</div>
+                    </div>
+                </div>
+            `).join('');
+        })();
 
         function renderPlayers(list) {
             if (!list.length) {
@@ -1391,17 +1430,20 @@ setTimeout(() => {
                     ? `data-full="${escapeHtml(p.profile_screenshot_url)}" data-name="${escapeHtml(p.real_name)}"`
                     : '';
                 const tier = getRankTier(p.level);
-                const avatarStyle = `background: radial-gradient(circle at 35% 30%, ${tier.c1}, ${tier.c2});`;
+                const avatarStyle = `background: radial-gradient(circle at 35% 30%, ${tier.c1}, ${tier.c2}); box-shadow: 0 3px 8px rgba(0,0,0,0.35), 0 0 14px ${tier.glow}; --tier-ring: ${tier.glow};`;
                 return `
                 <div class="player-row ${hasPhoto ? 'has-photo' : ''}" ${rowAttrs}>
-                    <div class="player-row-avatar" style="${avatarStyle}">${tier.emoji}</div>
+                    <div class="player-row-avatar${tier.premium ? ' tier-premium' : ''}" style="${avatarStyle}">${tier.emoji}</div>
                     <div class="player-row-info">
                         <div class="player-row-name">${escapeHtml(p.real_name)}</div>
                         <div class="player-row-ign">${escapeHtml(p.ign)}</div>
                     </div>
                     <div class="player-row-right">
-                        <span class="player-row-lvl">LVL ${escapeHtml(String(p.level))}</span>
-                        ${hasPhoto ? `<span class="player-row-photo-btn">📷</span>` : ''}
+                        <div class="player-row-lvlwrap">
+                            <span class="player-row-lvl">LVL ${escapeHtml(String(p.level))}</span>
+                            ${hasPhoto ? `<span class="player-row-photo-btn">📷</span>` : ''}
+                        </div>
+                        <span class="player-row-tier" style="color:${tier.c1}">${tier.name} rank</span>
                     </div>
                 </div>
             `;
