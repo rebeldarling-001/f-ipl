@@ -503,6 +503,38 @@
 
         .config-note { margin: 20px; padding: 12px 14px; border-radius: 12px; border: 1px dashed rgba(var(--live-rgb), 0.4); background: rgba(var(--live-rgb), 0.06); font-size: 11px; color: var(--ink-dim); line-height: 1.5; }
         .config-note b { color: var(--live); }
+
+        /* ============ SUCCESS CELEBRATION MODAL ============ */
+        .success-overlay { position: fixed; inset: 0; z-index: 9700; max-width: 480px; margin: 0 auto; background: rgba(var(--bg-rgb), 0.94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 22px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; overflow: hidden; }
+        .success-overlay.show { opacity: 1; pointer-events: auto; }
+        .success-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+        .success-card { position: relative; z-index: 2; width: 100%; max-width: 360px; max-height: 88vh; overflow-y: auto; border-radius: 24px; padding: 32px 22px 24px; text-align: center; background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 60%), var(--surface); border: 1px solid rgba(var(--gold-rgb), 0.35); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), var(--shadow-gold); transform: translateY(18px) scale(0.94); opacity: 0; transition: transform 0.45s cubic-bezier(.2, .9, .25, 1), opacity 0.35s ease; }
+        .success-overlay.show .success-card { transform: translateY(0) scale(1); opacity: 1; }
+        .success-check-wrap { position: relative; width: 84px; height: 84px; margin: 0 auto; }
+        .success-check-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(95, 217, 126, 0.4); opacity: 0; }
+        .success-overlay.show .success-check-ring { animation: successRingPulse 1.7s ease-out infinite; }
+        .success-check-ring.r2 { animation-delay: 0.35s !important; }
+        @keyframes successRingPulse { 0% { transform: scale(0.7); opacity: 0; } 30% { opacity: 0.85; } 100% { transform: scale(1.55); opacity: 0; } }
+        .success-check-circle { width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(150deg, #8bfba8, #5fd97e 55%, #2f9c52); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 34px rgba(95, 217, 126, 0.55); transform: scale(0.4); opacity: 0; }
+        .success-overlay.show .success-check-circle { animation: successPop 0.5s cubic-bezier(.2, 1.4, .4, 1) forwards; }
+        @keyframes successPop { to { transform: scale(1); opacity: 1; } }
+        .success-check-circle svg { width: 38px; height: 38px; }
+        .success-check-circle path { fill: none; stroke: #0d2915; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 48; stroke-dashoffset: 48; }
+        .success-overlay.show .success-check-circle path { animation: successCheckDraw 0.45s ease forwards 0.4s; }
+        @keyframes successCheckDraw { to { stroke-dashoffset: 0; } }
+        .success-title { margin-top: 20px; font-size: 22px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .success-sub { margin-top: 8px; font-size: 12.5px; color: var(--ink-dim); line-height: 1.55; }
+        .success-summary { margin-top: 20px; border-radius: 14px; border: 1px solid var(--line); background: rgba(var(--bg-rgb), 0.35); padding: 4px 14px; text-align: left; }
+        .success-summary-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; font-size: 12px; }
+        .success-summary-row + .success-summary-row { border-top: 1px solid var(--line); }
+        .success-summary-row span:first-child { color: var(--ink-faint); letter-spacing: 0.03em; }
+        .success-summary-row span:last-child { color: var(--ink); font-weight: 700; font-family: 'Space Mono', monospace; text-align: right; }
+        .success-status-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; padding: 7px 16px; border-radius: 100px; background: rgba(var(--gold-rgb), 0.14); border: 1px solid rgba(var(--gold-rgb), 0.3); color: var(--gold-pale); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+        .success-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 1.4s ease-in-out infinite; }
+        .success-actions { display: flex; gap: 10px; margin-top: 22px; }
+        @media (prefers-reduced-motion: reduce) {
+            .success-check-ring, .success-check-circle, .success-check-circle path, .success-status-dot { animation: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
+        }
     </style>
 
     <style>
@@ -756,6 +788,33 @@
         </div>
     </div>
 
+    <!-- REGISTRATION SUCCESS CELEBRATION MODAL -->
+    <div class="success-overlay" id="successOverlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+        <canvas class="success-confetti" id="successConfetti"></canvas>
+        <div class="success-card">
+            <div class="success-check-wrap">
+                <div class="success-check-ring"></div>
+                <div class="success-check-ring r2"></div>
+                <div class="success-check-circle">
+                    <svg viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6"></path></svg>
+                </div>
+            </div>
+            <div class="success-title display" id="successTitle">You're In!</div>
+            <div class="success-sub">Your Season 12 registration has been received. Here's what we've got on file:</div>
+            <div class="success-summary">
+                <div class="success-summary-row"><span>Name</span><span id="successName">—</span></div>
+                <div class="success-summary-row"><span>IGN</span><span id="successIgn">—</span></div>
+                <div class="success-summary-row"><span>UID</span><span id="successUid">—</span></div>
+                <div class="success-summary-row"><span>Level</span><span id="successLevel">—</span></div>
+            </div>
+            <div class="success-status-badge"><span class="success-status-dot"></span> Pending Admin Approval</div>
+            <div class="success-actions">
+                <button type="button" class="btn btn-ghost" id="successViewPlayers">View Roster</button>
+                <button type="button" class="btn btn-primary" id="successClose">Done</button>
+            </div>
+        </div>
+    </div>
+
     <script>
 /* =========================================================================
    FREEFIRE XIPL — SHARED THEME BEHAVIOR (copied verbatim from theme.js)
@@ -952,6 +1011,29 @@
         }
         levelInput.addEventListener('input', validateLevel);
 
+        // ====== WHATSAPP NUMBER VALIDATION (live) ======
+        const whatsappInput = document.getElementById('f_whatsapp');
+        whatsappInput.addEventListener('input', () => {
+            whatsappInput.value = whatsappInput.value.replace(/[^\d+]/g, '');
+            const digits = whatsappInput.value.replace(/\D/g, '');
+            const invalid = whatsappInput.value !== '' && digits.length < 10;
+            whatsappInput.classList.toggle('invalid', invalid);
+        });
+        function validateWhatsapp() {
+            const digits = whatsappInput.value.replace(/\D/g, '');
+            return digits.length >= 10;
+        }
+
+        // ====== UID: DIGITS ONLY ======
+        const uidInput = document.getElementById('f_uid');
+        uidInput.addEventListener('input', () => { uidInput.value = uidInput.value.replace(/\D/g, ''); });
+
+        // ====== SCREENSHOT FILE SIZE GUARD ======
+        const MAX_SHOT_MB = 8;
+        function validateShotSize(file) {
+            return file.size <= MAX_SHOT_MB * 1024 * 1024;
+        }
+
         // ====== FILE UPLOAD HELPERS ======
         async function uploadToBucket(file, bucket, folder) {
             const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
@@ -991,10 +1073,19 @@
                 levelInput.focus();
                 return;
             }
+            if (!validateWhatsapp()) {
+                showSubmitMsg('Enter a valid WhatsApp number (at least 10 digits).', 'err');
+                whatsappInput.focus();
+                return;
+            }
             const profileFile = document.getElementById('f_profile_shot').files[0];
             const paymentFile = document.getElementById('f_payment_shot').files[0];
             if (!profileFile || !paymentFile) {
                 showSubmitMsg('Please upload both your profile screenshot and payment screenshot.', 'err');
+                return;
+            }
+            if (!validateShotSize(profileFile) || !validateShotSize(paymentFile)) {
+                showSubmitMsg(`Each screenshot must be under ${MAX_SHOT_MB}MB. Please re-upload a smaller image.`, 'err');
                 return;
             }
             if (!sb) {
@@ -1018,11 +1109,13 @@
                 console.warn('Cap pre-check failed, proceeding — the database trigger will still enforce it:', err);
             }
 
-            submitBtn.textContent = 'Submitting…';
+            submitBtn.textContent = 'Uploading profile photo…';
 
             try {
                 const profileUrl = await uploadProfileShot(profileFile);
+                submitBtn.textContent = 'Uploading payment screenshot…';
                 const paymentPath = await uploadPaymentShot(paymentFile);
+                submitBtn.textContent = 'Saving registration…';
 
                 const payload = {
                     real_name: document.getElementById('f_real_name').value.trim(),
@@ -1038,10 +1131,7 @@
                 const { error } = await sb.from(TABLE).insert(payload);
                 if (error) throw error;
 
-                showSubmitMsg(
-    '✅ Registration submitted! Your entry is now Pending — you\'ll be eligible for Play-Ins once an admin approves it.',
-    'ok'
-);
+                showRegistrationSuccess(payload);
 
 regForm.reset();
 document.getElementById('dropProfile').classList.remove('has-file');
@@ -1074,6 +1164,115 @@ setTimeout(() => {
                 submitBtn.textContent = 'Submit Registration →';
             }
         });
+
+        // ====== REGISTRATION SUCCESS CELEBRATION ======
+        const successOverlay = document.getElementById('successOverlay');
+        const successConfettiCanvas = document.getElementById('successConfetti');
+        const successViewPlayersBtn = document.getElementById('successViewPlayers');
+        const successCloseBtn = document.getElementById('successClose');
+        const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let confettiRAF = null;
+
+        function showRegistrationSuccess(payload) {
+            document.getElementById('successName').textContent = payload.real_name || '—';
+            document.getElementById('successIgn').textContent = payload.ign || '—';
+            document.getElementById('successUid').textContent = payload.uid || '—';
+            document.getElementById('successLevel').textContent = payload.level != null ? payload.level : '—';
+            successOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            if (!reducedMotion) startConfetti();
+            // Move focus into the dialog for accessibility
+            successCloseBtn.focus({ preventScroll: true });
+        }
+
+        function hideRegistrationSuccess() {
+            successOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+            stopConfetti();
+        }
+
+        successCloseBtn.addEventListener('click', hideRegistrationSuccess);
+        successViewPlayersBtn.addEventListener('click', () => {
+            hideRegistrationSuccess();
+            const playersTab = document.querySelector('.rc-tab[data-panel="players"]');
+            if (playersTab) playersTab.click();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && successOverlay.classList.contains('show')) hideRegistrationSuccess();
+        });
+
+        // Lightweight canvas confetti burst — no external library.
+        function startConfetti() {
+            const canvas = successConfettiCanvas;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const colors = ['#f0b93d', '#fbe4a6', '#5fd97e', '#29d3ff', '#ff8fc2', '#ffffff'];
+            const count = 90;
+            const pieces = [];
+            for (let i = 0; i < count; i++) {
+                pieces.push({
+                    x: rect.width / 2 + (Math.random() - 0.5) * 40,
+                    y: rect.height * 0.28 + (Math.random() - 0.5) * 20,
+                    vx: (Math.random() - 0.5) * 7,
+                    vy: -Math.random() * 8 - 3,
+                    size: Math.random() * 6 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * Math.PI * 2,
+                    vr: (Math.random() - 0.5) * 0.3,
+                    shape: Math.random() > 0.5 ? 'rect' : 'circle',
+                    life: 0
+                });
+            }
+            const gravity = 0.22;
+            const startTime = performance.now();
+            const duration = 2600;
+
+            function frame(now) {
+                const elapsed = now - startTime;
+                ctx.clearRect(0, 0, rect.width, rect.height);
+                pieces.forEach(p => {
+                    p.vy += gravity;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.rot += p.vr;
+                    p.life++;
+                    const fade = Math.max(0, 1 - elapsed / duration);
+                    ctx.save();
+                    ctx.globalAlpha = fade;
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.fillStyle = p.color;
+                    if (p.shape === 'rect') {
+                        ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size * 0.66);
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                });
+                if (elapsed < duration) {
+                    confettiRAF = requestAnimationFrame(frame);
+                } else {
+                    ctx.clearRect(0, 0, rect.width, rect.height);
+                }
+            }
+            confettiRAF = requestAnimationFrame(frame);
+        }
+
+        function stopConfetti() {
+            if (confettiRAF) cancelAnimationFrame(confettiRAF);
+            confettiRAF = null;
+            const ctx = successConfettiCanvas.getContext('2d');
+            ctx.clearRect(0, 0, successConfettiCanvas.width, successConfettiCanvas.height);
+        }
 
         // ====== REGISTERED PLAYERS ======
         const playersGrid = document.getElementById('playersGrid');
