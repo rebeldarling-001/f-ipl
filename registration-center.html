@@ -457,7 +457,7 @@
         .player-row { display: flex; align-items: center; gap: 12px; padding: 11px 13px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); -webkit-tap-highlight-color: transparent; }
         .player-row.has-photo { cursor: pointer; }
         .player-row.has-photo:active { background: var(--surface-2); }
-        .player-row-avatar { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: rgba(var(--gold-rgb), 0.14); display: flex; align-items: center; justify-content: center; font-family: 'Anton', sans-serif; font-size: 14px; color: var(--gold-pale); }
+        .player-row-avatar { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.25); box-shadow: 0 3px 8px rgba(0,0,0,0.35); }
         .player-row-info { flex: 1; min-width: 0; }
         .player-row-name { font-size: 13px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .player-row-ign { margin-top: 1px; font-size: 10.5px; color: var(--ink-faint); font-family: 'Space Mono', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1011,16 +1011,18 @@
         async function refreshRegistrationCap() {
             if (!sb) return;
             try {
+                // Pull every registration regardless of status — a rejected entry still
+                // counts as someone who registered, it just no longer holds a Play-In slot.
                 const { data, error } = await sb
                     .from(TABLE)
-                    .select('id, status')
-                    .in('status', ['pending', 'approved']);
+                    .select('id, status');
                 if (error) throw error;
                 const rows = data || [];
-                const taken = rows.length; // pending + approved — still holds a slot against the cap
                 const approvedCount = rows.filter(r => r.status === 'approved').length;
-                const pendingCount = taken - approvedCount;
-                registrationsFull = taken >= REGISTRATION_CAP;
+                const pendingCount = rows.filter(r => r.status === 'pending').length;
+                const totalRegistered = rows.length; // pending + approved + rejected — everyone who ever registered
+                const capTaken = approvedCount + pendingCount; // only these still hold a slot against the 40 cap
+                registrationsFull = capTaken >= REGISTRATION_CAP;
                 if (registrationsFull) {
                     regFormCard.style.display = 'none';
                     regFullCard.style.display = 'block';
@@ -1028,7 +1030,7 @@
                 } else {
                     regFormCard.style.display = '';
                     regFullCard.style.display = 'none';
-                    let html = `<b>${approvedCount} / ${REGISTRATION_CAP}</b> Play-In spots claimed<br><span style="opacity:0.75;">${taken} / ${REGISTRATION_CAP} registered</span>`;
+                    let html = `<b>${approvedCount} / ${REGISTRATION_CAP}</b> Play-In spots claimed<br><span style="opacity:0.75;">${totalRegistered} registered</span>`;
                     if (pendingCount > 0) {
                         html += `<br><span style="opacity:0.6;">${pendingCount} still not approved — admin may approve later</span>`;
                     }
@@ -1368,20 +1370,31 @@ setTimeout(() => {
         let allApprovedPlayers = [];
         let playersLoaded = false;
 
+        // Level-based rank tiers — badge shown in the avatar circle instead of the screenshot.
+        function getRankTier(level) {
+            const lvl = Number(level) || 0;
+            if (lvl >= 100) return { emoji: '💎', c1: '#8fe3ff', c2: '#0e8fc9' }; // Diamond
+            if (lvl >= 85)  return { emoji: '🏆', c1: '#eef2f5', c2: '#9aa3ad' }; // Platinum
+            if (lvl >= 70)  return { emoji: '🥇', c1: '#ffe08a', c2: '#c9931a' }; // Gold
+            if (lvl >= 60)  return { emoji: '🥈', c1: '#e7ecf2', c2: '#8c96a3' }; // Silver
+            return { emoji: '🥉', c1: '#e8b48b', c2: '#9c6636' };                  // Bronze
+        }
+
         function renderPlayers(list) {
             if (!list.length) {
                 playersGrid.innerHTML = '<div class="empty-state">No approved players match yet. Check back after admin approval.</div>';
                 return;
             }
             playersGrid.innerHTML = list.map(p => {
-                const initial = (p.real_name || '?').trim().charAt(0).toUpperCase();
                 const hasPhoto = !!p.profile_screenshot_url;
                 const rowAttrs = hasPhoto
                     ? `data-full="${escapeHtml(p.profile_screenshot_url)}" data-name="${escapeHtml(p.real_name)}"`
                     : '';
+                const tier = getRankTier(p.level);
+                const avatarStyle = `background: radial-gradient(circle at 35% 30%, ${tier.c1}, ${tier.c2});`;
                 return `
                 <div class="player-row ${hasPhoto ? 'has-photo' : ''}" ${rowAttrs}>
-                    <div class="player-row-avatar">${initial}</div>
+                    <div class="player-row-avatar" style="${avatarStyle}">${tier.emoji}</div>
                     <div class="player-row-info">
                         <div class="player-row-name">${escapeHtml(p.real_name)}</div>
                         <div class="player-row-ign">${escapeHtml(p.ign)}</div>
