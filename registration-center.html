@@ -987,7 +987,11 @@
         const ENTRY_FEE = 12;
         const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('FREEFIREXIPL')}&am=${ENTRY_FEE}&cu=INR&tn=${encodeURIComponent('FREEFIREXIPL Season 12 Play-In Entry')}`;
         document.getElementById('payUpi').textContent = UPI_ID;
-        document.getElementById('payUpiBtn').href = upiLink;
+        document.getElementById('payUpiBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    window.location.href = upiLink;
+});
 
         // ====== TEAM LOGO CYCLE ======
         // Put your 8 transparent-background logo PNGs in an "assets/teams/" folder next to
