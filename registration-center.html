@@ -424,15 +424,22 @@
         .field-error.show { display: block; }
         .field-input.invalid { border-color: var(--live); }
 
-        .file-drop { position: relative; border: 1.5px solid rgba(var(--gold-rgb), 0.28); border-radius: 14px; padding: 18px 14px; text-align: center; cursor: pointer; background-color: var(--surface-2); transition: border-color 0.2s ease, background-color 0.2s ease; }
-        .file-drop.has-file { border-color: var(--gold-deep); background-color: var(--surface-2); }
-        .file-drop-icon { font-size: 22px; }
-        .file-drop-text { margin-top: 6px; font-size: 12px; color: var(--ink-dim); }
-        .file-drop-name { margin-top: 4px; font-size: 10.5px; color: var(--gold-pale); font-family: 'Space Mono', monospace; word-break: break-all; }
+        .file-drop { position: relative; display: flex; align-items: center; gap: 12px; border-radius: 14px; padding: 12px 12px; text-align: left; cursor: pointer; background: var(--surface-2); transition: transform 0.15s ease, background 0.2s ease; }
+        .file-drop:active { transform: scale(0.98); }
+        .file-drop-icon { flex-shrink: 0; width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 19px; background: rgba(var(--gold-rgb), 0.14); }
+        .file-drop-body { flex: 1; min-width: 0; }
+        .file-drop-text { font-size: 12px; color: var(--ink-dim); }
+        .file-drop-name { margin-top: 3px; font-size: 10.5px; color: var(--gold-pale); font-family: 'Space Mono', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .file-drop-cta { flex-shrink: 0; padding: 8px 14px; border-radius: 100px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; color: var(--bg); background: linear-gradient(180deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep)); }
+        .file-drop.has-file { background: rgba(var(--gold-rgb), 0.1); }
+        .file-drop.has-file .file-drop-icon { background: rgba(var(--gold-rgb), 0.22); }
         .file-drop input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
         .pay-box { margin-top: 16px; border-radius: 16px; border: 1px solid var(--gold-deep); background: rgba(var(--gold-rgb), 0.06); padding: 18px 16px; text-align: center; }
-        .pay-qr { width: 150px; height: 150px; margin: 10px auto 0; border-radius: 12px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--ink-faint); text-align: center; padding: 10px; border: 1px solid var(--line); }
+        .pay-teams { position: relative; width: 190px; height: 190px; margin: 12px auto 0; border-radius: 16px; background: radial-gradient(ellipse 90% 90% at 50% 60%, rgba(var(--gold-rgb), 0.16), transparent 70%), var(--surface-2); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .team-badge { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent; box-shadow: none; transition: opacity 0.28s ease, transform 0.28s ease; overflow: hidden; }
+        .team-badge.fading { opacity: 0; transform: scale(0.82) rotate(-6deg); }
+        .team-badge img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
         .pay-upi { margin-top: 10px; font-family: 'Space Mono', monospace; font-size: 12.5px; color: var(--gold-pale); font-weight: 700; letter-spacing: 0.02em; }
         .pay-amt { font-size: 20px; font-family: 'Anton', sans-serif; color: var(--gold); margin-top: 2px; }
 
@@ -507,9 +514,18 @@
         /* ============ SUCCESS CELEBRATION MODAL ============ */
         .success-overlay { position: fixed; inset: 0; z-index: 9700; max-width: 480px; margin: 0 auto; background: rgba(var(--bg-rgb), 0.94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 22px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; overflow: hidden; }
         .success-overlay.show { opacity: 1; pointer-events: auto; }
-        .success-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-        .success-card { position: relative; z-index: 2; width: 100%; max-width: 360px; max-height: 88vh; overflow-y: auto; border-radius: 24px; padding: 32px 22px 24px; text-align: center; background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 60%), var(--surface); border: 1px solid rgba(var(--gold-rgb), 0.35); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), var(--shadow-gold); transform: translateY(18px) scale(0.94); opacity: 0; transition: transform 0.45s cubic-bezier(.2, .9, .25, 1), opacity 0.35s ease; }
-        .success-overlay.show .success-card { transform: translateY(0) scale(1); opacity: 1; }
+        .success-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+        .success-flash { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(circle at 50% 38%, rgba(255,255,255,0.9), rgba(var(--gold-rgb),0.35) 35%, transparent 65%); opacity: 0; }
+        .success-overlay.show .success-flash { animation: successFlash 0.7s ease-out forwards; }
+        @keyframes successFlash { 0% { opacity: 0.95; transform: scale(0.2); } 100% { opacity: 0; transform: scale(2.4); } }
+        .success-card { position: relative; z-index: 2; width: 100%; max-width: 360px; max-height: 88vh; overflow-y: auto; border-radius: 24px; padding: 32px 22px 24px; text-align: center; background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 60%), var(--surface); border: 1px solid rgba(var(--gold-rgb), 0.35); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), var(--shadow-gold); transform: translateY(30px) scale(0.85) rotate(-3deg); opacity: 0; }
+        .success-overlay.show .success-card { animation: successCardIn 0.6s cubic-bezier(.2, 1.1, .3, 1) forwards, successGlow 2.4s ease-in-out 0.6s infinite; }
+        @keyframes successCardIn { 0% { transform: translateY(30px) scale(0.85) rotate(-3deg); opacity: 0; } 55% { transform: translateY(-8px) scale(1.035) rotate(1.2deg); opacity: 1; } 78% { transform: translateY(3px) scale(0.99) rotate(-0.4deg); } 100% { transform: translateY(0) scale(1) rotate(0); opacity: 1; } }
+        @keyframes successGlow { 0%, 100% { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 rgba(var(--gold-rgb), 0.25); } 50% { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 46px rgba(var(--gold-rgb), 0.45); } }
+        .success-trophy { font-size: 26px; margin: 0 auto 4px; width: fit-content; opacity: 0; }
+        .success-overlay.show .success-trophy { animation: trophyIn 0.5s ease forwards 0.15s, trophyBounce 1.6s ease-in-out 0.7s infinite; }
+        @keyframes trophyIn { 0% { opacity: 0; transform: translateY(10px) scale(0.4) rotate(-20deg); } 100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); } }
+        @keyframes trophyBounce { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-7px) rotate(4deg); } }
         .success-check-wrap { position: relative; width: 84px; height: 84px; margin: 0 auto; }
         .success-check-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(95, 217, 126, 0.4); opacity: 0; }
         .success-overlay.show .success-check-ring { animation: successRingPulse 1.7s ease-out infinite; }
@@ -522,18 +538,28 @@
         .success-check-circle path { fill: none; stroke: #0d2915; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 48; stroke-dashoffset: 48; }
         .success-overlay.show .success-check-circle path { animation: successCheckDraw 0.45s ease forwards 0.4s; }
         @keyframes successCheckDraw { to { stroke-dashoffset: 0; } }
-        .success-title { margin-top: 20px; font-size: 22px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .success-sub { margin-top: 8px; font-size: 12.5px; color: var(--ink-dim); line-height: 1.55; }
-        .success-summary { margin-top: 20px; border-radius: 14px; border: 1px solid var(--line); background: rgba(var(--bg-rgb), 0.35); padding: 4px 14px; text-align: left; }
+        .success-title { margin-top: 20px; font-size: 22px; background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; opacity: 0; transform: translateY(10px); }
+        .success-overlay.show .success-title { animation: successRise 0.45s ease forwards 0.5s; }
+        .success-sub { margin-top: 8px; font-size: 12.5px; color: var(--ink-dim); line-height: 1.55; opacity: 0; transform: translateY(10px); }
+        .success-overlay.show .success-sub { animation: successRise 0.45s ease forwards 0.6s; }
+        .success-summary { margin-top: 20px; border-radius: 14px; border: 1px solid var(--line); background: rgba(var(--bg-rgb), 0.35); padding: 4px 14px; text-align: left; opacity: 0; transform: translateY(10px); }
+        .success-overlay.show .success-summary { animation: successRise 0.45s ease forwards 0.7s; }
         .success-summary-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; font-size: 12px; }
         .success-summary-row + .success-summary-row { border-top: 1px solid var(--line); }
         .success-summary-row span:first-child { color: var(--ink-faint); letter-spacing: 0.03em; }
         .success-summary-row span:last-child { color: var(--ink); font-weight: 700; font-family: 'Space Mono', monospace; text-align: right; }
-        .success-status-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; padding: 7px 16px; border-radius: 100px; background: rgba(var(--gold-rgb), 0.14); border: 1px solid rgba(var(--gold-rgb), 0.3); color: var(--gold-pale); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+        .success-status-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; padding: 7px 16px; border-radius: 100px; background: rgba(var(--gold-rgb), 0.14); border: 1px solid rgba(var(--gold-rgb), 0.3); color: var(--gold-pale); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; transform: translateY(10px) scale(0.9); }
+        .success-overlay.show .success-status-badge { animation: successRise 0.45s ease forwards 0.82s, badgePulse 1.8s ease-in-out 1.3s infinite; }
+        @keyframes badgePulse { 0%, 100% { box-shadow: 0 0 0 rgba(var(--gold-rgb), 0.35); } 50% { box-shadow: 0 0 14px rgba(var(--gold-rgb), 0.45); } }
+        @keyframes successRise { to { opacity: 1; transform: translateY(0) scale(1); } }
         .success-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 1.4s ease-in-out infinite; }
-        .success-actions { display: flex; gap: 10px; margin-top: 22px; }
+        .success-actions { display: flex; gap: 10px; margin-top: 22px; opacity: 0; transform: translateY(10px); }
+        .success-overlay.show .success-actions { animation: successRise 0.45s ease forwards 0.94s; }
         @media (prefers-reduced-motion: reduce) {
-            .success-check-ring, .success-check-circle, .success-check-circle path, .success-status-dot { animation: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
+            .success-check-ring, .success-check-circle, .success-check-circle path, .success-status-dot,
+            .success-card, .success-trophy, .success-title, .success-sub, .success-summary, .success-status-badge, .success-actions, .success-flash {
+                animation: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important;
+            }
         }
     </style>
 
@@ -678,8 +704,11 @@
                         <label class="field-label">Free Fire Profile Screenshot <span class="req">*</span></label>
                         <label class="file-drop" id="dropProfile">
                             <div class="file-drop-icon">🖼️</div>
-                            <div class="file-drop-text">Tap to upload your profile screenshot</div>
-                            <div class="file-drop-name" id="nameProfile"></div>
+                            <div class="file-drop-body">
+                                <div class="file-drop-text">Tap to upload your profile screenshot</div>
+                                <div class="file-drop-name" id="nameProfile"></div>
+                            </div>
+                            <div class="file-drop-cta" id="ctaProfile">Browse</div>
                             <input type="file" id="f_profile_shot" accept="image/*" required>
                         </label>
                     </div>
@@ -687,18 +716,25 @@
                     <div class="pay-box">
                         <div class="eyebrow" style="justify-content:center;">ENTRY FEE</div>
                         <div class="pay-amt display">₹12</div>
-                        <div class="pay-qr" id="payQr"><img id="payQrImg" src="" alt="Scan to pay ₹12" style="width:100%;height:100%;object-fit:contain;border-radius:10px;"></div>
+                        <div class="pay-teams" id="payTeams">
+                            <div class="team-badge" id="teamBadge">
+                                <img id="teamLogo" src="assets/teams/csk.png" alt="Team logo">
+                            </div>
+                        </div>
                         <div class="pay-upi" id="payUpi"></div>
                         <a class="btn btn-primary" id="payUpiBtn" href="#" style="display:block; text-decoration:none; margin-top:14px;">Pay ₹12 Now via UPI App</a>
-                        <div class="field-hint">Scan the QR, or tap the button above to pay directly in Google Pay / PhonePe / Paytm — then upload your payment screenshot below.</div>
+                        <div class="field-hint">Tap the button above to pay directly in Google Pay / PhonePe / Paytm — then upload your payment screenshot below.</div>
                     </div>
 
                     <div class="field-group">
                         <label class="field-label">Payment Screenshot <span class="req">*</span></label>
                         <label class="file-drop" id="dropPayment">
                             <div class="file-drop-icon">🧾</div>
-                            <div class="file-drop-text">Tap to upload your ₹12 payment screenshot</div>
-                            <div class="file-drop-name" id="namePayment"></div>
+                            <div class="file-drop-body">
+                                <div class="file-drop-text">Tap to upload your ₹12 payment screenshot</div>
+                                <div class="file-drop-name" id="namePayment"></div>
+                            </div>
+                            <div class="file-drop-cta" id="ctaPayment">Browse</div>
                             <input type="file" id="f_payment_shot" accept="image/*" required>
                         </label>
                     </div>
@@ -790,8 +826,10 @@
 
     <!-- REGISTRATION SUCCESS CELEBRATION MODAL -->
     <div class="success-overlay" id="successOverlay" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+        <div class="success-flash"></div>
         <canvas class="success-confetti" id="successConfetti"></canvas>
         <div class="success-card">
+            <div class="success-trophy">🏆</div>
             <div class="success-check-wrap">
                 <div class="success-check-ring"></div>
                 <div class="success-check-ring r2"></div>
@@ -932,8 +970,36 @@
         const ENTRY_FEE = 12;
         const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('FREEFIREXIPL')}&am=${ENTRY_FEE}&cu=INR&tn=${encodeURIComponent('FREEFIREXIPL Season 12 Play-In Entry')}`;
         document.getElementById('payUpi').textContent = UPI_ID;
-        document.getElementById('payQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiLink)}`;
         document.getElementById('payUpiBtn').href = upiLink;
+
+        // ====== TEAM LOGO CYCLE ======
+        // Put your 8 transparent-background logo PNGs in an "assets/teams/" folder next to
+        // this HTML file, using these exact filenames (or edit the list below to match yours).
+        const TEAM_LOGOS = [
+            'csk.png',
+            'mi.png',
+            'rcb.png',
+            'kkr.png',
+            'dc.png',
+            'srh.png',
+            'pbks.png',
+            'rr.png',
+        ];
+        (function cycleTeamBadge() {
+            const badge = document.getElementById('teamBadge');
+            const img = document.getElementById('teamLogo');
+            if (!badge || !img) return;
+            let i = 0;
+            img.src = TEAM_LOGOS[0];
+            setInterval(() => {
+                badge.classList.add('fading');
+                setTimeout(() => {
+                    i = (i + 1) % TEAM_LOGOS.length;
+                    img.src = TEAM_LOGOS[i];
+                    badge.classList.remove('fading');
+                }, 280);
+            }, 1500);
+        })();
 
         // ====== REGISTRATION CAP (40 players) ======
         const REGISTRATION_CAP = 40;
@@ -947,10 +1013,13 @@
             try {
                 const { data, error } = await sb
                     .from(TABLE)
-                    .select('id')
+                    .select('id, status')
                     .in('status', ['pending', 'approved']);
                 if (error) throw error;
-                const taken = (data || []).length;
+                const rows = data || [];
+                const taken = rows.length; // pending + approved — still holds a slot against the cap
+                const approvedCount = rows.filter(r => r.status === 'approved').length;
+                const pendingCount = taken - approvedCount;
                 registrationsFull = taken >= REGISTRATION_CAP;
                 if (registrationsFull) {
                     regFormCard.style.display = 'none';
@@ -959,7 +1028,11 @@
                 } else {
                     regFormCard.style.display = '';
                     regFullCard.style.display = 'none';
-                    regCapStatus.innerHTML = `<b>${taken} / ${REGISTRATION_CAP}</b> Play-In spots claimed`;
+                    let html = `<b>${approvedCount} / ${REGISTRATION_CAP}</b> Play-In spots claimed<br><span style="opacity:0.75;">${taken} / ${REGISTRATION_CAP} registered</span>`;
+                    if (pendingCount > 0) {
+                        html += `<br><span style="opacity:0.6;">${pendingCount} still not approved — admin may approve later</span>`;
+                    }
+                    regCapStatus.innerHTML = html;
                 }
             } catch (err) {
                 console.error('Could not check registration cap:', err);
@@ -982,22 +1055,25 @@
         });
 
         // ====== FILE DROP UX ======
-        function wireFileDrop(dropId, inputId, nameId) {
+        function wireFileDrop(dropId, inputId, nameId, ctaId) {
             const drop = document.getElementById(dropId);
             const input = document.getElementById(inputId);
             const nameEl = document.getElementById(nameId);
+            const ctaEl = document.getElementById(ctaId);
             input.addEventListener('change', () => {
                 if (input.files && input.files[0]) {
                     drop.classList.add('has-file');
                     nameEl.textContent = input.files[0].name;
+                    if (ctaEl) ctaEl.textContent = 'Change';
                 } else {
                     drop.classList.remove('has-file');
                     nameEl.textContent = '';
+                    if (ctaEl) ctaEl.textContent = 'Browse';
                 }
             });
         }
-        wireFileDrop('dropProfile', 'f_profile_shot', 'nameProfile');
-        wireFileDrop('dropPayment', 'f_payment_shot', 'namePayment');
+        wireFileDrop('dropProfile', 'f_profile_shot', 'nameProfile', 'ctaProfile');
+        wireFileDrop('dropPayment', 'f_payment_shot', 'namePayment', 'ctaPayment');
 
         // ====== LEVEL 50 VALIDATION (live) ======
         const levelInput = document.getElementById('f_level');
@@ -1138,6 +1214,8 @@ document.getElementById('dropProfile').classList.remove('has-file');
 document.getElementById('dropPayment').classList.remove('has-file');
 document.getElementById('nameProfile').textContent = '';
 document.getElementById('namePayment').textContent = '';
+document.getElementById('ctaProfile').textContent = 'Browse';
+document.getElementById('ctaPayment').textContent = 'Browse';
 
 /*
  * IMPORTANT:
@@ -1214,25 +1292,34 @@ setTimeout(() => {
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
             const colors = ['#f0b93d', '#fbe4a6', '#5fd97e', '#29d3ff', '#ff8fc2', '#ffffff'];
-            const count = 90;
             const pieces = [];
-            for (let i = 0; i < count; i++) {
-                pieces.push({
-                    x: rect.width / 2 + (Math.random() - 0.5) * 40,
-                    y: rect.height * 0.28 + (Math.random() - 0.5) * 20,
-                    vx: (Math.random() - 0.5) * 7,
-                    vy: -Math.random() * 8 - 3,
-                    size: Math.random() * 6 + 3,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    rot: Math.random() * Math.PI * 2,
-                    vr: (Math.random() - 0.5) * 0.3,
-                    shape: Math.random() > 0.5 ? 'rect' : 'circle',
-                    life: 0
-                });
+
+            function spawnBurst(originXFrac, originYFrac, count, spreadX, upBias) {
+                for (let i = 0; i < count; i++) {
+                    pieces.push({
+                        x: rect.width * originXFrac + (Math.random() - 0.5) * spreadX,
+                        y: rect.height * originYFrac + (Math.random() - 0.5) * 20,
+                        vx: (Math.random() - 0.5) * 9,
+                        vy: -Math.random() * 9 - upBias,
+                        size: Math.random() * 6 + 3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        rot: Math.random() * Math.PI * 2,
+                        vr: (Math.random() - 0.5) * 0.35,
+                        shape: Math.random() > 0.5 ? 'rect' : 'circle',
+                        life: 0
+                    });
+                }
             }
+            // Center burst + two side cannons for a bigger celebration
+            spawnBurst(0.5, 0.28, 110, 60, 3);
+            spawnBurst(0.05, 0.9, 55, 20, 10);
+            spawnBurst(0.95, 0.9, 55, 20, 10);
+            // A second wave partway through keeps the celebration going
+            setTimeout(() => { if (confettiRAF) spawnBurst(0.5, 0.3, 70, 90, 4); }, 900);
+
             const gravity = 0.22;
             const startTime = performance.now();
-            const duration = 2600;
+            const duration = 3400;
 
             function frame(now) {
                 const elapsed = now - startTime;
