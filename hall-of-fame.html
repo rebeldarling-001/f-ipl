@@ -1619,9 +1619,20 @@
 /* ---------- 11. CHROME: footer ---------- */
         /* ============ FOOTER ============ */
         footer {
+            position: relative;
             margin-top: 40px;
             padding: 26px 20px 20px;
             border-top: 1px solid var(--line);
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), transparent);
         }
 
         .foot-brand {
@@ -1655,6 +1666,16 @@
             justify-content: center;
             color: var(--gold-deep);
             font-size: 13px;
+            transition: transform 0.15s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .soc:hover {
+            border-color: rgba(var(--gold-rgb), 0.5);
+            color: var(--gold);
+        }
+
+        .soc:active {
+            transform: scale(0.9);
         }
 
         .foot-copy {
@@ -1918,6 +1939,10 @@
             margin-top: 10px;
         }
 
+        .page-head .sec-title b {
+            text-shadow: 0 0 24px rgba(var(--gold-rgb), 0.35);
+        }
+
         .page-head .sec-desc {
             position: relative;
             max-width: 420px;
@@ -1930,10 +1955,11 @@
             align-items: center;
             gap: 6px;
             margin-top: 16px;
-            padding: 5px 11px;
+            padding: 5px 12px;
             border-radius: 100px;
-            border: 1px solid var(--line);
+            border: 1px solid rgba(var(--gold-rgb), 0.22);
             background: var(--surface);
+            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), 0.05), 0 4px 14px rgba(var(--gold-rgb), 0.08);
             font-family: 'Space Mono', monospace;
             font-size: 10px;
             letter-spacing: 0.04em;
@@ -1950,11 +1976,30 @@
         }
 
         .hof-stat {
+            position: relative;
             border-radius: 16px;
             background: var(--surface);
             border: 1px solid var(--line);
-            padding: 14px 10px;
+            padding: 16px 10px 14px;
             text-align: center;
+            overflow: hidden;
+            transition: transform 0.15s ease;
+        }
+
+        .hof-stat::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .hof-stat:active { transform: scale(0.96); }
+
+        .hof-stat .ic {
+            font-size: 15px;
+            opacity: 0.85;
+            margin-bottom: 4px;
         }
 
         .hof-stat .num {
@@ -2024,19 +2069,24 @@
             background: var(--gold);
             border-color: var(--gold-pale);
             box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.18), 0 0 16px rgba(var(--gold-rgb), 0.7);
+        }
+
+        /* Glow pulse via a pseudo-element animating only transform/opacity —
+           GPU-composited, so it stays smooth even with 11 of these running at once
+           (unlike animating box-shadow directly, which forces a repaint every frame). */
+        .tl-item.champion-season .tl-dot::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.55), transparent 72%);
             animation: champDotPulse 2.2s ease-in-out infinite;
+            will-change: transform, opacity;
         }
 
         @keyframes champDotPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 4px rgba(var(--gold-rgb), 0.18), 0 0 16px rgba(var(--gold-rgb), 0.7);
-            }
-
-            50% {
-                box-shadow: 0 0 0 7px rgba(var(--gold-rgb), 0.1), 0 0 22px rgba(var(--gold-rgb), 0.9);
-            }
+            0%, 100% { transform: scale(0.85); opacity: 0.55; }
+            50% { transform: scale(1.25); opacity: 1; }
         }
 
         .tl-card {
@@ -2047,6 +2097,12 @@
             padding: 16px 16px;
             overflow: hidden;
             position: relative;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            transition: transform 0.15s ease;
+        }
+
+        .tl-card:active {
+            transform: scale(0.985);
         }
 
         /* ---- Champion spotlight treatment ---- */
@@ -2054,8 +2110,12 @@
             padding: 2px;
             border: none;
             background: conic-gradient(from 0deg, var(--gold-deep), var(--gold-pale) 25%, var(--gold) 50%, var(--gold-deep) 75%, var(--gold-pale) 100%);
-            animation: champFrameSpin 6s linear infinite;
             box-shadow: 0 0 30px rgba(var(--gold-rgb), 0.35);
+            transition: transform 0.15s ease;
+        }
+
+        .tl-item.champion-season .tl-card:active {
+            transform: scale(0.985);
         }
 
        
@@ -2116,40 +2176,6 @@
             color: var(--gold-pale);
         }
 
-        .tl-current-tag {
-            font-size: 9px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 3px 8px;
-            border-radius: 100px;
-            background: rgba(var(--live-rgb), 0.14);
-            color: var(--live);
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .tl-current-tag .live-blip {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--live);
-            animation: liveBlink 1.4s ease-in-out infinite;
-        }
-
-        @keyframes liveBlink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.25;
-            }
-        }
-
         .tl-champ-row {
             display: flex;
             align-items: center;
@@ -2177,8 +2203,16 @@
             height: 52px;
             font-size: 25px;
             border: 1px solid var(--gold-deep);
-            background: radial-gradient(circle at 35% 30%, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            background: #fff;
             box-shadow: 0 0 20px rgba(var(--gold-rgb), 0.5);
+            padding: 4px;
+        }
+
+        .tl-crest img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
         }
 
         .tl-champ-name {
@@ -2195,29 +2229,16 @@
             color: var(--gold-pale);
         }
 
-        /* ---- Live / in-progress season (not a champion — no trophy treatment) ---- */
-        .tl-item.live-season .tl-dot {
-            background: var(--live);
-            border-color: var(--live);
-            box-shadow: 0 0 0 4px rgba(var(--live-rgb), 0.16), 0 0 14px rgba(var(--live-rgb), 0.6);
-            animation: liveDotPulse 1.4s ease-in-out infinite;
-        }
-
-        @keyframes liveDotPulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 4px rgba(var(--live-rgb), 0.16), 0 0 14px rgba(var(--live-rgb), 0.6);
-            }
-
-            50% {
-                box-shadow: 0 0 0 7px rgba(var(--live-rgb), 0.08), 0 0 18px rgba(var(--live-rgb), 0.8);
-            }
-        }
-
-        .tl-item.live-season .tl-card {
+        /* ---- Upcoming season teaser (Season 12 — not live, just anticipated) ---- */
+        .tl-item.upcoming-season .tl-dot {
+            background: transparent;
+            border-color: rgba(var(--gold-rgb), 0.5);
             border-style: dashed;
-            border-color: rgba(var(--live-rgb), 0.4);
+        }
+
+        .tl-item.upcoming-season .tl-card {
+            border-style: dashed;
+            border-color: rgba(var(--gold-rgb), 0.3);
             background: var(--bg-alt);
         }
 
@@ -2226,17 +2247,28 @@
             width: 42px;
             height: 42px;
             border-radius: 11px;
-            border: 1px dashed rgba(var(--live-rgb), 0.5);
-            background: rgba(var(--live-rgb), 0.08);
+            border: 1px dashed rgba(var(--gold-rgb), 0.4);
+            background: rgba(var(--gold-rgb), 0.06);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
         }
 
-        .tl-item.live-season .tl-champ-name {
+        .tl-item.upcoming-season .tl-champ-name {
             font-size: 14px;
             color: var(--ink-dim);
+            font-weight: 700;
+        }
+
+        .tl-upcoming-tag {
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 100px;
+            background: rgba(var(--gold-rgb), 0.12);
+            color: var(--gold);
             font-weight: 700;
         }
 
@@ -2296,6 +2328,713 @@
             position: relative;
             z-index: 1;
         }
+
+        .tl-share-btn {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 12px;
+            padding: 6px 13px;
+            border-radius: 100px;
+            border: 1px solid rgba(var(--gold-rgb), 0.3);
+            background: rgba(var(--gold-rgb), 0.06);
+            color: var(--gold-pale);
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .tl-share-btn:active { transform: scale(0.92); }
+        .tl-share-btn:hover { background: rgba(var(--gold-rgb), 0.13); }
+
+        /* ---- NEW: Champion Banner — hanging championship banner, rafters style ---- */
+        .champ-spotlight {
+            margin: 40px 20px 34px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* falling confetti layer over the whole celebration */
+        .banner-confetti {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+            bottom: -10px;
+            pointer-events: none;
+            z-index: 6;
+            overflow: visible;
+        }
+
+        .confetti-bit {
+            position: absolute;
+            top: -12px;
+            width: 6px;
+            height: 11px;
+            opacity: 0.95;
+            animation: bannerConfettiFall linear infinite;
+        }
+
+        .confetti-bit.round { border-radius: 50%; }
+
+        @keyframes bannerConfettiFall {
+            0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.95; }
+            25%  { transform: translate(var(--drift, 12px), 100px) rotate(200deg); }
+            50%  { transform: translate(calc(var(--drift, 12px) * -1), 200px) rotate(400deg); }
+            75%  { transform: translate(var(--drift, 12px), 300px) rotate(600deg); }
+            100% { transform: translate(0, 400px) rotate(800deg); opacity: 0; }
+        }
+
+        .celebrate-line {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: center;
+            animation: celebratePulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes celebratePulse {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.04); }
+        }
+
+        .banner-rig {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            padding-top: 22px;
+        }
+
+        /* mounting rod across the top, like a rafter pole */
+        .banner-rod {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% + 40px);
+            height: 5px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, #3a3a3a, #111 55%, #000);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 0 3px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .banner-rod::before,
+        .banner-rod::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #555, #0a0a0a 70%);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .banner-rod::before { left: -6px; }
+        .banner-rod::after { right: -6px; }
+
+        /* the swinging assembly: ropes + cloth move together */
+        .banner-swing {
+            position: relative;
+            transform-origin: 50% 0%;
+            animation: bannerSway 6.5s ease-in-out infinite;
+        }
+
+        @keyframes bannerSway {
+            0%, 100% { transform: rotate(-0.8deg); }
+            50% { transform: rotate(0.8deg); }
+        }
+
+        .banner-swing.capture-still {
+            animation: none;
+            transform: rotate(0deg);
+        }
+
+        .banner-ropes {
+            position: relative;
+            height: 22px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 26px;
+        }
+
+        .banner-ropes span {
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, #8a6a2c, var(--gold-deep));
+            margin: 0 auto;
+        }
+
+        /* the cloth itself */
+        .banner-cloth {
+            position: relative;
+            background:
+                repeating-linear-gradient(90deg,
+                    rgba(255, 255, 255, 0.025) 0px, rgba(255, 255, 255, 0.025) 1px,
+                    transparent 1px, transparent 9px),
+                linear-gradient(155deg, #171310 0%, #0c0a08 60%, #050403 100%);
+            border: 2px solid var(--gold-deep);
+            border-bottom: none;
+            box-shadow:
+                inset 0 0 0 1px rgba(var(--gold-rgb), 0.25),
+                0 30px 60px -20px rgba(0, 0, 0, 0.7),
+                0 0 50px -10px rgba(var(--gold-rgb), 0.18);
+            padding: 30px 22px 26px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* soft top sheen suggesting light hitting the fabric */
+        .banner-cloth::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(var(--gold-rgb), 0.14), transparent 70%);
+            pointer-events: none;
+        }
+
+        .banner-crest {
+            position: relative;
+            z-index: 1;
+            width: 88px;
+            height: 88px;
+            margin: 0 auto;
+        }
+
+        .banner-crest img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 22px rgba(var(--gold-rgb), 0.45));
+        }
+
+        .banner-crest svg { width: 100%; height: 100%; }
+
+        .banner-crest-ring {
+            position: absolute;
+            z-index: 1;
+            top: 0; left: 50%;
+            width: 78px; height: 78px;
+            margin-left: -39px;
+            border-radius: 50%;
+            border: 1px dashed rgba(var(--gold-rgb), 0.4);
+        }
+
+        .banner-kicker {
+            position: relative;
+            z-index: 1;
+            margin-top: 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--gold-deep);
+        }
+
+        .banner-name {
+            position: relative;
+            z-index: 1;
+            margin-top: 8px;
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(28px, 9vw, 34px);
+            line-height: 1.04;
+            letter-spacing: 0.01em;
+            color: var(--gold-pale);
+            text-shadow:
+                0 1px 0 rgba(0, 0, 0, 0.8),
+                0 -1px 0 rgba(255, 246, 214, 0.25);
+            -webkit-text-stroke: 0.5px rgba(179, 129, 31, 0.5);
+        }
+
+        .banner-champions {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 20px;
+            border-top: 1px solid rgba(var(--gold-rgb), 0.5);
+            border-bottom: 1px solid rgba(var(--gold-rgb), 0.5);
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .banner-tagline {
+            position: relative;
+            z-index: 1;
+            margin-top: 16px;
+            font-size: 11.5px;
+            color: var(--ink-dim);
+            line-height: 1.6;
+            max-width: 230px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .banner-stats {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .banner-stats .st {
+            padding: 0 14px;
+            border-right: 1px solid rgba(var(--gold-rgb), 0.2);
+        }
+
+        .banner-stats .st:last-child { border-right: none; }
+
+        .banner-stats .st b {
+            display: block;
+            font-family: 'Anton', sans-serif;
+            font-size: 15px;
+            color: var(--gold);
+        }
+
+        .banner-stats .st span {
+            display: block;
+            margin-top: 2px;
+            font-size: 8px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        /* zigzag fringe along the bottom edge — the signature banner detail */
+        .banner-fringe {
+            height: 15px;
+            background:
+                linear-gradient(135deg, var(--gold-deep) 50%, transparent 50%),
+                linear-gradient(225deg, var(--gold-deep) 50%, transparent 50%);
+            background-size: 15px 15px;
+            background-repeat: repeat-x;
+            filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.4));
+        }
+
+        .banner-note {
+            position: relative;
+            margin-top: 16px;
+            text-align: center;
+            font-size: 10.5px;
+            letter-spacing: 0.05em;
+            color: var(--ink-faint);
+        }
+
+        .banner-note b { color: var(--gold); }
+
+        /* ---- Champion Poster — team's own poster/photo, framed to match the banner ---- */
+        .champ-poster {
+            position: relative;
+            z-index: 2;
+            margin: 22px auto 0;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .cp-frame {
+            position: relative;
+            border-radius: 14px;
+            padding: 6px;
+            background: linear-gradient(155deg, var(--gold-pale), var(--gold) 45%, var(--gold-deep));
+            box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.6);
+        }
+
+        .cp-window {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+            background: linear-gradient(160deg, #171310, #0a0704);
+            cursor: pointer;
+        }
+
+        .cp-window img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* shown automatically if the image fails to load — never a broken-image icon */
+        .cp-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            padding: 20px;
+            color: var(--ink-faint);
+        }
+
+        .cp-placeholder .ic {
+            font-size: 26px;
+            opacity: 0.7;
+        }
+
+        .cp-placeholder .t1 {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.02em;
+        }
+
+        .cp-placeholder .t2 {
+            font-size: 10px;
+            line-height: 1.5;
+            max-width: 200px;
+            color: var(--ink-faint);
+        }
+
+        .cp-caption {
+            margin-top: 10px;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 9.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        .cp-caption b { color: var(--gold); }
+
+        .cp-zoom-hint {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 9px;
+            border-radius: 100px;
+            background: rgba(10, 7, 4, 0.65);
+            backdrop-filter: blur(3px);
+            font-size: 10px;
+            color: var(--gold-pale);
+        }
+
+        /* ---- Poster lightbox (follows the site's existing overlay pattern) ---- */
+        .poster-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 95;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.86);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .poster-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .poster-overlay img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+        }
+
+        .poster-overlay-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(var(--gold-rgb), 0.4);
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--gold);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ---- Save & Share action row ---- */
+        .champ-actions {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .champ-actions button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 11px 0;
+            border-radius: 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .champ-actions button:active { transform: scale(0.96); }
+
+        .champ-save {
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            color: var(--on-accent);
+            border: none;
+            box-shadow: 0 8px 20px rgba(var(--gold-rgb), 0.3);
+        }
+
+        .champ-share {
+            background: transparent;
+            color: var(--gold-pale);
+            border: 1px solid var(--gold-deep);
+        }
+
+        /* ---- Reaction bar — a personal, honest counter (saved on this device only) ---- */
+        .reaction-label {
+            position: relative;
+            z-index: 2;
+            margin-top: 20px;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        .reaction-bar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .reaction-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            padding: 9px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(var(--gold-rgb), 0.25);
+            background: rgba(var(--gold-rgb), 0.05);
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .reaction-btn:active { transform: scale(0.88); }
+        .reaction-btn.active { background: rgba(var(--gold-rgb), 0.16); border-color: var(--gold); }
+
+        .reaction-btn .emo { font-size: 19px; }
+
+        .reaction-btn .cnt {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--ink-faint);
+        }
+
+        .reaction-btn.pop .cnt { animation: reactPop 0.35s ease; }
+
+        @keyframes reactPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.35); color: var(--gold); }
+            100% { transform: scale(1); }
+        }
+
+        /* ---- Share sheet — bottom sheet with real options, not a single guess ---- */
+        .share-sheet-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 98;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.55);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .share-sheet-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .share-sheet {
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            transform: translate(-50%, 100%);
+            background: var(--bg, #0c0904);
+            border: 1px solid rgba(var(--gold-rgb), 0.25);
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+            padding: 10px 18px 30px;
+            z-index: 99;
+            transition: transform 0.3s ease;
+        }
+
+        .share-sheet-overlay.show .share-sheet {
+            transform: translate(-50%, 0);
+        }
+
+        .share-sheet-handle {
+            width: 36px;
+            height: 4px;
+            border-radius: 4px;
+            background: rgba(var(--gold-rgb), 0.3);
+            margin: 6px auto 16px;
+        }
+
+        .share-sheet h4 {
+            font-family: 'Anton', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            letter-spacing: 0.01em;
+            color: var(--gold-pale);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .share-opt {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(var(--gold-rgb), 0.18);
+            background: rgba(var(--gold-rgb), 0.04);
+            color: var(--ink-dim);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .share-opt .ic {
+            font-size: 17px;
+            width: 22px;
+            text-align: center;
+        }
+
+        /* ---- Toast confirmation ---- */
+        .app-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 26px;
+            transform: translateX(-50%) translateY(16px);
+            z-index: 120;
+            padding: 10px 20px;
+            border-radius: 100px;
+            background: rgba(10, 7, 4, 0.94);
+            border: 1px solid rgba(var(--gold-rgb), 0.35);
+            color: var(--gold-pale);
+            font-size: 12.5px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .app-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ---- Poster: smooth fade/scale-in once the image actually loads ---- */
+        .cp-window img {
+            opacity: 0;
+            transform: scale(1.03);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .cp-window img.loaded {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ---- Keyboard accessibility polish ---- */
+        .champ-actions button:focus-visible,
+        .reaction-btn:focus-visible,
+        .cp-window:focus-visible,
+        .share-opt:focus-visible,
+        .tl-share-btn:focus-visible,
+        .poster-overlay-close:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        /* ---- Extra glow for the most recent champion inside the timeline ---- */
+        .tl-item.latest-champion .tl-card {
+            box-shadow: 0 0 36px rgba(var(--gold-rgb), 0.35);
+        }
+
+        /* ---- Print stylesheet — a clean, ink-friendly Hall of Fame record ---- */
+        @media print {
+            header, .nav-overlay, .theme-overlay, .theme-panel, footer,
+            .champ-actions, .reaction-label, .reaction-bar, .banner-confetti,
+            .celebrate-line, .cp-zoom-hint, .tl-share-btn,
+            .poster-overlay, .share-sheet-overlay, .app-toast, #backToTop {
+                display: none !important;
+            }
+            body { background: #fff !important; color: #111 !important; }
+            .tl-card, .hof-stat, .banner-cloth {
+                background: #fff !important;
+                border: 1px solid #999 !important;
+                box-shadow: none !important;
+            }
+            .banner-name, .cs-name, .tl-champ-name { -webkit-text-fill-color: #111 !important; color: #111 !important; }
+            .banner-swing { animation: none !important; transform: none !important; }
+            a[href]::after { content: ""; }
+        }
+
+        /* ---- Respect reduced-motion: keep every effect, just stop the motion ---- */
+        @media (prefers-reduced-motion: reduce) {
+            .banner-swing { animation: none !important; transform: rotate(0deg) !important; }
+            .confetti-bit { animation: none !important; opacity: 0 !important; }
+            .celebrate-line { animation: none !important; }
+            .tl-item.champion-season .tl-dot::after { animation: none !important; opacity: 0.7 !important; transform: scale(1) !important; }
+            .champ-ribbon { animation: none !important; }
+            .reaction-btn.pop .cnt { animation: none !important; }
+            .cp-window img { transition: none !important; }
+            .hof-stat, .tl-card, .champ-actions button, .reaction-btn, .soc { transition: none !important; }
+        }
     </style>
 
     <style>
@@ -2307,6 +3046,26 @@
         @keyframes pageFadeOut { to { opacity: 0; } }
         @media (prefers-reduced-motion: reduce) { body.page-loaded, body.page-leaving { animation: none !important; } }
     </style>
+
+    <!-- html2canvas — powers the "Save Banner" download feature on the Champion Spotlight -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+
+    <!-- Structured data — helps search engines understand this page is the XIPL Hall of Fame -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SportsOrganization",
+        "name": "FreeFire XIPL",
+        "sport": "Esports",
+        "url": "https://rebeldarling-001.github.io/f-ipl/hall-of-fame.html",
+        "subOrganization": {
+            "@type": "SportsTeam",
+            "name": "Rajasthan Royals",
+            "description": "6-time XIPL Champions — Season 11 (back-to-back with Season 10)"
+        }
+    }
+    </script>
 </head>
 
 <body>
@@ -2458,18 +3217,117 @@
         <div class="updated-chip fade-up d3">🕒 THROUGH SEASON 11</div>
     </section>
 
+    <!-- CHAMPION SPOTLIGHT — grand Season 11 announcement, holds the stage until Season 12 -->
+    <section class="champ-spotlight fade-up d3">
+        <div class="banner-confetti" id="bannerConfetti"></div>
+        <div class="celebrate-line">🎉 Congratulations, Champions! 🎉</div>
+        <div class="banner-rig" id="bannerRig">
+            <div class="banner-rod"></div>
+            <div class="banner-swing">
+                <div class="banner-ropes"><span></span><span></span></div>
+                <div class="banner-cloth">
+                    <div class="banner-crest-ring"></div>
+                    <div class="banner-crest">
+                        <img src="rr.png" alt="Rajasthan Royals crest">
+                    </div>
+
+                    <div class="banner-kicker">Season XI · Grand Finale</div>
+                    <div class="banner-name">RAJASTHAN<br>ROYALS</div>
+                    <span class="banner-champions">Champions</span>
+
+                    <p class="banner-tagline">Back-to-back and unstoppable — Rajasthan Royals extend their own
+                        record with a 6th XIPL title, following straight on from Season 10.</p>
+
+                    <div class="banner-stats">
+                        <div class="st"><b>S11</b><span>Title Won</span></div>
+                        <div class="st"><b>6th</b><span>Championship</span></div>
+                        <div class="st"><b>2×</b><span>Back-to-Back</span></div>
+                    </div>
+
+                    <!-- CHAMPION POSTER — swap the src below for the team's own poster/photo.
+                         Recommended: a portrait image, ~800x1000px, under 500KB.
+                         If the file is missing or fails to load, a tidy placeholder shows
+                         instead — nothing ever looks broken. -->
+                    <div class="champ-poster">
+                        <div class="cp-frame">
+                            <div class="cp-window" id="posterWindow">
+                                <img id="posterImg" src="rr.jpg"
+                                    alt="Rajasthan Royals — Season 11 Champions poster"
+                                    loading="lazy" decoding="async"
+                                    onload="this.classList.add('loaded')"
+                                    onerror="this.style.display='none'; document.getElementById('posterFallback').style.display='flex';">
+                                <div class="cp-placeholder" id="posterFallback" style="display:none;">
+                                    <span class="ic">🖼️</span>
+                                    <span class="t1">Add the Champions' Poster</span>
+                                    <span class="t2">Drop a team photo at
+                                        assets/champions/season-11-rajasthan-royals.jpg</span>
+                                </div>
+                                <span class="cp-zoom-hint">🔍 Tap to enlarge</span>
+                            </div>
+                        </div>
+                        <div class="cp-caption">Official <b>Season 11</b> Champions Poster</div>
+                    </div>
+                </div>
+                <div class="banner-fringe"></div>
+            </div>
+        </div>
+        <div class="banner-note">Reigning Champions · <b>Season 12</b> coming soon</div>
+
+        <div class="reaction-label">Show your reaction</div>
+        <div class="reaction-bar" id="reactionBar">
+            <button class="reaction-btn" data-reaction="fire" aria-label="React with fire">
+                <span class="emo">🔥</span><span class="cnt" data-cnt="fire">0</span>
+            </button>
+            <button class="reaction-btn" data-reaction="clap" aria-label="React with applause">
+                <span class="emo">👏</span><span class="cnt" data-cnt="clap">0</span>
+            </button>
+            <button class="reaction-btn" data-reaction="goat" aria-label="React with GOAT">
+                <span class="emo">🐐</span><span class="cnt" data-cnt="goat">0</span>
+            </button>
+        </div>
+
+        <div class="champ-actions">
+            <button class="champ-save" id="champSaveBtn">💾 Save Banner</button>
+            <button class="champ-share" id="champShareBtn">📤 Share</button>
+        </div>
+    </section>
+
+    <!-- Poster lightbox — tap the poster above to view it full-size -->
+    <div class="poster-overlay" id="posterOverlay">
+        <button class="poster-overlay-close" id="posterOverlayClose" aria-label="Close poster">✕</button>
+        <img id="posterOverlayImg" src="" alt="Season 11 Champions poster, enlarged">
+    </div>
+
+    <!-- Share sheet — real options instead of guessing one app -->
+    <div class="share-sheet-overlay" id="shareSheetOverlay">
+        <div class="share-sheet" onclick="event.stopPropagation()">
+            <div class="share-sheet-handle"></div>
+            <h4>Share the Win</h4>
+            <button class="share-opt" id="shareWhatsapp"><span class="ic">🟢</span> WhatsApp</button>
+            <button class="share-opt" id="shareTwitter"><span class="ic">✖️</span> X (Twitter)</button>
+            <button class="share-opt" id="shareCopyLink"><span class="ic">🔗</span> Copy Link</button>
+        </div>
+    </div>
+
+    <!-- Toast confirmation, used by Save Banner / Copy Link -->
+    <div class="app-toast" id="appToast"></div>
+
+
     <!-- STAT STRIP -->
     <section class="hof-stats fade-up d3">
         <div class="hof-stat">
-            <div class="num">11</div>
+            <div class="ic">🏆</div>
+            <div class="num" data-count-to="11">0</div>
             <div class="lbl">Seasons</div>
         </div>
         <div class="hof-stat">
-            <div class="num">8</div>
+            <div class="ic">🛡️</div>
+            <div class="num" data-count-to="4">0</div>
             <div class="lbl">Franchises Crowned</div>
         </div>
         <div class="hof-stat">
-            <div class="num">2</div>
+            <div class="ic">🔁</div>
+            <div class="num" data-count-to="2">0</div>
             <div class="lbl">Back-to-Back Titles</div>
         </div>
     </section>
@@ -2479,76 +3337,95 @@
         <div class="timeline-rail"></div>
         <div class="timeline-list">
 
-            <div class="tl-item live-season fade-up">
+            <div class="tl-item upcoming-season fade-up">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-season-row">
-                        <span class="tl-season">Season 11</span>
-                        <span class="tl-current-tag"><span class="live-blip"></span> Live Now</span>
+                        <span class="tl-season">Season 12</span>
+                        <span class="tl-upcoming-tag">⏳ Coming Soon</span>
                     </div>
                     <div class="tl-champ-row">
-                        <div class="tl-live-icon">⏳</div>
+                        <div class="tl-live-icon">🗓️</div>
                         <div>
-                            <div class="tl-champ-name">Trophy Not Yet Decided</div>
-                            <div class="tl-champ-sub">Group stage underway</div>
+                            <div class="tl-champ-name">Details to be announced</div>
+                            <div class="tl-champ-sub">The next chapter of XIPL</div>
                         </div>
                     </div>
-                    <p class="tl-blurb">This season's story is still being written on the battleground — check the
-                        Leaderboard for live standings. This spot lights up gold the moment a champion is crowned.</p>
+                    <p class="tl-blurb">Rajasthan Royals will defend their crown when Season 12 begins. Stay
+                        tuned for dates, format, and franchise announcements.</p>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season latest-champion fade-up" data-team="Rajasthan Royals" data-season="Season 11">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
+                        <span class="champ-ribbon">🏆 Back-to-Back Champions</span>
+                        <div class="tl-season-row">
+                            <span class="tl-season">Season 11</span>
+                        </div>
+                        <div class="tl-champ-row">
+                            <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
+                            <div>
+                                <div class="tl-champ-name">Rajasthan Royals</div>
+                                <div class="tl-champ-sub">6th title · Back-to-Back Champions</div>
+                            </div>
+                        </div>
+                        <p class="tl-blurb">Back-to-back and dominant — Rajasthan Royals stretch their own record to six XIPL titles, picking up right where Season 10 left off.</p>
+                        <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 11" aria-label="Share this champion">📤 Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 10">
+                <div class="tl-node"><div class="tl-dot"></div></div>
+                <div class="tl-card">
+                    <div class="tl-card-inner">
+                        <span class="champ-ribbon">🏆 Five-Time Champions</span>
                         <div class="tl-season-row">
                             <span class="tl-season">Season 10</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">🐉</div>
+                            <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
-                                <div class="tl-champ-name">Dragon Kings</div>
-                                <div class="tl-champ-sub">Back-to-back champions</div>
+                                <div class="tl-champ-name">Rajasthan Royals</div>
+                                <div class="tl-champ-sub">5th title · Five-Time Champions</div>
                             </div>
                         </div>
                         <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>91</b> pts</span>
-                            <span class="tl-mini-stat"><b>4</b> Booyahs</span>
+                            <span class="tl-mini-stat">Captain <b>@RATH0000</b></span>
                         </div>
-                        <p class="tl-blurb">Defended their crown with a dominant playoff run, sealing the title in
-                            the Grand Finale's final zone against Phantom Reapers.</p>
+                        <p class="tl-blurb">Five-time champions. Rajasthan Royals broke new ground as the first franchise to reach a fifth XIPL title.</p>
+                        <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 10" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Royal Challengers Bengaluru" data-season="Season 9">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
+                        <span class="champ-ribbon">🏆 Back-to-Back Champions</span>
                         <div class="tl-season-row">
                             <span class="tl-season">Season 9</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">🐉</div>
+                            <div class="tl-crest"><img src="rcb.png" alt="Royal Challengers Bengaluru crest"></div>
                             <div>
-                                <div class="tl-champ-name">Dragon Kings</div>
-                                <div class="tl-champ-sub">First title</div>
+                                <div class="tl-champ-name">Royal Challengers Bengaluru</div>
+                                <div class="tl-champ-sub">2nd title · Back-to-Back Champions</div>
                             </div>
                         </div>
                         <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>84</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
+                            <span class="tl-mini-stat">Captain <b>@DontMindMe_009</b></span>
                         </div>
-                        <p class="tl-blurb">Rode a red-hot Grand Finale to their maiden championship, breaking
-                            through after two consecutive semi-final exits.</p>
+                        <p class="tl-blurb">Royal Challengers Bengaluru go back-to-back — a dominant Season 9 campaign that included a 13-wins-from-14 league record.</p>
+                        <button class="tl-share-btn" data-team="Royal Challengers Bengaluru" data-season="Season 9" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Royal Challengers Bengaluru" data-season="Season 8">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
@@ -2557,23 +3434,22 @@
                             <span class="tl-season">Season 8</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">🦂</div>
+                            <div class="tl-crest"><img src="rcb.png" alt="Royal Challengers Bengaluru crest"></div>
                             <div>
-                                <div class="tl-champ-name">Venom Vipers</div>
-                                <div class="tl-champ-sub">Franchise's second title</div>
+                                <div class="tl-champ-name">Royal Challengers Bengaluru</div>
+                                <div class="tl-champ-sub">1st title</div>
                             </div>
                         </div>
                         <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>79</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
+                            <span class="tl-mini-stat">Captain <b>@SivaSravan18</b></span>
                         </div>
-                        <p class="tl-blurb">A late playoff surge carried the Vipers past the top seed, closing the
-                            season on a six-match unbeaten streak.</p>
+                        <p class="tl-blurb">Royal Challengers Bengaluru claim their maiden XIPL title, kickstarting a run that would become back-to-back.</p>
+                        <button class="tl-share-btn" data-team="Royal Challengers Bengaluru" data-season="Season 8" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 7">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
@@ -2582,23 +3458,22 @@
                             <span class="tl-season">Season 7</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">👑</div>
+                            <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
-                                <div class="tl-champ-name">Royal Reapers</div>
-                                <div class="tl-champ-sub">Debut title</div>
+                                <div class="tl-champ-name">Rajasthan Royals</div>
+                                <div class="tl-champ-sub">4th title</div>
                             </div>
                         </div>
                         <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>76</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
+                            <span class="tl-mini-stat">Captain <b>@DHFM9081975</b></span>
                         </div>
-                        <p class="tl-blurb">Entered the playoffs as the #4 seed and knocked out three straight
-                            top-half franchises to claim an underdog crown.</p>
+                        <p class="tl-blurb">Rajasthan Royals reclaim the throne for a 4th title, setting records along the way.</p>
+                        <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 7" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Mumbai Indians" data-season="Season 6">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
@@ -2607,23 +3482,22 @@
                             <span class="tl-season">Season 6</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">🦂</div>
+                            <div class="tl-crest"><img src="mi.png" alt="Mumbai Indians crest"></div>
                             <div>
-                                <div class="tl-champ-name">Venom Vipers</div>
-                                <div class="tl-champ-sub">First title</div>
+                                <div class="tl-champ-name">Mumbai Indians</div>
+                                <div class="tl-champ-sub">2nd title</div>
                             </div>
                         </div>
                         <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>81</b> pts</span>
-                            <span class="tl-mini-stat"><b>4</b> Booyahs</span>
+                            <span class="tl-mini-stat">Captain <b>@RebeL_Raisar_29</b></span>
                         </div>
-                        <p class="tl-blurb">Topped the group stage wire-to-wire and carried that form straight
-                            through to a commanding Grand Finale win.</p>
+                        <p class="tl-blurb">Mumbai Indians lift their second XIPL trophy, proving Season 4 was no one-off.</p>
+                        <button class="tl-share-btn" data-team="Mumbai Indians" data-season="Season 6" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 5">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
@@ -2632,23 +3506,19 @@
                             <span class="tl-season">Season 5</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">⚔️</div>
+                            <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
-                                <div class="tl-champ-name">Iron Titans</div>
-                                <div class="tl-champ-sub">Franchise's second title</div>
+                                <div class="tl-champ-name">Rajasthan Royals</div>
+                                <div class="tl-champ-sub">3rd title</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>73</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Won a tightly contested finale decided by elimination count after both
-                            finalists finished level on points.</p>
+                        <p class="tl-blurb">A third title for Rajasthan Royals — the franchise's dominance across the early seasons continues.</p>
+                        <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 5" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Mumbai Indians" data-season="Season 4">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
@@ -2657,23 +3527,19 @@
                             <span class="tl-season">Season 4</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">🌊</div>
+                            <div class="tl-crest"><img src="mi.png" alt="Mumbai Indians crest"></div>
                             <div>
-                                <div class="tl-champ-name">Storm Riders</div>
-                                <div class="tl-champ-sub">Debut title</div>
+                                <div class="tl-champ-name">Mumbai Indians</div>
+                                <div class="tl-champ-sub">1st title</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>70</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">A consistency-driven campaign — no single dominant match, but the fewest
-                            bottom-half finishes of any franchise that season.</p>
+                        <p class="tl-blurb">Mumbai Indians announce themselves with a maiden XIPL title in Season 4.</p>
+                        <button class="tl-share-btn" data-team="Mumbai Indians" data-season="Season 4" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 3">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
@@ -2682,23 +3548,19 @@
                             <span class="tl-season">Season 3</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">⚔️</div>
+                            <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
-                                <div class="tl-champ-name">Iron Titans</div>
-                                <div class="tl-champ-sub">First title</div>
+                                <div class="tl-champ-name">Rajasthan Royals</div>
+                                <div class="tl-champ-sub">2nd title</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>68</b> pts</span>
-                            <span class="tl-mini-stat"><b>3</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">The franchise's inaugural championship, sealed with a dominant
-                            18-elimination performance in the deciding match.</p>
+                        <p class="tl-blurb">Rajasthan Royals go back to back — their second title in three seasons.</p>
+                        <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 3" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Delhi Capitals" data-season="Season 2">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
@@ -2707,43 +3569,35 @@
                             <span class="tl-season">Season 2</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">🛡️</div>
+                            <div class="tl-crest"><img src="dc.png" alt="Delhi Capitals crest"></div>
                             <div>
-                                <div class="tl-champ-name">Phantom Reapers</div>
-                                <div class="tl-champ-sub">First title</div>
+                                <div class="tl-champ-name">Delhi Capitals</div>
+                                <div class="tl-champ-sub">1st title</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>65</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">Went back-to-back in the Grand Finale's opening two matches and never
-                            relinquished the lead.</p>
+                        <p class="tl-blurb">Delhi Capitals claim the Season 2 crown — their only title to date.</p>
+                        <button class="tl-share-btn" data-team="Delhi Capitals" data-season="Season 2" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up">
+            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 1">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
                     <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Founding Champion</span>
+                        <span class="champ-ribbon">🏆 Champion</span>
                         <div class="tl-season-row">
                             <span class="tl-season">Season 1</span>
                         </div>
                         <div class="tl-champ-row">
-                            <div class="tl-crest">🏆</div>
+                            <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
-                                <div class="tl-champ-name">Blaze Battalion</div>
-                                <div class="tl-champ-sub">Inaugural champions</div>
+                                <div class="tl-champ-name">Rajasthan Royals</div>
+                                <div class="tl-champ-sub">1st title · Inaugural Champions</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat"><b>61</b> pts</span>
-                            <span class="tl-mini-stat"><b>2</b> Booyahs</span>
-                        </div>
-                        <p class="tl-blurb">The franchise that started it all — the very first name etched onto the
-                            XIPL trophy.</p>
+                        <p class="tl-blurb">The franchise that started it all — Rajasthan Royals lift the very first XIPL trophy.</p>
+                        <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 1" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
@@ -2917,6 +3771,210 @@
             e.style.animationDelay = (Math.random() * 8) + 's';
             emberField.appendChild(e);
         }
+
+// ---------- Champion spotlight ambient motes ----------
+// ---------- Toast helper (used by Save Banner, Copy Link) ----------
+        const appToast = document.getElementById('appToast');
+        let toastTimer;
+        function showToast(msg, duration = 2200) {
+            if (!appToast) return;
+            appToast.textContent = msg;
+            appToast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => appToast.classList.remove('show'), duration);
+        }
+
+// ---------- Save Banner (download as image) ----------
+        const champSaveBtn = document.getElementById('champSaveBtn');
+        const champShareBtn = document.getElementById('champShareBtn');
+        const bannerRig = document.getElementById('bannerRig');
+        const bannerSwingEl = bannerRig ? bannerRig.querySelector('.banner-swing') : null;
+        let currentShareText = '🏆 Rajasthan Royals win their 6th XIPL title — back-to-back Season 11 Champions! 👑 #XIPL #Season11Champions';
+
+        if (champSaveBtn && bannerRig) {
+            champSaveBtn.addEventListener('click', async () => {
+                if (typeof html2canvas === 'undefined') {
+                    showToast('Still loading — try again in a second');
+                    return;
+                }
+                const original = champSaveBtn.textContent;
+                champSaveBtn.textContent = '⏳ Preparing…';
+                if (bannerSwingEl) bannerSwingEl.classList.add('capture-still');
+                await new Promise(r => setTimeout(r, 60));
+                try {
+                    const canvas = await html2canvas(bannerRig, { backgroundColor: null, scale: 2 });
+                    const link = document.createElement('a');
+                    link.download = 'xipl-season-11-champions.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    showToast('✅ Banner saved to your downloads');
+                } catch (err) {
+                    console.error('Save banner failed:', err);
+                    showToast('Could not save — please try again');
+                } finally {
+                    if (bannerSwingEl) bannerSwingEl.classList.remove('capture-still');
+                    champSaveBtn.textContent = original;
+                }
+            });
+        }
+
+// ---------- Share sheet (native share sheet, or WhatsApp / X / Copy Link) ----------
+        const shareSheetOverlay = document.getElementById('shareSheetOverlay');
+        const shareWhatsapp = document.getElementById('shareWhatsapp');
+        const shareTwitter = document.getElementById('shareTwitter');
+        const shareCopyLink = document.getElementById('shareCopyLink');
+
+        async function openShareFor(text) {
+            currentShareText = text;
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: 'FreeFire XIPL Hall of Fame', text, url: location.href });
+                    return;
+                } catch (err) { /* user cancelled — no need to fall back */ return; }
+            }
+            if (shareSheetOverlay) shareSheetOverlay.classList.add('show');
+        }
+
+        if (champShareBtn) {
+            champShareBtn.addEventListener('click', () => {
+                openShareFor('🏆 Rajasthan Royals win their 6th XIPL title — back-to-back Season 11 Champions! 👑 #XIPL #Season11Champions');
+            });
+        }
+
+        // delegated: works for every "📤 Share" button on every champion card in the timeline
+        document.querySelectorAll('.tl-share-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const team = btn.dataset.team || 'This team';
+                const season = btn.dataset.season || '';
+                openShareFor(`🏆 ${team} were crowned ${season} Champions of FreeFire XIPL! 👑 #XIPL`);
+            });
+        });
+
+        if (shareSheetOverlay) {
+            shareSheetOverlay.addEventListener('click', () => shareSheetOverlay.classList.remove('show'));
+        }
+        if (shareWhatsapp) {
+            shareWhatsapp.addEventListener('click', () => {
+                window.open('https://wa.me/?text=' + encodeURIComponent(currentShareText + ' ' + location.href), '_blank');
+                shareSheetOverlay.classList.remove('show');
+            });
+        }
+        if (shareTwitter) {
+            shareTwitter.addEventListener('click', () => {
+                window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(currentShareText) +
+                    '&url=' + encodeURIComponent(location.href), '_blank');
+                shareSheetOverlay.classList.remove('show');
+            });
+        }
+        if (shareCopyLink) {
+            shareCopyLink.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(location.href);
+                    showToast('🔗 Link copied');
+                } catch (err) {
+                    showToast('Could not copy — copy it manually');
+                }
+                shareSheetOverlay.classList.remove('show');
+            });
+        }
+
+// ---------- Reaction bar (personal counter, saved on this device via localStorage) ----------
+        const reactionBar = document.getElementById('reactionBar');
+        if (reactionBar) {
+            const STORAGE_KEY = 'xipl_s11_reactions';
+            let counts = { fire: 0, clap: 0, goat: 0 };
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                counts = { ...counts, ...saved };
+            } catch (err) { /* ignore malformed storage */ }
+
+            reactionBar.querySelectorAll('.reaction-btn').forEach(btn => {
+                const key = btn.dataset.reaction;
+                const cntEl = btn.querySelector(`[data-cnt="${key}"]`);
+                if (cntEl) cntEl.textContent = counts[key] || 0;
+
+                btn.addEventListener('click', () => {
+                    counts[key] = (counts[key] || 0) + 1;
+                    if (cntEl) cntEl.textContent = counts[key];
+                    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(counts)); } catch (err) { /* storage unavailable */ }
+                    btn.classList.add('active', 'pop');
+                    setTimeout(() => btn.classList.remove('pop'), 350);
+                });
+            });
+        }
+
+// ---------- Champion poster lightbox ----------
+        const posterWindow = document.getElementById('posterWindow');
+        const posterOverlay = document.getElementById('posterOverlay');
+        const posterOverlayImg = document.getElementById('posterOverlayImg');
+        const posterOverlayClose = document.getElementById('posterOverlayClose');
+        const posterImg = document.getElementById('posterImg');
+
+        if (posterWindow && posterOverlay) {
+            posterWindow.addEventListener('click', () => {
+                // only open the lightbox if a real poster image is loaded
+                if (posterImg && posterImg.style.display !== 'none' && posterImg.complete && posterImg.naturalWidth > 0) {
+                    posterOverlayImg.src = posterImg.src;
+                    posterOverlay.classList.add('show');
+                }
+            });
+            posterOverlayClose.addEventListener('click', () => posterOverlay.classList.remove('show'));
+            posterOverlay.addEventListener('click', (e) => {
+                if (e.target === posterOverlay) posterOverlay.classList.remove('show');
+            });
+        }
+
+// ---------- Champion banner confetti ----------
+        const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const bannerConfettiField = document.getElementById('bannerConfetti');
+        if (bannerConfettiField && !reducedMotion) {
+            const confettiColors = ['var(--gold)', 'var(--gold-pale)', 'var(--gold-deep)', '#ffffff'];
+            for (let i = 0; i < 34; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti-bit' + (Math.random() > 0.5 ? ' round' : '');
+                c.style.left = Math.random() * 100 + '%';
+                c.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                c.style.setProperty('--drift', (8 + Math.random() * 18) + 'px');
+                c.style.animationDuration = (1.2 + Math.random() * 1.1) + 's';
+                c.style.animationDelay = (Math.random() * 2) + 's';
+                bannerConfettiField.appendChild(c);
+            }
+        }
+
+// ---------- Stat strip count-up ----------
+        const countEls = document.querySelectorAll('.hof-stat .num[data-count-to]');
+        if (countEls.length) {
+            const countIO = new IntersectionObserver((entries) => {
+                entries.forEach(en => {
+                    if (!en.isIntersecting) return;
+                    const el = en.target;
+                    const target = parseInt(el.dataset.countTo, 10) || 0;
+                    if (reducedMotion) {
+                        el.textContent = target;
+                        countIO.unobserve(el);
+                        return;
+                    }
+                    const duration = 900;
+                    const start = performance.now();
+                    function tick(now) {
+                        const p = Math.min((now - start) / duration, 1);
+                        const eased = 1 - Math.pow(1 - p, 3);
+                        el.textContent = Math.round(eased * target);
+                        if (p < 1) requestAnimationFrame(tick);
+                    }
+                    requestAnimationFrame(tick);
+                    countIO.unobserve(el);
+                });
+            }, { threshold: 0.6 });
+            countEls.forEach(el => countIO.observe(el));
+        }
+
+// ---------- Escape key closes any open overlay ----------
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (posterOverlay && posterOverlay.classList.contains('show')) posterOverlay.classList.remove('show');
+            if (shareSheetOverlay && shareSheetOverlay.classList.contains('show')) shareSheetOverlay.classList.remove('show');
+        });
 
 // ---------- Scroll-reveal (.fade-up elements) ----------
         // Scroll reveal

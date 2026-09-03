@@ -12,6 +12,7 @@
 <meta name="theme-color" content="#0a0705">
 
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/">
 <meta property="og:title" content="FREEFIREXIPL — Battle Up">
 <meta property="og:description" content="The tournament battleground for Free Fire players. Squad up. Battle up. Rise to the top.">
 <meta property="og:image" content="https://freefirexipl.com/og-image.jpg">
@@ -154,12 +155,14 @@
   }
   .buzzer-ring-glow{
     position:absolute;inset:-4px;border-radius:50%;pointer-events:none;
-    box-shadow:0 0 0 0 rgba(var(--gold-rgb),.6);
-    animation:buzzerIdle 2.6s ease-in-out infinite;
+    border:2px solid rgba(var(--gold-rgb),.55);
+    opacity:0;
+    animation:buzzerIdle 2.6s ease-out infinite;
+    will-change:transform,opacity;
   }
   @keyframes buzzerIdle{
-    0%,100%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),.35);}
-    50%{box-shadow:0 0 0 6px rgba(var(--gold-rgb),0);}
+    0%{transform:scale(1);opacity:.5;}
+    100%{transform:scale(1.32);opacity:0;}
   }
   .hyped-btn.glow .buzzer-ring-glow{animation:buzzPulse .6s ease-out;}
   @keyframes buzzPulse{
@@ -227,17 +230,66 @@
     text-transform:uppercase;color:var(--ink);background:transparent;
     border:1px solid rgba(var(--gold-rgb),.55);
     padding:17px 50px;border-radius:999px;cursor:pointer;
-    box-shadow:0 0 0 0 rgba(var(--gold-rgb),.35);
-    animation:enterPulse 2.4s ease-in-out infinite;
     transition:background .25s ease, color .25s ease, transform .2s ease, box-shadow .25s ease;
+  }
+  .enter-btn::after{
+    content:'';position:absolute;inset:0;border-radius:999px;pointer-events:none;
+    border:1px solid rgba(var(--gold-rgb),.4);
+    animation:enterPulse 2.4s ease-out infinite;
+    will-change:transform,opacity;
   }
   .enter-btn:hover, .enter-btn:active{
     background:var(--gold);color:var(--bg);transform:scale(1.04);
-    animation-play-state:paused;box-shadow:0 0 30px 4px rgba(var(--gold-rgb),.4);
+    box-shadow:0 0 30px 4px rgba(var(--gold-rgb),.4);
   }
+  .enter-btn:hover::after, .enter-btn:active::after{animation-play-state:paused;opacity:0;}
   @keyframes enterPulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),.28);}
-    50%{box-shadow:0 0 0 10px rgba(var(--gold-rgb),0);}
+    0%{transform:scale(1);opacity:.55;}
+    100%{transform:scale(1.12);opacity:0;}
+  }
+
+  /* ============ PHOTO INTRO MONTAGE — cinematic flash-cut sequence of YOUR OWN photos,
+     plays right after Enter, before the "What's up Survivors?" text splash. Skipped
+     entirely (falls straight through to the text splash) if no photos are configured
+     or none of them load — never blocks or breaks the page either way. ============ */
+  .photo-splash{
+    position:fixed;inset:0;z-index:4;background:var(--bg);overflow:hidden;
+    opacity:0;pointer-events:none;
+  }
+  .photo-splash.show{opacity:1;pointer-events:auto;}
+  .photo-splash.hide{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;}
+  .photo-slide-wrap{position:absolute;inset:0;}
+  .photo-slide{position:absolute;inset:0;opacity:0;transition:opacity .25s ease;overflow:hidden;}
+  .photo-slide.active{opacity:1;}
+  .photo-slide img{width:100%;height:100%;object-fit:cover;transform:scale(1);}
+  .photo-slide.active img{animation:kenBurns 1s ease-out forwards;}
+  @keyframes kenBurns{from{transform:scale(1);}to{transform:scale(1.09);}}
+  .photo-vignette{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 85% 75% at 50% 50%, transparent 55%, rgba(10,7,5,.6) 100%),
+      linear-gradient(0deg, rgba(10,7,5,.65) 0%, transparent 26%, transparent 74%, rgba(10,7,5,.45) 100%);
+  }
+  .photo-bar{position:absolute;left:0;right:0;height:24px;background:var(--bg);z-index:2;}
+  .photo-bar.top{top:0;border-bottom:1px solid rgba(var(--gold-rgb),.3);}
+  .photo-bar.bottom{bottom:0;border-top:1px solid rgba(var(--gold-rgb),.3);}
+  .photo-flash{position:absolute;inset:0;z-index:3;background:var(--gold-pale);opacity:0;pointer-events:none;}
+  .photo-flash.flick{animation:flashCut .18s ease-out;}
+  @keyframes flashCut{0%{opacity:.8;}100%{opacity:0;}}
+  .photo-brand{
+    position:absolute;z-index:2;bottom:42px;left:0;right:0;text-align:center;
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold-pale);opacity:.85;
+  }
+  .photo-skip{
+    position:absolute;z-index:3;top:20px;right:20px;
+    font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink);background:rgba(23,17,10,.6);border:1px solid rgba(var(--gold-rgb),.35);
+    padding:9px 16px;border-radius:999px;cursor:pointer;backdrop-filter:blur(4px);
+  }
+  @media (prefers-reduced-motion:reduce){
+    .photo-slide.active img{animation:none!important;}
+    .photo-flash{display:none!important;}
   }
 
   .splash{
@@ -613,11 +665,16 @@
     .splash{display:none;}
     .line-in,.eyebrow,.tease,.tuned,.cd-wrap,.tagline,.scroll-cue{animation:none!important;opacity:1!important;transform:none!important;}
     .ember{display:none;}
-    .tuned .dot{animation:none;}
+    .tuned .dot,.live-badge .dot{animation:none!important;}
     .flap.flipping .flap-digit.current,.flap.flipping .flap-digit.next{animation:none!important;opacity:1!important;transform:none!important;}
     .section-eyebrow,.section-title,.section-body,.feature-card,.social-links{
       transition:none!important;opacity:1!important;transform:none!important;
     }
+    .buzzer-ring-glow,.enter-btn::after,.hyped-btn,.htag-wrap,.cd-wrap::before,
+    .hero-badge,.surprise-box.locked,.surprise-box.unlocked,.box-hint,.scroll-cue-line{
+      animation:none!important;
+    }
+    .htag-wrap{transform:rotate(0deg)!important;}
   }
   /* ============ PREMIUM LAYER — scroll progress, cursor glow, grain, shine effects ============ */
   .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0%;z-index:50;
@@ -663,37 +720,6 @@
 
   /* launch particle burst — spawned once, when the countdown hits zero */
   .launch-particle{position:fixed;z-index:9;border-radius:50%;pointer-events:none;will-change:transform,opacity;}
-
-  /* ============ HYPE CAPTURE — private interest counter, phone saved to Supabase ============ */
-  .hype-wrap{margin-top:28px;opacity:0;transform:translateY(16px);}
-  body.revealed .hype-wrap{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.5s;}
-  .hype-card{
-    position:relative;border-radius:20px;padding:22px 22px 20px;max-width:340px;
-    background:radial-gradient(ellipse 90% 70% at 50% 0%, rgba(var(--gold-rgb),.08), transparent 70%), var(--surface);
-    box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.18), 0 16px 44px rgba(0,0,0,.5);
-  }
-  .hype-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--ink-faint);}
-  .hype-title{margin-top:6px;font-family:'Anton',sans-serif;font-weight:400;font-size:22px;
-    letter-spacing:.02em;color:var(--ink);text-transform:uppercase;}
-  .hype-sub{margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--ink-dim);}
-  .hype-form{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
-  .hype-input{
-    width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(var(--gold-rgb),.25);
-    background:var(--surface-2);color:var(--ink);font-family:'Rajdhani',sans-serif;font-size:15px;
-    outline:none;transition:border-color .2s ease;
-  }
-  .hype-input:focus{border-color:var(--gold);}
-  .hype-btn{
-    padding:12px 18px;border-radius:10px;border:none;cursor:pointer;
-    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--bg);background:var(--gold);transition:transform .2s ease, box-shadow .25s ease, opacity .2s ease;
-  }
-  .hype-btn:hover{transform:scale(1.02);box-shadow:0 10px 26px rgba(var(--gold-rgb),.35);}
-  .hype-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none;}
-  .hype-status{margin-top:10px;font-family:'Space Mono',monospace;font-size:11px;
-    letter-spacing:.06em;color:var(--gold-pale);min-height:14px;}
-  .hype-status.error{color:var(--live);}
 
   /* ============ HANGING STICKER — peeks in from right edge ============ */
   .htag-wrap{
@@ -860,6 +886,16 @@
     <button class="enter-btn" id="enterBtn">Enter</button>
   </div>
 
+  <div class="photo-splash" id="photoSplash" aria-hidden="true">
+    <div class="photo-bar top"></div>
+    <div class="photo-slide-wrap" id="photoSlideWrap"></div>
+    <div class="photo-vignette"></div>
+    <div class="photo-flash" id="photoFlash"></div>
+    <div class="photo-bar bottom"></div>
+    <p class="photo-brand">FreeFireXIPL — Season 12</p>
+    <button class="photo-skip" id="skipPhotoSplash" type="button">Skip ⏭</button>
+  </div>
+
   <div class="splash" aria-hidden="true">
     <div class="splash-inner">
       <h1 class="splash-headline">
@@ -949,7 +985,7 @@
         <div class="feature-card">
           <span class="feature-icon">🏆</span>
           <h3>Seasonal Tournaments</h3>
-          <p>Champions will rise. 11 chapters completed, with every new season raising the stakes.</p>
+          <p>11 seasons completed, and every new one raises the stakes.</p>
         </div>
         <div class="feature-card">
           <span class="feature-icon">🎯</span>
@@ -1018,6 +1054,7 @@
      page load and needs these to already exist (a `let` referenced before its own
      declaration throws and silently kills the rest of the script) */
   let audioCtx = null, masterGain = null, muted = false;
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let musicTimer = null, musicStep = 0, usingFileMusic = false, audioStarted = false;
 
   /* ================= MAIN CONTENT COUNTDOWN — the one real target this whole page counts
@@ -1028,7 +1065,7 @@
      and lands straight on the live content — no game, ever again, for anyone.
      To test again later, set MAIN_TEST_SECONDS to a number of seconds instead. ================= */
   const MAIN_TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real date below
-  const REAL_TARGET_DATE = '2026-08-08T12:08:00+05:30';
+  const REAL_TARGET_DATE = '2026-09-03T17:45:00+05:30';
   const MAIN_TARGET_KEY = 'ffx_main_target_v1';
 
   let target;
@@ -1073,8 +1110,8 @@
   const boxHint = document.getElementById('boxHint');
 
   const TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real time below
-  const UNLOCK_HOUR = 11;
-  const UNLOCK_MINUTE = 15;
+  const UNLOCK_HOUR = 17;
+  const UNLOCK_MINUTE = 32;
 
   const unlockTarget = TEST_SECONDS !== null
     ? new Date(Date.now() + TEST_SECONDS * 1000)
@@ -1146,6 +1183,85 @@
     setTimeout(openReveal, 550);
   });
 
+  /* ================= PHOTO INTRO MONTAGE — plays after Enter, before the text splash.
+     Uses YOUR OWN photos only — tournament shots, player photos, artwork. Never real
+     Free Fire game footage or character art, which belongs to Garena.
+     Add your own filenames to SPLASH_PHOTOS below (portrait or square shots work best,
+     ~1600px wide, under ~400KB each so they load fast). Anything that fails to load is
+     silently skipped; if none load at all, this whole phase is skipped and the page
+     behaves exactly as it did before — it can never show broken images or block entry. */
+  const SPLASH_PHOTOS = [
+    'csk.png',
+    'srh.png',
+    'kkr.png',
+    'rr.png'
+  ];
+  const SPLASH_SLIDE_MS = 700;
+  const SPLASH_FLASH_MS = 150;
+
+  function preloadImage(src){
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(src);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+  }
+
+  let loadedSplashPhotos = [];
+  const splashPhotosReady = prefersReducedMotion
+    ? Promise.resolve([])
+    : Promise.all(SPLASH_PHOTOS.map(preloadImage)).then((results) => {
+        loadedSplashPhotos = results.filter(Boolean);
+        return loadedSplashPhotos;
+      });
+
+  const photoSplash = document.getElementById('photoSplash');
+  const photoSlideWrap = document.getElementById('photoSlideWrap');
+  const photoFlash = document.getElementById('photoFlash');
+  const skipPhotoBtn = document.getElementById('skipPhotoSplash');
+
+  function playPhotoMontage(done){
+    if(!loadedSplashPhotos.length){ done(); return; }
+
+    loadedSplashPhotos.forEach((src) => {
+      const slide = document.createElement('div');
+      slide.className = 'photo-slide';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      slide.appendChild(img);
+      photoSlideWrap.appendChild(slide);
+    });
+    const slides = [...photoSlideWrap.children];
+    photoSplash.classList.add('show');
+
+    let i = 0, finished = false;
+    function finish(){
+      if(finished) return;
+      finished = true;
+      photoSplash.classList.add('hide');
+      setTimeout(() => photoSplash.remove(), 500);
+      done();
+    }
+    function showNext(){
+      if(finished) return;
+      slides.forEach(s => s.classList.remove('active'));
+      if(i >= slides.length){ finish(); return; }
+      slides[i].classList.add('active');
+      playTapClick(); // reused as a quick "photo snap" tick
+      i++;
+      setTimeout(() => {
+        photoFlash.classList.remove('flick');
+        void photoFlash.offsetWidth;
+        photoFlash.classList.add('flick');
+        setTimeout(showNext, SPLASH_FLASH_MS);
+      }, SPLASH_SLIDE_MS);
+    }
+    skipPhotoBtn.onclick = finish;
+    showNext();
+  }
+
   /* ================= ENTER GATE — tap to begin; everything else (splash, puzzle) waits for this ================= */
   const enterGate = document.getElementById('enterGate');
   const enterBtn = document.getElementById('enterBtn');
@@ -1157,16 +1273,28 @@
     enterGate.remove();
     const splashEl = document.querySelector('.splash');
     if(splashEl) splashEl.remove();
+    if(photoSplash) photoSplash.remove();
     soundToggle.classList.add('show'); // let the visitor turn music on manually if they want
   } else {
     enterBtn.addEventListener('click', () => {
-      document.body.classList.add('started');
       enterGate.classList.add('hide');
       setTimeout(() => enterGate.remove(), 550);
-      // this tap is a real user gesture — use it to unlock audio and play a whoosh
-      // synced with the camera-zoom splash. Background music starts later, after the game.
+      // this tap is a real user gesture — use it to unlock audio
       ensureAudio();
-      playSplashWhoosh();
+
+      const startMain = () => {
+        document.body.classList.add('started');
+        playSplashWhoosh();
+      };
+
+      if(loadedSplashPhotos.length){
+        playPhotoMontage(startMain);
+      } else {
+        splashPhotosReady.then((photos) => {
+          if(photos.length) playPhotoMontage(startMain);
+          else startMain();
+        });
+      }
     }, { once: true });
   }
 
@@ -1675,6 +1803,7 @@
   ];
   function spawnSmoke(x, y){
     if(!document.body.classList.contains('revealed')) return;
+    if(prefersReducedMotion) return;
     const puff = document.createElement('div');
     puff.className = 'smoke-puff';
     puff.style.left = x + 'px';
@@ -1698,12 +1827,15 @@
   document.querySelectorAll('.site-section').forEach(sec => revealObserver.observe(sec));
 
   // constant ambient smoke — not tied to scrolling, just keeps puffing on its own
+  // (kept deliberately infrequent: a steady stream of blurred elements forever is a
+  // real, ongoing GPU cost, not just a one-time effect)
   setInterval(() => {
     if(!document.body.classList.contains('revealed')) return;
+    if(document.hidden) return; // don't burn GPU on a backgrounded tab
     const x = window.innerWidth * (0.15 + Math.random() * 0.7);
     const y = window.innerHeight * (0.15 + Math.random() * 0.7);
     spawnSmoke(x, y);
-  }, 650);
+  }, 1800);
 
   const scrollProgress = document.getElementById('scrollProgress');
   function updateScrollProgress(){
