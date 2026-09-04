@@ -469,6 +469,7 @@
         .player-row-lvl { font-size: 9.5px; letter-spacing: 0.06em; padding: 4px 9px; border-radius: 100px; background: rgba(var(--gold-rgb), 0.12); color: var(--gold-pale); font-family: 'Space Mono', monospace; white-space: nowrap; }
         .player-row-tier { font-size: 8.5px; letter-spacing: 0.09em; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
         .player-row-photo-btn { flex-shrink: 0; width: 28px; height: 28px; border-radius: 9px; border: 1px solid var(--line); background: rgba(var(--gold-rgb), 0.08); display: flex; align-items: center; justify-content: center; font-size: 12.5px; color: var(--gold); }
+        .player-row-slno { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: rgba(var(--gold-rgb), 0.08); display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; color: var(--ink-dim); font-family: 'Space Mono', monospace; }
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 30px 16px; color: var(--ink-faint); font-size: 12.5px; }
         .rank-legend-note { margin: 10px 20px 0; padding: 10px 12px; border-radius: 12px; border: 1px dashed var(--line); background: rgba(var(--gold-rgb), 0.06); font-size: 10.5px; line-height: 1.5; color: var(--ink-dim); }
         .rank-legend-note b { color: var(--gold-pale); }
@@ -1032,14 +1033,28 @@
             try {
                 // Pull every registration regardless of status — a rejected entry still
                 // counts as someone who registered, it just no longer holds a Play-In slot.
-                const { data, error } = await sb
-                    .from(TABLE)
-                    .select('id, status');
-                if (error) throw error;
-                const rows = data || [];
-                const approvedCount = rows.filter(r => r.status === 'approved').length;
-                const pendingCount = rows.filter(r => r.status === 'pending').length;
-                const totalRegistered = rows.length; // pending + approved + rejected — everyone who ever registered
+                // NOTE: the anon/public key is RLS-restricted and can only ever see
+                // approved (and usually pending) rows directly — rejected rows are
+                // invisible to a plain .select() from here, which is why this used to
+                // undercount. ffxipl_s12_registration_stats() is a SECURITY DEFINER RPC
+                // (see setup SQL) that counts every row server-side and returns only
+                // aggregate numbers — no rejected player's personal info is exposed,
+                // just the totals. Falls back to the old row-scan if the RPC isn't set up.
+                let approvedCount, pendingCount, totalRegistered;
+                const { data: stats, error: statsErr } = await sb.rpc('ffxipl_s12_registration_stats');
+                if (!statsErr && stats) {
+                    const s = Array.isArray(stats) ? stats[0] : stats;
+                    approvedCount = s.approved_count;
+                    pendingCount = s.pending_count;
+                    totalRegistered = s.total_count;
+                } else {
+                    const { data, error } = await sb.from(TABLE).select('id, status');
+                    if (error) throw error;
+                    const rows = data || [];
+                    approvedCount = rows.filter(r => r.status === 'approved').length;
+                    pendingCount = rows.filter(r => r.status === 'pending').length;
+                    totalRegistered = rows.length;
+                }
                 const capTaken = approvedCount + pendingCount; // only these still hold a slot against the 40 cap
                 registrationsFull = capTaken >= REGISTRATION_CAP;
                 if (registrationsFull) {
@@ -1426,7 +1441,7 @@ setTimeout(() => {
                 playersGrid.innerHTML = '<div class="empty-state">No approved players match yet. Check back after admin approval.</div>';
                 return;
             }
-            playersGrid.innerHTML = list.map(p => {
+            playersGrid.innerHTML = list.map((p, idx) => {
                 const hasPhoto = !!p.profile_screenshot_url;
                 const rowAttrs = hasPhoto
                     ? `data-full="${escapeHtml(p.profile_screenshot_url)}" data-name="${escapeHtml(p.real_name)}"`
@@ -1435,6 +1450,7 @@ setTimeout(() => {
                 const avatarStyle = `background: radial-gradient(circle at 35% 30%, ${tier.c1}, ${tier.c2}); box-shadow: 0 3px 8px rgba(0,0,0,0.35), 0 0 14px ${tier.glow}; --tier-ring: ${tier.glow};`;
                 return `
                 <div class="player-row ${hasPhoto ? 'has-photo' : ''}" ${rowAttrs}>
+                    <div class="player-row-slno">${idx + 1}</div>
                     <div class="player-row-avatar${tier.premium ? ' tier-premium' : ''}" style="${avatarStyle}">${tier.emoji}</div>
                     <div class="player-row-info">
                         <div class="player-row-name">${escapeHtml(p.real_name)}</div>
