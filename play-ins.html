@@ -1025,6 +1025,23 @@
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(var(--gold-rgb), 0.10);
             box-shadow: 0 2px 20px rgba(0,0,0,0.35);
+            isolation: isolate;
+        }
+
+        /* Solid backing layer behind the blur. backdrop-filter only blurs
+           what's behind the header's own box — it does not guarantee full
+           opacity, and on some renderers content sitting right beneath the
+           header's bottom edge (e.g. a section's tall heading) can show
+           through faintly as ghosting. This pseudo-element sits UNDER the
+           header's own content (z-index -1, isolated stacking context above)
+           and gives it a fully solid fill so nothing behind it is ever
+           visible, blurred or not. */
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            z-index: -1;
         }
 
         .brand {
@@ -2509,31 +2526,45 @@
 
         .tier-group-icon {
             flex-shrink: 0;
-            width: 42px;
-            height: 42px;
-            border-radius: 13px;
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 19px;
+            font-size: 16px;
         }
 
-        .tier-group-icon.top10 { background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep)); box-shadow: 0 4px 16px rgba(var(--gold-rgb), 0.35); }
-        .tier-group-icon.top20 { background: rgba(95, 217, 126, 0.16); }
-        .tier-group-icon.top30 { background: rgba(61, 111, 224, 0.18); }
+        .tier-group-icon.top10 { background: rgba(var(--gold-rgb), 0.16); }
+        .tier-group-icon.top20 { background: rgba(95, 217, 126, 0.14); }
+        .tier-group-icon.top30 { background: rgba(61, 111, 224, 0.16); }
         .tier-group-icon.top40 { background: rgba(255, 255, 255, 0.06); }
 
         .tier-group-info { flex: 1; min-width: 0; }
 
         .tier-group-info b {
-            display: flex;
-            align-items: center;
-            gap: 7px;
+            display: block;
             font-family: 'Anton', sans-serif;
             font-weight: 400;
-            font-size: 15.5px;
+            font-size: 16px;
             letter-spacing: 0.01em;
             color: var(--ink);
+            white-space: nowrap;
+        }
+
+        .tier-group-range {
+            display: block;
+            margin-top: 2px;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+        }
+
+        .tier-group-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 7px;
         }
 
         .tier-group-price {
@@ -2541,8 +2572,9 @@
             font-family: 'Space Mono', monospace;
             font-size: 9.5px;
             letter-spacing: 0.03em;
-            padding: 2px 8px;
+            padding: 3px 9px;
             border-radius: 100px;
+            white-space: nowrap;
         }
 
         .tg-top10 .tier-group-price { background: rgba(var(--gold-rgb), 0.2); color: var(--gold-pale); }
@@ -2550,27 +2582,22 @@
         .tg-top30 .tier-group-price { background: rgba(61, 111, 224, 0.18); color: #7ba3ff; }
         .tg-top40 .tier-group-price { background: rgba(255, 255, 255, 0.07); color: var(--ink-faint); }
 
-        .tier-group-info span {
-            display: block;
-            margin-top: 3px;
-            font-size: 10.5px;
-            color: var(--ink-faint);
-        }
-
         .tier-group-count {
             flex-shrink: 0;
             font-family: 'Space Mono', monospace;
-            font-size: 10px;
+            font-size: 9.5px;
             color: var(--ink-dim);
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--line);
-            padding: 4px 10px;
+            padding: 3px 9px;
             border-radius: 100px;
             white-space: nowrap;
         }
 
         .tier-group-chevron {
             flex-shrink: 0;
+            align-self: flex-start;
+            margin-top: 3px;
             color: var(--ink-faint);
             font-size: 13px;
             transition: transform 0.3s ease, color 0.3s ease;
@@ -3129,8 +3156,8 @@
     <section id="standings" style="padding-top:10px;">
         <div class="eyebrow">RANKINGS</div>
         <h2 class="sec-title">Play-In <b>standings</b></h2>
-        <p class="sec-desc">All 40 approved players, ranked by total Play-In points. Tap a player to see their
-            9-match breakdown.</p>
+        <p class="sec-desc">The 40 approved players, split into 4 tiers of 10 by total Play-In points, kills, and
+            Booyahs. Tap a player to see their 9-match breakdown.</p>
 
         <div class="pi-lb-head fade-up">
             <div class="pi-lb-search">
@@ -3470,10 +3497,10 @@ if (backToTopBtn) {
         let currentAdmin = null;   // { id, email } once verified against ffxipl_s12_admins
 
         const TIER_META = {
-            top10: { label: 'TOP 10 · ₹10 CR', price: 10, name: 'Top 10', range: 'Ranks 1–10', icon: '👑', priceLabel: '₹10 Cr base' },
-            top20: { label: '11–20 · ₹6 CR', price: 6, name: 'Elite 20', range: 'Ranks 11–20', icon: '🥈', priceLabel: '₹6 Cr base' },
-            top30: { label: '21–30 · ₹4 CR', price: 4, name: 'Contenders', range: 'Ranks 21–30', icon: '🔷', priceLabel: '₹4 Cr base' },
-            top40: { label: '31–40 · ₹2 CR', price: 2, name: 'Rising Pool', range: 'Ranks 31–40', icon: '⚙️', priceLabel: '₹2 Cr base' },
+            top10: { label: 'TIER 1 · ₹10 CR', price: 10, name: 'Tier 1', range: 'Ranks 1–10', icon: '👑', priceLabel: '₹10 Cr base' },
+            top20: { label: 'TIER 2 · ₹6 CR', price: 6, name: 'Tier 2', range: 'Ranks 11–20', icon: '🥈', priceLabel: '₹6 Cr base' },
+            top30: { label: 'TIER 3 · ₹4 CR', price: 4, name: 'Tier 3', range: 'Ranks 21–30', icon: '🔷', priceLabel: '₹4 Cr base' },
+            top40: { label: 'TIER 4 · ₹2 CR', price: 2, name: 'Tier 4', range: 'Ranks 31–40', icon: '⚙️', priceLabel: '₹2 Cr base' },
         };
         const TIER_ORDER = ['top10', 'top20', 'top30', 'top40'];
 
@@ -3699,7 +3726,13 @@ if (backToTopBtn) {
                 const rank = i + 1;
                 const p = row.player;
                 if (q && !(String(p.real_name || '').toLowerCase().includes(q) || String(p.ign || '').toLowerCase().includes(q))) return;
-                const tier = p.auction_tier || tierForRank(rank);
+                // Fall back to a rank-based tier whenever auction_tier is
+                // missing OR holds a stale/unrecognized value (e.g. left
+                // over from an older tier scheme) — an unknown key here
+                // used to throw and blank out the ENTIRE standings list
+                // for every player, not just the one with the bad value.
+                let tier = p.auction_tier;
+                if (!buckets[tier]) tier = tierForRank(rank);
                 buckets[tier].push({ p, rank, totals: row.totals });
             });
 
@@ -3718,10 +3751,13 @@ if (backToTopBtn) {
                 head.innerHTML = `
                     <div class="tier-group-icon ${tier}">${meta.icon}</div>
                     <div class="tier-group-info">
-                        <b>${meta.name}<span class="tier-group-price">${meta.priceLabel}</span></b>
-                        <span>${meta.range}</span>
+                        <b>${meta.name}</b>
+                        <span class="tier-group-range">${meta.range}</span>
+                        <div class="tier-group-meta">
+                            <span class="tier-group-price">${meta.priceLabel}</span>
+                            <span class="tier-group-count">${rows.length} player${rows.length === 1 ? '' : 's'}</span>
+                        </div>
                     </div>
-                    <div class="tier-group-count">${rows.length} player${rows.length === 1 ? '' : 's'}</div>
                     <div class="tier-group-chevron">⌄</div>`;
 
                 const body = document.createElement('div');
