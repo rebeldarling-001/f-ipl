@@ -768,6 +768,7 @@
             <h2 class="sec-title">Registered <b>players</b></h2>
             <p class="sec-desc">Every approved Level 50+ player is automatically eligible for the Play-Ins. Tap the 📷 on any player to view their profile screenshot.</p>
             <p class="rank-legend-note" style="margin-bottom:0;">Every approved player also gets a <b>rank badge</b> based on their Free Fire level — a visual prestige indicator only, <b>not a tournament prize or trophy</b>. Here's what each rank looks like:</p>
+            <div class="eyebrow" style="margin: 16px 20px 0;">LEVEL BADGES</div>
             <div class="rank-legend-grid" id="rankLegendGrid"></div>
         </div>
         <div class="players-toolbar">
@@ -1041,7 +1042,14 @@
                 // aggregate numbers — no rejected player's personal info is exposed,
                 // just the totals. Falls back to the old row-scan if the RPC isn't set up.
                 let approvedCount, pendingCount, totalRegistered;
-                const { data: stats, error: statsErr } = await sb.rpc('ffxipl_s12_registration_stats');
+                let stats = null, statsErr = null;
+                try {
+                    const rpcResult = await sb.rpc('ffxipl_s12_registration_stats');
+                    stats = rpcResult.data;
+                    statsErr = rpcResult.error;
+                } catch (rpcThrow) {
+                    statsErr = rpcThrow; // RPC not set up yet / network hiccup — fall back below
+                }
                 if (!statsErr && stats) {
                     const s = Array.isArray(stats) ? stats[0] : stats;
                     approvedCount = s.approved_count;
