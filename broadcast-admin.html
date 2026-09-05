@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Broadcast Admin — FREEFIRE XIPL</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%A2%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0705;
+            --surface: #1a130b;
+            --gold: #f0b93d;
+            --gold-deep: #b3811f;
+            --gold-pale: #fbe4a6;
+            --ink: #f4ecd8;
+            --ink-dim: #a9997d;
+            --ink-faint: #6b5f4c;
+            --live: #ff4433;
+            --gold-rgb: 240, 185, 61;
+            --line: rgba(var(--gold-rgb), 0.16);
+            --card-a: #1d1509;
+            --card-b: #100b06;
+            --on-accent: #1a1206;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 50% 0%, #1a130b, var(--bg) 60%);
+            color: var(--ink);
+            font-family: 'Rajdhani', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 380px;
+            padding: 30px 24px;
+            border-radius: 20px;
+            background: linear-gradient(165deg, var(--card-a), var(--card-b) 80%);
+            border: 1px solid var(--line);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 22px;
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.04em;
+            color: var(--ink-dim);
+            font-size: 15px;
+        }
+
+        .brand b { color: var(--gold); }
+
+        .eyebrow {
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gold-pale);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 21px;
+            letter-spacing: 0.02em;
+            text-align: center;
+            margin: 4px 0 20px;
+            color: var(--ink);
+        }
+
+        input, select, textarea {
+            all: unset;
+            box-sizing: border-box;
+            display: block;
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 12px;
+            border-radius: 11px;
+            border: 1px solid var(--line);
+            background: rgba(0, 0, 0, 0.28);
+            color: var(--ink);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14.5px;
+        }
+
+        textarea { font-family: 'Space Mono', monospace; font-size: 13px; resize: vertical; }
+        select { cursor: pointer; }
+        input::placeholder, textarea::placeholder { color: var(--ink-faint); }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            border-radius: 11px;
+            border: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 14.5px;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+            color: var(--on-accent);
+            box-shadow: 0 8px 22px rgba(var(--gold-rgb), 0.25);
+        }
+
+        .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--ink-dim);
+            margin-top: 10px;
+        }
+
+        .status-msg {
+            margin-top: 12px;
+            font-size: 12.5px;
+            text-align: center;
+            min-height: 16px;
+            color: var(--ink-dim);
+        }
+
+        .status-msg.ok { color: #5fd97e; }
+        .status-msg.err { color: var(--live); }
+        .status-msg.loading { color: var(--gold-pale); }
+
+        .identity {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-bottom: 18px;
+            border-radius: 11px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--line);
+            font-size: 12px;
+        }
+
+        .identity span { color: var(--ink-faint); display: block; }
+        .identity b { color: var(--gold-pale); font-weight: 600; word-break: break-all; }
+
+        .identity button {
+            all: unset;
+            cursor: pointer;
+            font-size: 11.5px;
+            color: var(--ink-dim);
+            border: 1px solid var(--line);
+            padding: 6px 10px;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .hint {
+            font-size: 11px;
+            color: var(--ink-faint);
+            line-height: 1.5;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        #gate.hidden, #panel.hidden { display: none; }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="brand">FREEFIRE<b>XIPL</b></div>
+        <div class="eyebrow">CONTROL ROOM</div>
+        <h1>Broadcast Admin</h1>
+
+        <div id="gate">
+            <input type="email" id="email" placeholder="Admin email" autocomplete="username">
+            <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+            <button class="btn btn-primary" id="signInBtn">Sign In</button>
+            <div class="status-msg" id="gateMsg"></div>
+        </div>
+
+        <div id="panel" class="hidden">
+            <div class="identity">
+                <div><span>Signed in as</span><b id="emailLabel">—</b></div>
+                <button id="signOutBtn">Sign out</button>
+            </div>
+
+            <select id="kind">
+                <option value="winner">🏆 Winner announcement</option>
+                <option value="news">📰 News</option>
+                <option value="alert">📢 General alert</option>
+            </select>
+            <textarea id="message" rows="3" placeholder="e.g. Team Falcons win Match 4 — 12 kills, Booyah!"></textarea>
+            <button class="btn btn-primary" id="sendBtn">Send to Everyone Now</button>
+            <div class="status-msg" id="sendMsg"></div>
+
+            <p class="hint">Pops up as an unclosable card for 5 seconds on every FREEFIREXIPL page, for everyone with
+                the site open right now — and for anyone who opens it within the next ~20 seconds.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+        // Same Supabase project/anon key as every other FREEFIREXIPL page.
+        const FFXIPL_SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+        const FFXIPL_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+        const sb = supabase.createClient(FFXIPL_SUPABASE_URL, FFXIPL_SUPABASE_ANON_KEY);
+
+        const ADMINS_TABLE = 'ffxipl_s12_admins';
+        const ANNOUNCE_TABLE = 'ffxipl_s12_announcements';
+
+        const gate = document.getElementById('gate');
+        const panel = document.getElementById('panel');
+        const gateMsg = document.getElementById('gateMsg');
+        const emailLabel = document.getElementById('emailLabel');
+        let currentAdmin = null;
+
+        function setGateMsg(text, cls) {
+            gateMsg.textContent = text || '';
+            gateMsg.className = 'status-msg' + (cls ? ' ' + cls : '');
+        }
+
+        function describeError(err, fallback) {
+            const raw = (err && err.message) ? err.message : '';
+            if (/invalid login credentials/i.test(raw)) return 'Wrong email or password.';
+            if (/network/i.test(raw)) return 'Network issue — check your connection and try again.';
+            return raw || fallback;
+        }
+
+        // RLS on ffxipl_s12_admins only allows a user to read their own row —
+        // exactly what's needed to confirm they're really an admin.
+        async function verifyAdmin(user) {
+            const { data, error } = await sb.from(ADMINS_TABLE).select('user_id').eq('user_id', user.id).maybeSingle();
+            if (error) throw error;
+            return !!data;
+        }
+
+        function unlockUI(user) {
+            currentAdmin = { id: user.id, email: user.email };
+            emailLabel.textContent = user.email;
+            gate.classList.add('hidden');
+            panel.classList.remove('hidden');
+        }
+
+        function lockUI() {
+            currentAdmin = null;
+            gate.classList.remove('hidden');
+            panel.classList.add('hidden');
+        }
+
+        (async function restoreSession() {
+            const { data: { session } } = await sb.auth.getSession();
+            if (session && session.user) {
+                try {
+                    const isAdmin = await verifyAdmin(session.user);
+                    if (isAdmin) { unlockUI(session.user); return; }
+                    await sb.auth.signOut();
+                } catch (e) { /* fall through to gate */ }
+            }
+            lockUI();
+        })();
+
+        document.getElementById('signInBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('signInBtn');
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            if (!email || !password) { setGateMsg('Enter both email and password.', 'err'); return; }
+
+            btn.disabled = true;
+            setGateMsg('Signing in…', 'loading');
+            try {
+                const { data, error } = await sb.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                const isAdmin = await verifyAdmin(data.user);
+                if (!isAdmin) {
+                    await sb.auth.signOut();
+                    setGateMsg('This account is not on the admin list.', 'err');
+                    return;
+                }
+                setGateMsg('', '');
+                unlockUI(data.user);
+            } catch (err) {
+                console.error('Sign-in failed', err);
+                setGateMsg(describeError(err, 'Sign-in failed.'), 'err');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('signOutBtn').addEventListener('click', async () => {
+            await sb.auth.signOut();
+            lockUI();
+        });
+
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            if (!currentAdmin) return;
+            const btn = document.getElementById('sendBtn');
+            const msgEl = document.getElementById('sendMsg');
+            const kind = document.getElementById('kind').value;
+            const messageEl = document.getElementById('message');
+            const message = messageEl.value.trim();
+
+            if (!message) { msgEl.textContent = 'Write a message first.'; msgEl.className = 'status-msg err'; return; }
+
+            btn.disabled = true;
+            msgEl.textContent = 'Sending to everyone…';
+            msgEl.className = 'status-msg loading';
+
+            try {
+                const { error } = await sb.from(ANNOUNCE_TABLE)
+                    .insert({ message, kind, created_by: currentAdmin.id });
+                if (error) throw error;
+                msgEl.textContent = 'Sent ✓ — live on every page now.';
+                msgEl.className = 'status-msg ok';
+                messageEl.value = '';
+            } catch (err) {
+                console.error('Broadcast send failed', err);
+                msgEl.textContent = describeError(err, 'Could not send — check the ffxipl_s12_announcements table exists.');
+                msgEl.className = 'status-msg err';
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
