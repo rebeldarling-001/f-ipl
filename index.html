@@ -1,847 +1,2246 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta name="google-site-verification" content="vWfMPhpJlK43t9lAXPVyG8be67Fq1QB21US9QJR2SqQ" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FREEFIREXIPL — Battle Up</title>
-<meta name="description" content="Official FREEFIREXIPL platform for Free Fire tournaments, teams, players, schedules, registration, leaderboards and tournament updates.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FREEFIREXIPL — Battle Up</title>
+  <meta name="description"
+    content="FREEFIREXIPL Battle Up — the official Free Fire tournament platform. Explore tournaments, teams, players, schedules, leaderboards, registration, rewards and latest updates.">
 
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/">
-<meta name="theme-color" content="#0a0705">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/">
+  <meta name="theme-color" content="#0a0705">
 
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/">
-<meta property="og:title" content="FREEFIREXIPL — Battle Up">
-<meta property="og:description" content="The tournament battleground for Free Fire players. Squad up. Battle up. Rise to the top.">
-<meta property="og:image" content="https://freefirexipl.com/og-image.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FREEFIREXIPL — Battle Up">
-<meta name="twitter:description" content="The tournament battleground for Free Fire players. Squad up. Battle up. Rise to the top.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rebeldarling-001.github.io/f-ipl/">
+  <meta property="og:title" content="FREEFIREXIPL — Battle Up">
+  <meta property="og:description"
+    content="The tournament battleground for Free Fire players. Squad up. Battle up. Rise to the top.">
+  <meta property="og:image" content="https://freefirexipl.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FREEFIREXIPL — Battle Up">
+  <meta name="twitter:description"
+    content="The tournament battleground for Free Fire players. Squad up. Battle up. Rise to the top.">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0705'/%3E%3Ctext x='50' y='68' font-family='Arial, sans-serif' font-size='58' font-weight='900' fill='%23f0b93d' text-anchor='middle'%3EX%3C/text%3E%3C/svg%3E">
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0705'/%3E%3Ctext x='50' y='68' font-family='Arial, sans-serif' font-size='58' font-weight='900' fill='%23f0b93d' text-anchor='middle'%3EX%3C/text%3E%3C/svg%3E">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0a0705;
-    --surface:#17110a;
-    --surface-2:#221909;
-    --gold:#f0b93d;
-    --gold-rgb:240,185,61;
-    --gold-deep:#b3811f;
-    --gold-pale:#fbe4a6;
-    --ink:#f4ecd8;
-    --ink-dim:#a9997d;
-    --ink-faint:#6b5f4c;
-    --live:#ff4433;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html,body{min-height:100%;}
-  body{
-    background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, rgba(240,185,61,.08), transparent 65%),
-      var(--bg);
-    font-family:'Rajdhani',sans-serif;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0705;
+      --surface: #17110a;
+      --surface-2: #221909;
+      --gold: #f0b93d;
+      --gold-rgb: 240, 185, 61;
+      --gold-deep: #b3811f;
+      --gold-pale: #fbe4a6;
+      --ink: #f4ecd8;
+      --ink-dim: #a9997d;
+      --ink-faint: #6b5f4c;
+      --live: #ff4433;
+    }
 
-  .stage{position:relative;width:100vw;min-height:100vh;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;padding:90px 24px 60px;text-align:center;overflow:hidden;}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* ambient embers — run continuously, forever */
-  .embers{position:fixed;inset:0;pointer-events:none;z-index:0;}
-  .ember{position:absolute;bottom:-20px;width:3px;height:3px;border-radius:50%;
-    background:var(--gold);box-shadow:0 0 8px 2px rgba(240,185,61,.55);
-    opacity:0;animation:rise 9s infinite ease-in;}
-  @keyframes rise{
-    0%{transform:translateY(0) scale(.8);opacity:0;}
-    12%{opacity:.7;}
-    82%{opacity:.4;}
-    100%{transform:translateY(-104vh) scale(1.3);opacity:0;}
-  }
+    html,
+    body {
+      min-height: 100%;
+    }
 
-  /* phase 1: camera-zoom title splash, overlays everything on first paint only */
-  /* ============ SURPRISE REVEAL — a locked golden box that can't be opened until the timer
+    body {
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 40%, rgba(240, 185, 61, .08), transparent 65%),
+        var(--bg);
+      font-family: 'Rajdhani', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 90px 24px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* ambient embers — run continuously, forever */
+    .embers {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ember {
+      position: absolute;
+      bottom: -20px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px 2px rgba(240, 185, 61, .55);
+      opacity: 0;
+      animation: rise 9s infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(.8);
+        opacity: 0;
+      }
+
+      12% {
+        opacity: .7;
+      }
+
+      82% {
+        opacity: .4;
+      }
+
+      100% {
+        transform: translateY(-104vh) scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    /* phase 1: camera-zoom title splash, overlays everything on first paint only */
+    /* ============ SURPRISE REVEAL — a locked golden box that can't be opened until the timer
      hits zero. Ticks every second while counting down; once unlocked it glows and waits for
      a tap, which blasts it open with particles before dissolving into Enter. ============ */
-  .surprise-gate{
-    position:fixed;inset:0;z-index:6;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-    background:var(--bg);
-  }
-  .surprise-gate.hide{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;}
+    .surprise-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--bg);
+    }
 
-  .surprise-box{position:relative;width:150px;height:132px;margin-bottom:8px;cursor:not-allowed;}
-  .surprise-box.locked{animation:boxIdle 3.2s ease-in-out infinite;}
-  .surprise-box.locked.shake{animation:boxShake .4s ease;}
-  .surprise-box.unlocked{cursor:pointer;animation:boxReady 1.15s ease-in-out infinite;}
-  @keyframes boxIdle{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-3px) rotate(-1deg);}}
-  @keyframes boxReady{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-7px) scale(1.035);}}
-  @keyframes boxShake{
-    0%,100%{transform:translateX(0);}
-    20%{transform:translateX(-7px) rotate(-3deg);}
-    40%{transform:translateX(6px) rotate(3deg);}
-    60%{transform:translateX(-5px) rotate(-2deg);}
-    80%{transform:translateX(4px) rotate(2deg);}
-  }
+    .surprise-gate.hide {
+      animation: splashOut .5s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
 
-  .box-glow{position:absolute;inset:-34px;border-radius:50%;pointer-events:none;
-    background:radial-gradient(circle, rgba(var(--gold-rgb),.4), transparent 70%);opacity:0;}
-  .surprise-box.unlocked .box-glow{animation:glowPulse 1.5s ease-in-out infinite;}
-  @keyframes glowPulse{0%,100%{opacity:.45;transform:scale(1);}50%{opacity:1;transform:scale(1.18);}}
+    .surprise-box {
+      position: relative;
+      width: 150px;
+      height: 132px;
+      margin-bottom: 8px;
+      cursor: not-allowed;
+    }
 
-  .box-body{position:absolute;left:6px;right:6px;bottom:0;height:80px;border-radius:6px 6px 16px 16px;
-    background:linear-gradient(160deg,var(--gold-deep),#6e5010 75%);
-    box-shadow:0 16px 40px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);}
-  .box-body::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:15px;transform:translateX(-50%);
-    background:linear-gradient(180deg,var(--gold-pale),var(--gold));}
-  .surprise-box.unlocked .box-body{box-shadow:0 16px 40px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08), 0 0 26px rgba(var(--gold-rgb),.35);}
+    .surprise-box.locked {
+      animation: boxIdle 3.2s ease-in-out infinite;
+    }
 
-  .box-lid{position:absolute;left:0;right:0;top:8px;height:48px;border-radius:10px;z-index:2;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(160deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));
-    box-shadow:0 10px 22px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.18);
-    transform-origin:8% 100%;
-    transition:transform .55s cubic-bezier(.34,1.56,.64,1), opacity .5s ease;
-  }
-  .box-lid::before{content:'';position:absolute;left:50%;top:-11px;transform:translateX(-50%);
-    width:26px;height:20px;border-radius:50% 50% 40% 40%;
-    background:linear-gradient(180deg,var(--gold-pale),var(--gold));box-shadow:0 3px 8px rgba(0,0,0,.4);}
-  .box-lock{font-size:19px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));
-    transition:opacity .3s ease, transform .3s ease;}
-  .surprise-box.unlocked .box-lock{opacity:0;transform:scale(.4) rotate(-25deg);}
+    .surprise-box.locked.shake {
+      animation: boxShake .4s ease;
+    }
 
-  .surprise-box.blasting .box-lid{transform:rotate(-120deg) translate(-10px,-16px);opacity:0;}
-  .surprise-box.blasting .box-body{animation:boxShrink .4s ease forwards .15s;}
-  @keyframes boxShrink{to{transform:scale(.85);opacity:0;}}
-  .surprise-box.blasting .box-glow{animation:blastFlash .6s ease forwards;}
-  @keyframes blastFlash{0%{opacity:1;transform:scale(1);}55%{opacity:1;transform:scale(2.8);}100%{opacity:0;transform:scale(3.4);}}
+    .surprise-box.unlocked {
+      cursor: pointer;
+      animation: boxReady 1.15s ease-in-out infinite;
+    }
 
-  .box-eyebrow{
-    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.26em;
-    text-transform:uppercase;color:var(--ink-faint);
-  }
-  .box-timer{
-    font-family:'Anton',sans-serif;font-weight:400;font-size:32px;letter-spacing:.03em;
-    color:var(--gold-pale);text-shadow:0 0 20px rgba(240,185,61,.3);font-variant-numeric:tabular-nums;
-  }
-  .box-hint{
-    margin-top:2px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--gold);opacity:0;transform:translateY(4px);
-    transition:opacity .4s ease, transform .4s ease;
-  }
-  .box-hint.show{opacity:1;transform:translateY(0);animation:hintPulse 1.6s ease-in-out infinite;}
-  @keyframes hintPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+    @keyframes boxIdle {
 
-  /* HYPED UP BUZZER — a real press-down game-show buzzer, shows only during countdown */
-  .hyped-btn{
-    position:fixed;bottom:118px;right:20px;z-index:7;
-    display:none;flex-direction:column;align-items:center;gap:6px;
-    background:none;border:none;padding:0;margin:0;cursor:pointer;
-    -webkit-tap-highlight-color:transparent;user-select:none;
-    animation:hypedFloat 3.6s ease-in-out infinite;
-  }
-  @keyframes hypedFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-  .buzzer-base{
-    position:relative;width:84px;height:84px;border-radius:50%;
-    background:radial-gradient(circle at 34% 30%, #3c2d13, #150f08 72%);
-    box-shadow:0 16px 28px rgba(0,0,0,.6), inset 0 2px 4px rgba(255,255,255,.06), inset 0 -7px 12px rgba(0,0,0,.65);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .buzzer-ring-glow{
-    position:absolute;inset:-4px;border-radius:50%;pointer-events:none;
-    border:2px solid rgba(var(--gold-rgb),.55);
-    opacity:0;
-    animation:buzzerIdle 2.6s ease-out infinite;
-    will-change:transform,opacity;
-  }
-  @keyframes buzzerIdle{
-    0%{transform:scale(1);opacity:.5;}
-    100%{transform:scale(1.32);opacity:0;}
-  }
-  .hyped-btn.glow .buzzer-ring-glow{animation:buzzPulse .6s ease-out;}
-  @keyframes buzzPulse{
-    0%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),.7);}
-    100%{box-shadow:0 0 0 28px rgba(var(--gold-rgb),0);}
-  }
-  .buzzer-dome{
-    position:relative;width:68px;height:68px;border-radius:50%;
-    background:radial-gradient(circle at 32% 26%, var(--gold-pale), var(--gold) 45%, var(--gold-deep) 88%);
-    box-shadow:0 9px 15px rgba(0,0,0,.5), inset 0 3px 6px rgba(255,255,255,.55), inset 0 -9px 15px rgba(0,0,0,.4);
-    display:flex;align-items:center;justify-content:center;
-    transform:translateY(0) scale(1);
-    transition:transform .1s cubic-bezier(.3,0,.6,1), box-shadow .1s ease;
-  }
-  .buzzer-dome .buzzer-label{
-    width:100%;padding:0 4px;text-align:center;
-    font-family:'Anton',sans-serif;font-weight:400;font-size:9px;line-height:1.15;
-    letter-spacing:.02em;text-transform:uppercase;color:var(--bg);
-    text-shadow:0 1px 0 rgba(255,255,255,.25);
-  }
-  .hyped-btn:active .buzzer-dome{
-    transform:translateY(6px) scale(.93);
-    box-shadow:0 2px 5px rgba(0,0,0,.45), inset 0 3px 6px rgba(255,255,255,.4), inset 0 -3px 6px rgba(0,0,0,.4);
-  }
-  .hyped-btn-count{
-    font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;color:var(--bg);
-    background:linear-gradient(160deg,var(--gold-pale),var(--gold));
-    padding:3px 9px;border-radius:999px;min-width:22px;text-align:center;
-    box-shadow:inset 0 1px 2px rgba(255,255,255,.55), 0 3px 8px rgba(0,0,0,.4);
-    font-variant-numeric:tabular-nums;
-  }
-  .mini-hyped{
-    position:fixed;z-index:8;pointer-events:none;
-    width:48px;height:48px;
-    display:flex;align-items:center;justify-content:center;
-    border-radius:50%;padding:2px;text-align:center;
-    background:radial-gradient(circle at 32% 26%, var(--gold-pale), var(--gold) 45%, var(--gold-deep) 88%);
-    box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 2px 3px rgba(255,255,255,.5), 0 0 14px rgba(var(--gold-rgb),.55);
-    font-family:'Anton',sans-serif;font-weight:400;font-size:8px;letter-spacing:.02em;text-transform:uppercase;
-    color:var(--bg);line-height:1.05;
-    animation:floatUp 2.4s cubic-bezier(.2,.75,.4,1) forwards;
-  }
-  @keyframes floatUp{
-    0%{transform:translate(0,0) scale(.5);opacity:0;}
-    10%{opacity:1;transform:translate(calc(var(--tx) * .2), calc(var(--ty) * .2)) scale(1);}
-    70%{opacity:1;transform:translate(calc(var(--tx) * .85), calc(var(--ty) * .85)) scale(1);}
-    100%{transform:translate(var(--tx), var(--ty)) scale(.8);opacity:0;}
-  }
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
 
-  .blast-particle{position:fixed;z-index:8;border-radius:2px;pointer-events:none;will-change:transform,opacity;}
+      50% {
+        transform: translateY(-3px) rotate(-1deg);
+      }
+    }
 
-  /* ============ ENTER GATE — must tap to begin; everything else waits for body.started ============ */
-  .enter-gate{
-    position:fixed;inset:0;z-index:5;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
-    background:var(--bg);
-  }
-  .enter-gate.hide{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;}
-  .enter-brand{
-    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.32em;
-    text-transform:uppercase;color:var(--gold-pale);opacity:.85;
-  }
-  .enter-btn{
-    position:relative;font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.34em;
-    text-transform:uppercase;color:var(--ink);background:transparent;
-    border:1px solid rgba(var(--gold-rgb),.55);
-    padding:17px 50px;border-radius:999px;cursor:pointer;
-    transition:background .25s ease, color .25s ease, transform .2s ease, box-shadow .25s ease;
-  }
-  .enter-btn::after{
-    content:'';position:absolute;inset:0;border-radius:999px;pointer-events:none;
-    border:1px solid rgba(var(--gold-rgb),.4);
-    animation:enterPulse 2.4s ease-out infinite;
-    will-change:transform,opacity;
-  }
-  .enter-btn:hover, .enter-btn:active{
-    background:var(--gold);color:var(--bg);transform:scale(1.04);
-    box-shadow:0 0 30px 4px rgba(var(--gold-rgb),.4);
-  }
-  .enter-btn:hover::after, .enter-btn:active::after{animation-play-state:paused;opacity:0;}
-  @keyframes enterPulse{
-    0%{transform:scale(1);opacity:.55;}
-    100%{transform:scale(1.12);opacity:0;}
-  }
+    @keyframes boxReady {
 
-  /* ============ PHOTO INTRO MONTAGE — cinematic flash-cut sequence of YOUR OWN photos,
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+
+      50% {
+        transform: translateY(-7px) scale(1.035);
+      }
+    }
+
+    @keyframes boxShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-7px) rotate(-3deg);
+      }
+
+      40% {
+        transform: translateX(6px) rotate(3deg);
+      }
+
+      60% {
+        transform: translateX(-5px) rotate(-2deg);
+      }
+
+      80% {
+        transform: translateX(4px) rotate(2deg);
+      }
+    }
+
+    .box-glow {
+      position: absolute;
+      inset: -34px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(var(--gold-rgb), .4), transparent 70%);
+      opacity: 0;
+    }
+
+    .surprise-box.unlocked .box-glow {
+      animation: glowPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+
+      0%,
+      100% {
+        opacity: .45;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.18);
+      }
+    }
+
+    .box-body {
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      bottom: 0;
+      height: 80px;
+      border-radius: 6px 6px 16px 16px;
+      background: linear-gradient(160deg, var(--gold-deep), #6e5010 75%);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(255, 255, 255, .08);
+    }
+
+    .box-body::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 15px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, var(--gold-pale), var(--gold));
+    }
+
+    .surprise-box.unlocked .box-body {
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(255, 255, 255, .08), 0 0 26px rgba(var(--gold-rgb), .35);
+    }
+
+    .box-lid {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 8px;
+      height: 48px;
+      border-radius: 10px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .45), inset 0 0 0 1px rgba(255, 255, 255, .18);
+      transform-origin: 8% 100%;
+      transition: transform .55s cubic-bezier(.34, 1.56, .64, 1), opacity .5s ease;
+    }
+
+    .box-lid::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: -11px;
+      transform: translateX(-50%);
+      width: 26px;
+      height: 20px;
+      border-radius: 50% 50% 40% 40%;
+      background: linear-gradient(180deg, var(--gold-pale), var(--gold));
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .4);
+    }
+
+    .box-lock {
+      font-size: 19px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5));
+      transition: opacity .3s ease, transform .3s ease;
+    }
+
+    .surprise-box.unlocked .box-lock {
+      opacity: 0;
+      transform: scale(.4) rotate(-25deg);
+    }
+
+    .surprise-box.blasting .box-lid {
+      transform: rotate(-120deg) translate(-10px, -16px);
+      opacity: 0;
+    }
+
+    .surprise-box.blasting .box-body {
+      animation: boxShrink .4s ease forwards .15s;
+    }
+
+    @keyframes boxShrink {
+      to {
+        transform: scale(.85);
+        opacity: 0;
+      }
+    }
+
+    .surprise-box.blasting .box-glow {
+      animation: blastFlash .6s ease forwards;
+    }
+
+    @keyframes blastFlash {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      55% {
+        opacity: 1;
+        transform: scale(2.8);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(3.4);
+      }
+    }
+
+    .box-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .box-timer {
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 32px;
+      letter-spacing: .03em;
+      color: var(--gold-pale);
+      text-shadow: 0 0 20px rgba(240, 185, 61, .3);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .box-hint {
+      margin-top: 2px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .4s ease, transform .4s ease;
+    }
+
+    .box-hint.show {
+      opacity: 1;
+      transform: translateY(0);
+      animation: hintPulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes hintPulse {
+
+      0%,
+      100% {
+        opacity: .6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* HYPED UP BUZZER — a real press-down game-show buzzer, shows only during countdown */
+    .hyped-btn {
+      position: fixed;
+      bottom: 118px;
+      right: 20px;
+      z-index: 7;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      animation: hypedFloat 3.6s ease-in-out infinite;
+    }
+
+    @keyframes hypedFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    .buzzer-base {
+      position: relative;
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 34% 30%, #3c2d13, #150f08 72%);
+      box-shadow: 0 16px 28px rgba(0, 0, 0, .6), inset 0 2px 4px rgba(255, 255, 255, .06), inset 0 -7px 12px rgba(0, 0, 0, .65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .buzzer-ring-glow {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      pointer-events: none;
+      border: 2px solid rgba(var(--gold-rgb), .55);
+      opacity: 0;
+      animation: buzzerIdle 2.6s ease-out infinite;
+      will-change: transform, opacity;
+    }
+
+    @keyframes buzzerIdle {
+      0% {
+        transform: scale(1);
+        opacity: .5;
+      }
+
+      100% {
+        transform: scale(1.32);
+        opacity: 0;
+      }
+    }
+
+    .hyped-btn.glow .buzzer-ring-glow {
+      animation: buzzPulse .6s ease-out;
+    }
+
+    @keyframes buzzPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(var(--gold-rgb), .7);
+      }
+
+      100% {
+        box-shadow: 0 0 0 28px rgba(var(--gold-rgb), 0);
+      }
+    }
+
+    .buzzer-dome {
+      position: relative;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 26%, var(--gold-pale), var(--gold) 45%, var(--gold-deep) 88%);
+      box-shadow: 0 9px 15px rgba(0, 0, 0, .5), inset 0 3px 6px rgba(255, 255, 255, .55), inset 0 -9px 15px rgba(0, 0, 0, .4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(0) scale(1);
+      transition: transform .1s cubic-bezier(.3, 0, .6, 1), box-shadow .1s ease;
+    }
+
+    .buzzer-dome .buzzer-label {
+      width: 100%;
+      padding: 0 4px;
+      text-align: center;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 9px;
+      line-height: 1.15;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: var(--bg);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+    }
+
+    .hyped-btn:active .buzzer-dome {
+      transform: translateY(6px) scale(.93);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .45), inset 0 3px 6px rgba(255, 255, 255, .4), inset 0 -3px 6px rgba(0, 0, 0, .4);
+    }
+
+    .hyped-btn-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--bg);
+      background: linear-gradient(160deg, var(--gold-pale), var(--gold));
+      padding: 3px 9px;
+      border-radius: 999px;
+      min-width: 22px;
+      text-align: center;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, .55), 0 3px 8px rgba(0, 0, 0, .4);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mini-hyped {
+      position: fixed;
+      z-index: 8;
+      pointer-events: none;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      padding: 2px;
+      text-align: center;
+      background: radial-gradient(circle at 32% 26%, var(--gold-pale), var(--gold) 45%, var(--gold-deep) 88%);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .4), inset 0 2px 3px rgba(255, 255, 255, .5), 0 0 14px rgba(var(--gold-rgb), .55);
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 8px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: var(--bg);
+      line-height: 1.05;
+      animation: floatUp 2.4s cubic-bezier(.2, .75, .4, 1) forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translate(0, 0) scale(.5);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+        transform: translate(calc(var(--tx) * .2), calc(var(--ty) * .2)) scale(1);
+      }
+
+      70% {
+        opacity: 1;
+        transform: translate(calc(var(--tx) * .85), calc(var(--ty) * .85)) scale(1);
+      }
+
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(.8);
+        opacity: 0;
+      }
+    }
+
+    .blast-particle {
+      position: fixed;
+      z-index: 8;
+      border-radius: 2px;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    /* ============ ENTER GATE — must tap to begin; everything else waits for body.started ============ */
+    .enter-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      background: var(--bg);
+    }
+
+    .enter-gate.hide {
+      animation: splashOut .5s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    .enter-brand {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--gold-pale);
+      opacity: .85;
+    }
+
+    .enter-btn {
+      position: relative;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      letter-spacing: .34em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid rgba(var(--gold-rgb), .55);
+      padding: 17px 50px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .25s ease, color .25s ease, transform .2s ease, box-shadow .25s ease;
+    }
+
+    .enter-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      pointer-events: none;
+      border: 1px solid rgba(var(--gold-rgb), .4);
+      animation: enterPulse 2.4s ease-out infinite;
+      will-change: transform, opacity;
+    }
+
+    .enter-btn:hover,
+    .enter-btn:active {
+      background: var(--gold);
+      color: var(--bg);
+      transform: scale(1.04);
+      box-shadow: 0 0 30px 4px rgba(var(--gold-rgb), .4);
+    }
+
+    .enter-btn:hover::after,
+    .enter-btn:active::after {
+      animation-play-state: paused;
+      opacity: 0;
+    }
+
+    @keyframes enterPulse {
+      0% {
+        transform: scale(1);
+        opacity: .55;
+      }
+
+      100% {
+        transform: scale(1.12);
+        opacity: 0;
+      }
+    }
+
+    /* ============ PHOTO INTRO MONTAGE — cinematic flash-cut sequence of YOUR OWN photos,
      plays right after Enter, before the "What's up Survivors?" text splash. Skipped
      entirely (falls straight through to the text splash) if no photos are configured
      or none of them load — never blocks or breaks the page either way. ============ */
-  .photo-splash{
-    position:fixed;inset:0;z-index:4;background:var(--bg);overflow:hidden;
-    opacity:0;pointer-events:none;
-  }
-  .photo-splash.show{opacity:1;pointer-events:auto;}
-  .photo-splash.hide{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;}
-  .photo-slide-wrap{position:absolute;inset:0;}
-  .photo-slide{position:absolute;inset:0;opacity:0;transition:opacity .25s ease;overflow:hidden;}
-  .photo-slide.active{opacity:1;}
-  .photo-slide img{width:100%;height:100%;object-fit:cover;transform:scale(1);}
-  .photo-slide.active img{animation:kenBurns 1s ease-out forwards;}
-  @keyframes kenBurns{from{transform:scale(1);}to{transform:scale(1.09);}}
-  .photo-vignette{
-    position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:
-      radial-gradient(ellipse 85% 75% at 50% 50%, transparent 55%, rgba(10,7,5,.6) 100%),
-      linear-gradient(0deg, rgba(10,7,5,.65) 0%, transparent 26%, transparent 74%, rgba(10,7,5,.45) 100%);
-  }
-  .photo-bar{position:absolute;left:0;right:0;height:24px;background:var(--bg);z-index:2;}
-  .photo-bar.top{top:0;border-bottom:1px solid rgba(var(--gold-rgb),.3);}
-  .photo-bar.bottom{bottom:0;border-top:1px solid rgba(var(--gold-rgb),.3);}
-  .photo-flash{position:absolute;inset:0;z-index:3;background:var(--gold-pale);opacity:0;pointer-events:none;}
-  .photo-flash.flick{animation:flashCut .18s ease-out;}
-  @keyframes flashCut{0%{opacity:.8;}100%{opacity:0;}}
-  .photo-brand{
-    position:absolute;z-index:2;bottom:42px;left:0;right:0;text-align:center;
-    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.32em;text-transform:uppercase;
-    color:var(--gold-pale);opacity:.85;
-  }
-  .photo-skip{
-    position:absolute;z-index:3;top:20px;right:20px;
-    font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--ink);background:rgba(23,17,10,.6);border:1px solid rgba(var(--gold-rgb),.35);
-    padding:9px 16px;border-radius:999px;cursor:pointer;backdrop-filter:blur(4px);
-  }
-  @media (prefers-reduced-motion:reduce){
-    .photo-slide.active img{animation:none!important;}
-    .photo-flash{display:none!important;}
-  }
+    .photo-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      background: var(--bg);
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
 
-  .splash{
-    position:fixed;inset:0;z-index:3;
-    display:flex;align-items:center;justify-content:center;
-    background:var(--bg);
-  }
-  body.started .splash{animation:splashOut .5s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.65s;}
-  @keyframes splashOut{to{opacity:0;transform:scale(1.06);pointer-events:none;}}
-  .splash-inner{
-    display:flex;flex-direction:column;align-items:center;text-align:center;
-    transform:scale(.1);opacity:0;filter:blur(16px);
-    will-change:transform,opacity,filter;
-  }
-  body.started .splash-inner{animation:cameraZoom 1.7s cubic-bezier(.22,.75,.25,1) forwards;}
-  @keyframes cameraZoom{
-    0%{transform:scale(.1);opacity:0;filter:blur(16px);}
-    10%{opacity:1;}
-    72%{transform:scale(1);filter:blur(0px);opacity:1;}
-    100%{transform:scale(1.45);filter:blur(1px);opacity:0;}
-  }
-  .splash-headline{
-    margin-top:0;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
-    font-size:clamp(64px,19vw,160px);line-height:.9;color:var(--ink);
-    text-shadow:0 0 70px rgba(240,185,61,.3);
-  }
-  .splash-headline span{display:block;}
-  .splash-headline .gold{
-    background:linear-gradient(180deg,var(--gold-pale),var(--gold-deep));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
+    .photo-splash.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-  /* ============ PUZZLE GATE — 6 pieces, must be arranged correctly before content reveals ============ */
-  .puzzle-gate{
-    position:fixed;inset:0;z-index:2;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-    background:var(--bg);
-    opacity:0;
-  }
-  body.started .puzzle-gate{animation:fadeUp .6s ease forwards;animation-delay:1.75s;}
-  body.started .puzzle-gate.solved{animation:puzzleOut .6s cubic-bezier(.16,1,.3,1) forwards;}
-  @keyframes puzzleOut{to{opacity:0;transform:scale(.96);pointer-events:none;}}
-  .puzzle-caption{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--gold-pale);text-shadow:0 0 18px rgba(240,185,61,.25);}
-  .puzzle-hint{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--ink-faint);}
-  .puzzle-board{
-    display:grid;grid-template-columns:repeat(3,90px);grid-template-rows:repeat(2,90px);gap:4px;
-    padding:4px;border-radius:14px;background:var(--surface-2);
-    box-shadow:0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(var(--gold-rgb),.2);
-  }
-  .ptile{
-    width:90px;height:90px;border-radius:8px;cursor:pointer;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%2317110a'/%3E%3Crect width='300' height='200' fill='none'/%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='38%25' r='75%25'%3E%3Cstop offset='0%25' stop-color='%23fbe4a6'/%3E%3Cstop offset='45%25' stop-color='%23f0b93d'/%3E%3Cstop offset='100%25' stop-color='%23b3811f'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='150' cy='100' r='96' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Ctext x='150' y='68' font-family='Arial, sans-serif' font-size='24' font-weight='700' fill='%23fbe4a6' text-anchor='middle' letter-spacing='8'%3ESEASON%3C/text%3E%3Ctext x='150' y='165' font-family='Arial, sans-serif' font-size='118' font-weight='900' fill='url(%23g)' text-anchor='middle'%3E12%3C/text%3E%3C/svg%3E");
-    background-size:300% 200%;
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.45);
-    transition:transform .15s ease, box-shadow .2s ease, filter .3s ease;
-  }
-  .ptile.selected{transform:scale(.9);box-shadow:0 0 0 3px var(--gold), inset 0 0 0 1px rgba(0,0,0,.45);}
-  .ptile.correct{filter:saturate(1.25) brightness(1.05);}
-  @media (max-width:420px){
-    .puzzle-board{grid-template-columns:repeat(3,72px);grid-template-rows:repeat(2,72px);}
-    .ptile{width:72px;height:72px;}
-  }
+    .photo-splash.hide {
+      animation: splashOut .5s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
 
-  /* ============ SEASON 12 — huge translucent gradient watermark behind the content ============ */
-  .bg-emblem{
-    position:absolute;left:0;right:0;top:0;z-index:-1;pointer-events:none;
-    display:flex;flex-direction:column;align-items:center;
-    padding-top:0;
-    user-select:none;text-align:center;
-    opacity:0;
-  }
-  body.revealed .bg-emblem{animation:fadeUp 1.4s ease forwards;animation-delay:1.5s;}
-  .bg-emblem .bg-season{
-    font-family:'Space Mono',monospace;font-size:clamp(13px,2.4vw,18px);
-    letter-spacing:.4em;color:rgba(240,185,61,.18);
-  }
-  .bg-emblem .bg-12{
-    margin-top:-.1em;font-family:'Anton',sans-serif;font-weight:400;
-    font-size:clamp(110px,24vw,240px);line-height:.85;
-    background:linear-gradient(180deg, rgba(251,228,166,.24), rgba(179,129,31,.06));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:blur(1.5px);
-  }
+    .photo-slide-wrap {
+      position: absolute;
+      inset: 0;
+    }
 
-  /* phase 2: the reveal — now gated behind the puzzle. Hidden until body.revealed is added by JS. */
-  .reveal{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
-  .eyebrow{
-    font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--gold);
-    opacity:0;
-  }
-  body.revealed .eyebrow{animation:fadeUp .7s ease forwards;animation-delay:.05s;}
-  .headline{
-    margin-top:6px;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
-    font-size:clamp(56px,17vw,140px);line-height:.88;color:var(--ink);
-    text-shadow:0 0 60px rgba(240,185,61,.18);
-  }
-  .line{display:block;overflow:hidden;white-space:nowrap;}
-  .line-in{
-    display:block;transform:translateY(115%);opacity:0;
-  }
-  body.revealed .line:nth-child(1) .line-in{animation:lineUp .95s cubic-bezier(.16,1,.3,1) forwards;animation-delay:.15s;}
-  body.revealed .line:nth-child(2) .line-in{animation:lineUp .95s cubic-bezier(.16,1,.3,1) forwards;animation-delay:.32s;}
-  .line:nth-child(2) .line-in{
-    background:linear-gradient(180deg,var(--gold-pale),var(--gold-deep));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  @keyframes lineUp{to{transform:translateY(0);opacity:1;}}
+    .photo-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .25s ease;
+      overflow: hidden;
+    }
 
-  .tease{
-    margin-top:18px;font-size:clamp(14px,3vw,17px);color:var(--ink-dim);
-    opacity:0;
-  }
-  body.revealed .tease{animation:fadeUp .7s ease forwards;animation-delay:.75s;}
-  .tuned{
-    margin-top:24px;display:inline-flex;align-items:center;gap:8px;
-    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--ink-faint);
-    opacity:0;
-  }
-  body.revealed .tuned{animation:fadeUp .7s ease forwards;animation-delay:1s;}
-  .tuned .dot{width:6px;height:6px;border-radius:50%;background:var(--live);
-    box-shadow:0 0 8px 2px rgba(255,68,51,.7);}
-  body.revealed .tuned .dot{animation:pulse 1.6s infinite ease-in-out;animation-delay:1s;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+    .photo-slide.active {
+      opacity: 1;
+    }
 
-  /* ============ COUNTDOWN — added below the reveal, numbers only ============ */
-  .cd-wrap{
-    margin-top:34px;opacity:0;transform:translateY(16px);
-  }
-  body.revealed .cd-wrap{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:1.3s;}
-  .cd-card{
-    position:relative;border-radius:22px;padding:26px 22px 22px;
-    background:radial-gradient(ellipse 90% 70% at 50% 0%, rgba(var(--gold-rgb),.1), transparent 70%), var(--surface);
-    box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.2), 0 20px 60px rgba(0,0,0,.55);
-  }
-  .cd-caption{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--ink-faint);
-    letter-spacing:.18em;text-transform:uppercase;}
-  .board{margin-top:16px;display:flex;justify-content:center;gap:12px;perspective:1000px;}
-  .unit{display:flex;flex-direction:column;align-items:center;gap:8px;}
-  .unit-label{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--ink-faint);}
-  .flap-pair{display:flex;gap:3px;}
-  .flap{position:relative;width:40px;height:56px;background:linear-gradient(180deg,var(--surface-2),#0e0a06);
-    border-radius:7px;box-shadow:0 4px 14px rgba(0,0,0,.5), inset 0 0 0 1px rgba(var(--gold-rgb),.15);overflow:hidden;}
-  .flap::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.55);z-index:5;}
-  .flap-digit{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    font-family:'Anton',sans-serif;font-size:29px;color:var(--gold-pale);line-height:1;}
-  .flap-digit.next{opacity:0;}
-  .flap.flipping .flap-digit.current{animation:flipOutTop .3s ease-in forwards;}
-  .flap.flipping .flap-digit.next{animation:flipInBottom .3s ease-out .3s forwards;}
-  @keyframes flipOutTop{to{transform:rotateX(-90deg);opacity:0;}}
-  @keyframes flipInBottom{from{transform:rotateX(90deg);opacity:0;}to{transform:rotateX(0deg);opacity:1;}}
+    .photo-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1);
+    }
 
-  /* ============ DYNAMIC SMOKE — colorful puffs on touch/scroll, only once revealed ============ */
-  .smoke-puff{
-    position:fixed;z-index:15;pointer-events:none;
-    width:130px;height:130px;border-radius:50%;
-    transform:translate(-50%,-50%) scale(.35);
-    opacity:.6;filter:blur(16px);
-    animation:smokeRise 1.15s ease-out forwards;
-  }
-  @keyframes smokeRise{
-    0%{transform:translate(-50%,-50%) scale(.35);opacity:.6;}
-    100%{transform:translate(-50%,-65%) scale(1.7);opacity:0;}
-  }
+    .photo-slide.active img {
+      animation: kenBurns 1s ease-out forwards;
+    }
 
-  /* ============ SOUND TOGGLE — music syncs with splash automatically; this hint + button just control mute ============ */
-  .sound-hint{
-    position:fixed;bottom:24px;right:64px;z-index:20;
-    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;
-    opacity:0;transform:translateX(6px);
-    transition:opacity .5s ease, transform .5s ease;
-  }
-  .sound-hint.show{opacity:1;transform:translateX(0);}
-  .sound-toggle{
-    position:fixed;bottom:18px;right:18px;z-index:20;width:40px;height:40px;border-radius:50%;
-    border:1px solid rgba(var(--gold-rgb),.35);background:rgba(23,17,10,.85);backdrop-filter:blur(6px);
-    color:var(--gold-pale);font-size:16px;display:flex;align-items:center;justify-content:center;
-    cursor:pointer;opacity:0;transform:scale(.85);
-    transition:opacity .6s ease, transform .6s ease, border-color .25s ease;
-    animation-delay:2.4s;
-  }
-  .sound-toggle.show{opacity:1;transform:scale(1);}
-  .sound-toggle:hover{border-color:var(--gold);}
+    @keyframes kenBurns {
+      from {
+        transform: scale(1);
+      }
 
-  /* ============ SCROLL CUE ============ */
-  .scroll-cue{
-    position:absolute;left:50%;bottom:28px;transform:translateX(-50%);
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    text-decoration:none;opacity:0;z-index:1;
-  }
-  body.revealed .scroll-cue{animation:fadeUp .7s ease forwards;animation-delay:1.6s;}
-  .scroll-cue-line{width:1px;height:34px;background:linear-gradient(180deg,rgba(var(--gold-rgb),.7),transparent);
-    animation:scrollLine 1.8s ease-in-out infinite;}
-  @keyframes scrollLine{0%{transform:scaleY(.3);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}100%{transform:scaleY(.3);transform-origin:bottom;}}
-  .scroll-cue-text{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.24em;
-    text-transform:uppercase;color:var(--ink-faint);}
+      to {
+        transform: scale(1.09);
+      }
+    }
 
-  /* ============ LANDING SECTIONS — below the hero, revealed on scroll ============ */
-  .site-section{position:relative;z-index:1;padding:90px 24px;display:flex;justify-content:center;}
-  .section-inner{width:100%;max-width:920px;text-align:center;}
-  .section-eyebrow{
-    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.24em;
-    text-transform:uppercase;color:var(--gold);opacity:0;transform:translateY(16px);
-    transition:opacity .7s ease, transform .7s ease;
-  }
-  .section-title{
-    margin-top:10px;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
-    font-size:clamp(32px,6.5vw,58px);line-height:1.05;color:var(--ink);
-    opacity:0;transform:translateY(16px);
-    transition:opacity .7s ease .08s, transform .7s ease .08s;
-  }
-  .gold-text{
-    background:linear-gradient(180deg,var(--gold-pale),var(--gold-deep));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .section-body{
-    margin:18px auto 0;max-width:620px;font-size:clamp(14.5px,2.6vw,17px);
-    line-height:1.65;color:var(--ink-dim);
-    opacity:0;transform:translateY(16px);
-    transition:opacity .7s ease .16s, transform .7s ease .16s;
-  }
-  .site-section.in-view .section-eyebrow,
-  .site-section.in-view .section-title,
-  .site-section.in-view .section-body{opacity:1;transform:translateY(0);}
+    .photo-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 85% 75% at 50% 50%, transparent 55%, rgba(10, 7, 5, .6) 100%),
+        linear-gradient(0deg, rgba(10, 7, 5, .65) 0%, transparent 26%, transparent 74%, rgba(10, 7, 5, .45) 100%);
+    }
 
-  .about-section{background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(var(--gold-rgb),.05), transparent 70%);}
+    .photo-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--bg);
+      z-index: 2;
+    }
 
-  /* ============ LIVE REVEAL — takes the exact place of the countdown card, the instant
+    .photo-bar.top {
+      top: 0;
+      border-bottom: 1px solid rgba(var(--gold-rgb), .3);
+    }
+
+    .photo-bar.bottom {
+      bottom: 0;
+      border-top: 1px solid rgba(var(--gold-rgb), .3);
+    }
+
+    .photo-flash {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: var(--gold-pale);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .photo-flash.flick {
+      animation: flashCut .18s ease-out;
+    }
+
+    @keyframes flashCut {
+      0% {
+        opacity: .8;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .photo-brand {
+      position: absolute;
+      z-index: 2;
+      bottom: 42px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--gold-pale);
+      opacity: .85;
+    }
+
+    .photo-skip {
+      position: absolute;
+      z-index: 3;
+      top: 20px;
+      right: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: rgba(23, 17, 10, .6);
+      border: 1px solid rgba(var(--gold-rgb), .35);
+      padding: 9px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .photo-slide.active img {
+        animation: none !important;
+      }
+
+      .photo-flash {
+        display: none !important;
+      }
+    }
+
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+    }
+
+    body.started .splash {
+      animation: splashOut .5s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation-delay: 1.65s;
+    }
+
+    @keyframes splashOut {
+      to {
+        opacity: 0;
+        transform: scale(1.06);
+        pointer-events: none;
+      }
+    }
+
+    .splash-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transform: scale(.1);
+      opacity: 0;
+      filter: blur(16px);
+      will-change: transform, opacity, filter;
+    }
+
+    body.started .splash-inner {
+      animation: cameraZoom 1.7s cubic-bezier(.22, .75, .25, 1) forwards;
+    }
+
+    @keyframes cameraZoom {
+      0% {
+        transform: scale(.1);
+        opacity: 0;
+        filter: blur(16px);
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      72% {
+        transform: scale(1);
+        filter: blur(0px);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1.45);
+        filter: blur(1px);
+        opacity: 0;
+      }
+    }
+
+    .splash-headline {
+      margin-top: 0;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: clamp(64px, 19vw, 160px);
+      line-height: .9;
+      color: var(--ink);
+      text-shadow: 0 0 70px rgba(240, 185, 61, .3);
+    }
+
+    .splash-headline span {
+      display: block;
+    }
+
+    .splash-headline .gold {
+      background: linear-gradient(180deg, var(--gold-pale), var(--gold-deep));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ============ PUZZLE GATE — 6 pieces, must be arranged correctly before content reveals ============ */
+    .puzzle-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: var(--bg);
+      opacity: 0;
+    }
+
+    body.started .puzzle-gate {
+      animation: fadeUp .6s ease forwards;
+      animation-delay: 1.75s;
+    }
+
+    body.started .puzzle-gate.solved {
+      animation: puzzleOut .6s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    @keyframes puzzleOut {
+      to {
+        opacity: 0;
+        transform: scale(.96);
+        pointer-events: none;
+      }
+    }
+
+    .puzzle-caption {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold-pale);
+      text-shadow: 0 0 18px rgba(240, 185, 61, .25);
+    }
+
+    .puzzle-hint {
+      font-family: 'Space Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .puzzle-board {
+      display: grid;
+      grid-template-columns: repeat(3, 90px);
+      grid-template-rows: repeat(2, 90px);
+      gap: 4px;
+      padding: 4px;
+      border-radius: 14px;
+      background: var(--surface-2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(var(--gold-rgb), .2);
+    }
+
+    .ptile {
+      width: 90px;
+      height: 90px;
+      border-radius: 8px;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%2317110a'/%3E%3Crect width='300' height='200' fill='none'/%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='38%25' r='75%25'%3E%3Cstop offset='0%25' stop-color='%23fbe4a6'/%3E%3Cstop offset='45%25' stop-color='%23f0b93d'/%3E%3Cstop offset='100%25' stop-color='%23b3811f'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='150' cy='100' r='96' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Ctext x='150' y='68' font-family='Arial, sans-serif' font-size='24' font-weight='700' fill='%23fbe4a6' text-anchor='middle' letter-spacing='8'%3ESEASON%3C/text%3E%3Ctext x='150' y='165' font-family='Arial, sans-serif' font-size='118' font-weight='900' fill='url(%23g)' text-anchor='middle'%3E12%3C/text%3E%3C/svg%3E");
+      background-size: 300% 200%;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .45);
+      transition: transform .15s ease, box-shadow .2s ease, filter .3s ease;
+    }
+
+    .ptile.selected {
+      transform: scale(.9);
+      box-shadow: 0 0 0 3px var(--gold), inset 0 0 0 1px rgba(0, 0, 0, .45);
+    }
+
+    .ptile.correct {
+      filter: saturate(1.25) brightness(1.05);
+    }
+
+    @media (max-width:420px) {
+      .puzzle-board {
+        grid-template-columns: repeat(3, 72px);
+        grid-template-rows: repeat(2, 72px);
+      }
+
+      .ptile {
+        width: 72px;
+        height: 72px;
+      }
+    }
+
+    /* ============ SEASON 12 — huge translucent gradient watermark behind the content ============ */
+    .bg-emblem {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      z-index: -1;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0;
+      user-select: none;
+      text-align: center;
+      opacity: 0;
+    }
+
+    body.revealed .bg-emblem {
+      animation: fadeUp 1.4s ease forwards;
+      animation-delay: 1.5s;
+    }
+
+    .bg-emblem .bg-season {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(13px, 2.4vw, 18px);
+      letter-spacing: .4em;
+      color: rgba(240, 185, 61, .18);
+    }
+
+    .bg-emblem .bg-12 {
+      margin-top: -.1em;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: clamp(110px, 24vw, 240px);
+      line-height: .85;
+      background: linear-gradient(180deg, rgba(251, 228, 166, .24), rgba(179, 129, 31, .06));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: blur(1.5px);
+    }
+
+    /* phase 2: the reveal — now gated behind the puzzle. Hidden until body.revealed is added by JS. */
+    .reveal {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+    }
+
+    body.revealed .eyebrow {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: .05s;
+    }
+
+    .headline {
+      margin-top: 6px;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: clamp(56px, 17vw, 140px);
+      line-height: .88;
+      color: var(--ink);
+      text-shadow: 0 0 60px rgba(240, 185, 61, .18);
+    }
+
+    .line {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .line-in {
+      display: block;
+      transform: translateY(115%);
+      opacity: 0;
+    }
+
+    body.revealed .line:nth-child(1) .line-in {
+      animation: lineUp .95s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation-delay: .15s;
+    }
+
+    body.revealed .line:nth-child(2) .line-in {
+      animation: lineUp .95s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation-delay: .32s;
+    }
+
+    .line:nth-child(2) .line-in {
+      background: linear-gradient(180deg, var(--gold-pale), var(--gold-deep));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    @keyframes lineUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .tease {
+      margin-top: 18px;
+      font-size: clamp(14px, 3vw, 17px);
+      color: var(--ink-dim);
+      opacity: 0;
+    }
+
+    body.revealed .tease {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: .75s;
+    }
+
+    .tuned {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      opacity: 0;
+    }
+
+    body.revealed .tuned {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: 1s;
+    }
+
+    .tuned .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--live);
+      box-shadow: 0 0 8px 2px rgba(255, 68, 51, .7);
+    }
+
+    body.revealed .tuned .dot {
+      animation: pulse 1.6s infinite ease-in-out;
+      animation-delay: 1s;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .3;
+      }
+    }
+
+    /* ============ COUNTDOWN — added below the reveal, numbers only ============ */
+    .cd-wrap {
+      margin-top: 34px;
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    body.revealed .cd-wrap {
+      animation: fadeUp .8s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation-delay: 1.3s;
+    }
+
+    .cd-card {
+      position: relative;
+      border-radius: 22px;
+      padding: 26px 22px 22px;
+      background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(var(--gold-rgb), .1), transparent 70%), var(--surface);
+      box-shadow: inset 0 0 0 1px rgba(var(--gold-rgb), .2), 0 20px 60px rgba(0, 0, 0, .55);
+    }
+
+    .cd-caption {
+      font-family: 'Space Mono', monospace;
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .board {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      perspective: 1000px;
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .unit-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .flap-pair {
+      display: flex;
+      gap: 3px;
+    }
+
+    .flap {
+      position: relative;
+      width: 40px;
+      height: 56px;
+      background: linear-gradient(180deg, var(--surface-2), #0e0a06);
+      border-radius: 7px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(var(--gold-rgb), .15);
+      overflow: hidden;
+    }
+
+    .flap::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: rgba(0, 0, 0, .55);
+      z-index: 5;
+    }
+
+    .flap-digit {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 29px;
+      color: var(--gold-pale);
+      line-height: 1;
+    }
+
+    .flap-digit.next {
+      opacity: 0;
+    }
+
+    .flap.flipping .flap-digit.current {
+      animation: flipOutTop .3s ease-in forwards;
+    }
+
+    .flap.flipping .flap-digit.next {
+      animation: flipInBottom .3s ease-out .3s forwards;
+    }
+
+    @keyframes flipOutTop {
+      to {
+        transform: rotateX(-90deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes flipInBottom {
+      from {
+        transform: rotateX(90deg);
+        opacity: 0;
+      }
+
+      to {
+        transform: rotateX(0deg);
+        opacity: 1;
+      }
+    }
+
+    /* ============ DYNAMIC SMOKE — colorful puffs on touch/scroll, only once revealed ============ */
+    .smoke-puff {
+      position: fixed;
+      z-index: 15;
+      pointer-events: none;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(.35);
+      opacity: .6;
+      filter: blur(16px);
+      animation: smokeRise 1.15s ease-out forwards;
+    }
+
+    @keyframes smokeRise {
+      0% {
+        transform: translate(-50%, -50%) scale(.35);
+        opacity: .6;
+      }
+
+      100% {
+        transform: translate(-50%, -65%) scale(1.7);
+        opacity: 0;
+      }
+    }
+
+    /* ============ SOUND TOGGLE — music syncs with splash automatically; this hint + button just control mute ============ */
+    .sound-hint {
+      position: fixed;
+      bottom: 24px;
+      right: 64px;
+      z-index: 20;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(6px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .sound-hint.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .sound-toggle {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 20;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(var(--gold-rgb), .35);
+      background: rgba(23, 17, 10, .85);
+      backdrop-filter: blur(6px);
+      color: var(--gold-pale);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: scale(.85);
+      transition: opacity .6s ease, transform .6s ease, border-color .25s ease;
+      animation-delay: 2.4s;
+    }
+
+    .sound-toggle.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .sound-toggle:hover {
+      border-color: var(--gold);
+    }
+
+    /* ============ SCROLL CUE ============ */
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    body.revealed .scroll-cue {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: 1.6s;
+    }
+
+    .scroll-cue-line {
+      width: 1px;
+      height: 34px;
+      background: linear-gradient(180deg, rgba(var(--gold-rgb), .7), transparent);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% {
+        transform: scaleY(.3);
+        transform-origin: top;
+      }
+
+      50% {
+        transform: scaleY(1);
+        transform-origin: top;
+      }
+
+      100% {
+        transform: scaleY(.3);
+        transform-origin: bottom;
+      }
+    }
+
+    .scroll-cue-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    /* ============ LANDING SECTIONS — below the hero, revealed on scroll ============ */
+    .site-section {
+      position: relative;
+      z-index: 1;
+      padding: 90px 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .section-inner {
+      width: 100%;
+      max-width: 920px;
+      text-align: center;
+    }
+
+    .section-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .section-title {
+      margin-top: 10px;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: clamp(32px, 6.5vw, 58px);
+      line-height: 1.05;
+      color: var(--ink);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .7s ease .08s, transform .7s ease .08s;
+    }
+
+    .gold-text {
+      background: linear-gradient(180deg, var(--gold-pale), var(--gold-deep));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .section-body {
+      margin: 18px auto 0;
+      max-width: 620px;
+      font-size: clamp(14.5px, 2.6vw, 17px);
+      line-height: 1.65;
+      color: var(--ink-dim);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .7s ease .16s, transform .7s ease .16s;
+    }
+
+    .site-section.in-view .section-eyebrow,
+    .site-section.in-view .section-title,
+    .site-section.in-view .section-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .about-section {
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(var(--gold-rgb), .05), transparent 70%);
+    }
+
+    /* ============ LIVE REVEAL — takes the exact place of the countdown card, the instant
      the countdown hits zero. .pre-launch-hero (headline + countdown) and .live-hero
      (the announcement) are swapped via body.launched — never both visible at once. ============ */
-  .pre-launch-hero{display:flex;flex-direction:column;align-items:center;}
-  body.launched .pre-launch-hero{display:none;}
-  .live-hero{display:none;flex-direction:column;align-items:center;}
-  body.launched .live-hero{display:flex;}
-  .live-badge{
-    display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;
-    border:1px solid rgba(var(--gold-rgb),.4);
-    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--gold-pale);
-    opacity:0;
-  }
-  body.launched .live-badge{animation:fadeUp .7s ease forwards;animation-delay:.1s;}
-  .live-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--live);
-    box-shadow:0 0 8px 2px rgba(255,68,51,.7);animation:pulse 1.6s infinite ease-in-out;}
-  .live-title{
-    margin-top:16px;font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
-    font-size:clamp(38px,10vw,104px);line-height:.95;color:var(--ink);
-    text-shadow:0 0 70px rgba(240,185,61,.25);
-    opacity:0;
-  }
-  body.launched .live-title{animation:fadeUp .7s ease forwards;animation-delay:.22s;}
-  .live-sub{
-    margin-top:16px;font-size:clamp(15px,3vw,18px);color:var(--ink-dim);max-width:480px;
-    opacity:0;
-  }
-  body.launched .live-sub{animation:fadeUp .7s ease forwards;animation-delay:.36s;}
-  .live-chips{
-    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:520px;
-    opacity:0;
-  }
-  body.launched .live-chips{animation:fadeUp .7s ease forwards;animation-delay:.5s;}
-  .live-chip{
-    font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--gold-pale);
-    border:1px solid rgba(var(--gold-rgb),.3);padding:9px 16px;border-radius:999px;
-    background:rgba(var(--gold-rgb),.06);
-  }
-  .live-cta{
-    margin-top:32px;display:inline-block;font-family:'Space Mono',monospace;font-size:13px;
-    letter-spacing:.24em;text-transform:uppercase;color:var(--bg);background:var(--gold);
-    padding:16px 42px;border-radius:999px;text-decoration:none;
-    box-shadow:0 10px 30px rgba(var(--gold-rgb),.35);
-    transition:transform .2s ease, box-shadow .25s ease;
-    opacity:0;
-  }
-  body.launched .live-cta{animation:fadeUp .7s ease forwards;animation-delay:.64s;}
-  .live-cta:hover{transform:scale(1.04);box-shadow:0 14px 36px rgba(var(--gold-rgb),.45);}
+    .pre-launch-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  .features-grid{
-    margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:left;
-  }
-  .feature-card{
-    padding:26px 22px;border-radius:16px;background:var(--surface);
-    box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.14);
-    --entrance-y:20px;opacity:0;
-    transform:translateY(var(--entrance-y)) perspective(700px) rotateX(var(--ty,0deg)) rotateY(var(--tx,0deg));
-    transition:opacity .6s ease, transform .35s ease, box-shadow .25s ease;
-  }
-  .site-section.in-view .feature-card{opacity:1;--entrance-y:0px;}
-  .site-section.in-view .feature-card:nth-child(1){transition-delay:.05s;}
-  .site-section.in-view .feature-card:nth-child(2){transition-delay:.11s;}
-  .site-section.in-view .feature-card:nth-child(3){transition-delay:.17s;}
-  .site-section.in-view .feature-card:nth-child(4){transition-delay:.23s;}
-  .site-section.in-view .feature-card:nth-child(5){transition-delay:.29s;}
-  .site-section.in-view .feature-card:nth-child(6){transition-delay:.35s;}
-  .feature-card:hover{box-shadow:inset 0 0 0 1px rgba(var(--gold-rgb),.4), 0 14px 34px rgba(0,0,0,.4);}
-  .feature-icon{font-size:26px;display:block;}
-  .feature-card h3{
-    margin-top:14px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:18px;
-    letter-spacing:.01em;color:var(--ink);
-  }
-  .feature-card p{margin-top:8px;font-size:14px;line-height:1.55;color:var(--ink-dim);}
+    body.launched .pre-launch-hero {
+      display: none;
+    }
 
-  .socials-section .section-inner{max-width:560px;}
-  .social-links{margin-top:38px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;
-    opacity:0;transform:translateY(16px);transition:opacity .7s ease .2s, transform .7s ease .2s;}
-  .site-section.in-view .social-links{opacity:1;transform:translateY(0);}
-  .social-link{
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    width:auto;height:auto;padding:18px 20px;
-    border-radius:16px;
-    border:1px solid rgba(var(--gold-rgb),.3);color:var(--gold-pale);
-    transition:border-color .25s ease, transform .2s ease, box-shadow .25s ease, background .25s ease;
-    text-decoration:none;
-  }
-  .social-link svg{width:26px;height:26px;fill:currentColor;flex-shrink:0;}
-  .social-handle{
-    font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;
-  }
-  .social-link:hover{border-color:var(--gold);background:rgba(var(--gold-rgb),.1);
-    transform:translateY(-4px);box-shadow:0 12px 28px rgba(var(--gold-rgb),.22);}
-  .social-link:hover .social-handle{color:var(--gold-pale);}
-  .socials-note{margin-top:16px;font-family:'Space Mono',monospace;font-size:10.5px;
-    letter-spacing:.08em;color:var(--ink-faint);}
+    .live-hero {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  .site-footer{
-    position:relative;z-index:1;padding:50px 24px 40px;text-align:center;
-    border-top:1px solid rgba(var(--gold-rgb),.14);
-  }
-  .footer-brand{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.04em;color:var(--ink);}
-  .footer-tagline{margin-top:4px;font-family:'Space Mono',monospace;font-size:11px;
-    letter-spacing:.24em;text-transform:uppercase;color:var(--gold);}
-  .footer-fine{margin-top:18px;font-size:11.5px;color:var(--ink-faint);max-width:480px;
-    margin-left:auto;margin-right:auto;line-height:1.6;}
+    body.launched .live-hero {
+      display: flex;
+    }
 
-  @media (max-width:820px){
-    .features-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
-  }
-  @media (max-width:520px){
-    .features-grid{grid-template-columns:1fr;}
-    .site-section{padding:64px 20px;}
-  }
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(var(--gold-rgb), .4);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold-pale);
+      opacity: 0;
+    }
 
-  @media (max-width:420px){
-    .flap{width:31px;height:44px;}
-    .flap-digit{font-size:22px;}
-    .board{gap:7px;}
-  }
+    body.launched .live-badge {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: .1s;
+    }
 
-  /* ============ MOBILE FIXES — the buzzer and sound controls are fixed-position and were
+    .live-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--live);
+      box-shadow: 0 0 8px 2px rgba(255, 68, 51, .7);
+      animation: pulse 1.6s infinite ease-in-out;
+    }
+
+    .live-title {
+      margin-top: 16px;
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: clamp(38px, 10vw, 104px);
+      line-height: .95;
+      color: var(--ink);
+      text-shadow: 0 0 70px rgba(240, 185, 61, .25);
+      opacity: 0;
+    }
+
+    body.launched .live-title {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: .22s;
+    }
+
+    .live-sub {
+      margin-top: 16px;
+      font-size: clamp(15px, 3vw, 18px);
+      color: var(--ink-dim);
+      max-width: 480px;
+      opacity: 0;
+    }
+
+    body.launched .live-sub {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: .36s;
+    }
+
+    .live-chips {
+      margin-top: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 520px;
+      opacity: 0;
+    }
+
+    body.launched .live-chips {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: .5s;
+    }
+
+    .live-chip {
+      font-family: 'Space Mono', monospace;
+      font-size: 11.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--gold-pale);
+      border: 1px solid rgba(var(--gold-rgb), .3);
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: rgba(var(--gold-rgb), .06);
+    }
+
+    .live-cta {
+      margin-top: 32px;
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--gold);
+      padding: 16px 42px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(var(--gold-rgb), .35);
+      transition: transform .2s ease, box-shadow .25s ease;
+      opacity: 0;
+    }
+
+    body.launched .live-cta {
+      animation: fadeUp .7s ease forwards;
+      animation-delay: .64s;
+    }
+
+    .live-cta:hover {
+      transform: scale(1.04);
+      box-shadow: 0 14px 36px rgba(var(--gold-rgb), .45);
+    }
+
+    .features-grid {
+      margin-top: 44px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      text-align: left;
+    }
+
+    .feature-card {
+      padding: 26px 22px;
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: inset 0 0 0 1px rgba(var(--gold-rgb), .14);
+      --entrance-y: 20px;
+      opacity: 0;
+      transform: translateY(var(--entrance-y)) perspective(700px) rotateX(var(--ty, 0deg)) rotateY(var(--tx, 0deg));
+      transition: opacity .6s ease, transform .35s ease, box-shadow .25s ease;
+    }
+
+    .site-section.in-view .feature-card {
+      opacity: 1;
+      --entrance-y: 0px;
+    }
+
+    .site-section.in-view .feature-card:nth-child(1) {
+      transition-delay: .05s;
+    }
+
+    .site-section.in-view .feature-card:nth-child(2) {
+      transition-delay: .11s;
+    }
+
+    .site-section.in-view .feature-card:nth-child(3) {
+      transition-delay: .17s;
+    }
+
+    .site-section.in-view .feature-card:nth-child(4) {
+      transition-delay: .23s;
+    }
+
+    .site-section.in-view .feature-card:nth-child(5) {
+      transition-delay: .29s;
+    }
+
+    .site-section.in-view .feature-card:nth-child(6) {
+      transition-delay: .35s;
+    }
+
+    .feature-card:hover {
+      box-shadow: inset 0 0 0 1px rgba(var(--gold-rgb), .4), 0 14px 34px rgba(0, 0, 0, .4);
+    }
+
+    .feature-icon {
+      font-size: 26px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      margin-top: 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: .01em;
+      color: var(--ink);
+    }
+
+    .feature-card p {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-dim);
+    }
+
+    .socials-section .section-inner {
+      max-width: 560px;
+    }
+
+    .social-links {
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .7s ease .2s, transform .7s ease .2s;
+    }
+
+    .site-section.in-view .social-links {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: auto;
+      height: auto;
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(var(--gold-rgb), .3);
+      color: var(--gold-pale);
+      transition: border-color .25s ease, transform .2s ease, box-shadow .25s ease, background .25s ease;
+      text-decoration: none;
+    }
+
+    .social-link svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .social-handle {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      white-space: nowrap;
+    }
+
+    .social-link:hover {
+      border-color: var(--gold);
+      background: rgba(var(--gold-rgb), .1);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(var(--gold-rgb), .22);
+    }
+
+    .social-link:hover .social-handle {
+      color: var(--gold-pale);
+    }
+
+    .socials-note {
+      margin-top: 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .08em;
+      color: var(--ink-faint);
+    }
+
+    .site-footer {
+      position: relative;
+      z-index: 1;
+      padding: 50px 24px 40px;
+      text-align: center;
+      border-top: 1px solid rgba(var(--gold-rgb), .14);
+    }
+
+    .footer-brand {
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      letter-spacing: .04em;
+      color: var(--ink);
+    }
+
+    .footer-tagline {
+      margin-top: 4px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .footer-fine {
+      margin-top: 18px;
+      font-size: 11.5px;
+      color: var(--ink-faint);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    @media (max-width:820px) {
+      .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width:520px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .site-section {
+        padding: 64px 20px;
+      }
+    }
+
+    @media (max-width:420px) {
+      .flap {
+        width: 31px;
+        height: 44px;
+      }
+
+      .flap-digit {
+        font-size: 22px;
+      }
+
+      .board {
+        gap: 7px;
+      }
+    }
+
+    /* ============ MOBILE FIXES — the buzzer and sound controls are fixed-position and were
      designed for taller/wider screens; on phones the hero content runs tall enough that they
      land on top of the countdown card and the scroll cue. Move them out of the way. ============ */
-  @media (max-width:480px){
-    .hyped-btn{
-      bottom:64px;top:auto;right:14px;
+    @media (max-width:480px) {
+      .hyped-btn {
+        bottom: 64px;
+        top: auto;
+        right: 14px;
+      }
+
+      .buzzer-base {
+        width: 58px;
+        height: 58px;
+      }
+
+      .buzzer-dome {
+        width: 46px;
+        height: 46px;
+      }
+
+      .buzzer-dome .buzzer-label {
+        font-size: 7px;
+      }
+
+      .hyped-btn-count {
+        font-size: 9px;
+        padding: 2px 7px;
+      }
+
+      .sound-toggle {
+        bottom: 14px;
+        right: 14px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+      }
+
+      .sound-hint {
+        display: none;
+      }
+
+      /* icon alone is enough at this width; avoids colliding with scroll cue */
+      .scroll-cue {
+        bottom: 16px;
+      }
     }
-    .buzzer-base{width:58px;height:58px;}
-    .buzzer-dome{width:46px;height:46px;}
-    .buzzer-dome .buzzer-label{font-size:7px;}
-    .hyped-btn-count{font-size:9px;padding:2px 7px;}
-    .sound-toggle{bottom:14px;right:14px;width:36px;height:36px;font-size:14px;}
-    .sound-hint{display:none;} /* icon alone is enough at this width; avoids colliding with scroll cue */
-    .scroll-cue{bottom:16px;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .splash{display:none;}
-    .line-in,.eyebrow,.tease,.tuned,.cd-wrap,.tagline,.scroll-cue{animation:none!important;opacity:1!important;transform:none!important;}
-    .ember{display:none;}
-    .tuned .dot,.live-badge .dot{animation:none!important;}
-    .flap.flipping .flap-digit.current,.flap.flipping .flap-digit.next{animation:none!important;opacity:1!important;transform:none!important;}
-    .section-eyebrow,.section-title,.section-body,.feature-card,.social-links{
-      transition:none!important;opacity:1!important;transform:none!important;
+
+    @media (prefers-reduced-motion:reduce) {
+      .splash {
+        display: none;
+      }
+
+      .line-in,
+      .eyebrow,
+      .tease,
+      .tuned,
+      .cd-wrap,
+      .tagline,
+      .scroll-cue {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .ember {
+        display: none;
+      }
+
+      .tuned .dot,
+      .live-badge .dot {
+        animation: none !important;
+      }
+
+      .flap.flipping .flap-digit.current,
+      .flap.flipping .flap-digit.next {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .section-eyebrow,
+      .section-title,
+      .section-body,
+      .feature-card,
+      .social-links {
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .buzzer-ring-glow,
+      .enter-btn::after,
+      .hyped-btn,
+      .htag-wrap,
+      .cd-wrap::before,
+      .hero-badge,
+      .surprise-box.locked,
+      .surprise-box.unlocked,
+      .box-hint,
+      .scroll-cue-line {
+        animation: none !important;
+      }
+
+      .htag-wrap {
+        transform: rotate(0deg) !important;
+      }
     }
-    .buzzer-ring-glow,.enter-btn::after,.hyped-btn,.htag-wrap,.cd-wrap::before,
-    .hero-badge,.surprise-box.locked,.surprise-box.unlocked,.box-hint,.scroll-cue-line{
-      animation:none!important;
+
+    /* ============ PREMIUM LAYER — scroll progress, cursor glow, grain, shine effects ============ */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      z-index: 50;
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
+      box-shadow: 0 0 10px 1px rgba(var(--gold-rgb), .6);
+      transition: width .1s linear;
     }
-    .htag-wrap{transform:rotate(0deg)!important;}
-  }
-  /* ============ PREMIUM LAYER — scroll progress, cursor glow, grain, shine effects ============ */
-  .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0%;z-index:50;
-    background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-pale));
-    box-shadow:0 0 10px 1px rgba(var(--gold-rgb),.6);transition:width .1s linear;}
 
-  .cursor-glow{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;
-    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(var(--gold-rgb),.07), transparent 70%);
-    transition:opacity .4s ease;}
-  body.started .cursor-glow{opacity:1;}
-  @media (pointer:coarse){.cursor-glow{display:none;}}
+    .cursor-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--gold-rgb), .07), transparent 70%);
+      transition: opacity .4s ease;
+    }
 
-  .grain-overlay{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+    body.started .cursor-glow {
+      opacity: 1;
+    }
 
-  /* rotating shimmer ring behind the countdown card — reads as a subtle energy field */
-  .cd-wrap{position:relative;}
-  .cd-wrap::before{
-    content:'';position:absolute;inset:-2px;border-radius:24px;z-index:-1;
-    background:conic-gradient(from 0deg, transparent 0%, rgba(var(--gold-rgb),.55) 8%, transparent 22%, transparent 78%, rgba(var(--gold-rgb),.4) 92%, transparent 100%);
-    animation:ringSpin 6s linear infinite;opacity:.8;
-  }
-  @keyframes ringSpin{to{transform:rotate(360deg);}}
+    @media (pointer:coarse) {
+      .cursor-glow {
+        display: none;
+      }
+    }
 
-  /* small floating emblem badge beside the eyebrow — premium accent, not text content */
-  .hero-badge{
-    display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
-    margin-bottom:10px;border-radius:50%;border:1px solid rgba(var(--gold-rgb),.4);
-    background:radial-gradient(circle,rgba(var(--gold-rgb),.16),transparent 70%);
-    font-size:15px;animation:badgeFloat 3.4s ease-in-out infinite;
-    box-shadow:0 0 18px rgba(var(--gold-rgb),.25);
-  }
-  @keyframes badgeFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-5px) rotate(6deg);}}
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      pointer-events: none;
+      opacity: .045;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
 
-  /* feature cards: shine sweep + gentle 3D tilt, driven by --tx/--ty set in JS (see base .feature-card rule) */
-  .feature-card{position:relative;overflow:hidden;}
-  .feature-card::after{
-    content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
-    background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(var(--gold-rgb),.14), transparent 60%);
-    transition:opacity .3s ease;
-  }
-  .feature-card:hover::after{opacity:1;}
+    /* rotating shimmer ring behind the countdown card — reads as a subtle energy field */
+    .cd-wrap {
+      position: relative;
+    }
 
-  /* launch particle burst — spawned once, when the countdown hits zero */
-  .launch-particle{position:fixed;z-index:9;border-radius:50%;pointer-events:none;will-change:transform,opacity;}
+    .cd-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 24px;
+      z-index: -1;
+      background: conic-gradient(from 0deg, transparent 0%, rgba(var(--gold-rgb), .55) 8%, transparent 22%, transparent 78%, rgba(var(--gold-rgb), .4) 92%, transparent 100%);
+      animation: ringSpin 6s linear infinite;
+      opacity: .8;
+    }
 
-  /* ============ HANGING STICKER — peeks in from right edge ============ */
-  .htag-wrap{
-    position:fixed;
-    top:0;
-    right:-18px;
-    z-index:20;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    opacity:0;
-    pointer-events:none;
-    transform-origin:50% 3px;
-  }
-  body.revealed .htag-wrap{
-    animation:
-      htagSwingIn 1.2s cubic-bezier(.34,1.4,.64,1) forwards,
-      htagSway    1.4s cubic-bezier(.45,0,.55,1) infinite 2.8s;
-  }
-  body.launched .htag-wrap,
-  body.started.revealed .htag-wrap{
-    animation:
-      htagSwingIn 1.2s cubic-bezier(.34,1.4,.64,1) forwards,
-      htagSway    1.4s cubic-bezier(.45,0,.55,1) infinite 2.0s;
-  }
-  @keyframes htagSwingIn{
-    0%  {opacity:0; transform:rotate(-65deg);}
-    55% {opacity:1; transform:rotate(14deg);}
-    72% {transform:rotate(-7deg);}
-    86% {transform:rotate(4deg);}
-    100%{opacity:1; transform:rotate(0deg);}
-  }
-  @keyframes htagSway{
-    0%  { transform: rotate(-20deg); }
-    50% { transform: rotate(20deg);  }
-    100%{ transform: rotate(-20deg); }
-  }
+    @keyframes ringSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
-  /* the string — tall, thin, gold, anchored at top */
-  .htag-string{
-    width:1.5px;
-    height:80px;
-    background:linear-gradient(180deg,
-      rgba(var(--gold-rgb),0) 0%,
-      rgba(var(--gold-rgb),.85) 100%);
-    position:relative;
-  }
-  .htag-string::before{
-    content:'';
-    position:absolute;top:-3px;left:50%;
-    transform:translateX(-50%);
-    width:7px;height:7px;border-radius:50%;
-    background:var(--gold);
-    box-shadow:0 0 12px 3px rgba(var(--gold-rgb),.8);
-  }
+    /* small floating emblem badge beside the eyebrow — premium accent, not text content */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(var(--gold-rgb), .4);
+      background: radial-gradient(circle, rgba(var(--gold-rgb), .16), transparent 70%);
+      font-size: 15px;
+      animation: badgeFloat 3.4s ease-in-out infinite;
+      box-shadow: 0 0 18px rgba(var(--gold-rgb), .25);
+    }
 
-  /* the pill sticker — rotated so it looks natural hanging off the right */
-  .htag-pill{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:14px 22px 14px 20px;
-    border-radius:999px;
-    background:linear-gradient(145deg,#1c1608 0%,#100d04 55%,#191408 100%);
-    border:1px solid rgba(var(--gold-rgb),.6);
-    box-shadow:
-      0 18px 48px rgba(0,0,0,.75),
-      inset 0 1px 0 rgba(var(--gold-rgb),.3),
-      inset 0 -1px 0 rgba(0,0,0,.5),
-      0 0 28px rgba(var(--gold-rgb),.18);
-    /* sway anchored at the string */
-    animation:none;
-    transform-origin:50% -8px;
-    text-decoration:none;
-    pointer-events:all;
-    cursor:pointer;
-    /* slight tilt so it looks like it's swinging off the wall */
-  }
-  .htag-pill::before{
-    content:'';
-    position:absolute;top:0;left:20%;right:20%;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(var(--gold-rgb),.55),transparent);
-    border-radius:999px;
-  }
-  .htag-pill:hover{
-    box-shadow:0 18px 48px rgba(0,0,0,.75),
-               inset 0 1px 0 rgba(var(--gold-rgb),.4),
-               0 0 40px rgba(var(--gold-rgb),.35);
-    border-color:rgba(var(--gold-rgb),.9);
-  }
+    @keyframes badgeFloat {
 
-  .htag-line1,
-  .htag-line2{
-    display:block;
-    font-family:'Rajdhani',sans-serif;
-    font-weight:700;
-    font-style:italic;
-    text-transform:uppercase;
-    letter-spacing:.16em;
-    color:var(--gold-pale);
-    line-height:1.25;
-    font-size:11px;
-    opacity:0;
-    animation:htagTextIn .45s ease forwards;
-  }
-  .htag-line2{ text-align:center; }
-  @keyframes htagTextIn{
-    0%  {opacity:0;transform:translateY(5px);}
-    100%{opacity:1;transform:translateY(0);}
-  }
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
 
-  @media(max-width:480px){
-    .htag-wrap{right:-14px;}
-    .htag-string{height:56px;}
-    .htag-pill{padding:11px 16px 11px 14px;}
-    .htag-line1,.htag-line2{font-size:9.5px;letter-spacing:.1em;}
-  }
-</style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+      50% {
+        transform: translateY(-5px) rotate(6deg);
+      }
+    }
+
+    /* feature cards: shine sweep + gentle 3D tilt, driven by --tx/--ty set in JS (see base .feature-card rule) */
+    .feature-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--gold-rgb), .14), transparent 60%);
+      transition: opacity .3s ease;
+    }
+
+    .feature-card:hover::after {
+      opacity: 1;
+    }
+
+    /* launch particle burst — spawned once, when the countdown hits zero */
+    .launch-particle {
+      position: fixed;
+      z-index: 9;
+      border-radius: 50%;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    /* ============ HANGING STICKER — peeks in from right edge ============ */
+    .htag-wrap {
+      position: fixed;
+      top: 0;
+      right: -18px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transform-origin: 50% 3px;
+    }
+
+    body.revealed .htag-wrap {
+      animation:
+        htagSwingIn 1.2s cubic-bezier(.34, 1.4, .64, 1) forwards,
+        htagSway 1.4s cubic-bezier(.45, 0, .55, 1) infinite 2.8s;
+    }
+
+    body.launched .htag-wrap,
+    body.started.revealed .htag-wrap {
+      animation:
+        htagSwingIn 1.2s cubic-bezier(.34, 1.4, .64, 1) forwards,
+        htagSway 1.4s cubic-bezier(.45, 0, .55, 1) infinite 2.0s;
+    }
+
+    @keyframes htagSwingIn {
+      0% {
+        opacity: 0;
+        transform: rotate(-65deg);
+      }
+
+      55% {
+        opacity: 1;
+        transform: rotate(14deg);
+      }
+
+      72% {
+        transform: rotate(-7deg);
+      }
+
+      86% {
+        transform: rotate(4deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: rotate(0deg);
+      }
+    }
+
+    @keyframes htagSway {
+      0% {
+        transform: rotate(-20deg);
+      }
+
+      50% {
+        transform: rotate(20deg);
+      }
+
+      100% {
+        transform: rotate(-20deg);
+      }
+    }
+
+    /* the string — tall, thin, gold, anchored at top */
+    .htag-string {
+      width: 1.5px;
+      height: 80px;
+      background: linear-gradient(180deg,
+          rgba(var(--gold-rgb), 0) 0%,
+          rgba(var(--gold-rgb), .85) 100%);
+      position: relative;
+    }
+
+    .htag-string::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px 3px rgba(var(--gold-rgb), .8);
+    }
+
+    /* the pill sticker — rotated so it looks natural hanging off the right */
+    .htag-pill {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px 14px 20px;
+      border-radius: 999px;
+      background: linear-gradient(145deg, #1c1608 0%, #100d04 55%, #191408 100%);
+      border: 1px solid rgba(var(--gold-rgb), .6);
+      box-shadow:
+        0 18px 48px rgba(0, 0, 0, .75),
+        inset 0 1px 0 rgba(var(--gold-rgb), .3),
+        inset 0 -1px 0 rgba(0, 0, 0, .5),
+        0 0 28px rgba(var(--gold-rgb), .18);
+      /* sway anchored at the string */
+      animation: none;
+      transform-origin: 50% -8px;
+      text-decoration: none;
+      pointer-events: all;
+      cursor: pointer;
+      /* slight tilt so it looks like it's swinging off the wall */
+    }
+
+    .htag-pill::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), .55), transparent);
+      border-radius: 999px;
+    }
+
+    .htag-pill:hover {
+      box-shadow: 0 18px 48px rgba(0, 0, 0, .75),
+        inset 0 1px 0 rgba(var(--gold-rgb), .4),
+        0 0 40px rgba(var(--gold-rgb), .35);
+      border-color: rgba(var(--gold-rgb), .9);
+    }
+
+    .htag-line1,
+    .htag-line2 {
+      display: block;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      color: var(--gold-pale);
+      line-height: 1.25;
+      font-size: 11px;
+      opacity: 0;
+      animation: htagTextIn .45s ease forwards;
+    }
+
+    .htag-line2 {
+      text-align: center;
+    }
+
+    @keyframes htagTextIn {
+      0% {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media(max-width:480px) {
+      .htag-wrap {
+        right: -14px;
+      }
+
+      .htag-string {
+        height: 56px;
+      }
+
+      .htag-pill {
+        padding: 11px 16px 11px 14px;
+      }
+
+      .htag-line1,
+      .htag-line2 {
+        font-size: 9.5px;
+        letter-spacing: .1em;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
+
 <body>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
@@ -871,7 +2270,8 @@
   </div>
 
   <div class="surprise-gate" id="surpriseGate">
-    <div class="surprise-box locked" id="surpriseBox" role="button" aria-label="Surprise box, locked until the timer ends">
+    <div class="surprise-box locked" id="surpriseBox" role="button"
+      aria-label="Surprise box, locked until the timer ends">
       <div class="box-glow"></div>
       <div class="box-lid"><span class="box-lock" id="boxLock">🔒</span></div>
       <div class="box-body"></div>
@@ -971,8 +2371,10 @@
   <section class="site-section about-section" id="about">
     <div class="section-inner">
       <p class="section-eyebrow">Who we are</p>
-      <h2 class="section-title">FREEFIREXIPL — The Battleground for <span class="gold-text">Free Fire</span> Players</h2>
-      <p class="section-body">FREEFIREXIPL is a tournament platform built for players who want more than casual matches. Squad up, drop into verified fair-play rooms, and battle up the leaderboard for real rewards — every day.</p>
+      <h2 class="section-title">FREEFIREXIPL — The Battleground for <span class="gold-text">Free Fire</span> Players
+      </h2>
+      <p class="section-body">FREEFIREXIPL is a tournament platform built for players who want more than casual matches.
+        Squad up, drop into verified fair-play rooms, and battle up the leaderboard for real rewards — every day.</p>
     </div>
   </section>
 
@@ -1023,18 +2425,30 @@
       <h2 class="section-title">Follow the <span class="gold-text">Squad</span></h2>
       <div class="social-links">
 
-        <a href="https://www.instagram.com/freefirexipl.2k26?igsh=YzR6bWp6eXdnZ2xk" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33m0 1.8c-3.15 0-3.5.01-4.73.07-1.03.05-1.6.22-1.97.36-.5.19-.85.42-1.22.79-.37.37-.6.72-.79 1.22-.14.37-.31.94-.36 1.97C2.87 9.5 2.86 9.85 2.86 13s.01 3.5.07 4.73c.05 1.03.22 1.6.36 1.97.19.5.42.85.79 1.22.37.37.72.6 1.22.79.37.14.94.31 1.97.36 1.12.05 1.46.06 4.53.06s3.41-.01 4.53-.06c1.03-.05 1.6-.22 1.97-.36.5-.19.85-.42 1.22-.79.37-.37.6-.72.79-1.22.14-.37.31-.94.36-1.97.06-1.23.07-1.58.07-4.73s-.01-3.5-.07-4.73c-.05-1.03-.22-1.6-.36-1.97a3.1 3.1 0 0 0-.79-1.22 3.1 3.1 0 0 0-1.22-.79c-.37-.14-.94-.31-1.97-.36C15.5 4.01 15.15 4 12 4m0 3.85a5.15 5.15 0 1 1 0 10.3 5.15 5.15 0 0 1 0-10.3m0 1.8a3.35 3.35 0 1 0 0 6.7 3.35 3.35 0 0 0 0-6.7m5.35-2a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0"/></svg>
+        <a href="https://www.instagram.com/freefirexipl.2k26?igsh=YzR6bWp6eXdnZ2xk" target="_blank" rel="noopener"
+          class="social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33m0 1.8c-3.15 0-3.5.01-4.73.07-1.03.05-1.6.22-1.97.36-.5.19-.85.42-1.22.79-.37.37-.6.72-.79 1.22-.14.37-.31.94-.36 1.97C2.87 9.5 2.86 9.85 2.86 13s.01 3.5.07 4.73c.05 1.03.22 1.6.36 1.97.19.5.42.85.79 1.22.37.37.72.6 1.22.79.37.14.94.31 1.97.36 1.12.05 1.46.06 4.53.06s3.41-.01 4.53-.06c1.03-.05 1.6-.22 1.97-.36.5-.19.85-.42 1.22-.79.37-.37.6-.72.79-1.22.14-.37.31-.94.36-1.97.06-1.23.07-1.58.07-4.73s-.01-3.5-.07-4.73c-.05-1.03-.22-1.6-.36-1.97a3.1 3.1 0 0 0-.79-1.22 3.1 3.1 0 0 0-1.22-.79c-.37-.14-.94-.31-1.97-.36C15.5 4.01 15.15 4 12 4m0 3.85a5.15 5.15 0 1 1 0 10.3 5.15 5.15 0 0 1 0-10.3m0 1.8a3.35 3.35 0 1 0 0 6.7 3.35 3.35 0 0 0 0-6.7m5.35-2a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0" />
+          </svg>
           <span class="social-handle">@freefirexipl.2k26</span>
         </a>
 
-        <a href="https://x.com/FREEFIRExIPL0" target="_blank" rel="noopener" class="social-link" aria-label="Twitter / X">
-          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.773l4.254 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <a href="https://x.com/FREEFIRExIPL0" target="_blank" rel="noopener" class="social-link"
+          aria-label="Twitter / X">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.773l4.254 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
           <span class="social-handle">@FREEFIRExIPL0</span>
         </a>
 
-        <a href="https://whatsapp.com/channel/0029Vb6jt3p5EjxxKaAnm50k" target="_blank" rel="noopener" class="social-link" aria-label="WhatsApp Community">
-          <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.78.97-.96 1.17-.17.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5a9.1 9.1 0 0 1-1.68-2.08c-.17-.3-.02-.47.13-.62.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.63-.93-2.24-.24-.58-.5-.5-.68-.51h-.58c-.2 0-.52.08-.8.37-.27.3-1.04 1.02-1.04 2.47s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35M12 2C6.5 2 2 6.5 2 12c0 1.9.53 3.68 1.45 5.2L2 22l4.94-1.4A9.95 9.95 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2"/></svg>
+        <a href="https://whatsapp.com/channel/0029Vb6jt3p5EjxxKaAnm50k" target="_blank" rel="noopener"
+          class="social-link" aria-label="WhatsApp Community">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.78.97-.96 1.17-.17.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5a9.1 9.1 0 0 1-1.68-2.08c-.17-.3-.02-.47.13-.62.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.63-.93-2.24-.24-.58-.5-.5-.68-.51h-.58c-.2 0-.52.08-.8.37-.27.3-1.04 1.02-1.04 2.47s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35M12 2C6.5 2 2 6.5 2 12c0 1.9.53 3.68 1.45 5.2L2 22l4.94-1.4A9.95 9.95 0 0 0 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2" />
+          </svg>
           <span class="social-handle">WA Community</span>
         </a>
 
@@ -1046,978 +2460,980 @@
   <footer class="site-footer">
     <p class="footer-brand">FREEFIRE<span class="gold-text">XIPL</span></p>
     <p class="footer-tagline">Battle Up.</p>
-    <p class="footer-fine">Fan-run Free Fire tournament platform. Not affiliated with or endorsed by Garena. © 2026 FREEFIREXIPL.</p>
+    <p class="footer-fine">Fan-run Free Fire tournament platform. Not affiliated with or endorsed by Garena. © 2026
+      FREEFIREXIPL.</p>
   </footer>
 
-<script>
-  /* audio state declared FIRST — the surprise-box timer below ticks immediately on
-     page load and needs these to already exist (a `let` referenced before its own
-     declaration throws and silently kills the rest of the script) */
-  let audioCtx = null, masterGain = null, muted = false;
-  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let musicTimer = null, musicStep = 0, usingFileMusic = false, audioStarted = false;
+  <script>
+    /* audio state declared FIRST — the surprise-box timer below ticks immediately on
+       page load and needs these to already exist (a `let` referenced before its own
+       declaration throws and silently kills the rest of the script) */
+    let audioCtx = null, masterGain = null, muted = false;
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let musicTimer = null, musicStep = 0, usingFileMusic = false, audioStarted = false;
 
-  /* ================= MAIN CONTENT COUNTDOWN — the one real target this whole page counts
-     toward (this is the "Coming Soon" flip-clock, NOT the surprise-box game above).
-     OFFICIAL: fixed to a real calendar date/time in REAL_TARGET_DATE — the exact same
-     moment for every visitor, on every device, everywhere. Once real time reaches it,
-     this and every future visit skips the whole intro (Enter, surprise box, puzzle)
-     and lands straight on the live content — no game, ever again, for anyone.
-     To test again later, set MAIN_TEST_SECONDS to a number of seconds instead. ================= */
-  const MAIN_TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real date below
-  const REAL_TARGET_DATE = '2026-09-03T17:45:00+05:30';
-  const MAIN_TARGET_KEY = 'ffx_main_target_v1';
+    /* ================= MAIN CONTENT COUNTDOWN — the one real target this whole page counts
+       toward (this is the "Coming Soon" flip-clock, NOT the surprise-box game above).
+       OFFICIAL: fixed to a real calendar date/time in REAL_TARGET_DATE — the exact same
+       moment for every visitor, on every device, everywhere. Once real time reaches it,
+       this and every future visit skips the whole intro (Enter, surprise box, puzzle)
+       and lands straight on the live content — no game, ever again, for anyone.
+       To test again later, set MAIN_TEST_SECONDS to a number of seconds instead. ================= */
+    const MAIN_TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real date below
+    const REAL_TARGET_DATE = '2026-09-03T17:45:00+05:30';
+    const MAIN_TARGET_KEY = 'ffx_main_target_v1';
 
-  let target;
-  if(MAIN_TEST_SECONDS !== null){
-    const savedTarget = localStorage.getItem(MAIN_TARGET_KEY);
-    if(savedTarget){
-      target = new Date(parseInt(savedTarget, 10));
+    let target;
+    if (MAIN_TEST_SECONDS !== null) {
+      const savedTarget = localStorage.getItem(MAIN_TARGET_KEY);
+      if (savedTarget) {
+        target = new Date(parseInt(savedTarget, 10));
+      } else {
+        target = new Date(Date.now() + MAIN_TEST_SECONDS * 1000);
+        try { localStorage.setItem(MAIN_TARGET_KEY, String(target.getTime())); } catch (e) { /* private mode etc */ }
+      }
     } else {
-      target = new Date(Date.now() + MAIN_TEST_SECONDS * 1000);
-      try{ localStorage.setItem(MAIN_TARGET_KEY, String(target.getTime())); }catch(e){ /* private mode etc */ }
+      target = new Date(REAL_TARGET_DATE);
     }
-  } else {
-    target = new Date(REAL_TARGET_DATE);
-  }
 
-  // Past the target already? Skip the whole intro experience (Enter tap, surprise box,
-  // puzzle) and drop the visitor straight onto the live content — no game, ever again.
-  const skipIntro = new Date() >= target;
-  if(skipIntro){
-    document.body.classList.add('started', 'revealed', 'launched');
-  }
-
-  /* ============================================================
-     🎵 EDIT YOUR MUSIC HERE
-     Paste a direct link to an mp3/ogg file, or the filename of an
-     audio file sitting in the same folder as this HTML page
-     (e.g. "theme.mp3"). Leave MUSIC_URL as "" to keep the
-     built-in synthesized loop instead — no file needed.
-     MUSIC_VOLUME goes from 0 (silent) to 1 (full volume).
-  ============================================================ */
-  const MUSIC_URL = "";
-  const MUSIC_VOLUME = 0.55;
-
-  /* ================= SURPRISE REVEAL — sealed ring fills as the timer counts down ================= *
-     OFFICIAL: unlocks today at 11:15 AM local time, for everyone — same moment,
-     no matter who opens the page or when. To test again later, set TEST_SECONDS
-     back to a number of seconds from page load.                              */
-  const surpriseGate = document.getElementById('surpriseGate');
-  const surpriseBox = document.getElementById('surpriseBox');
-  const boxEyebrow = document.getElementById('boxEyebrow');
-  const surpriseTimer = document.getElementById('surpriseTimer');
-  const boxHint = document.getElementById('boxHint');
-
-  const TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real time below
-  const UNLOCK_HOUR = 17;
-  const UNLOCK_MINUTE = 32;
-
-  const unlockTarget = TEST_SECONDS !== null
-    ? new Date(Date.now() + TEST_SECONDS * 1000)
-    : (() => { const d = new Date(); d.setHours(UNLOCK_HOUR, UNLOCK_MINUTE, 0, 0); return d; })();
-
-  function pad2(n){ return String(n).padStart(2, '0'); }
-
-  // dissolve the whole gate into the Enter flow, once the box has finished blasting open
-  function openReveal(){
-    surpriseGate.classList.add('hide');
-    setTimeout(() => surpriseGate.remove(), 550);
-  }
-
-  // box goes from locked -> unlocked the instant the timer hits zero; it will NOT open
-  // itself — it just starts glowing and waits for the player to tap it
-  function unlockBox(){
-    surpriseBox.classList.remove('locked');
-    surpriseBox.classList.add('unlocked');
-    boxEyebrow.textContent = 'Ready';
-    surpriseTimer.textContent = '00:00';
-    boxHint.classList.add('show');
-  }
-
-  let surpriseInterval = null;
-  function tickSurprise(){
-    const now = new Date();
-    const diff = unlockTarget - now;
-    if(diff <= 0){
-      clearInterval(surpriseInterval);
-      unlockBox();
-      return;
+    // Past the target already? Skip the whole intro experience (Enter tap, surprise box,
+    // puzzle) and drop the visitor straight onto the live content — no game, ever again.
+    const skipIntro = new Date() >= target;
+    if (skipIntro) {
+      document.body.classList.add('started', 'revealed', 'launched');
     }
-    const totalSec = Math.ceil(diff / 1000);
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    surpriseTimer.textContent = pad2(m) + ':' + pad2(s);
-    playTick();
-  }
 
-  if(skipIntro){
-    surpriseGate.remove(); // main countdown already finished — skip the game entirely
-  } else if(unlockTarget - new Date() <= 0){
-    unlockBox(); // reveal time already passed — show the box unlocked and ready to tap
-                 // (stays this way for anyone opening the page right up until the main
-                 // countdown ends, instead of being skipped)
-  } else {
-    tickSurprise();
-    surpriseInterval = setInterval(tickSurprise, 1000);
-  }
+    /* ============================================================
+       🎵 EDIT YOUR MUSIC HERE
+       Paste a direct link to an mp3/ogg file, or the filename of an
+       audio file sitting in the same folder as this HTML page
+       (e.g. "theme.mp3"). Leave MUSIC_URL as "" to keep the
+       built-in synthesized loop instead — no file needed.
+       MUSIC_VOLUME goes from 0 (silent) to 1 (full volume).
+    ============================================================ */
+    const MUSIC_URL = "";
+    const MUSIC_VOLUME = 0.55;
 
-  // tapping the box while it's still locked just rattles it (with a denied blip) —
-  // only a tap AFTER unlockBox() actually blasts it open
-  surpriseBox.addEventListener('click', () => {
-    if(surpriseBox.classList.contains('locked')){
-      surpriseBox.classList.remove('shake');
-      void surpriseBox.offsetWidth;
-      surpriseBox.classList.add('shake');
-      playDenied();
-      return;
+    /* ================= SURPRISE REVEAL — sealed ring fills as the timer counts down ================= *
+       OFFICIAL: unlocks today at 11:15 AM local time, for everyone — same moment,
+       no matter who opens the page or when. To test again later, set TEST_SECONDS
+       back to a number of seconds from page load.                              */
+    const surpriseGate = document.getElementById('surpriseGate');
+    const surpriseBox = document.getElementById('surpriseBox');
+    const boxEyebrow = document.getElementById('boxEyebrow');
+    const surpriseTimer = document.getElementById('surpriseTimer');
+    const boxHint = document.getElementById('boxHint');
+
+    const TEST_SECONDS = null;   // <- set to a number of seconds to test again; null uses the real time below
+    const UNLOCK_HOUR = 17;
+    const UNLOCK_MINUTE = 32;
+
+    const unlockTarget = TEST_SECONDS !== null
+      ? new Date(Date.now() + TEST_SECONDS * 1000)
+      : (() => { const d = new Date(); d.setHours(UNLOCK_HOUR, UNLOCK_MINUTE, 0, 0); return d; })();
+
+    function pad2(n) { return String(n).padStart(2, '0'); }
+
+    // dissolve the whole gate into the Enter flow, once the box has finished blasting open
+    function openReveal() {
+      surpriseGate.classList.add('hide');
+      setTimeout(() => surpriseGate.remove(), 550);
     }
-    if(!surpriseBox.classList.contains('unlocked')) return; // already blasting
-    surpriseBox.classList.remove('unlocked');
-    surpriseBox.classList.add('blasting');
-    boxHint.classList.remove('show');
-    ensureAudio();
-    playBoxBlast();
-    const rect = surpriseBox.getBoundingClientRect();
-    spawnBlastParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
-    setTimeout(openReveal, 550);
-  });
 
-  /* ================= PHOTO INTRO MONTAGE — plays after Enter, before the text splash.
-     Uses YOUR OWN photos only — tournament shots, player photos, artwork. Never real
-     Free Fire game footage or character art, which belongs to Garena.
-     Add your own filenames to SPLASH_PHOTOS below (portrait or square shots work best,
-     ~1600px wide, under ~400KB each so they load fast). Anything that fails to load is
-     silently skipped; if none load at all, this whole phase is skipped and the page
-     behaves exactly as it did before — it can never show broken images or block entry. */
-  const SPLASH_PHOTOS = [
-    'csk.png',
-    'srh.png',
-    'kkr.png',
-    'rr.png'
-  ];
-  const SPLASH_SLIDE_MS = 700;
-  const SPLASH_FLASH_MS = 150;
+    // box goes from locked -> unlocked the instant the timer hits zero; it will NOT open
+    // itself — it just starts glowing and waits for the player to tap it
+    function unlockBox() {
+      surpriseBox.classList.remove('locked');
+      surpriseBox.classList.add('unlocked');
+      boxEyebrow.textContent = 'Ready';
+      surpriseTimer.textContent = '00:00';
+      boxHint.classList.add('show');
+    }
 
-  function preloadImage(src){
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(src);
-      img.onerror = () => resolve(null);
-      img.src = src;
+    let surpriseInterval = null;
+    function tickSurprise() {
+      const now = new Date();
+      const diff = unlockTarget - now;
+      if (diff <= 0) {
+        clearInterval(surpriseInterval);
+        unlockBox();
+        return;
+      }
+      const totalSec = Math.ceil(diff / 1000);
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      surpriseTimer.textContent = pad2(m) + ':' + pad2(s);
+      playTick();
+    }
+
+    if (skipIntro) {
+      surpriseGate.remove(); // main countdown already finished — skip the game entirely
+    } else if (unlockTarget - new Date() <= 0) {
+      unlockBox(); // reveal time already passed — show the box unlocked and ready to tap
+      // (stays this way for anyone opening the page right up until the main
+      // countdown ends, instead of being skipped)
+    } else {
+      tickSurprise();
+      surpriseInterval = setInterval(tickSurprise, 1000);
+    }
+
+    // tapping the box while it's still locked just rattles it (with a denied blip) —
+    // only a tap AFTER unlockBox() actually blasts it open
+    surpriseBox.addEventListener('click', () => {
+      if (surpriseBox.classList.contains('locked')) {
+        surpriseBox.classList.remove('shake');
+        void surpriseBox.offsetWidth;
+        surpriseBox.classList.add('shake');
+        playDenied();
+        return;
+      }
+      if (!surpriseBox.classList.contains('unlocked')) return; // already blasting
+      surpriseBox.classList.remove('unlocked');
+      surpriseBox.classList.add('blasting');
+      boxHint.classList.remove('show');
+      ensureAudio();
+      playBoxBlast();
+      const rect = surpriseBox.getBoundingClientRect();
+      spawnBlastParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      setTimeout(openReveal, 550);
     });
-  }
 
-  let loadedSplashPhotos = [];
-  const splashPhotosReady = prefersReducedMotion
-    ? Promise.resolve([])
-    : Promise.all(SPLASH_PHOTOS.map(preloadImage)).then((results) => {
+    /* ================= PHOTO INTRO MONTAGE — plays after Enter, before the text splash.
+       Uses YOUR OWN photos only — tournament shots, player photos, artwork. Never real
+       Free Fire game footage or character art, which belongs to Garena.
+       Add your own filenames to SPLASH_PHOTOS below (portrait or square shots work best,
+       ~1600px wide, under ~400KB each so they load fast). Anything that fails to load is
+       silently skipped; if none load at all, this whole phase is skipped and the page
+       behaves exactly as it did before — it can never show broken images or block entry. */
+    const SPLASH_PHOTOS = [
+      'csk.png',
+      'srh.png',
+      'kkr.png',
+      'rr.png'
+    ];
+    const SPLASH_SLIDE_MS = 700;
+    const SPLASH_FLASH_MS = 150;
+
+    function preloadImage(src) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(src);
+        img.onerror = () => resolve(null);
+        img.src = src;
+      });
+    }
+
+    let loadedSplashPhotos = [];
+    const splashPhotosReady = prefersReducedMotion
+      ? Promise.resolve([])
+      : Promise.all(SPLASH_PHOTOS.map(preloadImage)).then((results) => {
         loadedSplashPhotos = results.filter(Boolean);
         return loadedSplashPhotos;
       });
 
-  const photoSplash = document.getElementById('photoSplash');
-  const photoSlideWrap = document.getElementById('photoSlideWrap');
-  const photoFlash = document.getElementById('photoFlash');
-  const skipPhotoBtn = document.getElementById('skipPhotoSplash');
+    const photoSplash = document.getElementById('photoSplash');
+    const photoSlideWrap = document.getElementById('photoSlideWrap');
+    const photoFlash = document.getElementById('photoFlash');
+    const skipPhotoBtn = document.getElementById('skipPhotoSplash');
 
-  function playPhotoMontage(done){
-    if(!loadedSplashPhotos.length){ done(); return; }
+    function playPhotoMontage(done) {
+      if (!loadedSplashPhotos.length) { done(); return; }
 
-    loadedSplashPhotos.forEach((src) => {
-      const slide = document.createElement('div');
-      slide.className = 'photo-slide';
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = '';
-      slide.appendChild(img);
-      photoSlideWrap.appendChild(slide);
-    });
-    const slides = [...photoSlideWrap.children];
-    photoSplash.classList.add('show');
+      loadedSplashPhotos.forEach((src) => {
+        const slide = document.createElement('div');
+        slide.className = 'photo-slide';
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = '';
+        slide.appendChild(img);
+        photoSlideWrap.appendChild(slide);
+      });
+      const slides = [...photoSlideWrap.children];
+      photoSplash.classList.add('show');
 
-    let i = 0, finished = false;
-    function finish(){
-      if(finished) return;
-      finished = true;
-      photoSplash.classList.add('hide');
-      setTimeout(() => photoSplash.remove(), 500);
-      done();
-    }
-    function showNext(){
-      if(finished) return;
-      slides.forEach(s => s.classList.remove('active'));
-      if(i >= slides.length){ finish(); return; }
-      slides[i].classList.add('active');
-      playTapClick(); // reused as a quick "photo snap" tick
-      i++;
-      setTimeout(() => {
-        photoFlash.classList.remove('flick');
-        void photoFlash.offsetWidth;
-        photoFlash.classList.add('flick');
-        setTimeout(showNext, SPLASH_FLASH_MS);
-      }, SPLASH_SLIDE_MS);
-    }
-    skipPhotoBtn.onclick = finish;
-    showNext();
-  }
-
-  /* ================= ENTER GATE — tap to begin; everything else (splash, puzzle) waits for this ================= */
-  const enterGate = document.getElementById('enterGate');
-  const enterBtn = document.getElementById('enterBtn');
-  const soundToggle = document.getElementById('soundToggle');
-  const soundHint = document.getElementById('soundHint');
-
-  if(skipIntro){
-    // main countdown already finished — skip the tap-to-begin splash entirely
-    enterGate.remove();
-    const splashEl = document.querySelector('.splash');
-    if(splashEl) splashEl.remove();
-    if(photoSplash) photoSplash.remove();
-    soundToggle.classList.add('show'); // let the visitor turn music on manually if they want
-  } else {
-    enterBtn.addEventListener('click', () => {
-      enterGate.classList.add('hide');
-      setTimeout(() => enterGate.remove(), 550);
-      // this tap is a real user gesture — use it to unlock audio
-      ensureAudio();
-
-      const startMain = () => {
-        document.body.classList.add('started');
-        playSplashWhoosh();
-      };
-
-      if(loadedSplashPhotos.length){
-        playPhotoMontage(startMain);
-      } else {
-        splashPhotosReady.then((photos) => {
-          if(photos.length) playPhotoMontage(startMain);
-          else startMain();
-        });
+      let i = 0, finished = false;
+      function finish() {
+        if (finished) return;
+        finished = true;
+        photoSplash.classList.add('hide');
+        setTimeout(() => photoSplash.remove(), 500);
+        done();
       }
-    }, { once: true });
-  }
-
-  /* ================= COUNTDOWN HELPERS =================
-     `target` and `skipIntro` are already computed at the top of this script. ================= */
-  const units = [
-    { key: 'd', label: 'Days' },
-    { key: 'h', label: 'Hrs' },
-    { key: 'm', label: 'Min' },
-    { key: 's', label: 'Sec' }
-  ];
-  const allBoards = []; // one digit-map per rendered board (hero + every echo)
-
-  function buildBoard(boardEl){
-    const digitEls = {};
-    units.forEach(u => {
-      const unitEl = document.createElement('div');
-      unitEl.className = 'unit';
-      const pair = document.createElement('div');
-      pair.className = 'flap-pair';
-
-      const makeFlap = () => {
-        const flap = document.createElement('div');
-        flap.className = 'flap';
-        const cur = document.createElement('div');
-        cur.className = 'flap-digit current';
-        cur.textContent = '0';
-        const nxt = document.createElement('div');
-        nxt.className = 'flap-digit next';
-        nxt.textContent = '0';
-        flap.appendChild(cur); flap.appendChild(nxt);
-        pair.appendChild(flap);
-        return { flap, cur, nxt, value: '0' };
-      };
-      const tens = makeFlap();
-      const ones = makeFlap();
-      digitEls[u.key] = [tens, ones];
-
-      const label = document.createElement('div');
-      label.className = 'unit-label';
-      label.textContent = u.label;
-
-      unitEl.appendChild(pair);
-      unitEl.appendChild(label);
-      boardEl.appendChild(unitEl);
-    });
-    return digitEls;
-  }
-
-  function setFlap(obj, newDigit){
-    if(obj.value === newDigit) return;
-    obj.nxt.textContent = newDigit;
-    obj.flap.classList.remove('flipping');
-    void obj.flap.offsetWidth;
-    obj.flap.classList.add('flipping');
-    setTimeout(() => {
-      obj.cur.textContent = newDigit;
-      obj.flap.classList.remove('flipping');
-      obj.value = newDigit;
-    }, 600);
-  }
-
-  allBoards.push(buildBoard(document.getElementById('board'))); // the hero's own countdown
-
-  /* ================= PUZZLE GATE — arrange 6 pieces correctly to unlock the content ================= */
-  const PCOLS = 3, PROWS = 2;
-  const puzzleBoard = document.getElementById('puzzleBoard');
-  const puzzleGate = document.getElementById('puzzleGate');
-
-  if(skipIntro){
-    // main countdown already finished — skip the puzzle entirely, scroll stays unlocked
-    puzzleGate.remove();
-  } else {
-  document.body.style.overflow = 'hidden'; // lock scroll until solved
-
-  function shuffled(arr){
-    const a = arr.slice();
-    for(let i = a.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      function showNext() {
+        if (finished) return;
+        slides.forEach(s => s.classList.remove('active'));
+        if (i >= slides.length) { finish(); return; }
+        slides[i].classList.add('active');
+        playTapClick(); // reused as a quick "photo snap" tick
+        i++;
+        setTimeout(() => {
+          photoFlash.classList.remove('flick');
+          void photoFlash.offsetWidth;
+          photoFlash.classList.add('flick');
+          setTimeout(showNext, SPLASH_FLASH_MS);
+        }, SPLASH_SLIDE_MS);
+      }
+      skipPhotoBtn.onclick = finish;
+      showNext();
     }
-    return a;
-  }
 
-  let order = [0,1,2,3,4,5];
-  do { order = shuffled([0,1,2,3,4,5]); } while(order.every((v,i) => v === i));
+    /* ================= ENTER GATE — tap to begin; everything else (splash, puzzle) waits for this ================= */
+    const enterGate = document.getElementById('enterGate');
+    const enterBtn = document.getElementById('enterBtn');
+    const soundToggle = document.getElementById('soundToggle');
+    const soundHint = document.getElementById('soundHint');
 
-  order.forEach(origin => {
-    const tile = document.createElement('div');
-    tile.className = 'ptile';
-    tile.dataset.origin = origin;
-    const col = origin % PCOLS, row = Math.floor(origin / PCOLS);
-    const posX = (col / (PCOLS - 1)) * 100;
-    const posY = (row / (PROWS - 1)) * 100;
-    tile.style.backgroundPosition = posX + '% ' + posY + '%';
-    puzzleBoard.appendChild(tile);
-  });
-
-  let selectedTile = null;
-  puzzleBoard.addEventListener('click', (e) => {
-    const tile = e.target.closest('.ptile');
-    if(!tile || puzzleGate.classList.contains('solved')) return;
-    playTapClick();
-
-    if(selectedTile === tile){
-      tile.classList.remove('selected');
-      selectedTile = null;
-      return;
-    }
-    if(!selectedTile){
-      selectedTile = tile;
-      tile.classList.add('selected');
-      return;
-    }
-    // swap the two tiles' positions in the grid
-    const a = selectedTile, b = tile;
-    const aNext = a.nextSibling;
-    const bNext = b.nextSibling;
-    if(aNext === b){
-      puzzleBoard.insertBefore(b, a);
-    } else if(bNext === a){
-      puzzleBoard.insertBefore(a, b);
+    if (skipIntro) {
+      // main countdown already finished — skip the tap-to-begin splash entirely
+      enterGate.remove();
+      const splashEl = document.querySelector('.splash');
+      if (splashEl) splashEl.remove();
+      if (photoSplash) photoSplash.remove();
+      soundToggle.classList.add('show'); // let the visitor turn music on manually if they want
     } else {
-      puzzleBoard.insertBefore(b, aNext);
-      puzzleBoard.insertBefore(a, bNext);
-    }
-    a.classList.remove('selected');
-    selectedTile = null;
-
-    const solved = [...puzzleBoard.children].every((el, i) => Number(el.dataset.origin) === i);
-    if(solved){
-      [...puzzleBoard.children].forEach(el => el.classList.add('correct'));
-      playSuccessChime();
-      setTimeout(() => {
-        puzzleGate.classList.add('solved');
-        document.body.classList.add('revealed');
-        document.body.style.overflow = '';
-        audioStarted = true;
+      enterBtn.addEventListener('click', () => {
+        enterGate.classList.add('hide');
+        setTimeout(() => enterGate.remove(), 550);
+        // this tap is a real user gesture — use it to unlock audio
         ensureAudio();
+
+        const startMain = () => {
+          document.body.classList.add('started');
+          playSplashWhoosh();
+        };
+
+        if (loadedSplashPhotos.length) {
+          playPhotoMontage(startMain);
+        } else {
+          splashPhotosReady.then((photos) => {
+            if (photos.length) playPhotoMontage(startMain);
+            else startMain();
+          });
+        }
+      }, { once: true });
+    }
+
+    /* ================= COUNTDOWN HELPERS =================
+       `target` and `skipIntro` are already computed at the top of this script. ================= */
+    const units = [
+      { key: 'd', label: 'Days' },
+      { key: 'h', label: 'Hrs' },
+      { key: 'm', label: 'Min' },
+      { key: 's', label: 'Sec' }
+    ];
+    const allBoards = []; // one digit-map per rendered board (hero + every echo)
+
+    function buildBoard(boardEl) {
+      const digitEls = {};
+      units.forEach(u => {
+        const unitEl = document.createElement('div');
+        unitEl.className = 'unit';
+        const pair = document.createElement('div');
+        pair.className = 'flap-pair';
+
+        const makeFlap = () => {
+          const flap = document.createElement('div');
+          flap.className = 'flap';
+          const cur = document.createElement('div');
+          cur.className = 'flap-digit current';
+          cur.textContent = '0';
+          const nxt = document.createElement('div');
+          nxt.className = 'flap-digit next';
+          nxt.textContent = '0';
+          flap.appendChild(cur); flap.appendChild(nxt);
+          pair.appendChild(flap);
+          return { flap, cur, nxt, value: '0' };
+        };
+        const tens = makeFlap();
+        const ones = makeFlap();
+        digitEls[u.key] = [tens, ones];
+
+        const label = document.createElement('div');
+        label.className = 'unit-label';
+        label.textContent = u.label;
+
+        unitEl.appendChild(pair);
+        unitEl.appendChild(label);
+        boardEl.appendChild(unitEl);
+      });
+      return digitEls;
+    }
+
+    function setFlap(obj, newDigit) {
+      if (obj.value === newDigit) return;
+      obj.nxt.textContent = newDigit;
+      obj.flap.classList.remove('flipping');
+      void obj.flap.offsetWidth;
+      obj.flap.classList.add('flipping');
+      setTimeout(() => {
+        obj.cur.textContent = newDigit;
+        obj.flap.classList.remove('flipping');
+        obj.value = newDigit;
+      }, 600);
+    }
+
+    allBoards.push(buildBoard(document.getElementById('board'))); // the hero's own countdown
+
+    /* ================= PUZZLE GATE — arrange 6 pieces correctly to unlock the content ================= */
+    const PCOLS = 3, PROWS = 2;
+    const puzzleBoard = document.getElementById('puzzleBoard');
+    const puzzleGate = document.getElementById('puzzleGate');
+
+    if (skipIntro) {
+      // main countdown already finished — skip the puzzle entirely, scroll stays unlocked
+      puzzleGate.remove();
+    } else {
+      document.body.style.overflow = 'hidden'; // lock scroll until solved
+
+      function shuffled(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      let order = [0, 1, 2, 3, 4, 5];
+      do { order = shuffled([0, 1, 2, 3, 4, 5]); } while (order.every((v, i) => v === i));
+
+      order.forEach(origin => {
+        const tile = document.createElement('div');
+        tile.className = 'ptile';
+        tile.dataset.origin = origin;
+        const col = origin % PCOLS, row = Math.floor(origin / PCOLS);
+        const posX = (col / (PCOLS - 1)) * 100;
+        const posY = (row / (PROWS - 1)) * 100;
+        tile.style.backgroundPosition = posX + '% ' + posY + '%';
+        puzzleBoard.appendChild(tile);
+      });
+
+      let selectedTile = null;
+      puzzleBoard.addEventListener('click', (e) => {
+        const tile = e.target.closest('.ptile');
+        if (!tile || puzzleGate.classList.contains('solved')) return;
+        playTapClick();
+
+        if (selectedTile === tile) {
+          tile.classList.remove('selected');
+          selectedTile = null;
+          return;
+        }
+        if (!selectedTile) {
+          selectedTile = tile;
+          tile.classList.add('selected');
+          return;
+        }
+        // swap the two tiles' positions in the grid
+        const a = selectedTile, b = tile;
+        const aNext = a.nextSibling;
+        const bNext = b.nextSibling;
+        if (aNext === b) {
+          puzzleBoard.insertBefore(b, a);
+        } else if (bNext === a) {
+          puzzleBoard.insertBefore(a, b);
+        } else {
+          puzzleBoard.insertBefore(b, aNext);
+          puzzleBoard.insertBefore(a, bNext);
+        }
+        a.classList.remove('selected');
+        selectedTile = null;
+
+        const solved = [...puzzleBoard.children].every((el, i) => Number(el.dataset.origin) === i);
+        if (solved) {
+          [...puzzleBoard.children].forEach(el => el.classList.add('correct'));
+          playSuccessChime();
+          setTimeout(() => {
+            puzzleGate.classList.add('solved');
+            document.body.classList.add('revealed');
+            document.body.style.overflow = '';
+            audioStarted = true;
+            ensureAudio();
+            startAmbient();
+            startMusic();
+            soundToggle.textContent = '🔊';
+            soundToggle.classList.add('show');
+            soundHint.classList.add('show');
+          }, 550);
+        }
+      });
+    } // end if(!skipIntro) puzzle gate block
+
+    /* ================= AUDIO ENGINE — fully synthesized, no external files ================= */
+    function initAudio() {
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.9;
+      masterGain.connect(audioCtx.destination);
+    }
+
+    function ensureAudio() {
+      if (!audioCtx) initAudio();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    // A whoosh tied to the actual splash timeline: it builds as the title zooms in
+    // and hits its "impact" at 72% — the exact keyframe where cameraZoom locks to
+    // full scale and clears its blur — then tails off as the title overshoots and fades.
+    function playSplashWhoosh() {
+      ensureAudio();
+      const now = audioCtx.currentTime;
+      const dur = 1.7;
+      const impactAt = dur * 0.72; // matches the cameraZoom keyframe's 72% mark
+
+      // rising sweep — builds toward the impact, not just a flat fade
+      const bufferSize = Math.floor(audioCtx.sampleRate * dur);
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.Q.value = 1.1;
+      filter.frequency.setValueAtTime(140, now);
+      filter.frequency.exponentialRampToValueAtTime(4200, now + impactAt);
+      filter.frequency.exponentialRampToValueAtTime(500, now + dur);
+
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.0001, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.5, now + impactAt);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+      noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(masterGain);
+      noise.start(now); noise.stop(now + dur);
+
+      // low impact thud — lands exactly when the title snaps into full focus
+      const thump = audioCtx.createOscillator();
+      thump.type = 'sine';
+      thump.frequency.setValueAtTime(150, now + impactAt);
+      thump.frequency.exponentialRampToValueAtTime(42, now + impactAt + 0.35);
+      const thumpGain = audioCtx.createGain();
+      thumpGain.gain.setValueAtTime(0.0001, now + impactAt);
+      thumpGain.gain.exponentialRampToValueAtTime(0.55, now + impactAt + 0.02);
+      thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + impactAt + 0.4);
+      thump.connect(thumpGain); thumpGain.connect(masterGain);
+      thump.start(now + impactAt); thump.stop(now + impactAt + 0.42);
+
+      // bright shimmer tail — settles alongside the title as it overshoots and fades
+      const shimmer = audioCtx.createOscillator();
+      shimmer.type = 'triangle';
+      shimmer.frequency.setValueAtTime(1800, now + impactAt);
+      shimmer.frequency.exponentialRampToValueAtTime(2600, now + impactAt + 0.5);
+      const shimmerGain = audioCtx.createGain();
+      shimmerGain.gain.setValueAtTime(0.0001, now + impactAt);
+      shimmerGain.gain.exponentialRampToValueAtTime(0.06, now + impactAt + 0.05);
+      shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + impactAt + 0.6);
+      shimmer.connect(shimmerGain); shimmerGain.connect(masterGain);
+      shimmer.start(now + impactAt); shimmer.stop(now + impactAt + 0.65);
+    }
+
+    // a soft clock-tick, used by both the surprise-box ring and the real countdown
+    function playTick() {
+      ensureAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(1050, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.045, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 0.045);
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+    }
+
+    // short low "denied" blip — played when the box is tapped while still locked
+    function playDenied() {
+      ensureAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.09, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 0.14);
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+    }
+
+    // the box-opening "blast" — a noise pop + low thud + a bright sparkle chime tail
+    function playBoxBlast() {
+      ensureAudio();
+      const now = audioCtx.currentTime;
+      const bufferSize = Math.floor(audioCtx.sampleRate * 0.25);
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass'; filter.Q.value = .9;
+      filter.frequency.setValueAtTime(2200, now);
+      filter.frequency.exponentialRampToValueAtTime(300, now + 0.25);
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.5, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0008, now + 0.25);
+      noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(masterGain);
+      noise.start(now); noise.stop(now + 0.25);
+
+      playBass();
+
+      const notes = [659.3, 880.0, 1046.5, 1318.5]; // sparkly ascending chime
+      notes.forEach((f, i) => setTimeout(() => playArp(f, 0.07), 60 + i * 70));
+    }
+
+    // the "we're live" launch stinger — a bright rising chord, distinct from the box blast
+    function playLaunchFanfare() {
+      ensureAudio();
+      const now = audioCtx.currentTime;
+      const chord = [523.3, 659.3, 784.0, 1046.5]; // C major-ish, triumphant
+      chord.forEach((f, i) => setTimeout(() => playArp(f, 0.09), i * 90));
+      setTimeout(() => { playBass(); playHat(); }, 260);
+    }
+
+    // scatters a handful of blast-particle bursts across the top of the viewport,
+    // used once for the "we're live" reveal
+    function spawnLaunchBurst() {
+      const w = window.innerWidth;
+      const points = [w * 0.5, w * 0.25, w * 0.75];
+      points.forEach((x, i) => setTimeout(() => spawnBlastParticles(x, window.innerHeight * 0.35), i * 120));
+    }
+
+
+    // confetti-style particles bursting outward from (x, y) in fixed viewport coordinates
+    function spawnBlastParticles(x, y) {
+      const COLORS = ['#f0b93d', '#fbe4a6', '#b3811f', '#ff4433', '#f4ecd8'];
+      const COUNT = 28;
+      for (let i = 0; i < COUNT; i++) {
+        const p = document.createElement('div');
+        p.className = 'blast-particle';
+        const size = 4 + Math.random() * 7;
+        p.style.width = size + 'px';
+        p.style.height = (size * (0.5 + Math.random() * 0.7)) + 'px';
+        p.style.left = x + 'px';
+        p.style.top = y + 'px';
+        p.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+        p.style.opacity = '1';
+        document.body.appendChild(p);
+
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 90 + Math.random() * 170;
+        const dx = Math.cos(angle) * dist;
+        const dy = Math.sin(angle) * dist - 40; // bias upward like it's launched
+        const spin = (Math.random() * 720 - 360).toFixed(0);
+        const dur = 700 + Math.random() * 500;
+
+        const anim = p.animate([
+          { transform: 'translate(-50%,-50%) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${dx - size / 2}px, ${dy - size / 2}px) rotate(${spin}deg)`, opacity: 0 }
+        ], { duration: dur, easing: 'cubic-bezier(.16,.7,.3,1)' });
+        anim.onfinish = () => p.remove();
+      }
+    }
+
+    function playTapClick() {
+      ensureAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(720, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(340, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.09);
+    }
+
+    function playSuccessChime() {
+      ensureAudio();
+      const notes = [523.3, 659.3, 784.0, 1046.5]; // C5 E5 G5 C6
+      notes.forEach((f, i) => setTimeout(() => playArp(f, 0.09), i * 90));
+    }
+
+    function playBass() {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(58, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.28);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    }
+    function playArp(freq, vol) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.value = freq;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass'; filter.frequency.value = 1300; filter.Q.value = 1.1;
+      gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(vol, audioCtx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.22);
+      osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.22);
+    }
+    function playHat() {
+      const bufferSize = audioCtx.sampleRate * 0.05;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      const src = audioCtx.createBufferSource();
+      src.buffer = buffer;
+      const hp = audioCtx.createBiquadFilter();
+      hp.type = 'highpass'; hp.frequency.value = 6000;
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+      src.connect(hp); hp.connect(gain); gain.connect(masterGain);
+      src.start();
+    }
+
+    const bassPattern = [1, 0, 0, 1, 0, 0, 1, 0];
+    const arpNotes = [220.0, 261.6, 293.7, 329.6, 392.0, 329.6, 293.7, 261.6]; // A minor feel
+    function startSynthLoop() {
+      if (musicTimer) return;
+      const stepMs = (60 / 96 / 2) * 1000; // 96bpm eighth notes, loops forever
+      musicTimer = setInterval(() => {
+        if (!audioCtx) return;
+        if (bassPattern[musicStep % bassPattern.length]) playBass();
+        playArp(arpNotes[musicStep % arpNotes.length], 0.035);
+        if (musicStep % 4 === 2) playHat();
+        musicStep++;
+      }, stepMs);
+    }
+
+    // Uses your MUSIC_URL above if set; otherwise falls back to the synth loop
+    // automatically (including if the file link fails to load).
+    function startMusic() {
+      if (MUSIC_URL) {
+        const audioEl = document.getElementById('bgAudio');
+        audioEl.src = MUSIC_URL;
+        audioEl.loop = true;
+        audioEl.volume = MUSIC_VOLUME;
+        audioEl.play().then(() => { usingFileMusic = true; }).catch(() => { startSynthLoop(); });
+        audioEl.onerror = () => { if (!usingFileMusic) startSynthLoop(); };
+        return;
+      }
+      startSynthLoop();
+    }
+
+    let ambientNodes = null;
+    function startAmbient() {
+      if (!audioCtx || ambientNodes) return;
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = 50;
+      const lfo = audioCtx.createOscillator();
+      lfo.type = 'sine'; lfo.frequency.value = 0.1;
+      const lfoGain = audioCtx.createGain();
+      lfoGain.gain.value = 6;
+      lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0.014;
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start(); lfo.start();
+      ambientNodes = { osc, lfo, gain };
+    }
+
+    soundToggle.addEventListener('click', () => {
+      if (!audioStarted) {
+        audioStarted = true;
+        initAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         startAmbient();
         startMusic();
         soundToggle.textContent = '🔊';
-        soundToggle.classList.add('show');
-        soundHint.classList.add('show');
-      }, 550);
-    }
-  });
-  } // end if(!skipIntro) puzzle gate block
-
-  /* ================= AUDIO ENGINE — fully synthesized, no external files ================= */
-  function initAudio(){
-    if(audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0.9;
-    masterGain.connect(audioCtx.destination);
-  }
-
-  function ensureAudio(){
-    if(!audioCtx) initAudio();
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-  }
-
-  // A whoosh tied to the actual splash timeline: it builds as the title zooms in
-  // and hits its "impact" at 72% — the exact keyframe where cameraZoom locks to
-  // full scale and clears its blur — then tails off as the title overshoots and fades.
-  function playSplashWhoosh(){
-    ensureAudio();
-    const now = audioCtx.currentTime;
-    const dur = 1.7;
-    const impactAt = dur * 0.72; // matches the cameraZoom keyframe's 72% mark
-
-    // rising sweep — builds toward the impact, not just a flat fade
-    const bufferSize = Math.floor(audioCtx.sampleRate * dur);
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i = 0; i < bufferSize; i++){ data[i] = Math.random() * 2 - 1; }
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.Q.value = 1.1;
-    filter.frequency.setValueAtTime(140, now);
-    filter.frequency.exponentialRampToValueAtTime(4200, now + impactAt);
-    filter.frequency.exponentialRampToValueAtTime(500, now + dur);
-
-    const noiseGain = audioCtx.createGain();
-    noiseGain.gain.setValueAtTime(0.0001, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.5, now + impactAt);
-    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-
-    noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(masterGain);
-    noise.start(now); noise.stop(now + dur);
-
-    // low impact thud — lands exactly when the title snaps into full focus
-    const thump = audioCtx.createOscillator();
-    thump.type = 'sine';
-    thump.frequency.setValueAtTime(150, now + impactAt);
-    thump.frequency.exponentialRampToValueAtTime(42, now + impactAt + 0.35);
-    const thumpGain = audioCtx.createGain();
-    thumpGain.gain.setValueAtTime(0.0001, now + impactAt);
-    thumpGain.gain.exponentialRampToValueAtTime(0.55, now + impactAt + 0.02);
-    thumpGain.gain.exponentialRampToValueAtTime(0.0001, now + impactAt + 0.4);
-    thump.connect(thumpGain); thumpGain.connect(masterGain);
-    thump.start(now + impactAt); thump.stop(now + impactAt + 0.42);
-
-    // bright shimmer tail — settles alongside the title as it overshoots and fades
-    const shimmer = audioCtx.createOscillator();
-    shimmer.type = 'triangle';
-    shimmer.frequency.setValueAtTime(1800, now + impactAt);
-    shimmer.frequency.exponentialRampToValueAtTime(2600, now + impactAt + 0.5);
-    const shimmerGain = audioCtx.createGain();
-    shimmerGain.gain.setValueAtTime(0.0001, now + impactAt);
-    shimmerGain.gain.exponentialRampToValueAtTime(0.06, now + impactAt + 0.05);
-    shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + impactAt + 0.6);
-    shimmer.connect(shimmerGain); shimmerGain.connect(masterGain);
-    shimmer.start(now + impactAt); shimmer.stop(now + impactAt + 0.65);
-  }
-
-  // a soft clock-tick, used by both the surprise-box ring and the real countdown
-  function playTick(){
-    ensureAudio();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(1050, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.045, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 0.045);
-    osc.connect(gain); gain.connect(masterGain);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-  }
-
-  // short low "denied" blip — played when the box is tapped while still locked
-  function playDenied(){
-    ensureAudio();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.12);
-    gain.gain.setValueAtTime(0.09, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0008, audioCtx.currentTime + 0.14);
-    osc.connect(gain); gain.connect(masterGain);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
-  }
-
-  // the box-opening "blast" — a noise pop + low thud + a bright sparkle chime tail
-  function playBoxBlast(){
-    ensureAudio();
-    const now = audioCtx.currentTime;
-    const bufferSize = Math.floor(audioCtx.sampleRate * 0.25);
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass'; filter.Q.value = .9;
-    filter.frequency.setValueAtTime(2200, now);
-    filter.frequency.exponentialRampToValueAtTime(300, now + 0.25);
-    const noiseGain = audioCtx.createGain();
-    noiseGain.gain.setValueAtTime(0.5, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.0008, now + 0.25);
-    noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(masterGain);
-    noise.start(now); noise.stop(now + 0.25);
-
-    playBass();
-
-    const notes = [659.3, 880.0, 1046.5, 1318.5]; // sparkly ascending chime
-    notes.forEach((f, i) => setTimeout(() => playArp(f, 0.07), 60 + i * 70));
-  }
-
-  // the "we're live" launch stinger — a bright rising chord, distinct from the box blast
-  function playLaunchFanfare(){
-    ensureAudio();
-    const now = audioCtx.currentTime;
-    const chord = [523.3, 659.3, 784.0, 1046.5]; // C major-ish, triumphant
-    chord.forEach((f, i) => setTimeout(() => playArp(f, 0.09), i * 90));
-    setTimeout(() => { playBass(); playHat(); }, 260);
-  }
-
-  // scatters a handful of blast-particle bursts across the top of the viewport,
-  // used once for the "we're live" reveal
-  function spawnLaunchBurst(){
-    const w = window.innerWidth;
-    const points = [w * 0.5, w * 0.25, w * 0.75];
-    points.forEach((x, i) => setTimeout(() => spawnBlastParticles(x, window.innerHeight * 0.35), i * 120));
-  }
-
-
-  // confetti-style particles bursting outward from (x, y) in fixed viewport coordinates
-  function spawnBlastParticles(x, y){
-    const COLORS = ['#f0b93d', '#fbe4a6', '#b3811f', '#ff4433', '#f4ecd8'];
-    const COUNT = 28;
-    for(let i = 0; i < COUNT; i++){
-      const p = document.createElement('div');
-      p.className = 'blast-particle';
-      const size = 4 + Math.random() * 7;
-      p.style.width = size + 'px';
-      p.style.height = (size * (0.5 + Math.random() * 0.7)) + 'px';
-      p.style.left = x + 'px';
-      p.style.top = y + 'px';
-      p.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
-      p.style.opacity = '1';
-      document.body.appendChild(p);
-
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 90 + Math.random() * 170;
-      const dx = Math.cos(angle) * dist;
-      const dy = Math.sin(angle) * dist - 40; // bias upward like it's launched
-      const spin = (Math.random() * 720 - 360).toFixed(0);
-      const dur = 700 + Math.random() * 500;
-
-      const anim = p.animate([
-        { transform: 'translate(-50%,-50%) rotate(0deg)', opacity: 1 },
-        { transform: `translate(${dx - size/2}px, ${dy - size/2}px) rotate(${spin}deg)`, opacity: 0 }
-      ], { duration: dur, easing: 'cubic-bezier(.16,.7,.3,1)' });
-      anim.onfinish = () => p.remove();
-    }
-  }
-
-  function playTapClick(){
-    ensureAudio();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(720, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(340, audioCtx.currentTime + 0.08);
-    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
-    osc.connect(gain); gain.connect(masterGain);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.09);
-  }
-
-  function playSuccessChime(){
-    ensureAudio();
-    const notes = [523.3, 659.3, 784.0, 1046.5]; // C5 E5 G5 C6
-    notes.forEach((f, i) => setTimeout(() => playArp(f, 0.09), i * 90));
-  }
-
-  function playBass(){
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(58, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.28);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-    osc.connect(gain); gain.connect(masterGain);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-  }
-  function playArp(freq, vol){
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.value = freq;
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass'; filter.frequency.value = 1300; filter.Q.value = 1.1;
-    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(vol, audioCtx.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.22);
-    osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.22);
-  }
-  function playHat(){
-    const bufferSize = audioCtx.sampleRate * 0.05;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-    const src = audioCtx.createBufferSource();
-    src.buffer = buffer;
-    const hp = audioCtx.createBiquadFilter();
-    hp.type = 'highpass'; hp.frequency.value = 6000;
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-    src.connect(hp); hp.connect(gain); gain.connect(masterGain);
-    src.start();
-  }
-
-  const bassPattern = [1,0,0,1, 0,0,1,0];
-  const arpNotes = [220.0,261.6,293.7,329.6, 392.0,329.6,293.7,261.6]; // A minor feel
-  function startSynthLoop(){
-    if(musicTimer) return;
-    const stepMs = (60 / 96 / 2) * 1000; // 96bpm eighth notes, loops forever
-    musicTimer = setInterval(() => {
-      if(!audioCtx) return;
-      if(bassPattern[musicStep % bassPattern.length]) playBass();
-      playArp(arpNotes[musicStep % arpNotes.length], 0.035);
-      if(musicStep % 4 === 2) playHat();
-      musicStep++;
-    }, stepMs);
-  }
-
-  // Uses your MUSIC_URL above if set; otherwise falls back to the synth loop
-  // automatically (including if the file link fails to load).
-  function startMusic(){
-    if(MUSIC_URL){
-      const audioEl = document.getElementById('bgAudio');
-      audioEl.src = MUSIC_URL;
-      audioEl.loop = true;
-      audioEl.volume = MUSIC_VOLUME;
-      audioEl.play().then(() => { usingFileMusic = true; }).catch(() => { startSynthLoop(); });
-      audioEl.onerror = () => { if(!usingFileMusic) startSynthLoop(); };
-      return;
-    }
-    startSynthLoop();
-  }
-
-  let ambientNodes = null;
-  function startAmbient(){
-    if(!audioCtx || ambientNodes) return;
-    const osc = audioCtx.createOscillator();
-    osc.type = 'sine'; osc.frequency.value = 50;
-    const lfo = audioCtx.createOscillator();
-    lfo.type = 'sine'; lfo.frequency.value = 0.1;
-    const lfoGain = audioCtx.createGain();
-    lfoGain.gain.value = 6;
-    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-    const gain = audioCtx.createGain();
-    gain.gain.value = 0.014;
-    osc.connect(gain); gain.connect(masterGain);
-    osc.start(); lfo.start();
-    ambientNodes = { osc, lfo, gain };
-  }
-
-  soundToggle.addEventListener('click', () => {
-    if(!audioStarted){
-      audioStarted = true;
-      initAudio();
-      if(audioCtx.state === 'suspended') audioCtx.resume();
-      startAmbient();
-      startMusic();
-      soundToggle.textContent = '🔊';
-      return;
-    }
-    muted = !muted;
-    if(masterGain){
-      masterGain.gain.setTargetAtTime(muted ? 0 : 0.9, audioCtx.currentTime, 0.1);
-    }
-    if(usingFileMusic){
-      document.getElementById('bgAudio').muted = muted;
-    }
-    soundToggle.textContent = muted ? '🔇' : '🔊';
-  });
-
-  /* ================= COUNTDOWN TICK — drives the hero board AND every echoed board at once,
-     so they all always show the exact same numbers, forever. Also the single source of truth
-     for the real "launch": only when this target date is reached does body.launched get added,
-     which is what reveals the LIVE banner and every section below it. ================= */
-  const cdCaption = document.getElementById('cdCaption');
-  function update(){
-    const now = new Date();
-    const rawDiff = target - now;
-    let diff = Math.max(0, rawDiff);
-    const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-    const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-    const m = Math.floor(diff / 60000); diff -= m * 60000;
-    const s = Math.floor(diff / 1000);
-    const vals = {
-      d: String(Math.min(d, 99)).padStart(2, '0'),
-      h: String(h).padStart(2, '0'),
-      m: String(m).padStart(2, '0'),
-      s: String(s).padStart(2, '0')
-    };
-    allBoards.forEach(digitEls => {
-      units.forEach(u => {
-        const [tens, ones] = digitEls[u.key];
-        const val = vals[u.key];
-        setFlap(tens, val[0]);
-        setFlap(ones, val[1]);
-      });
+        return;
+      }
+      muted = !muted;
+      if (masterGain) {
+        masterGain.gain.setTargetAtTime(muted ? 0 : 0.9, audioCtx.currentTime, 0.1);
+      }
+      if (usingFileMusic) {
+        document.getElementById('bgAudio').muted = muted;
+      }
+      soundToggle.textContent = muted ? '🔇' : '🔊';
     });
-    if(document.body.classList.contains('revealed') && !document.body.classList.contains('launched')) playTick();
 
-    // Update hyped button visibility (safe check)
-    setTimeout(() => {
-      const btn = document.getElementById('hypedBtn');
-      if(btn){
-        if(document.body.classList.contains('revealed') && rawDiff > 0){
-          btn.style.display = 'flex';
-        } else {
-          btn.style.display = 'none';
+    /* ================= COUNTDOWN TICK — drives the hero board AND every echoed board at once,
+       so they all always show the exact same numbers, forever. Also the single source of truth
+       for the real "launch": only when this target date is reached does body.launched get added,
+       which is what reveals the LIVE banner and every section below it. ================= */
+    const cdCaption = document.getElementById('cdCaption');
+    function update() {
+      const now = new Date();
+      const rawDiff = target - now;
+      let diff = Math.max(0, rawDiff);
+      const d = Math.floor(diff / 86400000); diff -= d * 86400000;
+      const h = Math.floor(diff / 3600000); diff -= h * 3600000;
+      const m = Math.floor(diff / 60000); diff -= m * 60000;
+      const s = Math.floor(diff / 1000);
+      const vals = {
+        d: String(Math.min(d, 99)).padStart(2, '0'),
+        h: String(h).padStart(2, '0'),
+        m: String(m).padStart(2, '0'),
+        s: String(s).padStart(2, '0')
+      };
+      allBoards.forEach(digitEls => {
+        units.forEach(u => {
+          const [tens, ones] = digitEls[u.key];
+          const val = vals[u.key];
+          setFlap(tens, val[0]);
+          setFlap(ones, val[1]);
+        });
+      });
+      if (document.body.classList.contains('revealed') && !document.body.classList.contains('launched')) playTick();
+
+      // Update hyped button visibility (safe check)
+      setTimeout(() => {
+        const btn = document.getElementById('hypedBtn');
+        if (btn) {
+          if (document.body.classList.contains('revealed') && rawDiff > 0) {
+            btn.style.display = 'flex';
+          } else {
+            btn.style.display = 'none';
+          }
         }
+      }, 0);
+
+      if (rawDiff <= 0 && !document.body.classList.contains('launched')) {
+        document.body.classList.add('launched');
+        if (cdCaption) cdCaption.textContent = "We're live!";
+        if (audioStarted) { playLaunchFanfare(); }
+        spawnLaunchBurst();
       }
-    }, 0);
-
-    if(rawDiff <= 0 && !document.body.classList.contains('launched')){
-      document.body.classList.add('launched');
-      if(cdCaption) cdCaption.textContent = "We're live!";
-      if(audioStarted){ playLaunchFanfare(); }
-      spawnLaunchBurst();
     }
-  }
-  update();
-  setInterval(update, 1000);
+    update();
+    setInterval(update, 1000);
 
-  /* ================= DYNAMIC SMOKE — colorful puffs on touch/scroll, only after splash + puzzle ================= */
-  const SMOKE_COLORS = [
-    'radial-gradient(circle, rgba(240,185,61,.6), transparent 70%)',
-    'radial-gradient(circle, rgba(255,68,51,.5), transparent 70%)',
-    'radial-gradient(circle, rgba(251,228,166,.55), transparent 70%)',
-    'radial-gradient(circle, rgba(179,129,31,.55), transparent 70%)',
-    'radial-gradient(circle, rgba(244,236,216,.4), transparent 70%)'
-  ];
-  function spawnSmoke(x, y){
-    if(!document.body.classList.contains('revealed')) return;
-    if(prefersReducedMotion) return;
-    const puff = document.createElement('div');
-    puff.className = 'smoke-puff';
-    puff.style.left = x + 'px';
-    puff.style.top = y + 'px';
-    puff.style.background = SMOKE_COLORS[Math.floor(Math.random() * SMOKE_COLORS.length)];
-    document.body.appendChild(puff);
-    setTimeout(() => puff.remove(), 1200);
-  }
-
-  document.addEventListener('pointerdown', (e) => spawnSmoke(e.clientX, e.clientY));
-
-  /* ================= SCROLL REVEAL — landing sections fade up into view as the user scrolls ================= */
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('in-view');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.2 });
-  document.querySelectorAll('.site-section').forEach(sec => revealObserver.observe(sec));
-
-  // constant ambient smoke — not tied to scrolling, just keeps puffing on its own
-  // (kept deliberately infrequent: a steady stream of blurred elements forever is a
-  // real, ongoing GPU cost, not just a one-time effect)
-  setInterval(() => {
-    if(!document.body.classList.contains('revealed')) return;
-    if(document.hidden) return; // don't burn GPU on a backgrounded tab
-    const x = window.innerWidth * (0.15 + Math.random() * 0.7);
-    const y = window.innerHeight * (0.15 + Math.random() * 0.7);
-    spawnSmoke(x, y);
-  }, 1800);
-
-  const scrollProgress = document.getElementById('scrollProgress');
-  function updateScrollProgress(){
-    const h = document.documentElement;
-    const max = h.scrollHeight - h.clientHeight;
-    const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
-    scrollProgress.style.width = pct + '%';
-  }
-  document.addEventListener('scroll', updateScrollProgress, { passive: true });
-  updateScrollProgress();
-
-  const cursorGlow = document.getElementById('cursorGlow');
-  if(window.matchMedia('(pointer:fine)').matches){
-    document.addEventListener('pointermove', (e) => {
-      cursorGlow.style.setProperty('--mx', e.clientX + 'px');
-      cursorGlow.style.setProperty('--my', e.clientY + 'px');
-    }, { passive: true });
-  }
-
-  // gentle 3D tilt + spotlight shine on feature cards, desktop only
-  if(window.matchMedia('(pointer:fine)').matches){
-    document.querySelectorAll('.feature-card').forEach(card => {
-      card.addEventListener('pointermove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const px = e.clientX - rect.left, py = e.clientY - rect.top;
-        card.style.setProperty('--mx', px + 'px');
-        card.style.setProperty('--my', py + 'px');
-        card.style.setProperty('--tx', ((px / rect.width - 0.5) * 6).toFixed(2) + 'deg');
-        card.style.setProperty('--ty', ((0.5 - py / rect.height) * 6).toFixed(2) + 'deg');
-      });
-      card.addEventListener('pointerleave', () => {
-        card.style.setProperty('--tx', '0deg');
-        card.style.setProperty('--ty', '0deg');
-      });
-    });
-  }
-
-  /* ================= HYPED UP BUZZER — a real, once-per-visitor tally, backed by Supabase =================
-     Every press always fires a mini fire-badge burst (purely for feel, repeats forever, every click).
-     The actual count, shown in the pill under the buzzer, only moves the FIRST time a given browser
-     presses it — a flag goes into localStorage so this device can never add a second hype. The number
-     itself lives in a Supabase table (hype_counter), incremented atomically through a Postgres function,
-     so it reflects everyone who has hyped — not just this device. ================= */
-  /* ================= HYPED UP BUZZER — a real, once-per-visitor tally, backed by Supabase =================
-     Every press always fires one mini badge (purely for feel, repeats forever, every click).
-     The actual count, shown in the pill under the buzzer, starts at 0 and only moves the FIRST time a
-     given browser presses it — a flag goes into localStorage so this device can never add a second hype.
-     The number itself lives in a Supabase table (hype_counter), incremented atomically (+10 per unique
-     visitor) through a Postgres function, so it reflects everyone who has hyped — not just this device. ================= */
-  const hypedBtn = document.getElementById('hypedBtn');
-  const hypeCountEl = document.getElementById('hypeCount');
-  /* "Already hyped" now resets AUTOMATICALLY whenever you change REAL_TARGET_DATE up above —
-     the key below is built from that date, so changing the countdown time changes the key,
-     and every visitor's browser (even ones who already hyped before) looks brand new and can
-     hype again. No extra step needed for this part.
-     HYPE_CAMPAIGN_VERSION is a manual backup — bump it if you ever want to force a reset
-     WITHOUT changing the date. */
-  const HYPE_CAMPAIGN_VERSION = 1;   // <- change this number to force a reset without changing the date
-  const HYPE_STORE_KEY = 'ffx_hyped_' + REAL_TARGET_DATE + '_v' + HYPE_CAMPAIGN_VERSION;
-
-  // ---- Supabase project credentials — paste yours in from Project Settings → API ----
-  const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
-  const hypeDB = (SUPABASE_URL.startsWith('http') && window.supabase)
-    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    : null;
-
-  function formatHypeCount(n){
-    if(typeof n !== 'number' || isNaN(n)) return '0';
-    if(n >= 1000) return (Math.floor(n / 100) / 10) + 'k';
-    return String(n);
-  }
-
-  // Tracks the actual raw number currently on screen (not the "1.2k" formatted string),
-  // so animateHypeCount always knows the true starting point to count up from.
-  let currentHypeCount = 0;
-
-  // Rolls the visible number up from its current value to the new total, one step at a
-  // time — e.g. 10 -> 11 -> 12 ... -> 20 — instead of just jumping straight to the new
-  // number. Small jumps count every single integer; big jumps cap the number of visual
-  // steps so the animation never drags on too long.
-  function animateHypeCount(toValue){
-    if(!hypeCountEl) return;
-    const fromValue = currentHypeCount;
-    const diff = toValue - fromValue;
-    if(diff <= 0){
-      hypeCountEl.textContent = formatHypeCount(toValue);
-      currentHypeCount = toValue;
-      return;
+    /* ================= DYNAMIC SMOKE — colorful puffs on touch/scroll, only after splash + puzzle ================= */
+    const SMOKE_COLORS = [
+      'radial-gradient(circle, rgba(240,185,61,.6), transparent 70%)',
+      'radial-gradient(circle, rgba(255,68,51,.5), transparent 70%)',
+      'radial-gradient(circle, rgba(251,228,166,.55), transparent 70%)',
+      'radial-gradient(circle, rgba(179,129,31,.55), transparent 70%)',
+      'radial-gradient(circle, rgba(244,236,216,.4), transparent 70%)'
+    ];
+    function spawnSmoke(x, y) {
+      if (!document.body.classList.contains('revealed')) return;
+      if (prefersReducedMotion) return;
+      const puff = document.createElement('div');
+      puff.className = 'smoke-puff';
+      puff.style.left = x + 'px';
+      puff.style.top = y + 'px';
+      puff.style.background = SMOKE_COLORS[Math.floor(Math.random() * SMOKE_COLORS.length)];
+      document.body.appendChild(puff);
+      setTimeout(() => puff.remove(), 1200);
     }
-    const STEP_MS = 90;      // time between each tick
-    const MAX_STEPS = 40;    // cap so huge jumps still animate quickly
-    const steps = Math.min(diff, MAX_STEPS);
-    let stepCount = 0;
-    const timer = setInterval(() => {
-      stepCount++;
-      const value = Math.round(fromValue + (diff * stepCount) / steps);
-      hypeCountEl.textContent = formatHypeCount(value);
-      if(stepCount >= steps){
-        clearInterval(timer);
+
+    document.addEventListener('pointerdown', (e) => spawnSmoke(e.clientX, e.clientY));
+
+    /* ================= SCROLL REVEAL — landing sections fade up into view as the user scrolls ================= */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.site-section').forEach(sec => revealObserver.observe(sec));
+
+    // constant ambient smoke — not tied to scrolling, just keeps puffing on its own
+    // (kept deliberately infrequent: a steady stream of blurred elements forever is a
+    // real, ongoing GPU cost, not just a one-time effect)
+    setInterval(() => {
+      if (!document.body.classList.contains('revealed')) return;
+      if (document.hidden) return; // don't burn GPU on a backgrounded tab
+      const x = window.innerWidth * (0.15 + Math.random() * 0.7);
+      const y = window.innerHeight * (0.15 + Math.random() * 0.7);
+      spawnSmoke(x, y);
+    }, 1800);
+
+    const scrollProgress = document.getElementById('scrollProgress');
+    function updateScrollProgress() {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+      scrollProgress.style.width = pct + '%';
+    }
+    document.addEventListener('scroll', updateScrollProgress, { passive: true });
+    updateScrollProgress();
+
+    const cursorGlow = document.getElementById('cursorGlow');
+    if (window.matchMedia('(pointer:fine)').matches) {
+      document.addEventListener('pointermove', (e) => {
+        cursorGlow.style.setProperty('--mx', e.clientX + 'px');
+        cursorGlow.style.setProperty('--my', e.clientY + 'px');
+      }, { passive: true });
+    }
+
+    // gentle 3D tilt + spotlight shine on feature cards, desktop only
+    if (window.matchMedia('(pointer:fine)').matches) {
+      document.querySelectorAll('.feature-card').forEach(card => {
+        card.addEventListener('pointermove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const px = e.clientX - rect.left, py = e.clientY - rect.top;
+          card.style.setProperty('--mx', px + 'px');
+          card.style.setProperty('--my', py + 'px');
+          card.style.setProperty('--tx', ((px / rect.width - 0.5) * 6).toFixed(2) + 'deg');
+          card.style.setProperty('--ty', ((0.5 - py / rect.height) * 6).toFixed(2) + 'deg');
+        });
+        card.addEventListener('pointerleave', () => {
+          card.style.setProperty('--tx', '0deg');
+          card.style.setProperty('--ty', '0deg');
+        });
+      });
+    }
+
+    /* ================= HYPED UP BUZZER — a real, once-per-visitor tally, backed by Supabase =================
+       Every press always fires a mini fire-badge burst (purely for feel, repeats forever, every click).
+       The actual count, shown in the pill under the buzzer, only moves the FIRST time a given browser
+       presses it — a flag goes into localStorage so this device can never add a second hype. The number
+       itself lives in a Supabase table (hype_counter), incremented atomically through a Postgres function,
+       so it reflects everyone who has hyped — not just this device. ================= */
+    /* ================= HYPED UP BUZZER — a real, once-per-visitor tally, backed by Supabase =================
+       Every press always fires one mini badge (purely for feel, repeats forever, every click).
+       The actual count, shown in the pill under the buzzer, starts at 0 and only moves the FIRST time a
+       given browser presses it — a flag goes into localStorage so this device can never add a second hype.
+       The number itself lives in a Supabase table (hype_counter), incremented atomically (+10 per unique
+       visitor) through a Postgres function, so it reflects everyone who has hyped — not just this device. ================= */
+    const hypedBtn = document.getElementById('hypedBtn');
+    const hypeCountEl = document.getElementById('hypeCount');
+    /* "Already hyped" now resets AUTOMATICALLY whenever you change REAL_TARGET_DATE up above —
+       the key below is built from that date, so changing the countdown time changes the key,
+       and every visitor's browser (even ones who already hyped before) looks brand new and can
+       hype again. No extra step needed for this part.
+       HYPE_CAMPAIGN_VERSION is a manual backup — bump it if you ever want to force a reset
+       WITHOUT changing the date. */
+    const HYPE_CAMPAIGN_VERSION = 1;   // <- change this number to force a reset without changing the date
+    const HYPE_STORE_KEY = 'ffx_hyped_' + REAL_TARGET_DATE + '_v' + HYPE_CAMPAIGN_VERSION;
+
+    // ---- Supabase project credentials — paste yours in from Project Settings → API ----
+    const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+    const hypeDB = (SUPABASE_URL.startsWith('http') && window.supabase)
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    function formatHypeCount(n) {
+      if (typeof n !== 'number' || isNaN(n)) return '0';
+      if (n >= 1000) return (Math.floor(n / 100) / 10) + 'k';
+      return String(n);
+    }
+
+    // Tracks the actual raw number currently on screen (not the "1.2k" formatted string),
+    // so animateHypeCount always knows the true starting point to count up from.
+    let currentHypeCount = 0;
+
+    // Rolls the visible number up from its current value to the new total, one step at a
+    // time — e.g. 10 -> 11 -> 12 ... -> 20 — instead of just jumping straight to the new
+    // number. Small jumps count every single integer; big jumps cap the number of visual
+    // steps so the animation never drags on too long.
+    function animateHypeCount(toValue) {
+      if (!hypeCountEl) return;
+      const fromValue = currentHypeCount;
+      const diff = toValue - fromValue;
+      if (diff <= 0) {
         hypeCountEl.textContent = formatHypeCount(toValue);
         currentHypeCount = toValue;
+        return;
       }
-    }, STEP_MS);
-  }
-
-  function alreadyHyped(){
-    try{ return localStorage.getItem(HYPE_STORE_KEY) === '1'; }catch(e){ return false; }
-  }
-  function markHyped(){
-    try{ localStorage.setItem(HYPE_STORE_KEY, '1'); }catch(e){ /* private mode etc — burst still works */ }
-  }
-
-  // Load the current shared total once on page load, without counting this visit as a hype.
-  // The hype_counter row starts at 0 (from supabase_setup.sql), so a fresh project shows 0 here.
-  if(hypeDB){
-    hypeDB.from('hype_counter').select('count').eq('id', 1).single()
-      .then(({ data, error }) => {
-        const startCount = error ? 0 : data.count;
-        currentHypeCount = startCount;
-        if(hypeCountEl) hypeCountEl.textContent = formatHypeCount(startCount);
-      });
-  }
-
-  function spawnHypeBurst(){
-    if(!hypedBtn || getComputedStyle(hypedBtn).display === 'none') return;
-    hypedBtn.classList.remove('glow');
-    void hypedBtn.offsetWidth;
-    hypedBtn.classList.add('glow');
-
-    const rect = hypedBtn.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6; // mostly straight up, slight drift
-    const distance = 90 + Math.random() * 20;
-    const tx = Math.cos(angle) * distance;
-    const ty = Math.sin(angle) * distance;
-
-    const mini = document.createElement('div');
-    mini.className = 'mini-hyped';
-    mini.textContent = 'HYPED';
-    mini.style.left = centerX + 'px';
-    mini.style.top = centerY + 'px';
-    mini.style.setProperty('--tx', tx + 'px');
-    mini.style.setProperty('--ty', ty + 'px');
-    document.body.appendChild(mini);
-    setTimeout(() => mini.remove(), 2400);
-  }
-
-  hypedBtn.addEventListener('click', () => {
-    spawnHypeBurst(); // always plays — exactly one mini button per tap
-
-    if(!alreadyHyped() && hypeDB){
-      markHyped();
-      hypeDB.rpc('increment_hype').then(({ data, error }) => {
-        if(!error) animateHypeCount(data);
-      });
+      const STEP_MS = 90;      // time between each tick
+      const MAX_STEPS = 40;    // cap so huge jumps still animate quickly
+      const steps = Math.min(diff, MAX_STEPS);
+      let stepCount = 0;
+      const timer = setInterval(() => {
+        stepCount++;
+        const value = Math.round(fromValue + (diff * stepCount) / steps);
+        hypeCountEl.textContent = formatHypeCount(value);
+        if (stepCount >= steps) {
+          clearInterval(timer);
+          hypeCountEl.textContent = formatHypeCount(toValue);
+          currentHypeCount = toValue;
+        }
+      }, STEP_MS);
     }
-  });
 
-  // Update button visibility
-  setInterval(() => {
-    if(!hypedBtn) return;
-    const now = new Date();
-    const rawDiff = target - now;
-    if(document.body.classList.contains('revealed') && rawDiff > 0){
-      hypedBtn.style.display = 'flex';
-    } else {
-      hypedBtn.style.display = 'none';
+    function alreadyHyped() {
+      try { return localStorage.getItem(HYPE_STORE_KEY) === '1'; } catch (e) { return false; }
     }
-  }, 100);
+    function markHyped() {
+      try { localStorage.setItem(HYPE_STORE_KEY, '1'); } catch (e) { /* private mode etc — burst still works */ }
+    }
 
-  /* ============ HANGING TAG — text fades in after pill lands ============ */
-  (function initHtag(){
-    const base = skipIntro ? 0.4 : 1.7;
-    const land = base + 0.85;
-    const l1 = document.getElementById('htl1');
-    const l2 = document.getElementById('htl2');
-    if(l1) l1.style.animationDelay = (land + 0.00).toFixed(2) + 's';
-    if(l2) l2.style.animationDelay = (land + 0.14).toFixed(2) + 's';
-  })();
+    // Load the current shared total once on page load, without counting this visit as a hype.
+    // The hype_counter row starts at 0 (from supabase_setup.sql), so a fresh project shows 0 here.
+    if (hypeDB) {
+      hypeDB.from('hype_counter').select('count').eq('id', 1).single()
+        .then(({ data, error }) => {
+          const startCount = error ? 0 : data.count;
+          currentHypeCount = startCount;
+          if (hypeCountEl) hypeCountEl.textContent = formatHypeCount(startCount);
+        });
+    }
 
-</script>
+    function spawnHypeBurst() {
+      if (!hypedBtn || getComputedStyle(hypedBtn).display === 'none') return;
+      hypedBtn.classList.remove('glow');
+      void hypedBtn.offsetWidth;
+      hypedBtn.classList.add('glow');
+
+      const rect = hypedBtn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6; // mostly straight up, slight drift
+      const distance = 90 + Math.random() * 20;
+      const tx = Math.cos(angle) * distance;
+      const ty = Math.sin(angle) * distance;
+
+      const mini = document.createElement('div');
+      mini.className = 'mini-hyped';
+      mini.textContent = 'HYPED';
+      mini.style.left = centerX + 'px';
+      mini.style.top = centerY + 'px';
+      mini.style.setProperty('--tx', tx + 'px');
+      mini.style.setProperty('--ty', ty + 'px');
+      document.body.appendChild(mini);
+      setTimeout(() => mini.remove(), 2400);
+    }
+
+    hypedBtn.addEventListener('click', () => {
+      spawnHypeBurst(); // always plays — exactly one mini button per tap
+
+      if (!alreadyHyped() && hypeDB) {
+        markHyped();
+        hypeDB.rpc('increment_hype').then(({ data, error }) => {
+          if (!error) animateHypeCount(data);
+        });
+      }
+    });
+
+    // Update button visibility
+    setInterval(() => {
+      if (!hypedBtn) return;
+      const now = new Date();
+      const rawDiff = target - now;
+      if (document.body.classList.contains('revealed') && rawDiff > 0) {
+        hypedBtn.style.display = 'flex';
+      } else {
+        hypedBtn.style.display = 'none';
+      }
+    }, 100);
+
+    /* ============ HANGING TAG — text fades in after pill lands ============ */
+    (function initHtag() {
+      const base = skipIntro ? 0.4 : 1.7;
+      const land = base + 0.85;
+      const l1 = document.getElementById('htl1');
+      const l2 = document.getElementById('htl2');
+      if (l1) l1.style.animationDelay = (land + 0.00).toFixed(2) + 's';
+      if (l2) l2.style.animationDelay = (land + 0.14).toFixed(2) + 's';
+    })();
+
+  </script>
 </body>
+
 </html>
