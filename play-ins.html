@@ -2496,57 +2496,6 @@
 
         .mc-completed .match-num { color: #5fd97e; }
 
-        /* ── MVP + Result summary ── */
-        .match-mvp-strip {
-            margin-top: 12px;
-            padding: 12px 14px;
-            border-radius: 14px;
-            background: linear-gradient(120deg, rgba(var(--gold-rgb), 0.1), rgba(95, 217, 126, 0.06));
-            border: 1px solid rgba(var(--gold-rgb), 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mvp-crown {
-            flex-shrink: 0;
-            width: 38px; height: 38px;
-            border-radius: 11px;
-            background: linear-gradient(135deg, rgba(var(--gold-rgb),0.25), rgba(var(--gold-rgb),0.08));
-            border: 1px solid rgba(var(--gold-rgb), 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .mvp-info { flex: 1; min-width: 0; }
-
-        .mvp-label {
-            font-family: 'Space Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 0.14em;
-            color: var(--gold-deep);
-            text-transform: uppercase;
-        }
-
-        .mvp-name {
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            letter-spacing: 0.01em;
-            color: var(--gold-pale);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 2px;
-        }
-
-        .mvp-sub {
-            font-size: 10px;
-            color: var(--ink-dim);
-            margin-top: 2px;
-        }
-
         .match-stats-row {
             display: flex;
             gap: 6px;
@@ -2573,12 +2522,36 @@
         .msr-box b {
             display: block;
             margin-top: 3px;
-            font-family: 'Space Mono', monospace;
             font-size: 13px;
+            font-weight: 700;
             color: var(--ink);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .msr-box.msr-booyah b { color: var(--gold-pale); }
+        .msr-box em {
+            display: block;
+            margin-top: 2px;
+            font-style: normal;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--ink-dim);
+        }
+
+        .msr-box.msr-mvp {
+            border-color: rgba(var(--gold-rgb), 0.25);
+            background: rgba(var(--gold-rgb), 0.06);
+        }
+        .msr-box.msr-mvp b { color: var(--gold-pale); }
+        .msr-box.msr-mvp em { color: var(--gold-deep); }
+
+        .msr-box.msr-booyah {
+            border-color: rgba(95, 217, 126, 0.25);
+            background: rgba(95, 217, 126, 0.05);
+        }
+        .msr-box.msr-booyah b { color: #5fd97e; }
+        .msr-box.msr-booyah em { color: rgba(95,217,126,0.7); }
 
         /* ── STANDINGS SMOOTH OPEN FIX ── */
         /* Use will-change + contain to prevent jank when expanding tier groups */
@@ -4167,21 +4140,29 @@ if (backToTopBtn) {
 
                 // ── Match stats ──
                 const matchResults = results.filter(r => r.match_number === m.match_number);
-                const totalKillsMatch = matchResults.reduce((s, r) => s + (r.kills || 0), 0);
+
+                // Booyah winner — whoever has booyah=true
                 const booyahResult = matchResults.find(r => r.booyah);
                 const booyahPlayer = booyahResult ? players.find(p => p.id === booyahResult.player_id) : null;
-                const booyahName = booyahPlayer ? (booyahPlayer.real_name || booyahPlayer.ign || '—') : '—';
+                const booyahName   = booyahPlayer ? (booyahPlayer.real_name || booyahPlayer.ign || '—') : '—';
+                const booyahKills  = booyahResult ? (booyahResult.kills || 0) : 0;
 
-                // MVP = booyah winner; if no booyah, top killer
-                const topKillerResult = matchResults.length
-                    ? matchResults.reduce((a, b) => (a.kills || 0) >= (b.kills || 0) ? a : b)
+                // MVP — highest points (kills + booyah bonus); if tie on points, Booyah holder wins
+                const nonZeroResults = matchResults.filter(r => (r.kills || 0) > 0 || r.booyah);
+                const mvpResult = nonZeroResults.length
+                    ? nonZeroResults.reduce((a, b) => {
+                        const aP = (a.kills || 0) + (a.booyah ? 3 : 0);
+                        const bP = (b.kills || 0) + (b.booyah ? 3 : 0);
+                        if (bP > aP) return b;
+                        if (aP > bP) return a;
+                        // tie on points — Booyah holder wins
+                        return a.booyah ? a : b;
+                    })
                     : null;
-                const mvpResult   = booyahResult || topKillerResult;
-                const mvpPlayer   = mvpResult ? players.find(p => p.id === mvpResult.player_id) : null;
-                const mvpName     = mvpPlayer ? (mvpPlayer.real_name || mvpPlayer.ign || '—') : '—';
-                const mvpKills    = mvpResult ? (mvpResult.kills || 0) : 0;
-                const mvpBooyah   = mvpResult ? mvpResult.booyah : false;
-                const mvpSub      = mvpKills + ' kills' + (mvpBooyah ? ' · 🔥 Booyah' : '');
+                const mvpPlayer      = mvpResult ? players.find(p => p.id === mvpResult.player_id) : null;
+                const mvpName        = mvpPlayer ? (mvpPlayer.real_name || mvpPlayer.ign || '—') : '—';
+                const mvpKills       = mvpResult ? (mvpResult.kills || 0) : 0;
+                const mvpIsAlsoBooyah = mvpResult && mvpResult.booyah;
 
                 // Status-specific HTML blocks
                 let topHtml = '';
@@ -4195,22 +4176,16 @@ if (backToTopBtn) {
                         <div class="match-completed-banner">✓ COMPLETED</div>`;
                     if (matchResults.length) {
                         extraHtml = `
-                        <div class="match-mvp-strip">
-                            <div class="mvp-crown">👑</div>
-                            <div class="mvp-info">
-                                <div class="mvp-label">MVP · Match ${m.match_number}</div>
-                                <div class="mvp-name">${escapeHtml(mvpName)}</div>
-                                <div class="mvp-sub">${escapeHtml(mvpSub)}</div>
-                            </div>
-                        </div>
                         <div class="match-stats-row">
                             <div class="msr-box msr-booyah">
-                                <span>🏆 Booyah</span>
+                                <span>🏆 Booyah Winner</span>
                                 <b>${escapeHtml(booyahName)}</b>
+                                <em>${booyahName !== '—' ? booyahKills + 'K · 🔥' : '—'}</em>
                             </div>
-                            <div class="msr-box">
-                                <span>💀 Total Kills</span>
-                                <b>${totalKillsMatch}</b>
+                            <div class="msr-box msr-mvp">
+                                <span>🏅 MVP · Most Kills</span>
+                                <b>${escapeHtml(mvpName)}</b>
+                                <em>${mvpKills}K${mvpIsAlsoBooyah ? ' · 🔥' : ''}</em>
                             </div>
                         </div>`;
                     }
@@ -4275,10 +4250,8 @@ if (backToTopBtn) {
                 const r = results.find(x => x.player_id === p.id && x.match_number === m);
                 const isBooyah = r && r.booyah;
                 const chipClass = isBooyah ? ' booyah' : (!r ? '' : (r.kills === 0 ? ' zero' : ''));
-                const pts = r ? ((r.kills || 0) + (r.booyah ? 3 : 0)) : null;
                 const chipVal = r ? (r.kills + 'K' + (isBooyah ? ' 🔥' : '')) : '—';
-                const ptsLabel = r ? (pts + 'pt') : '';
-                breakdownHtml += `<div class="pi-mchip${chipClass}"><span>M${m}</span><b>${chipVal}</b>${ptsLabel ? '<small>' + ptsLabel + '</small>' : ''}</div>`;
+                breakdownHtml += `<div class="pi-mchip${chipClass}"><span>M${m}</span><b>${chipVal}</b></div>`;
             }
 
             const rowEl = document.createElement('div');
