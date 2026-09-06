@@ -2668,9 +2668,55 @@
             color: var(--gold-pale);
         }
 
-        .pi-rank.r1 { background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep)); color: var(--on-accent); }
+        .pi-rank.r1 { background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep)); color: var(--on-accent); font-size: 14px; }
         .pi-rank.r2 { background: rgba(var(--gold-rgb), 0.22); }
         .pi-rank.r3 { background: rgba(var(--gold-rgb), 0.16); }
+
+        .pi-row.pi-row-champion {
+            position: relative;
+            border: 1px solid rgba(var(--gold-rgb), 0.5);
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.14), transparent 65%), var(--surface);
+            box-shadow: 0 0 24px rgba(var(--gold-rgb), 0.2);
+            overflow: hidden;
+        }
+
+        .pi-row.pi-row-champion::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.12) 50%, transparent 65%);
+            background-size: 240% 100%;
+            animation: championSheen 3.4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes championSheen {
+            0% { background-position: 200% 0; }
+            100% { background-position: -80% 0; }
+        }
+
+        .pi-row-champion .pi-rank {
+            box-shadow: 0 0 14px rgba(var(--gold-rgb), 0.5);
+        }
+
+        .pi-row-champion .pi-id b {
+            color: var(--gold-pale);
+        }
+
+        .pi-champion-tag {
+            flex-shrink: 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 8.5px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 100px;
+            background: rgba(var(--gold-rgb), 0.22);
+            color: var(--gold-pale);
+            white-space: nowrap;
+            position: relative;
+            z-index: 1;
+        }
 
         .pi-id {
             flex: 1;
@@ -2762,8 +2808,9 @@
             background: rgba(var(--gold-rgb), 0.045);
             border: 1px solid var(--line);
             border-radius: 9px;
-            padding: 6px 4px;
+            padding: 6px 3px;
             text-align: center;
+            min-width: 0;
         }
 
         .pi-mchip span {
@@ -2778,8 +2825,12 @@
             display: block;
             margin-top: 2px;
             font-family: 'Space Mono', monospace;
-            font-size: 12px;
+            font-size: 11.5px;
+            letter-spacing: -0.2px;
             color: var(--ink);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .pi-mchip.booyah {
@@ -2819,6 +2870,33 @@
             border-color: rgba(var(--gold-rgb), 0.35);
             box-shadow: var(--shadow-gold);
             background: radial-gradient(ellipse 140% 90% at 50% -20%, rgba(var(--gold-rgb), 0.13), transparent 62%), var(--surface);
+            animation: proTierGlow 3.6s ease-in-out infinite;
+        }
+
+        @keyframes proTierGlow {
+            0%, 100% { box-shadow: var(--shadow-gold); }
+            50% { box-shadow: 0 0 52px rgba(var(--gold-rgb), 0.3); }
+        }
+
+        .tier-pro-badge {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 7px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8.5px;
+            letter-spacing: 0.05em;
+            padding: 3px 7px;
+            border-radius: 100px;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold-deep));
+            color: var(--on-accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-group-range em {
+            font-style: normal;
+            color: var(--ink-dim);
+            opacity: 0.85;
         }
 
         .tier-group.tg-top20 { border-top: 2px solid #5fd97e; }
@@ -3188,6 +3266,105 @@
 
         .admin-status-msg.ok { color: #5fd97e; }
         .admin-status-msg.err { color: var(--live); }
+
+        /* ---- Inline "current entry" chip (Enter Results → player pick) ---- */
+        .res-inline-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin: -2px 0 12px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.025);
+            text-align: left;
+        }
+
+        .res-inline-note .rin-ic {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-top: 1px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--ink-faint);
+        }
+
+        .res-inline-note .rin-txt {
+            font-size: 10.5px;
+            line-height: 1.45;
+            color: var(--ink-dim);
+        }
+
+        .res-inline-note .rin-txt b { color: var(--ink); font-weight: 600; }
+
+        .res-inline-note.state-existing {
+            border-color: rgba(95, 217, 126, 0.32);
+            background: rgba(95, 217, 126, 0.06);
+        }
+
+        .res-inline-note.state-existing .rin-ic {
+            background: rgba(95, 217, 126, 0.2);
+            color: #5fd97e;
+        }
+
+        .res-inline-note.state-existing .rin-txt b { color: #7fe89a; }
+
+        /* ---- Kills-so-far stat box (Enter Results → below Kills/Booyah) ---- */
+        .res-kills-box {
+            margin: 4px 0 2px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--bg-alt);
+        }
+
+        .res-kills-box:empty { display: none; }
+
+        .res-kills-box-label {
+            display: block;
+            font-size: 9px;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        .res-kills-box-num {
+            margin-top: 3px;
+            font-family: 'Space Mono', monospace;
+            font-size: 15px;
+            color: var(--ink);
+        }
+
+        .res-kills-box-num .arrow { color: var(--ink-faint); font-size: 12px; margin: 0 3px; }
+        .res-kills-box-num .preview { color: var(--gold-pale); font-weight: 700; }
+
+        .res-kills-bar-track {
+            margin-top: 8px;
+            height: 5px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.07);
+            overflow: hidden;
+        }
+
+        .res-kills-bar-fill {
+            height: 100%;
+            border-radius: 100px;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold-pale));
+            transition: width 0.25s ease;
+        }
+
+        .res-kills-box.warn {
+            border-color: rgba(var(--live-rgb), 0.4);
+            background: rgba(var(--live-rgb), 0.06);
+        }
+
+        .res-kills-box.warn .res-kills-box-num .preview { color: var(--live); }
+        .res-kills-box.warn .res-kills-bar-fill { background: linear-gradient(90deg, #b23b2a, var(--live)); }
 
         /* ============ ADMIN MODAL (popup login, not an inline page section) ============ */
         .admin-overlay {
@@ -3657,6 +3834,7 @@
                             <label>Player</label>
                             <select id="resPlayerSelect"><option value="">Select a player…</option></select>
                         </div>
+                        <div class="res-inline-note" id="resPlayerCurrent" style="display:none;"></div>
                         <div class="admin-field-row">
                             <div class="admin-field">
                                 <label>Kills</label>
@@ -3670,6 +3848,7 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="res-kills-box" id="resKillsTotal"></div>
                         <button class="admin-save-btn" id="resSaveBtn">Save Result</button>
                         <div class="admin-status-msg" id="resMsg"></div>
                     </div>
@@ -4005,10 +4184,10 @@ if (backToTopBtn) {
             </svg>`,
         };
         const TIER_META = {
-            top10: { label: 'TIER 1 · ₹10 CR', price: 10, name: 'Tier 1', range: 'Ranks 1–10', icon: TIER_ICONS.top10, priceLabel: '₹10 Cr base' },
-            top20: { label: 'TIER 2 · ₹6 CR', price: 6, name: 'Tier 2', range: 'Ranks 11–20', icon: TIER_ICONS.top20, priceLabel: '₹6 Cr base' },
-            top30: { label: 'TIER 3 · ₹4 CR', price: 4, name: 'Tier 3', range: 'Ranks 21–30', icon: TIER_ICONS.top30, priceLabel: '₹4 Cr base' },
-            top40: { label: 'TIER 4 · ₹2 CR', price: 2, name: 'Tier 4', range: 'Ranks 31–40', icon: TIER_ICONS.top40, priceLabel: '₹2 Cr base' },
+            top10: { label: 'TIER 1 · ₹10 CR', price: 10, name: 'Tier 1', tagline: 'The names everyone already knows', range: 'Ranks 1–10', icon: TIER_ICONS.top10, priceLabel: '₹10 Cr base' },
+            top20: { label: 'TIER 2 · ₹6 CR', price: 6, name: 'Tier 2', tagline: 'Proven contenders', range: 'Ranks 11–20', icon: TIER_ICONS.top20, priceLabel: '₹6 Cr base' },
+            top30: { label: 'TIER 3 · ₹4 CR', price: 4, name: 'Tier 3', tagline: 'On the rise', range: 'Ranks 21–30', icon: TIER_ICONS.top30, priceLabel: '₹4 Cr base' },
+            top40: { label: 'TIER 4 · ₹2 CR', price: 2, name: 'Tier 4', tagline: 'Fresh blood', range: 'Ranks 31–40', icon: TIER_ICONS.top40, priceLabel: '₹2 Cr base' },
         };
         const TIER_ORDER = ['top10', 'top20', 'top30', 'top40'];
 
@@ -4029,6 +4208,10 @@ if (backToTopBtn) {
 
         function escapeHtml(str) {
             return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function killWord(n) {
+            return n === 1 ? 'kill' : 'kills';
         }
 
         // Classify a Supabase/PostgREST error into a short, human-readable
@@ -4180,12 +4363,12 @@ if (backToTopBtn) {
                             <div class="msr-box msr-booyah">
                                 <span>🏆 Booyah Winner</span>
                                 <b>${escapeHtml(booyahName)}</b>
-                                <em>${booyahName !== '—' ? booyahKills + 'K · 🔥' : '—'}</em>
+                                <em>${booyahName !== '—' ? booyahKills + ' ' + killWord(booyahKills) + ' + 🔥' : '—'}</em>
                             </div>
                             <div class="msr-box msr-mvp">
                                 <span>🏅 MVP · Most Kills</span>
                                 <b>${escapeHtml(mvpName)}</b>
-                                <em>${mvpKills}K${mvpIsAlsoBooyah ? ' · 🔥' : ''}</em>
+                                <em>${mvpKills} ${killWord(mvpKills)}${mvpIsAlsoBooyah ? ' + 🔥' : ''}</em>
                             </div>
                         </div>`;
                     }
@@ -4245,6 +4428,8 @@ if (backToTopBtn) {
         // ---------- RENDER: STANDINGS (grouped into 4 auction tiers) ----------
         function buildPlayerRow(p, rank, totals) {
             const rankClass = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : '';
+            const isChampion = rank === 1;
+            const medal = rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
             let breakdownHtml = '';
             for (let m = 1; m <= 9; m++) {
                 const r = results.find(x => x.player_id === p.id && x.match_number === m);
@@ -4255,14 +4440,15 @@ if (backToTopBtn) {
             }
 
             const rowEl = document.createElement('div');
-            rowEl.className = 'pi-row';
+            rowEl.className = 'pi-row' + (isChampion ? ' pi-row-champion' : '');
             rowEl.innerHTML = `
                 <div class="pi-row-head">
-                    <div class="pi-rank ${rankClass}">${rank}</div>
+                    <div class="pi-rank ${rankClass}">${isChampion ? '👑' : rank}</div>
                     <div class="pi-id">
-                        <b>${escapeHtml(p.real_name || p.ign || 'Unnamed')}</b>
+                        <b>${escapeHtml(p.real_name || p.ign || 'Unnamed')}${medal ? ' ' + medal : ''}</b>
                         <span>${escapeHtml(p.ign || '')}${p.level ? ' · Lv.' + p.level : ''}</span>
                     </div>
+                    ${isChampion ? '<div class="pi-champion-tag">TOP SCORER</div>' : ''}
                     <div class="pi-pts"><b>${totals.points}</b><span>PTS</span></div>
                     <div class="pi-chevron">⌄</div>
                 </div>
@@ -4328,8 +4514,8 @@ if (backToTopBtn) {
                 head.innerHTML = `
                     <div class="tier-group-icon ${tier}">${meta.icon}</div>
                     <div class="tier-group-info">
-                        <b>${meta.name}</b>
-                        <span class="tier-group-range">${meta.range}</span>
+                        <b>${meta.name}${tier === 'top10' ? '<span class="tier-pro-badge">⭐ PRO</span>' : ''}</b>
+                        <span class="tier-group-range">${meta.range} <em>· ${meta.tagline}</em></span>
                         <div class="tier-group-meta">
                             <span class="tier-group-price">${meta.priceLabel}</span>
                             <span class="tier-group-count">${rows.length} player${rows.length === 1 ? '' : 's'}</span>
@@ -4601,9 +4787,85 @@ if (backToTopBtn) {
                     sel.appendChild(opt);
                 });
             renderResultsTable();
+            loadPlayerCurrentEntry();
+            updateKillsTotalPreview();
         }
 
-        document.getElementById('resMatchSelect').addEventListener('change', renderResultsTable);
+        // Live running total of kills entered so far for whichever match is
+        // selected, so the admin can see it fill up as they go and doesn't
+        // accidentally enter more kills than a 40-player match can produce.
+        function updateKillsTotalPreview() {
+            const totalEl = document.getElementById('resKillsTotal');
+            if (!totalEl) return;
+            const matchNumber = parseInt(document.getElementById('resMatchSelect').value, 10);
+            const playerId = document.getElementById('resPlayerSelect').value;
+            const killsRaw = document.getElementById('resKills').value;
+            const previewKills = killsRaw === '' ? 0 : (parseInt(killsRaw, 10) || 0);
+
+            const matchRows = results.filter(r => r.match_number === matchNumber);
+            const otherRows = matchRows.filter(r => String(r.player_id) !== String(playerId));
+            const savedTotal = matchRows.reduce((s, r) => s + (r.kills || 0), 0);
+            const previewTotal = otherRows.reduce((s, r) => s + (r.kills || 0), 0) + (playerId ? previewKills : 0);
+
+            const maxPossible = players.length ? players.length - 1 : null;
+            const overMax = maxPossible !== null && previewTotal > maxPossible;
+            const barPct = maxPossible ? Math.min(100, Math.round((previewTotal / maxPossible) * 100)) : 0;
+
+            totalEl.className = 'res-kills-box' + (overMax ? ' warn' : '');
+            totalEl.innerHTML = `
+                <div class="res-kills-box-label">Kills entered</div>
+                <div class="res-kills-box-num">${savedTotal}${playerId ? `<span class="arrow">→</span><span class="preview">${previewTotal}</span> if saved` : ''}</div>
+                ${maxPossible !== null ? `<div class="res-kills-bar-track"><div class="res-kills-bar-fill" style="width:${barPct}%;"></div></div>` : ''}
+            `;
+        }
+
+        // When a player is picked (or the match changes), pull up whatever
+        // is already saved for them on this match — so the admin sees the
+        // current stats/zero state before overwriting anything, instead of
+        // guessing or having to scroll down to "This match so far".
+        function loadPlayerCurrentEntry() {
+            const noteEl = document.getElementById('resPlayerCurrent');
+            const killsInput = document.getElementById('resKills');
+            const booyahSelect = document.getElementById('resBooyah');
+            if (!noteEl || !killsInput || !booyahSelect) return;
+
+            const matchNumber = parseInt(document.getElementById('resMatchSelect').value, 10);
+            const playerId = document.getElementById('resPlayerSelect').value;
+
+            if (!playerId) {
+                noteEl.style.display = 'none';
+                noteEl.className = 'res-inline-note';
+                noteEl.innerHTML = '';
+                return;
+            }
+
+            const existing = results.find(r => String(r.player_id) === String(playerId) && r.match_number === matchNumber);
+            noteEl.style.display = 'flex';
+            if (existing) {
+                killsInput.value = existing.kills || 0;
+                booyahSelect.value = existing.booyah ? 'true' : 'false';
+                noteEl.className = 'res-inline-note state-existing';
+                noteEl.innerHTML = `<span class="rin-ic">✓</span>
+                    <span class="rin-txt">Already entered: <b>${existing.kills || 0} ${killWord(existing.kills || 0)}</b>${existing.booyah ? ' <b>+ 🔥 Booyah</b>' : ''}</span>`;
+            } else {
+                killsInput.value = 0;
+                booyahSelect.value = 'false';
+                noteEl.className = 'res-inline-note';
+                noteEl.innerHTML = `<span class="rin-ic">–</span>
+                    <span class="rin-txt">Not entered yet for this match — currently counts as <b>0 kills</b>.</span>`;
+            }
+        }
+
+        document.getElementById('resMatchSelect').addEventListener('change', () => {
+            renderResultsTable();
+            loadPlayerCurrentEntry();
+            updateKillsTotalPreview();
+        });
+        document.getElementById('resPlayerSelect').addEventListener('change', () => {
+            loadPlayerCurrentEntry();
+            updateKillsTotalPreview();
+        });
+        document.getElementById('resKills').addEventListener('input', updateKillsTotalPreview);
 
         function renderResultsTable() {
             const matchNumber = parseInt(document.getElementById('resMatchSelect').value, 10);
@@ -4618,7 +4880,7 @@ if (backToTopBtn) {
                 const p = players.find(x => x.id === r.player_id);
                 return `<div class="pi-mchip" style="display:flex; justify-content:space-between; align-items:center; text-align:left; margin-bottom:6px;">
                     <span style="color:var(--ink); font-size:11.5px;">${escapeHtml(p ? (p.real_name || p.ign) : 'Unknown player')}</span>
-                    <b>${r.kills}K${r.booyah ? ' 🔥' : ''} · ${r.points} pts</b>
+                    <b>${r.kills} ${killWord(r.kills)}${r.booyah ? ' 🔥' : ''} · ${r.points} pts</b>
                 </div>`;
             }).join('');
         }
@@ -4653,7 +4915,42 @@ if (backToTopBtn) {
             msgEl.className = 'admin-status-msg loading';
             saveBtn.disabled = true;
 
+            let clearedCount = 0;
+
             try {
+                // Only one Booyah per match: if this save marks a Booyah
+                // winner, strip the flag off anyone else already holding it
+                // for this match before writing the new one.
+                if (booyah) {
+                    const others = results.filter(r =>
+                        r.match_number === matchNumber &&
+                        r.booyah &&
+                        String(r.player_id) !== String(playerId)
+                    );
+                    for (const other of others) {
+                        const { data: clearedData, error: clearErr } = await sb
+                            .from(RESULTS_TABLE)
+                            .update({ booyah: false })
+                            .eq('player_id', other.player_id)
+                            .eq('match_number', matchNumber)
+                            .select();
+                        if (clearErr) throw clearErr;
+                        const clearedRow = clearedData && clearedData[0];
+                        const idx = results.findIndex(r => r.player_id === other.player_id && r.match_number === matchNumber);
+                        if (clearedRow) {
+                            if (idx >= 0) results[idx] = clearedRow;
+                        } else if (idx >= 0) {
+                            results[idx] = { ...results[idx], booyah: false };
+                        }
+                        // Re-sync that player's total points now that their Booyah bonus is gone.
+                        const otherTotals = totalsFor(other.player_id);
+                        await sb.from(REG_TABLE).update({ play_in_points: otherTotals.points }).eq('id', other.player_id);
+                        const otherLocal = players.find(p => p.id === other.player_id);
+                        if (otherLocal) otherLocal.play_in_points = otherTotals.points;
+                        clearedCount++;
+                    }
+                }
+
                 const { data, error } = await sb
                     .from(RESULTS_TABLE)
                     .upsert({ player_id: playerId, match_number: matchNumber, kills, booyah }, { onConflict: 'player_id,match_number' })
@@ -4702,9 +4999,14 @@ if (backToTopBtn) {
                     }
                 }
 
-                msgEl.textContent = `Saved ✓${missing.length ? ' · ' + missing.length + ' player(s) auto-set to 0' : ''}`;
+                const notes = [];
+                if (clearedCount) notes.push(clearedCount + ' previous Booyah holder' + (clearedCount === 1 ? '' : 's') + ' cleared');
+                if (missing.length) notes.push(missing.length + ' player(s) auto-set to 0');
+                msgEl.textContent = `Saved ✓${notes.length ? ' · ' + notes.join(' · ') : ''}`;
                 msgEl.className = 'admin-status-msg ok';
                 renderResultsTable();
+                loadPlayerCurrentEntry();
+                updateKillsTotalPreview();
                 renderStandings(document.getElementById('pi-search').value);
                 updateFinalizeProgress();
             } catch (err) {
