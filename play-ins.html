@@ -4322,7 +4322,7 @@ if (backToTopBtn) {
             try {
                 const { data, error } = await sb
                     .from(RESULTS_TABLE)
-                    .upsert({ player_id: playerId, match_number: matchNumber, kills, booyah, points }, { onConflict: 'player_id,match_number' })
+                    .upsert({ player_id: playerId, match_number: matchNumber, kills, booyah }, { onConflict: 'player_id,match_number' })
                     .select();
                 if (error) throw error;
 
