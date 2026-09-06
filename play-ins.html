@@ -3859,6 +3859,17 @@
                             <div class="loading-strip" style="padding:14px 0;">Select a match to view entries.</div>
                         </div>
                     </div>
+
+                    <div class="admin-card" style="border-color: rgba(var(--live-rgb), 0.3);">
+                        <h4 style="color: var(--live);">🎲 Dev: Fill All Matches With Test Data</h4>
+                        <p style="font-size:11px; color:var(--ink-dim); margin-top:6px; line-height:1.5;">
+                            Generates random kills + exactly one Booyah winner for every one of the 9 matches,
+                            for all approved players, and overwrites any results already saved. For testing the
+                            standings/tiers/auction flow only — not for real match day.
+                        </p>
+                        <button class="admin-save-btn secondary" id="seedAllBtn" style="margin-top:12px; border-color: var(--live); color: var(--live);">Randomly Fill All 9 Matches</button>
+                        <div class="admin-status-msg" id="seedAllMsg"></div>
+                    </div>
                 </div>
 
                 <!-- FINALIZE -->
@@ -5108,6 +5119,109 @@ if (backToTopBtn) {
                 msgEl.className = 'admin-status-msg err';
             }
             renderStandings(document.getElementById('pi-search').value);
+        });
+
+        // ---------- ADMIN: DEV — RANDOM TEST DATA FOR ALL MATCHES ----------
+        document.getElementById('seedAllBtn').addEventListener('click', async () => {
+            if (!currentAdmin) return;
+            const seedBtn = document.getElementById('seedAllBtn');
+            const msgEl = document.getElementById('seedAllMsg');
+
+            if (!players.length) {
+                msgEl.textContent = 'No approved players to generate results for.';
+                msgEl.className = 'admin-status-msg err';
+                return;
+            }
+
+            const confirmMsg =
+                `This will OVERWRITE results for all 9 matches with random test data ` +
+                `for all ${players.length} approved players (random kills + exactly one Booyah ` +
+                `winner per match, kept under a realistic per-match kill total).\n\n` +
+                `For testing the standings/tiers/auction flow only. Continue?`;
+            if (!window.confirm(confirmMsg)) {
+                msgEl.textContent = 'Cancelled.';
+                msgEl.className = 'admin-status-msg';
+                return;
+            }
+
+            msgEl.className = 'admin-status-msg loading';
+            seedBtn.disabled = true;
+
+            const maxKillsPerMatch = Math.max(0, players.length - 1);
+            let firstError = null;
+
+            try {
+                for (let m = 1; m <= 9; m++) {
+                    msgEl.textContent = `Generating Match ${m} of 9…`;
+
+                    // Spread a random, realistic kill budget across all players —
+                    // most get a handful, a few get a lot, several get zero —
+                    // and never let the match total exceed what's possible.
+                    const minBudget = Math.min(10, maxKillsPerMatch);
+                    const budget = maxKillsPerMatch <= minBudget
+                        ? maxKillsPerMatch
+                        : minBudget + Math.floor(Math.random() * (maxKillsPerMatch - minBudget));
+                    const killsByIndex = new Array(players.length).fill(0);
+                    let remaining = budget;
+                    while (remaining > 0) {
+                        const idx = Math.floor(Math.random() * players.length);
+                        const inc = Math.min(remaining, 1 + Math.floor(Math.random() * 3));
+                        killsByIndex[idx] += inc;
+                        remaining -= inc;
+                    }
+
+                    // Exactly one Booyah winner per match — give them at least
+                    // one kill so the winner isn't shown with 0K + 🔥.
+                    const booyahIdx = Math.floor(Math.random() * players.length);
+                    if (killsByIndex[booyahIdx] === 0 && remaining === 0 && maxKillsPerMatch > 0) {
+                        killsByIndex[booyahIdx] = 1;
+                    }
+
+                    const rows = players.map((p, i) => ({
+                        player_id: p.id,
+                        match_number: m,
+                        kills: killsByIndex[i],
+                        booyah: i === booyahIdx,
+                    }));
+
+                    const { data, error } = await sb
+                        .from(RESULTS_TABLE)
+                        .upsert(rows, { onConflict: 'player_id,match_number' })
+                        .select();
+                    if (error) throw error;
+
+                    (data && data.length ? data : rows).forEach(saved => {
+                        const idx = results.findIndex(r => String(r.player_id) === String(saved.player_id) && r.match_number === m);
+                        if (idx >= 0) results[idx] = saved; else results.push(saved);
+                    });
+                }
+
+                msgEl.textContent = 'Syncing player point totals…';
+
+                for (const p of players) {
+                    const totals = totalsFor(p.id);
+                    const { error: regErr } = await sb.from(REG_TABLE).update({ play_in_points: totals.points }).eq('id', p.id);
+                    if (regErr && !firstError) firstError = regErr;
+                    p.play_in_points = totals.points;
+                }
+
+                renderResultsTable();
+                loadPlayerCurrentEntry();
+                updateKillsTotalPreview();
+                renderStandings(document.getElementById('pi-search').value);
+                updateFinalizeProgress();
+
+                msgEl.textContent = firstError
+                    ? `Results generated, but some point syncs failed — ${describeError(firstError, 'sync error')}.`
+                    : `Done ✓ — random results generated for all 9 matches, ${players.length} players each.`;
+                msgEl.className = firstError ? 'admin-status-msg warn' : 'admin-status-msg ok';
+            } catch (err) {
+                console.error(err);
+                msgEl.textContent = describeError(err, 'Failed to generate test data.');
+                msgEl.className = 'admin-status-msg err';
+            } finally {
+                seedBtn.disabled = false;
+            }
         });
 
         // ---------- GO ----------
