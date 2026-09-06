@@ -2338,73 +2338,231 @@
             letter-spacing: 0.02em;
         }
 
-        /* ── MATCH CARD UPGRADES ── */
-        .match-card { position: relative; overflow: hidden; }
+        /* ══════════════════════════════════════════
+           MATCH CARD — PREMIUM STATUS SYSTEM
+           ══════════════════════════════════════════ */
+        .match-card {
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
 
-        /* Live glow pulse behind the card */
+        /* ── UPCOMING ── clean gold, no noise */
+        .mc-upcoming {
+            border-color: rgba(var(--gold-rgb), 0.22) !important;
+            border-top: 2.5px solid var(--gold-deep) !important;
+            background: linear-gradient(160deg, rgba(var(--gold-rgb), 0.06) 0%, transparent 55%), var(--surface) !important;
+        }
+
+        /* Subtle shimmer sweep on upcoming */
+        .mc-upcoming::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 30%, rgba(var(--gold-rgb), 0.05) 50%, transparent 70%);
+            animation: upcomingShimmer 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes upcomingShimmer {
+            0%   { transform: translateX(-100%); }
+            40%, 100% { transform: translateX(160%); }
+        }
+
+        .mc-upcoming .match-num { color: var(--gold-deep); }
+
+        /* countdown badge for upcoming */
+        .match-countdown {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9.5px;
+            letter-spacing: 0.08em;
+            color: var(--gold-pale);
+            background: rgba(var(--gold-rgb), 0.1);
+            border: 1px solid rgba(var(--gold-rgb), 0.22);
+            border-radius: 100px;
+            padding: 5px 12px;
+        }
+        .match-countdown .cd-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--gold);
+            animation: cdBlink 1.4s ease-in-out infinite;
+        }
+        @keyframes cdBlink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+        /* ── LIVE ── full fire treatment */
+        .mc-live {
+            border: 2px solid rgba(var(--live-rgb), 0.7) !important;
+            border-top: 3px solid var(--live) !important;
+            background: linear-gradient(160deg, rgba(var(--live-rgb), 0.13) 0%, rgba(var(--live-rgb), 0.04) 50%, transparent 80%), var(--surface) !important;
+            animation: liveCardPulse 2.2s ease-in-out infinite;
+        }
+        @keyframes liveCardPulse {
+            0%,100% { box-shadow: 0 0 18px rgba(var(--live-rgb), 0.28), 0 0 0 0 rgba(var(--live-rgb), 0.12); }
+            50%     { box-shadow: 0 0 36px rgba(var(--live-rgb), 0.50), 0 0 0 6px rgba(var(--live-rgb), 0.06); }
+        }
+
+        /* animated diagonal scan line on live */
         .match-live-glow {
             position: absolute;
             inset: 0;
-            border-radius: 20px;
-            background: radial-gradient(ellipse 120% 80% at 50% -10%, rgba(var(--live-rgb), 0.18), transparent 65%);
             pointer-events: none;
-            animation: liveGlowPulse 2s ease-in-out infinite;
+            overflow: hidden;
+            border-radius: 20px;
         }
-        @keyframes liveGlowPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.45; }
+        .match-live-glow::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -60%;
+            width: 40%; height: 200%;
+            background: linear-gradient(100deg, transparent, rgba(var(--live-rgb), 0.12), transparent);
+            animation: liveScan 2.8s linear infinite;
         }
-
-        /* Live card border animation */
-        .mc-live {
-            border-color: rgba(var(--live-rgb), 0.5) !important;
-            border-top-color: var(--live) !important;
-            box-shadow: 0 0 22px rgba(var(--live-rgb), 0.25) !important;
-            animation: liveBorderPulse 2s ease-in-out infinite;
-        }
-        @keyframes liveBorderPulse {
-            0%, 100% { box-shadow: 0 0 22px rgba(var(--live-rgb), 0.25); }
-            50% { box-shadow: 0 0 36px rgba(var(--live-rgb), 0.45); }
+        @keyframes liveScan {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(500%); }
         }
 
-        /* Completed card */
-        .mc-completed {
-            border-color: rgba(95, 217, 126, 0.28) !important;
-            border-top-color: #5fd97e !important;
-            background: radial-gradient(ellipse 130% 80% at 50% -10%, rgba(95, 217, 126, 0.07), transparent 60%), var(--surface) !important;
+        .mc-live .match-num {
+            color: var(--live);
+            animation: liveTextPulse 2.2s ease-in-out infinite;
+        }
+        @keyframes liveTextPulse {
+            0%,100% { opacity: 1; } 50% { opacity: 0.65; }
         }
 
-        .match-completed-banner {
-            font-family: 'Space Mono', monospace;
-            font-size: 8.5px;
-            letter-spacing: 0.18em;
-            color: #5fd97e;
-            background: rgba(95, 217, 126, 0.1);
-            border: 1px solid rgba(95, 217, 126, 0.22);
-            border-radius: 7px;
-            padding: 5px 10px;
-            display: inline-block;
+        /* LIVE NOW banner */
+        .match-live-banner {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Anton', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            color: var(--live);
             margin-bottom: 12px;
         }
+        .mlb-pulse {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--live);
+            box-shadow: 0 0 8px var(--live);
+            animation: mlbPulse 1s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes mlbPulse {
+            0%,100% { transform: scale(1);   box-shadow: 0 0 8px var(--live); }
+            50%     { transform: scale(1.35); box-shadow: 0 0 16px var(--live), 0 0 30px rgba(var(--live-rgb),0.4); }
+        }
 
-        /* Match result summary chips */
-        .match-result-summary {
+        /* ── COMPLETED ── dark elegant green */
+        .mc-completed {
+            border: 1px solid rgba(95, 217, 126, 0.32) !important;
+            border-top: 3px solid #5fd97e !important;
+            background: linear-gradient(160deg, rgba(95, 217, 126, 0.09) 0%, rgba(95, 217, 126, 0.02) 50%, transparent 80%), var(--surface) !important;
+            box-shadow: 0 4px 24px rgba(95, 217, 126, 0.08) !important;
+        }
+
+        /* Completed stamp */
+        .match-completed-stamp {
+            position: absolute;
+            top: 14px; right: 14px;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            border: 2px solid rgba(95, 217, 126, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            background: rgba(95, 217, 126, 0.1);
+            color: #5fd97e;
+        }
+
+        /* Completed header tag */
+        .match-completed-banner {
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 0.2em;
+            color: #5fd97e;
+            background: rgba(95, 217, 126, 0.1);
+            border: 1px solid rgba(95, 217, 126, 0.25);
+            border-radius: 6px;
+            padding: 4px 10px;
+            display: inline-block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .mc-completed .match-num { color: #5fd97e; }
+
+        /* ── MVP + Result summary ── */
+        .match-mvp-strip {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: linear-gradient(120deg, rgba(var(--gold-rgb), 0.1), rgba(95, 217, 126, 0.06));
+            border: 1px solid rgba(var(--gold-rgb), 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mvp-crown {
+            flex-shrink: 0;
+            width: 38px; height: 38px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, rgba(var(--gold-rgb),0.25), rgba(var(--gold-rgb),0.08));
+            border: 1px solid rgba(var(--gold-rgb), 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .mvp-info { flex: 1; min-width: 0; }
+
+        .mvp-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 0.14em;
+            color: var(--gold-deep);
+            text-transform: uppercase;
+        }
+
+        .mvp-name {
+            font-family: 'Anton', sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.01em;
+            color: var(--gold-pale);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+
+        .mvp-sub {
+            font-size: 10px;
+            color: var(--ink-dim);
+            margin-top: 2px;
+        }
+
+        .match-stats-row {
             display: flex;
             gap: 6px;
-            margin-top: 10px;
-            flex-wrap: wrap;
+            margin-top: 8px;
         }
 
-        .mrs-chip {
+        .msr-box {
             flex: 1;
-            min-width: 90px;
-            background: rgba(95, 217, 126, 0.055);
-            border: 1px solid rgba(95, 217, 126, 0.18);
-            border-radius: 11px;
-            padding: 8px 10px;
+            background: rgba(var(--gold-rgb), 0.04);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 7px 8px;
+            text-align: center;
         }
 
-        .mrs-chip span {
+        .msr-box span {
             display: block;
             font-size: 8px;
             letter-spacing: 0.08em;
@@ -2412,15 +2570,15 @@
             text-transform: uppercase;
         }
 
-        .mrs-chip b {
+        .msr-box b {
             display: block;
             margin-top: 3px;
-            font-size: 11.5px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
             color: var(--ink);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
+
+        .msr-box.msr-booyah b { color: var(--gold-pale); }
 
         /* ── STANDINGS SMOOTH OPEN FIX ── */
         /* Use will-change + contain to prevent jank when expanding tier groups */
@@ -2453,6 +2611,17 @@
 
         /* Zero-result chip style in match breakdown */
         .pi-mchip.zero b { color: var(--ink-faint); }
+
+        .pi-mchip small {
+            display: block;
+            margin-top: 2px;
+            font-size: 8px;
+            letter-spacing: 0.04em;
+            color: var(--gold-deep);
+            font-family: 'Space Mono', monospace;
+        }
+        .pi-mchip.booyah small { color: var(--gold-pale); }
+        .pi-mchip.zero small { color: var(--ink-faint); }
 
         /* ============ LEADERBOARD (Play-In standings) ============ */
         .pi-lb-head {
@@ -3996,30 +4165,67 @@ if (backToTopBtn) {
                     </div>` :
                     `<div class="room-locked-note">Room ID &amp; password go live shortly before this match.</div>`;
 
-                // Match result summary for completed matches
+                // ── Match stats ──
                 const matchResults = results.filter(r => r.match_number === m.match_number);
-                const totalKills = matchResults.reduce((s, r) => s + (r.kills || 0), 0);
-                const booyahPlayer = matchResults.find(r => r.booyah);
-                const booyahName = booyahPlayer ? (players.find(p => p.id === booyahPlayer.player_id)?.real_name || players.find(p => p.id === booyahPlayer.player_id)?.ign || '—') : null;
-                const topKiller = matchResults.length ? matchResults.reduce((a, b) => (a.kills || 0) >= (b.kills || 0) ? a : b) : null;
-                const topKillerName = topKiller ? (players.find(p => p.id === topKiller.player_id)?.real_name || players.find(p => p.id === topKiller.player_id)?.ign || '—') : null;
+                const totalKillsMatch = matchResults.reduce((s, r) => s + (r.kills || 0), 0);
+                const booyahResult = matchResults.find(r => r.booyah);
+                const booyahPlayer = booyahResult ? players.find(p => p.id === booyahResult.player_id) : null;
+                const booyahName = booyahPlayer ? (booyahPlayer.real_name || booyahPlayer.ign || '—') : '—';
 
-                const completedSummaryHtml = (statusClass === 'completed' && matchResults.length) ? `
-                    <div class="match-result-summary">
-                        <div class="mrs-chip"><span>🏆 Booyah</span><b>${booyahName || '—'}</b></div>
-                        <div class="mrs-chip"><span>🔫 Top Fragger</span><b>${topKillerName ? topKillerName + ' · ' + topKiller.kills + 'K' : '—'}</b></div>
-                        <div class="mrs-chip"><span>💀 Total Kills</span><b>${totalKills}</b></div>
-                    </div>` : '';
+                // MVP = booyah winner; if no booyah, top killer
+                const topKillerResult = matchResults.length
+                    ? matchResults.reduce((a, b) => (a.kills || 0) >= (b.kills || 0) ? a : b)
+                    : null;
+                const mvpResult   = booyahResult || topKillerResult;
+                const mvpPlayer   = mvpResult ? players.find(p => p.id === mvpResult.player_id) : null;
+                const mvpName     = mvpPlayer ? (mvpPlayer.real_name || mvpPlayer.ign || '—') : '—';
+                const mvpKills    = mvpResult ? (mvpResult.kills || 0) : 0;
+                const mvpBooyah   = mvpResult ? mvpResult.booyah : false;
+                const mvpSub      = mvpKills + ' kills' + (mvpBooyah ? ' · 🔥 Booyah' : '');
 
-                const liveGlowHtml = statusClass === 'live' ? `<div class="match-live-glow"></div>` : '';
-                const completedCheckHtml = statusClass === 'completed' ? `<div class="match-completed-banner">✓ MATCH COMPLETED</div>` : '';
+                // Status-specific HTML blocks
+                let topHtml = '';
+                let extraHtml = '';
+
+                if (statusClass === 'live') {
+                    topHtml = `<div class="match-live-glow"></div>
+                        <div class="match-live-banner"><span class="mlb-pulse"></span>MATCH IN PROGRESS</div>`;
+                } else if (statusClass === 'completed') {
+                    topHtml = `<div class="match-completed-stamp">✓</div>
+                        <div class="match-completed-banner">✓ COMPLETED</div>`;
+                    if (matchResults.length) {
+                        extraHtml = `
+                        <div class="match-mvp-strip">
+                            <div class="mvp-crown">👑</div>
+                            <div class="mvp-info">
+                                <div class="mvp-label">MVP · Match ${m.match_number}</div>
+                                <div class="mvp-name">${escapeHtml(mvpName)}</div>
+                                <div class="mvp-sub">${escapeHtml(mvpSub)}</div>
+                            </div>
+                        </div>
+                        <div class="match-stats-row">
+                            <div class="msr-box msr-booyah">
+                                <span>🏆 Booyah</span>
+                                <b>${escapeHtml(booyahName)}</b>
+                            </div>
+                            <div class="msr-box">
+                                <span>💀 Total Kills</span>
+                                <b>${totalKillsMatch}</b>
+                            </div>
+                        </div>`;
+                    }
+                } else {
+                    // upcoming
+                    topHtml = '';
+                }
+
+                const matchIcon = statusClass === 'completed' ? '🏁' : statusClass === 'live' ? '🔴' : '🎮';
 
                 frame.innerHTML = `
                     <div class="match-card mc-${statusClass}">
-                        ${liveGlowHtml}
-                        ${completedCheckHtml}
+                        ${topHtml}
                         <div class="match-head">
-                            <div class="match-icon">${statusClass === 'completed' ? '✅' : statusClass === 'live' ? '🔴' : '🎮'}</div>
+                            <div class="match-icon">${matchIcon}</div>
                             <div class="match-head-text">
                                 <div class="match-num">DAY ${m.day_number} · MATCH ${m.match_number}</div>
                                 <div class="match-title display">Battle Royale</div>
@@ -4030,7 +4236,7 @@ if (backToTopBtn) {
                             <div class="match-meta-box"><span>📅 Date</span><b>${dateLabel}</b></div>
                             <div class="match-meta-box"><span>⏰ Time</span><b>${timeLabel}</b></div>
                         </div>
-                        ${completedSummaryHtml}
+                        ${extraHtml}
                         ${roomHtml}
                     </div>`;
                 list.appendChild(frame);
@@ -4069,8 +4275,10 @@ if (backToTopBtn) {
                 const r = results.find(x => x.player_id === p.id && x.match_number === m);
                 const isBooyah = r && r.booyah;
                 const chipClass = isBooyah ? ' booyah' : (!r ? '' : (r.kills === 0 ? ' zero' : ''));
+                const pts = r ? ((r.kills || 0) + (r.booyah ? 3 : 0)) : null;
                 const chipVal = r ? (r.kills + 'K' + (isBooyah ? ' 🔥' : '')) : '—';
-                breakdownHtml += `<div class="pi-mchip${chipClass}"><span>M${m}</span><b>${chipVal}</b></div>`;
+                const ptsLabel = r ? (pts + 'pt') : '';
+                breakdownHtml += `<div class="pi-mchip${chipClass}"><span>M${m}</span><b>${chipVal}</b>${ptsLabel ? '<small>' + ptsLabel + '</small>' : ''}</div>`;
             }
 
             const rowEl = document.createElement('div');
