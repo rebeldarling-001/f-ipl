@@ -2338,6 +2338,122 @@
             letter-spacing: 0.02em;
         }
 
+        /* ── MATCH CARD UPGRADES ── */
+        .match-card { position: relative; overflow: hidden; }
+
+        /* Live glow pulse behind the card */
+        .match-live-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: radial-gradient(ellipse 120% 80% at 50% -10%, rgba(var(--live-rgb), 0.18), transparent 65%);
+            pointer-events: none;
+            animation: liveGlowPulse 2s ease-in-out infinite;
+        }
+        @keyframes liveGlowPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.45; }
+        }
+
+        /* Live card border animation */
+        .mc-live {
+            border-color: rgba(var(--live-rgb), 0.5) !important;
+            border-top-color: var(--live) !important;
+            box-shadow: 0 0 22px rgba(var(--live-rgb), 0.25) !important;
+            animation: liveBorderPulse 2s ease-in-out infinite;
+        }
+        @keyframes liveBorderPulse {
+            0%, 100% { box-shadow: 0 0 22px rgba(var(--live-rgb), 0.25); }
+            50% { box-shadow: 0 0 36px rgba(var(--live-rgb), 0.45); }
+        }
+
+        /* Completed card */
+        .mc-completed {
+            border-color: rgba(95, 217, 126, 0.28) !important;
+            border-top-color: #5fd97e !important;
+            background: radial-gradient(ellipse 130% 80% at 50% -10%, rgba(95, 217, 126, 0.07), transparent 60%), var(--surface) !important;
+        }
+
+        .match-completed-banner {
+            font-family: 'Space Mono', monospace;
+            font-size: 8.5px;
+            letter-spacing: 0.18em;
+            color: #5fd97e;
+            background: rgba(95, 217, 126, 0.1);
+            border: 1px solid rgba(95, 217, 126, 0.22);
+            border-radius: 7px;
+            padding: 5px 10px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        /* Match result summary chips */
+        .match-result-summary {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .mrs-chip {
+            flex: 1;
+            min-width: 90px;
+            background: rgba(95, 217, 126, 0.055);
+            border: 1px solid rgba(95, 217, 126, 0.18);
+            border-radius: 11px;
+            padding: 8px 10px;
+        }
+
+        .mrs-chip span {
+            display: block;
+            font-size: 8px;
+            letter-spacing: 0.08em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .mrs-chip b {
+            display: block;
+            margin-top: 3px;
+            font-size: 11.5px;
+            color: var(--ink);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ── STANDINGS SMOOTH OPEN FIX ── */
+        /* Use will-change + contain to prevent jank when expanding tier groups */
+        .tier-group-body {
+            will-change: max-height;
+            contain: layout style;
+        }
+
+        .pi-breakdown {
+            will-change: max-height;
+            contain: layout style;
+        }
+
+        /* Smooth fade-in for player rows when tier opens */
+        .tier-group-list .pi-row {
+            animation: rowFadeIn 0.22s ease both;
+        }
+        @keyframes rowFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stagger rows */
+        .tier-group-list .pi-row:nth-child(1) { animation-delay: 0.03s; }
+        .tier-group-list .pi-row:nth-child(2) { animation-delay: 0.06s; }
+        .tier-group-list .pi-row:nth-child(3) { animation-delay: 0.09s; }
+        .tier-group-list .pi-row:nth-child(4) { animation-delay: 0.12s; }
+        .tier-group-list .pi-row:nth-child(5) { animation-delay: 0.14s; }
+        .tier-group-list .pi-row:nth-child(n+6) { animation-delay: 0.16s; }
+
+        /* Zero-result chip style in match breakdown */
+        .pi-mchip.zero b { color: var(--ink-faint); }
+
         /* ============ LEADERBOARD (Play-In standings) ============ */
         .pi-lb-head {
             display: flex;
@@ -3880,10 +3996,30 @@ if (backToTopBtn) {
                     </div>` :
                     `<div class="room-locked-note">Room ID &amp; password go live shortly before this match.</div>`;
 
+                // Match result summary for completed matches
+                const matchResults = results.filter(r => r.match_number === m.match_number);
+                const totalKills = matchResults.reduce((s, r) => s + (r.kills || 0), 0);
+                const booyahPlayer = matchResults.find(r => r.booyah);
+                const booyahName = booyahPlayer ? (players.find(p => p.id === booyahPlayer.player_id)?.real_name || players.find(p => p.id === booyahPlayer.player_id)?.ign || '—') : null;
+                const topKiller = matchResults.length ? matchResults.reduce((a, b) => (a.kills || 0) >= (b.kills || 0) ? a : b) : null;
+                const topKillerName = topKiller ? (players.find(p => p.id === topKiller.player_id)?.real_name || players.find(p => p.id === topKiller.player_id)?.ign || '—') : null;
+
+                const completedSummaryHtml = (statusClass === 'completed' && matchResults.length) ? `
+                    <div class="match-result-summary">
+                        <div class="mrs-chip"><span>🏆 Booyah</span><b>${booyahName || '—'}</b></div>
+                        <div class="mrs-chip"><span>🔫 Top Fragger</span><b>${topKillerName ? topKillerName + ' · ' + topKiller.kills + 'K' : '—'}</b></div>
+                        <div class="mrs-chip"><span>💀 Total Kills</span><b>${totalKills}</b></div>
+                    </div>` : '';
+
+                const liveGlowHtml = statusClass === 'live' ? `<div class="match-live-glow"></div>` : '';
+                const completedCheckHtml = statusClass === 'completed' ? `<div class="match-completed-banner">✓ MATCH COMPLETED</div>` : '';
+
                 frame.innerHTML = `
-                    <div class="match-card">
+                    <div class="match-card mc-${statusClass}">
+                        ${liveGlowHtml}
+                        ${completedCheckHtml}
                         <div class="match-head">
-                            <div class="match-icon">🎮</div>
+                            <div class="match-icon">${statusClass === 'completed' ? '✅' : statusClass === 'live' ? '🔴' : '🎮'}</div>
                             <div class="match-head-text">
                                 <div class="match-num">DAY ${m.day_number} · MATCH ${m.match_number}</div>
                                 <div class="match-title display">Battle Royale</div>
@@ -3891,9 +4027,10 @@ if (backToTopBtn) {
                             <div class="match-status ${statusClass}"><span class="dot"></span>${statusLabel}</div>
                         </div>
                         <div class="match-meta-row">
-                            <div class="match-meta-box"><span>Date</span><b>${dateLabel}</b></div>
-                            <div class="match-meta-box"><span>Time</span><b>${timeLabel}</b></div>
+                            <div class="match-meta-box"><span>📅 Date</span><b>${dateLabel}</b></div>
+                            <div class="match-meta-box"><span>⏰ Time</span><b>${timeLabel}</b></div>
                         </div>
+                        ${completedSummaryHtml}
                         ${roomHtml}
                     </div>`;
                 list.appendChild(frame);
@@ -3931,7 +4068,9 @@ if (backToTopBtn) {
             for (let m = 1; m <= 9; m++) {
                 const r = results.find(x => x.player_id === p.id && x.match_number === m);
                 const isBooyah = r && r.booyah;
-                breakdownHtml += `<div class="pi-mchip${isBooyah ? ' booyah' : ''}"><span>M${m}</span><b>${r ? (r.kills + 'K' + (isBooyah ? ' 🔥' : '')) : '—'}</b></div>`;
+                const chipClass = isBooyah ? ' booyah' : (!r ? '' : (r.kills === 0 ? ' zero' : ''));
+                const chipVal = r ? (r.kills + 'K' + (isBooyah ? ' 🔥' : '')) : '—';
+                breakdownHtml += `<div class="pi-mchip${chipClass}"><span>M${m}</span><b>${chipVal}</b></div>`;
             }
 
             const rowEl = document.createElement('div');
@@ -3954,12 +4093,11 @@ if (backToTopBtn) {
                 const body = rowEl.querySelector('.pi-breakdown');
                 const opening = !rowEl.classList.contains('open');
                 rowEl.classList.toggle('open', opening);
-                body.style.maxHeight = opening ? body.scrollHeight + 'px' : '0px';
-                // Re-measure the enclosing tier-group so its own max-height
-                // grows/shrinks to fit this row's breakdown panel too.
-                const groupBody = rowEl.closest('.tier-group-body');
-                if (groupBody && groupBody.parentElement.classList.contains('open')) {
-                    requestAnimationFrame(() => { groupBody.style.maxHeight = groupBody.scrollHeight + 'px'; });
+                if (opening) {
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                } else {
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                    requestAnimationFrame(() => { body.style.maxHeight = '0px'; });
                 }
             });
 
@@ -4033,7 +4171,22 @@ if (backToTopBtn) {
                 head.addEventListener('click', () => {
                     const opening = !group.classList.contains('open');
                     group.classList.toggle('open', opening);
-                    body.style.maxHeight = opening ? body.scrollHeight + 'px' : '0px';
+                    if (opening) {
+                        // Force layout before reading scrollHeight
+                        body.style.maxHeight = 'none';
+                        const h = body.scrollHeight;
+                        body.style.maxHeight = '0px';
+                        requestAnimationFrame(() => { body.style.maxHeight = h + 'px'; });
+                        // After transition, set to 'none' so inner expands still work
+                        body.addEventListener('transitionend', function onEnd() {
+                            if (group.classList.contains('open')) body.style.maxHeight = 'none';
+                            body.removeEventListener('transitionend', onEnd);
+                        });
+                    } else {
+                        // Snap to current height then animate to 0
+                        body.style.maxHeight = body.scrollHeight + 'px';
+                        requestAnimationFrame(() => { body.style.maxHeight = '0px'; });
+                    }
                 });
 
                 group.appendChild(head);
@@ -4339,7 +4492,36 @@ if (backToTopBtn) {
                 const localPlayer = players.find(p => p.id === playerId);
                 if (localPlayer) localPlayer.play_in_points = totals.points;
 
-                msgEl.textContent = 'Saved ✓';
+                msgEl.textContent = 'Saved ✓ — auto-filling missing players with 0…';
+                msgEl.className = 'admin-status-msg loading';
+
+                // Auto-zero: any player with no result row for this match gets kills=0, booyah=false
+                const alreadyEntered = new Set(
+                    results.filter(r => r.match_number === matchNumber).map(r => r.player_id)
+                );
+                const missing = players.filter(p => !alreadyEntered.has(p.id));
+                if (missing.length) {
+                    const zeroRows = missing.map(p => ({ player_id: p.id, match_number: matchNumber, kills: 0, booyah: false }));
+                    const { data: zData, error: zErr } = await sb
+                        .from(RESULTS_TABLE)
+                        .upsert(zeroRows, { onConflict: 'player_id,match_number' })
+                        .select();
+                    if (!zErr && zData) {
+                        zData.forEach(row => {
+                            const idx = results.findIndex(r => r.player_id === row.player_id && r.match_number === row.match_number);
+                            if (idx >= 0) results[idx] = row; else results.push(row);
+                        });
+                        // Sync play_in_points for auto-zeroed players
+                        for (const p of missing) {
+                            const tot = totalsFor(p.id);
+                            await sb.from(REG_TABLE).update({ play_in_points: tot.points }).eq('id', p.id);
+                            const lp = players.find(x => x.id === p.id);
+                            if (lp) lp.play_in_points = tot.points;
+                        }
+                    }
+                }
+
+                msgEl.textContent = `Saved ✓${missing.length ? ' · ' + missing.length + ' player(s) auto-set to 0' : ''}`;
                 msgEl.className = 'admin-status-msg ok';
                 renderResultsTable();
                 renderStandings(document.getElementById('pi-search').value);
