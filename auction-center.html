@@ -4243,6 +4243,167 @@
             border: 2px solid var(--gold-deep);
         }
 
+        /* player profile modal — click any player's circle to see this */
+        .profile-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 650;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, .82);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease;
+        }
+
+        .profile-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile-card {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            background: linear-gradient(165deg, rgba(var(--surface-rgb, 20, 16, 10), .98), rgba(0, 0, 0, .96));
+            border: 1px solid rgba(var(--gold-rgb), .4);
+            border-radius: 20px;
+            padding: 26px 20px 22px;
+            text-align: center;
+            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), .08), 0 24px 60px rgba(0, 0, 0, .55);
+            transform: translateY(10px) scale(.97);
+            transition: transform .25s ease;
+        }
+
+        .profile-overlay.show .profile-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .profile-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(var(--gold-rgb), .3);
+            background: rgba(0, 0, 0, .4);
+            color: var(--ink-faint);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .profile-photo {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            margin: 0 auto;
+            border: 3px solid var(--gold-deep);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 30px;
+            color: var(--gold-pale);
+            box-shadow: 0 0 0 6px rgba(var(--gold-rgb), .1);
+            cursor: zoom-in;
+        }
+
+        .profile-tier {
+            margin: 14px auto 0;
+            display: inline-block;
+        }
+
+        .profile-name {
+            margin-top: 10px;
+            font-family: 'Anton', sans-serif;
+            font-size: 22px;
+            letter-spacing: .02em;
+            color: var(--ink);
+        }
+
+        .profile-meta {
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--ink-faint);
+            letter-spacing: .02em;
+        }
+
+        .profile-status {
+            margin-top: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 14px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .profile-status.sold {
+            background: rgba(var(--gold-rgb), .14);
+            border: 1px solid rgba(var(--gold-rgb), .35);
+            color: var(--gold-pale);
+        }
+
+        .profile-status.avail {
+            background: rgba(120, 200, 140, .12);
+            border: 1px solid rgba(120, 200, 140, .3);
+            color: #a8e6b8;
+        }
+
+        .profile-status.block {
+            background: rgba(226, 57, 74, .14);
+            border: 1px solid rgba(226, 57, 74, .35);
+            color: #ff8a94;
+            animation: tpOnBlockPulse 1.7s ease-in-out infinite;
+        }
+
+        .profile-stats {
+            margin: 16px auto 0;
+            display: flex;
+            border: 1px solid rgba(var(--gold-rgb), .28);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, .25);
+        }
+
+        .profile-stat-cell {
+            flex: 1;
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-stat-cell + .profile-stat-cell {
+            border-left: 1px solid rgba(var(--gold-rgb), .18);
+        }
+
+        .profile-stat-cell b {
+            font-family: 'Anton', sans-serif;
+            font-size: 16px;
+            color: var(--gold-pale);
+        }
+
+        .profile-stat-cell span {
+            font-size: 10px;
+            color: var(--ink-faint);
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .profile-hint {
+            margin-top: 14px;
+            font-size: 10px;
+            color: var(--ink-faint);
+            opacity: .7;
+        }
+
         .lightbox-close {
             position: absolute;
             top: 16px;
@@ -4817,6 +4978,24 @@
     </div>
     <div class="lightbox-overlay" id="lightboxOverlay"><button class="lightbox-close" id="lightboxClose">✕</button><img
             id="lightboxImg" src="" alt="Player profile screenshot"></div>
+
+    <!-- PLAYER PROFILE — tap any player's circle, anywhere on the page, to see this -->
+    <div class="profile-overlay" id="profileOverlay">
+        <div class="profile-card">
+            <button class="profile-close" id="profileClose">✕</button>
+            <div class="profile-photo" id="profilePhoto">?</div>
+            <span class="tier-badge profile-tier" id="profileTier">TIER —</span>
+            <div class="profile-name" id="profileName">—</div>
+            <div class="profile-meta" id="profileMeta">UID — · Level —</div>
+            <div id="profileStatusWrap"><span class="profile-status" id="profileStatus">—</span></div>
+            <div class="profile-stats" id="profileStats" style="display:none;">
+                <div class="profile-stat-cell"><b id="pfKills">—</b><span>Play-In Kills</span></div>
+                <div class="profile-stat-cell"><b id="pfBooyahs">—</b><span>Booyahs</span></div>
+                <div class="profile-stat-cell"><b id="pfPoints">—</b><span>Play-In Pts</span></div>
+            </div>
+            <div class="profile-hint" id="profileHint"></div>
+        </div>
+    </div>
 
     <!-- MASTHEAD -->
     <section class="masthead" style="padding-bottom:0;">
@@ -5418,6 +5597,56 @@
         $('lightboxOverlay').addEventListener('click', (e) => { if (e.target.id === 'lightboxOverlay') $('lightboxOverlay').classList.remove('show'); });
         function openLightbox(url) { $('lightboxImg').src = url; $('lightboxOverlay').classList.add('show'); }
 
+        /* ---------- PLAYER PROFILE MODAL — usable from anywhere a player's circle appears ---------- */
+        $('profileClose').addEventListener('click', () => $('profileOverlay').classList.remove('show'));
+        $('profileOverlay').addEventListener('click', (e) => { if (e.target.id === 'profileOverlay') $('profileOverlay').classList.remove('show'); });
+        async function openPlayerProfile(playerId) {
+            const p = playersCache[playerId]; if (!p) return;
+            const photoEl = $('profilePhoto');
+            const photoUrl = publicUrlForProfile(p.profile_screenshot_path);
+            if (photoUrl) {
+                photoEl.style.backgroundImage = `url('${photoUrl}')`; photoEl.textContent = '';
+                photoEl.onclick = () => openLightbox(photoUrl);
+            } else {
+                photoEl.style.backgroundImage = 'none'; photoEl.textContent = (p.ign || p.real_name || '?').slice(0, 2).toUpperCase();
+                photoEl.onclick = null;
+            }
+            $('profileTier').textContent = TIER_LABEL[p.auction_tier]?.split(' — ')[0] || 'TIER —';
+            $('profileTier').className = 'tier-badge profile-tier ' + (p.auction_tier || '');
+            $('profileName').textContent = p.ign || p.real_name || '—';
+            $('profileMeta').textContent = `${p.real_name || ''}${p.real_name ? ' · ' : ''}UID ${p.uid ?? '—'} · Level ${p.level ?? '—'}`;
+
+            const statusEl = $('profileStatus');
+            const isOnBlock = stateCache?.current_player_id === p.id;
+            if (p.team_id) {
+                statusEl.textContent = `Sold to ${TEAM_META[p.team_id]?.name || p.team_id} — ${fmtCr(p.final_bid_price)}`;
+                statusEl.className = 'profile-status sold';
+            } else if (isOnBlock) {
+                statusEl.textContent = 'On the block right now';
+                statusEl.className = 'profile-status block';
+            } else {
+                statusEl.textContent = `Available — base ${fmtCr(p.auction_base_price ?? TIER_PRICE[p.auction_tier])}`;
+                statusEl.className = 'profile-status avail';
+            }
+
+            $('profileHint').textContent = photoUrl ? 'Tap the photo to view it full-size' : '';
+            $('profileOverlay').classList.add('show');
+
+            const statsWrap = $('profileStats');
+            statsWrap.style.display = 'none';
+            try {
+                const { data, error } = await sb.from('ffxipl_s12_playin_results').select('kills, booyah, points').eq('player_id', playerId);
+                if (error) throw error;
+                const rows = data || [];
+                if (rows.length) {
+                    $('pfKills').textContent = rows.reduce((s, r) => s + (r.kills || 0), 0);
+                    $('pfBooyahs').textContent = rows.filter(r => r.booyah).length;
+                    $('pfPoints').textContent = rows.reduce((s, r) => s + (r.points || 0), 0);
+                    statsWrap.style.display = 'flex';
+                }
+            } catch (e) { /* no play-in stats yet — keep hidden */ }
+        }
+
         // Hard refresh FAB — bypasses bfcache so a stuck/stale client gets a
         // genuinely fresh load, not just a re-render of cached state.
         $('refreshFab')?.addEventListener('click', () => {
@@ -5830,8 +6059,9 @@
                 $('stageTierBadge').textContent = TIER_LABEL[player.auction_tier]?.split(' — ')[0] || 'TIER —';
                 $('stageTierBadge').className = 'tier-badge ' + (player.auction_tier || '');
                 const photoUrl = publicUrlForProfile(player.profile_screenshot_path);
-                if (photoUrl) { photoEl.style.backgroundImage = `url('${photoUrl}')`; photoEl.textContent = ''; photoEl.onclick = () => openLightbox(photoUrl); }
-                else { photoEl.style.backgroundImage = 'none'; photoEl.textContent = (player.ign || player.real_name || '?').slice(0, 2).toUpperCase(); photoEl.onclick = null; }
+                if (photoUrl) { photoEl.style.backgroundImage = `url('${photoUrl}')`; photoEl.textContent = ''; }
+                else { photoEl.style.backgroundImage = 'none'; photoEl.textContent = (player.ign || player.real_name || '?').slice(0, 2).toUpperCase(); }
+                photoEl.onclick = () => openPlayerProfile(player.id);
                 $('stageName').textContent = player.ign || '—';
                 $('stageMeta').textContent = `${player.real_name} · UID ${player.uid} · Level ${player.level}`;
                 $('stageOpen').textContent = fmtCr(player.auction_base_price ?? TIER_PRICE[player.auction_tier]);
@@ -5947,10 +6177,11 @@
                     const photoUrl = publicUrlForProfile(player.profile_screenshot_path);
                     if (photoUrl) { photoEl.style.backgroundImage = `url('${photoUrl}')`; photoEl.textContent = ''; }
                     else { photoEl.style.backgroundImage = 'none'; photoEl.textContent = (player.ign || player.real_name || '?').slice(0, 2).toUpperCase(); }
+                    photoEl.onclick = () => openPlayerProfile(player.id); photoEl.style.cursor = 'pointer';
                     $(ids.n).textContent = player.ign || '—';
                     $(ids.sub).textContent = `${TIER_LABEL[player.auction_tier]?.split(' — ')[0] || ''} · ${s.current_round ? 'Round ' + s.current_round : ''}`;
                 } else {
-                    photoEl.style.backgroundImage = 'none'; photoEl.textContent = '?';
+                    photoEl.style.backgroundImage = 'none'; photoEl.textContent = '?'; photoEl.onclick = null;
                     $(ids.n).textContent = 'No player on the block yet'; $(ids.sub).textContent = 'Waiting for admin';
                 }
                 $(ids.bid).textContent = s.current_bid == null ? (player ? fmtCr(player.auction_base_price ?? TIER_PRICE[player.auction_tier]) : '—') : fmtCr(s.current_bid);
@@ -6109,7 +6340,9 @@
                     </div>
                     <span class="sq-price">${fmtCr(p.final_bid_price)}</span>
                 `;
-                if (photoUrl) { card.classList.add('has-photo'); card.addEventListener('click', () => openLightbox(photoUrl)); }
+                if (photoUrl) card.classList.add('has-photo');
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => openPlayerProfile(p.id));
                 list.appendChild(card);
             });
         }
@@ -6340,7 +6573,7 @@
             setTimeout(() => broadcastChannel.send({ type: 'broadcast', event: 'auction_complete', payload: {} }), 600);
         });
         function summaryTeamCard(id, roster) {
-            const rosterHtml = roster.length ? roster.map(p => `<div class="prow"><span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span></div>`).join('') : '<div class="empty-slot">No player yet</div>';
+            const rosterHtml = roster.length ? roster.map(p => `<div class="prow" data-profile="${p.id}" style="cursor:pointer;"><span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span></div>`).join('') : '<div class="empty-slot">No player yet</div>';
             return `<div class="summary-team-card" style="--team-color:${TEAM_META[id].color}"><div class="h"><span class="abbr display">${teamBadgeHTML(id)}</span><span class="cap">${teamsCache[id]?.captain_name || 'No captain'}</span></div><div class="spent">Spent <b>${fmtCr(teamsCache[id]?.purse_spent ?? 0)}</b> · ${teamsCache[id]?.players_bought ?? 0}/5 players</div><div class="plist">${rosterHtml}</div></div>`;
         }
         function summaryStatChip(num, label) { return `<div class="stat-card"><div class="stat-num">${num}</div><div class="stat-label">${label}</div></div>`; }
@@ -6365,6 +6598,9 @@
         }
         $('summaryClose').addEventListener('click', () => $('summaryModal').classList.remove('show'));
         $('summaryCloseX').addEventListener('click', () => $('summaryModal').classList.remove('show'));
+        $('summarySwipe')?.addEventListener('click', (e) => {
+            const row = e.target.closest('[data-profile]'); if (row) openPlayerProfile(row.dataset.profile);
+        });
 
         /* ── SUBMIT ROSTERS ── */
         const SUBMIT_PW = 'XIPL12LOCK';
@@ -6684,7 +6920,7 @@
             await checkGlory();
             if (!_gloryActive) subscribeRealtime();
         })();
-    </script><script src="maintenance.js"></script>
+    </script>
 </body>
 
 </html>
