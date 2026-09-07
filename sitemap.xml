@@ -1,40 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-       <loc>https://rebeldarling-001.github.io/f-ipl/</loc>
-       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
-       <priority>1.0000</priority>
+    <loc>https://rebeldarling-001.github.io/f-ipl/</loc>
+    <priority>1.0</priority>
   </url>
+
   <url>
-       <loc>https://rebeldarling-001.github.io/f-ipl/home.html</loc>
-       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
-       <priority>0.8000</priority>
+    <loc>https://rebeldarling-001.github.io/f-ipl/home.html</loc>
+    <priority>0.8</priority>
   </url>
+
   <url>
-       <loc>https://rebeldarling-001.github.io/f-ipl/arena.html</loc>
-       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://rebeldarling-001.github.io/f-ipl/arena.html</loc>
+    <priority>0.6</priority>
   </url>
+
   <url>
-       <loc>https://rebeldarling-001.github.io/f-ipl/registration-center.html</loc>
-       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://rebeldarling-001.github.io/f-ipl/registration-center.html</loc>
+    <priority>0.6</priority>
   </url>
+
   <url>
-       <loc>https://rebeldarling-001.github.io/f-ipl/play-ins.html</loc>
-       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://rebeldarling-001.github.io/f-ipl/play-ins.html</loc>
+    <priority>0.6</priority>
   </url>
+
   <url>
-       <loc>https://rebeldarling-001.github.io/f-ipl/auction-center.html</loc>
-       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
-       <priority>0.6400</priority>
+    <loc>https://rebeldarling-001.github.io/f-ipl/auction-center.html</loc>
+    <priority>0.6</priority>
   </url>
+
   <url>
-       <loc>https://rebeldarling-001.github.io/f-ipl/teams.html</loc>
-       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
+    <loc>https://rebeldarling-001.github.io/f-ipl/teams.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://rebeldarling-001.github.io/f-ipl/schedule.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://rebeldarling-001.github.io/f-ipl/leaderboard.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://rebeldarling-001.github.io/f-ipl/hall-of-fame.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://rebeldarling-001.github.io/f-ipl/rules.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://rebeldarling-001.github.io/f-ipl/about.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>       <lastmod>2026-09-06T04:06:33+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
   <url>
