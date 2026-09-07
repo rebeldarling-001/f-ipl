@@ -1656,14 +1656,38 @@
         .stage-card {
             position: relative;
             z-index: 1;
-            padding: 16px 20px 0;
+            padding: 20px 20px 0;
             overflow: hidden;
-            background: radial-gradient(ellipse 140% 90% at 50% -10%, rgba(var(--gold-rgb), .16), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+            background: radial-gradient(ellipse 140% 90% at 50% -10%, rgba(var(--gold-rgb), .18), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
             text-align: center;
             min-height: 180px;
         }
 
+        .stage-card::before,
+        .stage-card::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            width: 65%;
+            height: 190px;
+            background: linear-gradient(120deg, rgba(var(--gold-rgb), .1), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .stage-card::before {
+            left: -15%;
+            transform: rotate(14deg);
+        }
+
+        .stage-card::after {
+            right: -15%;
+            transform: rotate(-14deg) scaleX(-1);
+        }
+
         .round-badge-row {
+            position: relative;
+            z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1672,22 +1696,23 @@
         }
 
         .round-pill {
-            padding: 5px 11px;
+            padding: 6px 13px;
             border-radius: 100px;
             font-size: 9.5px;
-            letter-spacing: .14em;
+            letter-spacing: .16em;
             text-transform: uppercase;
-            background: rgba(var(--gold-rgb), .1);
+            background: rgba(var(--gold-rgb), .12);
             border: 1px solid var(--gold-deep);
             color: var(--gold-pale);
             font-weight: 700;
+            box-shadow: 0 2px 10px -2px rgba(var(--gold-rgb), .3);
         }
 
         .tier-badge {
-            padding: 5px 11px;
+            padding: 6px 13px;
             border-radius: 100px;
             font-size: 9.5px;
-            letter-spacing: .1em;
+            letter-spacing: .12em;
             text-transform: uppercase;
             font-weight: 700;
         }
@@ -1765,10 +1790,12 @@
         }
 
         .player-photo-img {
-            width: 76px;
-            height: 76px;
+            position: relative;
+            z-index: 2;
+            width: 88px;
+            height: 88px;
             border-radius: 50%;
-            margin: 12px auto 0;
+            margin: 16px auto 0;
             border: 3px solid var(--gold-deep);
             background-size: cover;
             background-position: center;
@@ -1776,101 +1803,122 @@
             align-items: center;
             justify-content: center;
             font-family: 'Anton', sans-serif;
-            font-size: 24px;
+            font-size: 26px;
             color: var(--gold-pale);
-            box-shadow: 0 0 0 5px rgba(var(--gold-rgb), .08);
+            box-shadow: 0 0 0 6px rgba(var(--gold-rgb), .1), 0 0 0 9px rgba(var(--gold-rgb), .05), 0 8px 24px -6px rgba(0, 0, 0, .5);
             cursor: pointer;
         }
 
         .player-name {
-            margin-top: 9px;
+            position: relative;
+            z-index: 2;
+            margin-top: 12px;
             font-family: 'Anton', sans-serif;
-            font-size: 20px;
+            font-size: 21px;
             letter-spacing: .02em;
             color: var(--ink);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, .4);
         }
 
         .player-meta {
-            margin-top: 3px;
+            position: relative;
+            z-index: 2;
+            margin-top: 4px;
             font-size: 11px;
             color: var(--ink-faint);
-            letter-spacing: .03em;
+            letter-spacing: .04em;
         }
 
         /* official player card — play-in credentials */
         .official-card {
-            margin: 14px auto 0;
+            position: relative;
+            z-index: 2;
+            margin: 16px auto 0;
             max-width: 300px;
             display: flex;
-            border: 1px solid rgba(var(--gold-rgb), .28);
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            background: rgba(var(--bg-rgb), .35);
+            background: linear-gradient(160deg, rgba(var(--gold-rgb), .1), rgba(0, 0, 0, .38));
+            border: 1px solid rgba(var(--gold-rgb), .3);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04), 0 8px 20px -8px rgba(0, 0, 0, .5);
         }
 
         .official-cell {
             flex: 1;
-            padding: 8px 4px;
+            padding: 10px 4px 9px;
             text-align: center;
-            border-right: 1px dashed rgba(var(--gold-rgb), .2);
+            position: relative;
         }
 
-        .official-cell:last-child {
-            border-right: none;
+        .official-cell+.official-cell::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 18%;
+            bottom: 18%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(var(--gold-rgb), .35), transparent);
         }
 
         .official-cell b {
             display: block;
-            font-family: 'Space Mono', monospace;
-            font-size: 14px;
+            font-family: 'Anton', sans-serif;
+            font-size: 17px;
+            letter-spacing: .01em;
             color: var(--gold-pale);
+            text-shadow: 0 0 14px rgba(var(--gold-rgb), .3);
         }
 
         .official-cell span {
             display: block;
-            margin-top: 1px;
+            margin-top: 2px;
             font-size: 7.5px;
-            letter-spacing: .08em;
+            letter-spacing: .1em;
             color: var(--ink-faint);
             text-transform: uppercase;
         }
 
         .price-row {
+            position: relative;
+            z-index: 2;
             display: flex;
             gap: 10px;
             justify-content: center;
-            margin-top: 16px;
+            margin-top: 18px;
             flex-wrap: wrap;
         }
 
         .price-chip {
-            padding: 11px 16px;
-            border-radius: 13px;
-            background: rgba(var(--gold-rgb), .07);
-            border: 1px solid rgba(var(--gold-rgb), .24);
-            min-width: 108px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: linear-gradient(160deg, rgba(var(--gold-rgb), .11), rgba(0, 0, 0, .32));
+            border: 1px solid rgba(var(--gold-rgb), .28);
+            min-width: 112px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 8px 18px -8px rgba(0, 0, 0, .45);
         }
 
         .price-chip .lbl {
             display: block;
             font-size: 8.5px;
-            letter-spacing: .16em;
+            letter-spacing: .18em;
             color: var(--ink-faint);
             text-transform: uppercase;
         }
 
         .price-chip .val {
             display: block;
-            margin-top: 4px;
+            margin-top: 5px;
             font-family: 'Anton', sans-serif;
-            font-size: 19px;
+            font-size: 20px;
             color: var(--gold-pale);
+            text-shadow: 0 0 16px rgba(var(--gold-rgb), .25);
             transition: transform .15s ease;
         }
 
         .price-chip .val.tick {
             transform: scale(1.18);
             color: var(--live);
+            text-shadow: 0 0 16px rgba(var(--live-rgb), .4);
         }
 
         .countdown-overlay {
@@ -1980,7 +2028,7 @@
             background: linear-gradient(90deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .28) 60%, transparent 100%);
             border-top: 1px solid rgba(var(--gold-rgb), .1);
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
         .bid-leader-row {
@@ -4243,167 +4291,6 @@
             border: 2px solid var(--gold-deep);
         }
 
-        /* player profile modal — click any player's circle to see this */
-        .profile-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 650;
-            max-width: 480px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, .82);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .25s ease;
-        }
-
-        .profile-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .profile-card {
-            position: relative;
-            width: 100%;
-            max-width: 340px;
-            background: linear-gradient(165deg, rgba(var(--surface-rgb, 20, 16, 10), .98), rgba(0, 0, 0, .96));
-            border: 1px solid rgba(var(--gold-rgb), .4);
-            border-radius: 20px;
-            padding: 26px 20px 22px;
-            text-align: center;
-            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), .08), 0 24px 60px rgba(0, 0, 0, .55);
-            transform: translateY(10px) scale(.97);
-            transition: transform .25s ease;
-        }
-
-        .profile-overlay.show .profile-card {
-            transform: translateY(0) scale(1);
-        }
-
-        .profile-close {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid rgba(var(--gold-rgb), .3);
-            background: rgba(0, 0, 0, .4);
-            color: var(--ink-faint);
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .profile-photo {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            margin: 0 auto;
-            border: 3px solid var(--gold-deep);
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Anton', sans-serif;
-            font-size: 30px;
-            color: var(--gold-pale);
-            box-shadow: 0 0 0 6px rgba(var(--gold-rgb), .1);
-            cursor: zoom-in;
-        }
-
-        .profile-tier {
-            margin: 14px auto 0;
-            display: inline-block;
-        }
-
-        .profile-name {
-            margin-top: 10px;
-            font-family: 'Anton', sans-serif;
-            font-size: 22px;
-            letter-spacing: .02em;
-            color: var(--ink);
-        }
-
-        .profile-meta {
-            margin-top: 4px;
-            font-size: 12px;
-            color: var(--ink-faint);
-            letter-spacing: .02em;
-        }
-
-        .profile-status {
-            margin-top: 14px;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 8px 14px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        .profile-status.sold {
-            background: rgba(var(--gold-rgb), .14);
-            border: 1px solid rgba(var(--gold-rgb), .35);
-            color: var(--gold-pale);
-        }
-
-        .profile-status.avail {
-            background: rgba(120, 200, 140, .12);
-            border: 1px solid rgba(120, 200, 140, .3);
-            color: #a8e6b8;
-        }
-
-        .profile-status.block {
-            background: rgba(226, 57, 74, .14);
-            border: 1px solid rgba(226, 57, 74, .35);
-            color: #ff8a94;
-            animation: tpOnBlockPulse 1.7s ease-in-out infinite;
-        }
-
-        .profile-stats {
-            margin: 16px auto 0;
-            display: flex;
-            border: 1px solid rgba(var(--gold-rgb), .28);
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(0, 0, 0, .25);
-        }
-
-        .profile-stat-cell {
-            flex: 1;
-            padding: 10px 4px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .profile-stat-cell + .profile-stat-cell {
-            border-left: 1px solid rgba(var(--gold-rgb), .18);
-        }
-
-        .profile-stat-cell b {
-            font-family: 'Anton', sans-serif;
-            font-size: 16px;
-            color: var(--gold-pale);
-        }
-
-        .profile-stat-cell span {
-            font-size: 10px;
-            color: var(--ink-faint);
-            letter-spacing: .04em;
-            text-transform: uppercase;
-        }
-
-        .profile-hint {
-            margin-top: 14px;
-            font-size: 10px;
-            color: var(--ink-faint);
-            opacity: .7;
-        }
-
         .lightbox-close {
             position: absolute;
             top: 16px;
@@ -4979,24 +4866,6 @@
     <div class="lightbox-overlay" id="lightboxOverlay"><button class="lightbox-close" id="lightboxClose">✕</button><img
             id="lightboxImg" src="" alt="Player profile screenshot"></div>
 
-    <!-- PLAYER PROFILE — tap any player's circle, anywhere on the page, to see this -->
-    <div class="profile-overlay" id="profileOverlay">
-        <div class="profile-card">
-            <button class="profile-close" id="profileClose">✕</button>
-            <div class="profile-photo" id="profilePhoto">?</div>
-            <span class="tier-badge profile-tier" id="profileTier">TIER —</span>
-            <div class="profile-name" id="profileName">—</div>
-            <div class="profile-meta" id="profileMeta">UID — · Level —</div>
-            <div id="profileStatusWrap"><span class="profile-status" id="profileStatus">—</span></div>
-            <div class="profile-stats" id="profileStats" style="display:none;">
-                <div class="profile-stat-cell"><b id="pfKills">—</b><span>Play-In Kills</span></div>
-                <div class="profile-stat-cell"><b id="pfBooyahs">—</b><span>Booyahs</span></div>
-                <div class="profile-stat-cell"><b id="pfPoints">—</b><span>Play-In Pts</span></div>
-            </div>
-            <div class="profile-hint" id="profileHint"></div>
-        </div>
-    </div>
-
     <!-- MASTHEAD -->
     <section class="masthead" style="padding-bottom:0;">
         <div class="masthead-watermark" id="mastheadWatermark" aria-hidden="true">
@@ -5554,9 +5423,16 @@
         const fmtCr = (n) => (n === null || n === undefined) ? '—' : `₹${Number(n).toFixed(0)}Cr`;
         const fmtPayout = (finalBid) => (finalBid === null || finalBid === undefined) ? '—' : `₹${(Number(finalBid) * 0.5).toFixed(1).replace(/\.0$/, '')}`;
         const $ = (id) => document.getElementById(id);
-        function publicUrlForProfile(path) {
-            if (!path) return null;
-            const { data } = sb.storage.from('ffxipl-uploads').getPublicUrl(path);
+        function publicUrlForProfile(value) {
+            if (!value) return null;
+            // Registration stores the FULL public URL already (profile_screenshot_url) —
+            // if that's what got copied in, just use it as-is.
+            if (/^https?:\/\//i.test(value)) return value;
+            // Otherwise treat it as a bare storage path and resolve it against the
+            // actual public bucket registration uploads to ('ffxipl-profile-public',
+            // not 'ffxipl-uploads' — that was the bug: wrong bucket name meant this
+            // never resolved to a real image, so it silently fell back to initials).
+            const { data } = sb.storage.from('ffxipl-profile-public').getPublicUrl(value);
             return data?.publicUrl || null;
         }
 
@@ -5597,54 +5473,13 @@
         $('lightboxOverlay').addEventListener('click', (e) => { if (e.target.id === 'lightboxOverlay') $('lightboxOverlay').classList.remove('show'); });
         function openLightbox(url) { $('lightboxImg').src = url; $('lightboxOverlay').classList.add('show'); }
 
-        /* ---------- PLAYER PROFILE MODAL — usable from anywhere a player's circle appears ---------- */
-        $('profileClose').addEventListener('click', () => $('profileOverlay').classList.remove('show'));
-        $('profileOverlay').addEventListener('click', (e) => { if (e.target.id === 'profileOverlay') $('profileOverlay').classList.remove('show'); });
-        async function openPlayerProfile(playerId) {
+        /* ---------- PLAYER PHOTO — tap any player's circle anywhere on the page to view the
+           exact profile screenshot they uploaded at registration, full-size. Nothing else. ---------- */
+        function openPlayerProfile(playerId) {
             const p = playersCache[playerId]; if (!p) return;
-            const photoEl = $('profilePhoto');
             const photoUrl = publicUrlForProfile(p.profile_screenshot_path);
-            if (photoUrl) {
-                photoEl.style.backgroundImage = `url('${photoUrl}')`; photoEl.textContent = '';
-                photoEl.onclick = () => openLightbox(photoUrl);
-            } else {
-                photoEl.style.backgroundImage = 'none'; photoEl.textContent = (p.ign || p.real_name || '?').slice(0, 2).toUpperCase();
-                photoEl.onclick = null;
-            }
-            $('profileTier').textContent = TIER_LABEL[p.auction_tier]?.split(' — ')[0] || 'TIER —';
-            $('profileTier').className = 'tier-badge profile-tier ' + (p.auction_tier || '');
-            $('profileName').textContent = p.ign || p.real_name || '—';
-            $('profileMeta').textContent = `${p.real_name || ''}${p.real_name ? ' · ' : ''}UID ${p.uid ?? '—'} · Level ${p.level ?? '—'}`;
-
-            const statusEl = $('profileStatus');
-            const isOnBlock = stateCache?.current_player_id === p.id;
-            if (p.team_id) {
-                statusEl.textContent = `Sold to ${TEAM_META[p.team_id]?.name || p.team_id} — ${fmtCr(p.final_bid_price)}`;
-                statusEl.className = 'profile-status sold';
-            } else if (isOnBlock) {
-                statusEl.textContent = 'On the block right now';
-                statusEl.className = 'profile-status block';
-            } else {
-                statusEl.textContent = `Available — base ${fmtCr(p.auction_base_price ?? TIER_PRICE[p.auction_tier])}`;
-                statusEl.className = 'profile-status avail';
-            }
-
-            $('profileHint').textContent = photoUrl ? 'Tap the photo to view it full-size' : '';
-            $('profileOverlay').classList.add('show');
-
-            const statsWrap = $('profileStats');
-            statsWrap.style.display = 'none';
-            try {
-                const { data, error } = await sb.from('ffxipl_s12_playin_results').select('kills, booyah, points').eq('player_id', playerId);
-                if (error) throw error;
-                const rows = data || [];
-                if (rows.length) {
-                    $('pfKills').textContent = rows.reduce((s, r) => s + (r.kills || 0), 0);
-                    $('pfBooyahs').textContent = rows.filter(r => r.booyah).length;
-                    $('pfPoints').textContent = rows.reduce((s, r) => s + (r.points || 0), 0);
-                    statsWrap.style.display = 'flex';
-                }
-            } catch (e) { /* no play-in stats yet — keep hidden */ }
+            if (photoUrl) { openLightbox(photoUrl); }
+            else { toast('No profile photo on file for this player.', 'error'); }
         }
 
         // Hard refresh FAB — bypasses bfcache so a stuck/stale client gets a
