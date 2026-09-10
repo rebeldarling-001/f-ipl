@@ -1436,7 +1436,7 @@
         .fade-up {
             opacity: 0;
             transform: translateY(24px);
-            transition: 0.6s ease;
+            transition: 0.7s cubic-bezier(.16, .84, .32, 1);
         }
 
         .fade-up.in {
@@ -1481,6 +1481,7 @@
 /* ---------- 5. UTILITY: buttons ---------- */
         .btn {
             flex: 1;
+            position: relative;
             text-align: center;
             padding: 14px 0;
             border-radius: 11px;
@@ -1489,7 +1490,25 @@
             font-weight: 600;
             text-transform: uppercase;
             border: none;
-            transition: transform 0.15s ease;
+            overflow: hidden;
+            transition: transform 0.15s ease, box-shadow 0.25s ease;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.65s cubic-bezier(.16, .84, .32, 1);
+            pointer-events: none;
+        }
+
+        .btn:active::after {
+            left: 130%;
         }
 
         .btn:active {
@@ -1559,6 +1578,12 @@
             padding: 2px;
             overflow: hidden;
             isolation: isolate;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 2px 0 rgba(255, 255, 255, 0.03) inset;
+            transition: transform 0.35s cubic-bezier(.16, .84, .32, 1), box-shadow 0.35s ease;
+        }
+
+        .foil-frame:active {
+            transform: scale(0.985);
         }
 
         .foil-frame::before {
@@ -1988,7 +2013,6 @@
             }
         }
 
-
         .season-tag {
             position: relative;
             display: inline-flex;
@@ -2283,6 +2307,98 @@
             font-size: 10.5px;
             color: var(--ink-faint);
             letter-spacing: 0.02em;
+        }
+
+        /* ============ ELITE PASS (premium upsell) ============ */
+        .elite-foil {
+            margin-top: 22px;
+            border-radius: 24px;
+        }
+
+        .elite-card {
+            position: relative;
+            z-index: 1;
+            padding: 28px 22px 26px;
+            border-radius: 22px;
+            overflow: hidden;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+        }
+
+        .elite-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .elite-price {
+            text-align: right;
+        }
+
+        .elite-price b {
+            display: block;
+            font-family: 'Anton', sans-serif;
+            font-size: 22px;
+            letter-spacing: 0.02em;
+            color: var(--gold-pale);
+        }
+
+        .elite-price span {
+            font-size: 10px;
+            color: var(--ink-faint);
+            letter-spacing: 0.06em;
+        }
+
+        .elite-title {
+            margin-top: 16px;
+            font-size: 26px;
+        }
+
+        .elite-desc {
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--ink-dim);
+        }
+
+        .elite-perks {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .elite-perk {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--ink);
+        }
+
+        .elite-perk-check {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(var(--gold-rgb), 0.14);
+            color: var(--gold);
+            font-size: 11px;
+            margin-top: 1px;
+        }
+
+        .elite-btn {
+            margin-top: 22px;
+        }
+
+        .elite-note {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 10.5px;
+            color: var(--ink-faint);
         }
 
         /* ============ STATS ============ */
@@ -3682,6 +3798,37 @@
             </div>
         </div>
     </section>
+
+    <!-- ELITE PASS — built and ready, just switched off for now.
+         Wrap markers below mark the saved section; delete the two "off"
+         comment lines around it when you're ready to launch it. CSS for
+         it is still sitting untouched in <head>. -->
+    <!--
+    <section id="elite" style="padding-top:8px;">
+        <div class="foil-frame elite-foil fade-up" style="--foil:var(--gold-pale);">
+            <div class="elite-card">
+                <div class="elite-head">
+                    <span class="season-tag"><span class="dot"></span> XIPL ELITE</span>
+                    <div class="elite-price"><b>₹49</b><span>ONE-TIME · SEASON 12</span></div>
+                </div>
+                <h2 class="elite-title display">Follow the season<br>like a <b style="-webkit-text-fill-color:var(--gold);color:var(--gold);">pro</b></h2>
+                <p class="elite-desc">Unlock the full Season 12 experience — priority access, insider drops and a
+                    badge that shows on the leaderboard.</p>
+
+                <div class="elite-perks">
+                    <div class="elite-perk"><span class="elite-perk-check">✓</span> Priority registration window before public slots open</div>
+                    <div class="elite-perk"><span class="elite-perk-check">✓</span> Elite badge next to your name on the Leaderboard</div>
+                    <div class="elite-perk"><span class="elite-perk-check">✓</span> Early access to fixtures, auction previews &amp; team news</div>
+                    <div class="elite-perk"><span class="elite-perk-check">✓</span> Exclusive highlight-reel shoutouts during match days</div>
+                    <div class="elite-perk"><span class="elite-perk-check">✓</span> Ad-free viewing on the live match tracker</div>
+                </div>
+
+                <a href="./registration-center.html" class="btn btn-primary elite-btn">Get Elite Pass →</a>
+                <div class="elite-note">One-time purchase · Valid through end of Season 12</div>
+            </div>
+        </div>
+    </section>
+    -->
 
     <!-- STATS -->
     <section id="stats">

@@ -6484,7 +6484,8 @@
                     is_finalized: true,
                     players_json: JSON.stringify(allSold.filter(p => p.team_id === id).map(p => ({
                         id: p.id, ign: p.ign || p.real_name, real_name: p.real_name,
-                        level: p.level, tier: p.auction_tier, price: p.final_bid_price, round: p.auction_round
+                        level: p.level, tier: p.auction_tier, price: p.final_bid_price, round: p.auction_round,
+                        profile_url: publicUrlForProfile(p.profile_screenshot_path) || ''
                     }))),
                     submitted_at: submittedAt
                 }));
@@ -6558,9 +6559,10 @@
                 const top5 = [...allPlayers].filter(p=>p.price!=null).sort((a,b)=>b.price-a.price).slice(0,5);
                 const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
                 document.getElementById('gloryTop5').innerHTML = top5.map((p,i)=>`
-                    <div style="display:flex;align-items:center;gap:12px;background:${i===0?'rgba(255,215,0,.07)':'rgba(255,255,255,.03)'};border:1px solid ${i===0?'rgba(255,215,0,.3)':'rgba(240,185,61,.1)'};border-radius:14px;padding:14px;position:relative;overflow:hidden;">
+                    <div data-profile="${p.id}" style="display:flex;align-items:center;gap:12px;background:${i===0?'rgba(255,215,0,.07)':'rgba(255,255,255,.03)'};border:1px solid ${i===0?'rgba(255,215,0,.3)':'rgba(240,185,61,.1)'};border-radius:14px;padding:14px;position:relative;overflow:hidden;cursor:pointer;">
                         <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${p.team_color||'#f0b93d'};"></div>
                         <div style="text-align:center;min-width:38px;"><div style="font-size:${i===0?28:22}px;">${medals[i]}</div><div style="font-family:'Space Mono',monospace;font-size:10px;color:#6b5f4c;">#${i+1}</div></div>
+                        <div style="flex-shrink:0;">${teamBadgeHTML(p.team_id, i===0?40:34)}</div>
                         <div style="flex:1;min-width:0;">
                             <div style="font-family:'Rajdhani',sans-serif;font-size:${i===0?17:15}px;font-weight:700;color:${i===0?'#FFD700':'#f4ecd8'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.ign||p.real_name}</div>
                             <div style="display:flex;align-items:center;gap:5px;margin-top:3px;flex-wrap:wrap;">
@@ -6575,21 +6577,24 @@
                 document.getElementById('gloryTeams').innerHTML = TEAM_IDS.map(id => {
                     const row = teamsMap[id]; if (!row) return '';
                     const ps = allPlayers.filter(p=>p.team_id===id).sort((a,b)=>b.price-a.price);
-                    const pRows = ps.map(p=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 8px;border-radius:8px;background:rgba(255,255,255,.02);">
-                        <div><div style="font-size:14px;color:#f4ecd8;font-weight:600;">${p.ign||p.real_name}<span style="font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;background:rgba(240,185,61,.12);color:#f0b93d;margin-left:6px;">${({top10:'T1',top20:'T2',top30:'T3',top40:'T4'})[p.tier]||p.tier}</span></div>
+                    const pRows = ps.map(p=>`<div data-profile="${p.id}" style="display:flex;align-items:center;gap:10px;justify-content:space-between;padding:7px 8px;border-radius:8px;background:rgba(255,255,255,.02);cursor:pointer;">
+                        <div style="flex-shrink:0;">${teamBadgeHTML(id, 26)}</div>
+                        <div style="flex:1;min-width:0;"><div style="font-size:14px;color:#f4ecd8;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.ign||p.real_name}<span style="font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;background:rgba(240,185,61,.12);color:#f0b93d;margin-left:6px;">${({top10:'T1',top20:'T2',top30:'T3',top40:'T4'})[p.tier]||p.tier}</span></div>
                         <div style="font-size:11px;color:#6b5f4c;">${p.real_name} · Lvl ${p.level||'—'}</div></div>
-                        <div style="font-family:'Space Mono',monospace;font-size:13px;color:#f0b93d;font-weight:700;">₹${p.price}Cr</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:13px;color:#f0b93d;font-weight:700;flex-shrink:0;">₹${p.price}Cr</div>
                     </div>`).join('') || '<div style="color:#6b5f4c;font-size:13px;padding:8px;">No players recorded</div>';
                     return `<div style="border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);">
                         <div style="height:3px;background:${row.team_color};"></div>
                         <div style="display:flex;align-items:center;gap:12px;padding:14px 16px 10px;">
-                            <div style="width:44px;height:44px;border-radius:10px;background:${row.team_color};display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:13px;color:#fff;flex-shrink:0;">${id}</div>
+                            <div style="width:44px;height:44px;border-radius:10px;background:${row.team_color}22;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${teamBadgeHTML(id, 34, true)}</div>
                             <div style="flex:1;"><div style="font-family:'Anton',sans-serif;font-size:20px;color:#f4ecd8;">${id}</div><div style="font-size:11px;color:#6b5f4c;text-transform:uppercase;letter-spacing:.08em;">${row.team_name||''}</div><div style="font-size:12px;color:#a9997d;margin-top:1px;">👑 ${row.captain_name||'TBD'}</div></div>
                             <div style="text-align:right;font-size:12px;color:#a9997d;font-family:'Space Mono',monospace;"><b style="color:#f0b93d;font-size:14px;display:block;">₹${row.purse_spent||0}Cr</b>spent</div>
                         </div>
                         <div style="padding:8px 12px 12px;">${pRows}</div>
                     </div>`;
                 }).join('');
+                document.getElementById('gloryTop5').onclick = (e) => { const row = e.target.closest('[data-profile]'); if (row) openPlayerProfile(row.dataset.profile); };
+                document.getElementById('gloryTeams').onclick = (e) => { const row = e.target.closest('[data-profile]'); if (row) openPlayerProfile(row.dataset.profile); };
                 startGloryConfetti();
                 spawnGloryEmoji();
                 setTimeout(() => speak('Season 12 Auction Complete! Welcome to FREEFIRE XIPL Season 12! Battle begins!'), 1800);
