@@ -523,6 +523,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 .tc-btn.feature.on{background:var(--gold);color:var(--on-accent);border-color:var(--gold);}
 .tc-btn.sold-btn{border-color:rgba(var(--gold-rgb),.35);color:var(--gold);background:rgba(var(--gold-rgb),.06);}
 .tc-btn.reset-btn{border-color:rgba(var(--live-rgb),.25);color:var(--live);background:rgba(var(--live-rgb),.04);}
+.tc-btn.bids-reset-btn{border-color:var(--line);color:var(--ink-dim);background:var(--surface-2);}
 
 /* ═══ POPUPS & MODALS ═══ */
 /* Bid toast (compact) */
@@ -989,12 +990,10 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
 
 <!-- LIVE BIDDING -->
 <div class="sec">
-  <div class="sec-eyebrow fade-up">Franchise Bidding</div>
-  <h2 class="sec-title fade-up d1">Live <b>franchise auction</b></h2>
-  <p class="sec-desc fade-up d2">Admin brings one franchise on stage — only place where bidding happens. Approved captains bid there, starting at ₹100.</p>
+  <div class="sec-eyebrow fade-up">Franchise Bidding · Live Now</div>
 
   <!-- Stats -->
-  <div class="stat-row fade-up d3">
+  <div class="stat-row fade-up d1">
     <div class="stat-cell"><div class="stat-num" id="statCaptains">0</div><div class="stat-lbl">Bidders</div></div>
     <div class="stat-cell"><div class="stat-num" id="statBidders">0</div><div class="stat-lbl">Active</div></div>
     <div class="stat-cell"><div class="stat-num" id="statTopBid">₹100</div><div class="stat-lbl">Highest</div></div>
@@ -1778,6 +1777,7 @@ function renderTeamControlList() {
         ${!isSold ? `<button class="tc-btn feature ${isFeatured ? 'on' : ''}" data-action="feature" data-team="${id}">${isFeatured ? '🔴 On Stage' : '▶ Open'}</button>` : ''}
         ${isFeatured && !isSold ? `<button class="tc-btn sold-btn" data-action="sell" data-team="${id}">🔨 Mark Sold</button>` : ''}
         ${isSold ? `<button class="tc-btn reset-btn" data-action="reset" data-team="${id}">↺ Reset</button>` : ''}
+        ${bidsCache[id] ? `<button class="tc-btn bids-reset-btn" data-action="reset-bids" data-team="${id}">🗑 Reset Bids</button>` : ''}
       </div>`;
     list.appendChild(row);
   });
@@ -1800,6 +1800,11 @@ async function teamControlListClickHandler(e) {
     if (!ok) return;
     const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:team, status:'open', featured:false, sold_to_name:'', sold_to_phone:'', sold_amount:0, updated_at:new Date().toISOString()},{onConflict:'team_id'});
     if (error) toast(error.message, 'err'); else { toast(`↺ ${TEAM_META[team]?.name} reset.`, 'success'); await loadTeamsState(); }
+  } else if (action === 'reset-bids') {
+    const ok = await askConfirm('Reset Bids?', `This will permanently delete every bid placed on ${TEAM_META[team]?.name}, bringing the current bid back to ₹0. Sold status is untouched.`, {icon:'🗑', okLabel:'Reset Bids'});
+    if (!ok) return;
+    const {error} = await sb.from('ffxipl_s12_franchise_bids').delete().eq('team_id', team);
+    if (error) toast(error.message, 'err'); else { toast(`🗑 Bids cleared for ${TEAM_META[team]?.name}.`, 'success'); await loadBids(); renderTeamControlList(); }
   }
 }
 
@@ -1817,6 +1822,7 @@ function subscribeRealtime() {
       showBidToast(r.team_id, r.bidder_name, r.amount);
       // Render immediately, then do a background refresh for consistency
       renderStage(); renderTeamsGrid();
+      if (isAdmin) renderTeamControlList();
       loadBids();
     })
     .on('postgres_changes', {event:'UPDATE', schema:'public', table:'ffxipl_s12_franchise_apps'}, () => {
