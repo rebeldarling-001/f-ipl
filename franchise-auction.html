@@ -1834,6 +1834,10 @@ $('sellConfirmBtn').addEventListener('click', async () => {
   // synced to home.html for teams whose row hadn't been created there before.
   const {error: teamsErr} = await sb.from('ffxipl_s12_teams').upsert({id:sellModalTeamId, captain_name:name}, {onConflict:'id'});
   if (teamsErr) console.error('Captain sync to ffxipl_s12_teams failed:', teamsErr.message);
+  // Broadcast sold event to ALL phones instantly
+  await _stageChannel.send({type:'broadcast', event:'stage-update', payload:{
+    action:'sold', team_id:sellModalTeamId, sold_to_name:name, sold_amount:amount
+  }});
   $('sellBg').classList.remove('show'); toast(`🔨 ${TEAM_META[sellModalTeamId]?.name} sold to ${name}!`, 'success'); await loadTeamsState();
   $('sellConfirmBtn').disabled = false; $('sellConfirmBtn').textContent = '🔨 Confirm Sale';
 });
@@ -2094,6 +2098,29 @@ _celebChannel
   })
   .subscribe();
 
+// Stage broadcast channel — used for "put on stage" and "sold" so ALL phones
+// get it instantly without relying on postgres_changes RLS being set up correctly.
+const _stageChannel = sb.channel('xipl-stage-ctrl', {config:{broadcast:{self:false}}});
+_stageChannel
+  .on('broadcast', {event:'stage-update'}, async payload => {
+    const p = payload.payload;
+    if (!p) return;
+    // Always reload fresh state from DB so cache is 100% accurate
+    await loadTeamsState();
+    if (p.action === 'feature') {
+      showOpenPopup(p.team_id);
+      pushWire(`🏟️ <b>${TEAM_META[p.team_id]?.name||p.team_id}</b> is now open for bidding!`);
+      renderStage(); renderTeamsGrid();
+    } else if (p.action === 'sold') {
+      showSoldPopup(p.team_id, p.sold_to_name, p.sold_amount);
+      pushWire(`🔨 <b>${TEAM_META[p.team_id]?.name||p.team_id}</b> SOLD to <b>${p.sold_to_name}</b> for ${fmtRs(p.sold_amount)}`);
+      renderStage(); renderTeamsGrid();
+    }
+  })
+  .subscribe(status => {
+    if (status === 'SUBSCRIBED') console.log('[XIPL] Stage channel connected');
+  });
+
 // DB-backed state — so the celebration is still there for anyone who opens or
 // refreshes the page AFTER admin has already pressed the button, not just
 // people who happened to be connected live at that exact moment.
@@ -2131,6 +2158,11 @@ async function teamControlListClickHandler(e) {
     for (const rid of resets) await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:rid, featured:false, updated_at:new Date().toISOString()},{onConflict:'team_id'});
     const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:team, status:'open', featured:true, updated_at:new Date().toISOString()},{onConflict:'team_id'});
     if (error) { toast(error.message, 'err'); return; }
+    // Broadcast directly to ALL phones instantly — doesn't rely on postgres_changes RLS
+    await _stageChannel.send({type:'broadcast', event:'stage-update', payload:{
+      action:'feature', team_id:team,
+      resets, teamsCache: Object.fromEntries(TEAM_IDS.map(id => [id, teamsCache[id]||defaultTeamState()]))
+    }});
     // Fire the "on stage" announcement + refresh the admin's own screen immediately,
     // instead of waiting on the realtime round-trip — everyone else still gets it via
     // the postgres_changes subscription (handleTeamChange), same as before.
@@ -2214,44 +2246,28 @@ function subscribeRealtime() {
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'ffxipl_s12_franchise_teams'}, payload => {
       handleTeamChange(payload.new, null);
     })
-    .on('postgres_changes', {event:'UPDATE', schema:'public', table:'ffxipl_s12_franchise_teams'}, async payload => {
-      // Capture oldRow BEFORE refreshing cache — cache may be stale or empty
-      // (race on boot), which caused the stage to stay blank for viewers.
-      const oldRow = teamsCache[payload.new.team_id] || null;
-      // Always pull full fresh state so every field (featured, status, sold_to_name…)
-      // is up to date before we render — the payload only has the changed row.
-      await loadTeamsState();
-      handleTeamChange(payload.new, oldRow);
+    .on('postgres_changes', {event:'UPDATE', schema:'public', table:'ffxipl_s12_franchise_teams'}, payload => {
+      handleTeamChange(payload.new, teamsCache[payload.new.team_id] || null);
     })
     .subscribe(status => {
-      if (status === 'SUBSCRIBED') {
-        console.log('[XIPL] Realtime connected — zero delay active');
-      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-        // Realtime dropped — do an immediate state refresh so viewers
-        // don't miss a "put on stage" that happened while disconnected.
-        console.warn('[XIPL] Realtime issue:', status, '— refreshing state now');
-        loadTeamsState();
-        loadBids();
-      }
+      if (status === 'SUBSCRIBED') console.log('[XIPL] Realtime connected — zero delay active');
     });
 }
 function handleTeamChange(row, oldRow) {
   const wasSold = oldRow && oldRow.status === 'sold';
-  const wasNotFeatured = !oldRow || !oldRow.featured;
+  const wasNotFeatured = oldRow && !oldRow.featured;
   const nowSold = row.status === 'sold';
   const nowFeatured = !!row.featured && !nowSold;
 
-  // Only update cache if not already refreshed by loadTeamsState() above
-  if (!teamsCache[row.team_id] || teamsCache[row.team_id].updated_at <= row.updated_at) {
-    teamsCache[row.team_id] = {...defaultTeamState(), ...row};
-  }
+  // Update cache BEFORE rendering
+  teamsCache[row.team_id] = {...defaultTeamState(), ...row};
 
   if (nowSold && !wasSold) {
     // Grand SOLD celebration for everyone
     showSoldPopup(row.team_id, row.sold_to_name, row.sold_amount);
     pushWire(`🔨 <b>${TEAM_META[row.team_id]?.name||row.team_id}</b> SOLD to <b>${row.sold_to_name}</b> for ${fmtRs(row.sold_amount)}`);
-  } else if (nowFeatured && wasNotFeatured) {
-    // Team just put on stage — announce to everyone (including those with empty cache on boot)
+  } else if (nowFeatured && (wasNotFeatured || !oldRow)) {
+    // Team just put on stage — announce to everyone
     showOpenPopup(row.team_id);
     pushWire(`🏟️ <b>${TEAM_META[row.team_id]?.name||row.team_id}</b> is now open for bidding!`);
   }
@@ -2329,7 +2345,7 @@ async function boot() {
   await refreshMyAppStatus();
   setInterval(refreshMyAppStatus, 15000);
   setInterval(loadCaptainCount, 15000);
-  setInterval(loadTeamsState, 5000); // 5s poll — fast fallback if realtime drops
+  setInterval(loadTeamsState, 5000);
 }
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0,0);
