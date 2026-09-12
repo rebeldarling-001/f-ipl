@@ -968,6 +968,12 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
       <div class="field-group">
         <div class="field"><label>Your Name</label><input class="field-input" type="text" id="appName" placeholder="Enter your full name" autocomplete="name"></div>
         <div class="field"><label>Phone Number</label><input class="field-input" type="tel" id="appPhone" placeholder="+91 99999 00000" autocomplete="tel"><div class="field-hint">Admin will contact you on WhatsApp if needed.</div></div>
+        <div class="field">
+          <label>FF Profile Screenshot</label>
+          <input class="field-input" type="file" id="appShot" accept="image/*" style="padding:9px 13px;">
+          <div class="field-hint">Screenshot of your Free Fire profile — helps the admin verify your ID.</div>
+          <img id="appShotPreview" style="display:none;margin-top:8px;max-height:140px;border-radius:10px;border:1px solid var(--line);">
+        </div>
       </div>
       <button class="submit-btn" id="appSubmitBtn">Submit & Apply →</button>
       <div class="form-error" id="appError"></div>
@@ -979,6 +985,13 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
       <p>Your application has been received. The admin will review it shortly — you can bid the moment you're approved.</p>
       <button class="submit-btn" id="capDoneBtn" style="margin-top:16px;">Got it</button>
     </div>
+  </div>
+</div>
+
+<!-- SCREENSHOT LIGHTBOX (admin use — view captain FF profile screenshots) -->
+<div class="modal-bg" id="shotLbBg" style="z-index:9999;">
+  <div style="max-width:92vw;max-height:86vh;position:relative;" onclick="event.stopPropagation();">
+    <img id="shotLbImg" style="max-width:92vw;max-height:86vh;border-radius:14px;display:block;">
   </div>
 </div>
 
@@ -1353,6 +1366,7 @@ function openCaptainModal() {
   $('capFormWrap').style.display = 'block';
   $('appSuccess').classList.remove('show');
   $('appName').value = ''; $('appPhone').value = '';
+  $('appShot').value = ''; $('appShotPreview').style.display = 'none'; $('appShotPreview').src = '';
   $('appError').style.display = 'none';
   $('capBg').classList.add('show');
 }
@@ -1361,6 +1375,25 @@ $('becomeCaptainBtn').addEventListener('click', openCaptainModal);
 $('capClose').addEventListener('click', closeCaptainModal);
 $('capBg').addEventListener('click', e => { if (e.target === $('capBg')) closeCaptainModal(); });
 $('capDoneBtn').addEventListener('click', closeCaptainModal);
+$('appShot').addEventListener('change', () => {
+  const f = $('appShot').files[0];
+  const prev = $('appShotPreview');
+  if (!f) { prev.style.display = 'none'; prev.src = ''; return; }
+  prev.src = URL.createObjectURL(f);
+  prev.style.display = 'block';
+});
+
+// Uploads the FF profile screenshot to the same public bucket the players'
+// registration flow uses, and returns the storage PATH (not the full URL) —
+// teams.html / admin views resolve the public URL from this path themselves.
+async function uploadCaptainScreenshot(file) {
+  if (!file) return '';
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const path = `captains/${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
+  const { error } = await sb.storage.from('ffxipl-profile-public').upload(path, file, { upsert: false });
+  if (error) { console.error('Screenshot upload failed:', error.message); return ''; }
+  return path;
+}
 
 $('appSubmitBtn').addEventListener('click', async () => {
   const name = $('appName').value.trim(), phone = $('appPhone').value.trim(), errEl = $('appError');
@@ -1368,7 +1401,9 @@ $('appSubmitBtn').addEventListener('click', async () => {
   if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
   if (!phone) { errEl.textContent = 'Please enter your phone number.'; errEl.style.display = 'block'; return; }
   $('appSubmitBtn').disabled = true; $('appSubmitBtn').textContent = 'Submitting…';
-  const {data, error} = await sb.from('ffxipl_s12_franchise_apps').insert([{name, phone, status:'pending'}]).select().single();
+  const shotFile = $('appShot').files[0];
+  const profile_screenshot_path = shotFile ? await uploadCaptainScreenshot(shotFile) : '';
+  const {data, error} = await sb.from('ffxipl_s12_franchise_apps').insert([{name, phone, status:'pending', profile_screenshot_path}]).select().single();
   if (error) { errEl.textContent = error.message || 'Submission failed. Try again.'; errEl.style.display = 'block'; }
   else {
     $('capFormWrap').style.display = 'none'; $('appSuccess').classList.add('show');
@@ -1557,7 +1592,7 @@ async function loadBids() {
 }
 
 /* ═══ TEAM STATE ═══ */
-function defaultTeamState() { return {status:'open', sold_to_name:'', sold_to_phone:'', sold_amount:0, featured:false}; }
+function defaultTeamState() { return {status:'open', sold_to_name:'', sold_to_phone:'', sold_to_screenshot_path:'', sold_amount:0, featured:false}; }
 async function loadTeamsState() {
   const {data, error} = await sb.from('ffxipl_s12_franchise_teams').select('*');
   if (error) { console.error(error); return; }
@@ -1824,7 +1859,18 @@ $('sellConfirmBtn').addEventListener('click', async () => {
   if (!name) { $('sellError').textContent = 'Enter the winning captain name.'; $('sellError').style.display = 'block'; return; }
   if (!amount || amount < 1) { $('sellError').textContent = 'Enter a valid final price.'; $('sellError').style.display = 'block'; return; }
   $('sellConfirmBtn').disabled = true; $('sellConfirmBtn').textContent = 'Saving…';
-  const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:sellModalTeamId, status:'sold', sold_to_name:name, sold_amount:amount, featured:true, updated_at:new Date().toISOString()},{onConflict:'team_id'});
+  const phone = bidsCache[sellModalTeamId]?.bidder_phone || '';
+  // Pull the winning applicant's uploaded FF screenshot (by phone, most recent
+  // application) so it carries through to the sold record — this is what
+  // teams.html reads to show the captain's screenshot, same as any player.
+  let screenshotPath = '';
+  if (phone) {
+    const { data: appRow } = await sb.from('ffxipl_s12_franchise_apps')
+      .select('profile_screenshot_path').eq('phone', phone)
+      .order('created_at', { ascending: false }).limit(1).maybeSingle();
+    screenshotPath = appRow?.profile_screenshot_path || '';
+  }
+  const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:sellModalTeamId, status:'sold', sold_to_name:name, sold_to_phone:phone, sold_to_screenshot_path:screenshotPath, sold_amount:amount, featured:true, updated_at:new Date().toISOString()},{onConflict:'team_id'});
   if (error) { $('sellError').textContent = error.message; $('sellError').style.display = 'block'; $('sellConfirmBtn').disabled = false; $('sellConfirmBtn').textContent = '🔨 Confirm Sale'; return; }
   // Push the confirmed captain into the live team record (ffxipl_s12_teams) so every
   // other page — auction-center, home, teams — picks it up instantly via realtime,
@@ -1941,6 +1987,7 @@ function renderApps() {
         <span class="app-badge ${app.status}">${app.status}</span>
       </div>
       <div class="app-actions">
+        ${app.profile_screenshot_path ? `<button class="app-btn" data-action="view-shot" data-id="${app.id}">👁 View Screenshot</button>` : ''}
         ${app.status !== 'approved' ? `<button class="app-btn approve" data-action="approve" data-id="${app.id}">✅ Approve</button>` : ''}
         <button class="app-btn kick" data-action="kick" data-id="${app.id}">⛔ Kick</button>
         ${app.status !== 'rejected' ? `<button class="app-btn" data-action="reject" data-id="${app.id}">❌ Reject</button>` : ''}
@@ -1951,9 +1998,23 @@ function renderApps() {
     list.addEventListener('click', appsListClickHandler);
   }
 }
+function publicUrlForShot(path) {
+  if (!path) return '';
+  if (/^https?:\/\//i.test(path)) return path;
+  const { data } = sb.storage.from('ffxipl-profile-public').getPublicUrl(path);
+  return data?.publicUrl || '';
+}
+function openShotLightbox(url) { $('shotLbImg').src = url; $('shotLbBg').classList.add('show'); }
+$('shotLbBg').addEventListener('click', () => { $('shotLbBg').classList.remove('show'); $('shotLbImg').src = ''; });
 async function appsListClickHandler(e) {
   const btn = e.target.closest('[data-action]'); if (!btn) return;
   const {action, id} = btn.dataset;
+  if (action === 'view-shot') {
+    const app = allApps.find(a => String(a.id) === String(id));
+    const url = publicUrlForShot(app?.profile_screenshot_path);
+    if (url) openShotLightbox(url); else toast('No screenshot on file.', 'err');
+    return;
+  }
   const labelMap = {approve:'Approve', kick:'Kick', reject:'Reject'};
   const ok = await askConfirm(`${labelMap[action]} Captain?`, `This will ${action} the selected applicant.`, {icon:'⚠️', okLabel:labelMap[action]});
   if (!ok) return;
@@ -2177,7 +2238,7 @@ async function teamControlListClickHandler(e) {
   } else if (action === 'reset') {
     const ok = await askConfirm('Reset This Team?', `This will clear the sold status for ${TEAM_META[team]?.name}. Bids are kept.`, {icon:'↺', okLabel:'Reset'});
     if (!ok) return;
-    const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:team, status:'open', featured:false, sold_to_name:'', sold_to_phone:'', sold_amount:0, updated_at:new Date().toISOString()},{onConflict:'team_id'});
+    const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:team, status:'open', featured:false, sold_to_name:'', sold_to_phone:'', sold_to_screenshot_path:'', sold_amount:0, updated_at:new Date().toISOString()},{onConflict:'team_id'});
     if (error) { toast(error.message, 'err'); return; }
     // Undo the captain sync too, so home / auction-center / teams stop showing the old winner.
     const {error: teamsErr} = await sb.from('ffxipl_s12_teams').upsert({id:team, captain_name:null}, {onConflict:'id'});

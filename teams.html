@@ -2587,6 +2587,7 @@
         // captain sold in the auction shows here immediately too, not just
         // after the full roster is finalized. Falls back to row.captain_name.
         let auctionCaptains = {}; // { RCB: 'Some Name', ... }
+        let auctionCaptainShots = {}; // { RCB: 'https://...public-url', ... }
         let teamsData = [];
         let isAdmin = false;
         let editingTeamId = null;
@@ -2678,11 +2679,15 @@
             try {
                 const { data } = await sb
                     .from('ffxipl_s12_franchise_teams')
-                    .select('team_id, sold_to_name, status')
+                    .select('team_id, sold_to_name, sold_to_screenshot_path, status')
                     .eq('status', 'sold');
                 auctionCaptains = {};
+                auctionCaptainShots = {};
                 (data || []).forEach(row => {
                     if (row.sold_to_name) auctionCaptains[row.team_id] = row.sold_to_name;
+                    if (row.sold_to_screenshot_path) {
+                        auctionCaptainShots[row.team_id] = publicUrlForProfile(row.sold_to_screenshot_path);
+                    }
                 });
             } catch (e) { /* keep previous values on failure */ }
         }
@@ -2789,9 +2794,11 @@
                 function buildPlayerRow(p, isCaptain) {
                     const tierClass = TIER_CLASS[p.tier] || 't4';
                     const tierLabel = TIER_LABEL[p.tier] || p.tier || '';
-                    // Screenshot URL comes from screenshotMap keyed by player id —
-                    // players_json does NOT store the path so p.profile_url etc. are always empty.
-                    const ss = (!isCaptain && p.id) ? (screenshotMap[p.id] || '') : '';
+                    // Screenshot URL: players use screenshotMap keyed by player id
+                    // (players_json doesn't store the path); captains carry their
+                    // own uploaded FF screenshot via p.shotUrl instead (set from
+                    // auctionCaptainShots below) since they have no player id.
+                    const ss = isCaptain ? (p.shotUrl || '') : (p.id ? (screenshotMap[p.id] || '') : '');
                     const teamLogo = TEAM_META[id]?.logo || '';
                     // Team logo fills the 38×38 placeholder — use 100% + padding so it
                     // fills cleanly without spilling outside the rounded box.
@@ -2824,7 +2831,7 @@
 
                 // Captain row (from captain_name column — not in players_json)
                 const captainRow = captain && captain !== 'TBD'
-                    ? buildPlayerRow({ ign: captain, real_name: captain, profile_url: '', price: 0 }, true)
+                    ? buildPlayerRow({ ign: captain, real_name: captain, profile_url: '', price: 0, shotUrl: auctionCaptainShots[id] || '' }, true)
                     : '';
 
                 const playerRows = captainRow + players.map(p => buildPlayerRow(p, false)).join('');
