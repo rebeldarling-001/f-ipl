@@ -529,113 +529,6 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 .tc-btn.reset-btn{border-color:rgba(var(--live-rgb),.25);color:var(--live);background:rgba(var(--live-rgb),.04);}
 .tc-btn.bids-reset-btn{border-color:var(--line);color:var(--ink-dim);background:var(--surface-2);}
 
-/* ═══ SEASON DONE — TV CELEBRATION OVERLAY ═══ */
-#seasonTvOverlay{
-  position:fixed;inset:0;z-index:600;max-width:480px;margin:0 auto;
-  background:rgba(0,0,0,.97);
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-  opacity:0;pointer-events:none;transition:opacity .5s;
-  overflow:hidden;
-}
-#seasonTvOverlay.show{opacity:1;pointer-events:auto;}
-
-/* Scanlines overlay */
-#seasonTvOverlay::before{
-  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.08) 3px,rgba(0,0,0,.08) 4px);
-  animation:_scanMove 8s linear infinite;
-}
-@keyframes _scanMove{0%{background-position:0 0}100%{background-position:0 100px}}
-
-/* Infinite confetti canvas */
-#seasonConfettiCanvas{position:absolute;inset:0;z-index:2;pointer-events:none;}
-
-/* TV top bar */
-.tv-topbar{
-  position:relative;z-index:10;width:100%;padding:18px 20px 0;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;
-}
-.tv-topbar-title{
-  font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.18em;
-  background:linear-gradient(90deg,var(--gold-pale),var(--gold),var(--gold-deep));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  text-transform:uppercase;
-}
-.tv-close-btn{
-  width:34px;height:34px;border-radius:10px;border:1px solid rgba(var(--gold-rgb),.3);
-  background:rgba(var(--gold-rgb),.08);color:var(--gold-pale);font-size:14px;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  transition:background .15s;
-}
-.tv-close-btn:active{background:rgba(var(--gold-rgb),.2);}
-
-/* Season headline */
-.tv-headline-wrap{
-  position:relative;z-index:10;text-align:center;padding:22px 20px 0;
-  flex-shrink:0;
-}
-.tv-season-eye{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
-.tv-season-title{
-  font-family:'Anton',sans-serif;font-size:36px;letter-spacing:.04em;line-height:1;
-  background:linear-gradient(135deg,#fff 0%,var(--gold-pale) 30%,var(--gold) 60%,var(--gold-deep) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  text-shadow:none;
-  animation:_tvTitlePulse 2.5s ease-in-out infinite alternate;
-}
-@keyframes _tvTitlePulse{0%{filter:brightness(1)}100%{filter:brightness(1.3)}}
-.tv-trophy{font-size:44px;margin-top:4px;animation:_trophyFloat 2s ease-in-out infinite alternate;}
-@keyframes _trophyFloat{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-6px) scale(1.05)}}
-
-/* Teams grid — scrollable */
-.tv-teams-scroll{
-  position:relative;z-index:10;width:100%;
-  padding:14px 14px 20px;
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;
-  overflow-y:auto;flex:1;
-  -webkit-overflow-scrolling:touch;
-}
-.tv-team-card{
-  border-radius:16px;padding:14px 12px 12px;text-align:center;position:relative;overflow:hidden;
-  background:linear-gradient(160deg,var(--card-a),var(--card-b));
-  border:1.5px solid rgba(var(--tc-rgb,var(--gold-rgb)),.5);
-  box-shadow:0 0 20px -6px rgba(var(--tc-rgb,var(--gold-rgb)),.45),0 8px 20px rgba(0,0,0,.5);
-  opacity:0;transform:translateY(30px) scale(.9);
-  transition:opacity .5s cubic-bezier(.2,1,.4,1), transform .5s cubic-bezier(.2,1,.4,1);
-}
-.tv-team-card.reveal{opacity:1;transform:translateY(0) scale(1);}
-.tv-team-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,rgb(var(--tc-rgb,var(--gold-rgb))),transparent);
-}
-.tv-team-card::after{
-  content:'';position:absolute;top:-40%;left:-60%;width:40%;height:180%;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.08),transparent);
-  animation:_cardShine 3.5s ease-in-out infinite;
-}
-@keyframes _cardShine{0%,100%{left:-60%}50%{left:120%}}
-
-.tv-card-logo{width:52px;height:52px;object-fit:contain;display:block;margin:0 auto 6px;
-  filter:drop-shadow(0 4px 10px rgba(var(--tc-rgb,var(--gold-rgb)),.5));
-  animation:_logoGlow 2s ease-in-out infinite alternate;}
-@keyframes _logoGlow{0%{filter:drop-shadow(0 4px 8px rgba(var(--tc-rgb,var(--gold-rgb)),.4))}100%{filter:drop-shadow(0 4px 18px rgba(var(--tc-rgb,var(--gold-rgb)),.9))}}
-.tv-card-abbr{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.06em;color:rgb(var(--tc-rgb,var(--gold-rgb)));}
-.tv-card-name{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;color:var(--ink-dim);margin-top:1px;line-height:1.2;}
-.tv-card-divider{width:28px;height:1px;background:rgba(var(--tc-rgb,var(--gold-rgb)),.35);margin:8px auto;}
-.tv-card-cap-label{font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.18em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:3px;}
-.tv-card-cap-name{
-  font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.02em;
-  background:linear-gradient(135deg,#fff 0%,var(--gold-pale) 50%,var(--gold) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  line-height:1.1;
-}
-.tv-card-unsold{font-family:'Space Mono',monospace;font-size:9px;color:var(--ink-faint);letter-spacing:.1em;}
-.tv-card-price{font-family:'Space Mono',monospace;font-size:9.5px;color:rgba(var(--tc-rgb,var(--gold-rgb)),1);margin-top:4px;font-weight:700;}
-
-/* Bottom glow pulse */
-.tv-team-card.reveal .tv-card-logo{animation-play-state:running;}
-
-
 /* ═══ POPUPS & MODALS ═══ */
 /* ═══ BID CALL BANNER — drops from the top like a live auctioneer's call ticker.
    Deliberately NOT a centered card (that look is reserved for the big ON STAGE /
@@ -1125,6 +1018,20 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
   <div class="masthead-icon">🏟️</div>
 </div>
 
+<!-- SEASON CELEBRATION PANEL — in-page, shows/hides in place, no separate screen -->
+<div class="sec" style="padding-bottom:0;">
+  <div id="celebPanel">
+    <div class="celeb-hero">
+      <div class="celeb-eye">🎉 FREEFIRE XIPL · Season 12</div>
+      <span class="celeb-trophy">🏆</span>
+      <div class="celeb-hl">SEASON CAPTAINS<br>COMPLETED!</div>
+      <div class="celeb-sub">All 8 franchises have their captain — ranked by final price</div>
+    </div>
+    <div class="celeb-rank-list" id="celebRankList"></div>
+    <button class="celeb-end-btn" id="celebEndBtn" style="display:none;">✕ End Celebration &amp; Resume Auction</button>
+  </div>
+</div>
+
 <!-- CAPTAIN CTA + STATUS -->
 <div class="sec" id="appSection">
   <div class="captain-cta fade-up d1" id="captainCtaBox">
@@ -1145,7 +1052,7 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
 </div>
 
 <!-- LIVE BIDDING -->
-<div class="sec">
+<div class="sec" id="liveBiddingBlock">
   <div class="sec-eyebrow fade-up">Franchise Bidding · Live Now</div>
 
   <!-- Stats -->
@@ -1172,8 +1079,10 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
       </div>
     </div>
   </div>
+</div>
 
-  <!-- TEAMS GRID -->
+<!-- TEAMS GRID -->
+<div class="sec">
   <div class="sec-eyebrow fade-up" style="margin-top:22px;">All Franchises</div>
   <div class="teams-grid fade-up d1" id="teamsGrid"></div>
 
@@ -1228,12 +1137,10 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
         <div class="how-step"><div class="how-num">3</div><div><b>Mark Sold</b><span>Confirm the winner — triggers the SOLD popup for everyone.</span></div></div>
       </div>
       <div class="apps-list" id="teamControlList"></div>
-
-      <!-- SEASON DONE BUTTON -->
-      <div style="margin-top:20px;padding:18px;border-radius:18px;background:linear-gradient(135deg,rgba(var(--gold-rgb),.08),rgba(var(--gold-rgb),.04));border:1px solid rgba(var(--gold-rgb),.2);">
-        <div style="font-size:10px;letter-spacing:.18em;color:var(--gold);font-family:'Space Mono',monospace;text-transform:uppercase;margin-bottom:8px;">🏆 Season Control</div>
-        <div style="font-size:12px;color:var(--ink-dim);line-height:1.5;margin-bottom:14px;">Once all auctions are done, hit <b style="color:var(--gold-pale);">Season Done</b> to fire the grand celebration across the stage — shows every team and their captain in a premium reveal. You can trigger it as many times as you want.</div>
-        <button class="submit-btn" id="seasonDoneBtn" style="background:linear-gradient(135deg,#ffd700,var(--gold) 50%,var(--gold-deep));color:var(--on-accent);font-size:14px;letter-spacing:.06em;">🏆 Season Done — Celebrate!</button>
+      <div style="margin-top:20px;padding:16px;border-radius:16px;border:1px solid rgba(var(--gold-rgb),.2);background:rgba(var(--gold-rgb),.04);">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">🏆 Season Finale</div>
+        <div style="font-size:11.5px;color:var(--ink-dim);line-height:1.55;margin-bottom:14px;">Hit <b style="color:var(--gold-pale);">Season Done</b> — the whole page turns into a TV-style congratulations screen for <b style="color:var(--gold-pale);">everyone</b>, confetti and all, showing every franchise's captain. It stays up for everyone — even people who open the page after you press it — until you reopen this button and press <b style="color:var(--gold-pale);">End Celebration</b>.</div>
+        <button class="submit-btn" id="seasonDoneBtn">🏆 Season Done — Show Captains!</button>
       </div>
     </div>
   </div>
@@ -1244,19 +1151,61 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
   <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
 </footer>
 
-<!-- ═══ SEASON DONE TV CELEBRATION OVERLAY ═══ -->
-<div id="seasonTvOverlay">
-  <canvas id="seasonConfettiCanvas"></canvas>
-  <div class="tv-topbar">
-    <div class="tv-topbar-title">🔥 FREEFIRE XIPL · S12</div>
-    <button class="tv-close-btn" id="tvCloseBtn">✕</button>
-  </div>
-  <div class="tv-headline-wrap">
-    <div class="tv-season-eye">Season 12 · Franchise Champions</div>
-    <div class="tv-season-title">ALL TEAMS<br>CLAIMED!</div>
-    <div class="tv-trophy">🏆</div>
-  </div>
-  <div class="tv-teams-scroll" id="tvTeamsGrid"></div>
+<!-- ═══ SEASON CELEBRATION — confetti layer (transparent, over the live page) + in-page ranked panel ═══ -->
+<style>
+/* Transparent fixed layer — confetti + TV flash/sweep rain over the ACTUAL page, page stays visible underneath */
+#celebFxLayer{position:fixed;inset:0;z-index:650;max-width:480px;margin:0 auto;pointer-events:none;opacity:0;transition:opacity .4s ease;}
+#celebFxLayer.show{opacity:1;}
+#celebCanvas{position:absolute;inset:0;}
+.celeb-flash{position:absolute;inset:0;background:#fff;opacity:0;}
+.celeb-flash.run{animation:_cflash .6s ease-out both;}
+@keyframes _cflash{0%{opacity:.85}100%{opacity:0}}
+.celeb-sweep{position:absolute;inset:0;overflow:hidden;}
+.celeb-sweep::before{
+  content:'';position:absolute;top:-30%;left:-70%;width:55%;height:160%;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.05) 30%,rgba(255,255,255,.9) 48%,var(--gold-pale) 52%,rgba(255,255,255,.9) 56%,rgba(255,255,255,.05) 70%,transparent 100%);
+  transform:skewX(-16deg) translateX(-40%);opacity:0;mix-blend-mode:screen;filter:blur(1px);
+}
+.celeb-sweep.run::before{animation:_csweep 1.15s cubic-bezier(.3,0,.2,1) both;}
+@keyframes _csweep{0%{transform:skewX(-16deg) translateX(-40%);opacity:0;}8%{opacity:1;}88%{opacity:1;}100%{transform:skewX(-16deg) translateX(260%);opacity:0;}}
+
+/* In-page panel — normal part of the page flow, sits right where it's inserted, no takeover */
+#celebPanel{display:none;margin:0 0 22px;border-radius:20px;padding:16px 14px 14px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,rgba(var(--gold-rgb),.14),rgba(0,0,0,.4));
+  border:1.5px solid rgba(var(--gold-rgb),.4);
+  box-shadow:0 10px 26px -8px rgba(0,0,0,.5),0 0 0 1px rgba(var(--gold-rgb),.08) inset;
+}
+#celebPanel.show{display:block;}
+.celeb-hero{position:relative;text-align:center;padding:2px 6px 14px;}
+.celeb-eye{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;animation:_ceyeblink 2s ease-in-out infinite;}
+@keyframes _ceyeblink{0%,100%{opacity:1}50%{opacity:.45}}
+.celeb-trophy{font-size:38px;display:block;margin:4px auto 2px;animation:_ctrophy 1.8s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(240,185,61,.7));}
+@keyframes _ctrophy{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(-7px) scale(1.06)}}
+.celeb-hl{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.03em;line-height:1.1;background:linear-gradient(135deg,#fff 0%,var(--gold-pale) 30%,var(--gold) 60%,#ff7a45 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:_cflow 3s linear infinite;}
+@keyframes _cflow{0%{background-position:0% center}100%{background-position:200% center}}
+.celeb-sub{font-size:11px;color:var(--ink-dim);margin-top:4px;}
+.celeb-end-btn{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,68,51,.4);background:rgba(255,68,51,.08);color:#ff4433;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.06em;cursor:pointer;margin-top:12px;}
+.celeb-end-btn:active{background:rgba(255,68,51,.18);}
+
+/* Ranked leaderboard — highest final price to lowest */
+.celeb-rank-list{display:flex;flex-direction:column;gap:8px;}
+.celeb-rank-row{display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:13px;background:var(--surface);border:1px solid var(--line);position:relative;overflow:hidden;
+  opacity:0;transform:translateY(14px);transition:opacity .45s cubic-bezier(.2,1,.35,1),transform .45s cubic-bezier(.2,1,.35,1);}
+.celeb-rank-row.in{opacity:1;transform:translateY(0);}
+.celeb-rank-row::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:rgb(var(--cc,var(--gold-rgb)));}
+.celeb-rank-num{width:22px;flex-shrink:0;text-align:center;font-family:'Anton',sans-serif;font-size:14px;color:rgb(var(--cc,var(--gold-rgb)));}
+.celeb-rank-badge{width:36px;height:36px;flex-shrink:0;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:10px;}
+.celeb-rank-badge img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
+.celeb-rank-info{flex:1;min-width:0;}
+.celeb-rank-name{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.celeb-rank-sub{font-size:9.5px;color:var(--ink-faint);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.celeb-rank-price{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:rgb(var(--cc,var(--gold-rgb)));flex-shrink:0;}
+</style>
+
+<div id="celebFxLayer">
+  <canvas id="celebCanvas"></canvas>
+  <div class="celeb-flash" id="celebFlash"></div>
+  <div class="celeb-sweep" id="celebSweep"></div>
 </div>
 
 <button class="btt" id="bttBtn" aria-label="Back to top">
@@ -1699,15 +1648,7 @@ function renderStage() {
   // Action area: only approved captains can bid, everyone else sees a clear viewer note
   let actionHtml;
   if (isSold) {
-    actionHtml = `
-      <div class="sold-plaque">
-        <div class="sold-plaque-label">Final Price</div>
-        <div class="sold-plaque-amount">${fmtRs(ts.sold_amount)}</div>
-        <div class="sold-plaque-ownerrow">
-          <span class="sold-plaque-ownerlabel">🏆 Owned by</span>
-          <span class="owner-chip lg">${ts.sold_to_name}</span>
-        </div>
-      </div>`;
+    actionHtml = `<div class="stage-info-note">🔒 Auction closed for this franchise.</div>`;
   } else if (!myApp) {
     actionHtml = `
       <div style="display:flex;flex-direction:column;gap:8px;">
@@ -1912,6 +1853,7 @@ function activateAdminMode() {
   showAdminUI();
   loadApps();
   renderTeamControlList();
+  if (_celebOn) $('celebEndBtn').style.display = 'block';
 }
 async function checkAdmin() {
   const {data:{session}} = await sb.auth.getSession();
@@ -2050,99 +1992,141 @@ function renderTeamControlList() {
   });
 }
 
-/* ═══ SEASON DONE — TV CELEBRATION ═══ */
-const TV_OVERLAY = document.getElementById('seasonTvOverlay');
-const TV_GRID    = document.getElementById('tvTeamsGrid');
-const TV_CANVAS  = document.getElementById('seasonConfettiCanvas');
-let _tvConfettiRaf = null;
-let _tvConfettiPieces = [];
+/* ═══ SEASON CELEBRATION — DB-backed state + realtime broadcast ═══ */
+const CELEB_FX   = document.getElementById('celebFxLayer');
+const CELEB_PANEL= document.getElementById('celebPanel');
+const CELEB_RANK = document.getElementById('celebRankList');
+const CELEB_CVS  = document.getElementById('celebCanvas');
+let _cRaf = null;
 
-/* ── Confetti engine ── */
-function tvConfettiStart() {
-  const W = TV_CANVAS.offsetWidth, H = TV_CANVAS.offsetHeight;
-  TV_CANVAS.width = W; TV_CANVAS.height = H;
-  const ctx = TV_CANVAS.getContext('2d');
-  const COLORS = ['#f0b93d','#fbe4a6','#ff4433','#29d3ff','#ffffff','#ff7a45','#5fd97e','#e03daf','#b98fe8'];
-  // seed pieces
-  _tvConfettiPieces = Array.from({length:120}, () => ({
-    x: Math.random()*W, y: Math.random()*H - H,
-    w: 5+Math.random()*6, h: 9+Math.random()*8,
-    color: COLORS[Math.floor(Math.random()*COLORS.length)],
-    rot: Math.random()*360, rotSpeed: (Math.random()-0.5)*4,
-    vx: (Math.random()-0.5)*1.5, vy: 1.4+Math.random()*2.2,
-    alpha: 0.8+Math.random()*0.2,
+function celebConfettiStart() {
+  const W = window.innerWidth > 480 ? 480 : window.innerWidth, H = window.innerHeight;
+  CELEB_CVS.width = W; CELEB_CVS.height = H;
+  const ctx = CELEB_CVS.getContext('2d');
+  const COLS = ['#f0b93d','#fbe4a6','#ff4433','#29d3ff','#fff','#ff7a45','#5fd97e','#e03daf','#b98fe8','#f5c518'];
+  // "little confetti, infinitely" — a light, continuous rain (fewer pieces, keeps looping forever until stopped)
+  const pieces = Array.from({length:70}, () => ({
+    x:Math.random()*W, y:Math.random()*H - H,
+    w:4+Math.random()*5, h:7+Math.random()*7,
+    color:COLS[~~(Math.random()*COLS.length)],
+    rot:Math.random()*360, rs:(Math.random()-.5)*5,
+    vx:(Math.random()-.5)*1.4, vy:1+Math.random()*1.8,
+    alpha:.6+Math.random()*.3,
   }));
   function frame() {
-    ctx.clearRect(0, 0, W, H);
-    _tvConfettiPieces.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.rot += p.rotSpeed;
-      if (p.y > H + 20) { p.y = -20; p.x = Math.random()*W; }
-      ctx.save();
-      ctx.globalAlpha = p.alpha;
-      ctx.translate(p.x+p.w/2, p.y+p.h/2);
-      ctx.rotate(p.rot * Math.PI/180);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    ctx.clearRect(0,0,W,H);
+    pieces.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.rs;
+      if(p.y>H+20){p.y=-20;p.x=Math.random()*W;}
+      ctx.save(); ctx.globalAlpha=p.alpha;
+      ctx.translate(p.x+p.w/2,p.y+p.h/2);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
       ctx.restore();
     });
-    _tvConfettiRaf = requestAnimationFrame(frame);
+    _cRaf = requestAnimationFrame(frame); // loops forever until celebConfettiStop()
   }
   frame();
 }
-function tvConfettiStop() {
-  cancelAnimationFrame(_tvConfettiRaf);
-  _tvConfettiRaf = null;
-  const ctx = TV_CANVAS.getContext('2d');
-  if (ctx) ctx.clearRect(0, 0, TV_CANVAS.width, TV_CANVAS.height);
+function celebConfettiStop() {
+  cancelAnimationFrame(_cRaf); _cRaf = null;
 }
 
-/* ── Build TV grid ── */
-function buildTvGrid() {
-  TV_GRID.innerHTML = '';
-  TEAM_IDS.forEach((id, idx) => {
-    const t   = TEAM_META[id];
-    const ts  = teamsCache[id] || defaultTeamState();
-    const bid = bidsCache[id];
-    const rgb = hexToRgbTriplet(t.color);
-    const isSold = ts.status === 'sold';
-
-    const card = document.createElement('div');
-    card.className = 'tv-team-card';
-    card.style.setProperty('--tc-rgb', rgb);
-
-    const capName = isSold
-      ? `<div class="tv-card-cap-label">Captain</div><div class="tv-card-cap-name">${ts.sold_to_name}</div><div class="tv-card-price">₹${Number(ts.sold_amount).toFixed(0)}</div>`
-      : `<div class="tv-card-unsold">Unsold</div>`;
-
-    card.innerHTML = `
-      <img src="${t.logo}" class="tv-card-logo" alt="${id}" onerror="this.style.display='none'">
-      <div class="tv-card-abbr">${id}</div>
-      <div class="tv-card-name">${t.name}</div>
-      <div class="tv-card-divider"></div>
-      ${capName}`;
-
-    TV_GRID.appendChild(card);
-
-    // Staggered reveal animation
-    setTimeout(() => card.classList.add('reveal'), 120 + idx * 140);
+function buildCelebRankList() {
+  CELEB_RANK.innerHTML = '';
+  const ranked = TEAM_IDS
+    .map(id => ({id, t:TEAM_META[id], ts:teamsCache[id] || defaultTeamState()}))
+    .filter(r => r.ts.status === 'sold')
+    .sort((a,b) => Number(b.ts.sold_amount) - Number(a.ts.sold_amount));
+  ranked.forEach((r, idx) => {
+    const rgb = hexToRgbTriplet(r.t.color);
+    const row = document.createElement('div');
+    row.className = 'celeb-rank-row';
+    row.style.setProperty('--cc', rgb);
+    row.innerHTML = `<div class="celeb-rank-num">#${idx+1}</div>
+      <div class="celeb-rank-badge" style="background:color-mix(in srgb,${r.t.color} 20%,transparent);border:1.5px solid ${r.t.color}55;">${badgeHTML(r.id, 36)}</div>
+      <div class="celeb-rank-info">
+        <div class="celeb-rank-name">${r.t.name}</div>
+        <div class="celeb-rank-sub">🏆 ${r.ts.sold_to_name}</div>
+      </div>
+      <div class="celeb-rank-price">${fmtRs(r.ts.sold_amount)}</div>`;
+    CELEB_RANK.appendChild(row);
+    setTimeout(() => row.classList.add('in'), 120 + idx * 90);
   });
 }
 
-/* ── Open / close ── */
-function openSeasonTv() {
-  buildTvGrid();
-  TV_OVERLAY.classList.add('show');
-  TV_CANVAS.width  = TV_OVERLAY.offsetWidth;
-  TV_CANVAS.height = TV_OVERLAY.offsetHeight;
-  tvConfettiStart();
+let _celebOn = false;
+function showCelebration() {
+  if (_celebOn) return; _celebOn = true;
+  // Hide the captain CTA (Want to own a franchise) for everyone
+  const ctaBox = $('captainCtaBox');
+  if (ctaBox) ctaBox.style.display = 'none';
+  // Hide the live stats (Bidders/Active/Highest) + the on-stage card — redundant
+  // once the season is done, the ranked leaderboard below already covers it.
+  const liveBlock = $('liveBiddingBlock');
+  if (liveBlock) liveBlock.style.display = 'none';
+  buildCelebRankList();
+  CELEB_PANEL.classList.add('show');
+  CELEB_FX.classList.add('show');
+  // TV-style highlight — flash + light sweep across the whole screen, for everyone
+  const flash = $('celebFlash'), sweep = $('celebSweep');
+  if (flash && sweep) {
+    flash.classList.remove('run'); sweep.classList.remove('run');
+    void flash.offsetWidth; // restart animation even if celebration is re-triggered
+    flash.classList.add('run'); sweep.classList.add('run');
+  }
+  celebConfettiStart();
+  // Show end button only for admin
+  if (isAdmin) $('celebEndBtn').style.display = 'block';
 }
-function closeSeasonTv() {
-  TV_OVERLAY.classList.remove('show');
-  tvConfettiStop();
+function hideCelebration() {
+  if (!_celebOn) return; _celebOn = false;
+  CELEB_PANEL.classList.remove('show');
+  CELEB_FX.classList.remove('show');
+  $('celebEndBtn').style.display = 'none';
+  celebConfettiStop();
+  const liveBlock = $('liveBiddingBlock');
+  if (liveBlock) liveBlock.style.display = '';
+  // Restore CTA if user hasn't applied
+  if (!myApp) { const ctaBox = $('captainCtaBox'); if (ctaBox) ctaBox.style.display = 'flex'; }
 }
 
-document.getElementById('seasonDoneBtn').addEventListener('click', openSeasonTv);
-document.getElementById('tvCloseBtn').addEventListener('click', closeSeasonTv);
+// Realtime broadcast — instant sync for everyone already on the page right now
+const _celebChannel = sb.channel('xipl-season-celeb', {config:{broadcast:{self:true}}});
+_celebChannel
+  .on('broadcast', {event:'season-done'}, payload => {
+    if (payload.payload?.show) showCelebration();
+    else hideCelebration();
+  })
+  .subscribe();
+
+// DB-backed state — so the celebration is still there for anyone who opens or
+// refreshes the page AFTER admin has already pressed the button, not just
+// people who happened to be connected live at that exact moment.
+async function loadCelebState() {
+  const {data, error} = await sb.from('ffxipl_s12_season_state').select('celebration_active').eq('id', 1).maybeSingle();
+  if (error) { console.error('loadCelebState failed:', error.message); return; }
+  if (data?.celebration_active) showCelebration();
+}
+
+$('seasonDoneBtn').addEventListener('click', async () => {
+  const btn = $('seasonDoneBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  const {error} = await sb.from('ffxipl_s12_season_state').upsert({id:1, celebration_active:true, updated_at:new Date().toISOString()}, {onConflict:'id'});
+  if (error) { toast('Could not save celebration state: '+error.message, 'err'); btn.disabled=false; btn.textContent='🏆 Season Done — Show Captains!'; return; }
+  await _celebChannel.send({type:'broadcast', event:'season-done', payload:{show:true}});
+  btn.disabled = false; btn.textContent = '🏆 Season Done — Show Captains!';
+  showCelebration(); // admin sees it too immediately
+});
+
+$('celebEndBtn').addEventListener('click', async () => {
+  const {error} = await sb.from('ffxipl_s12_season_state').upsert({id:1, celebration_active:false, updated_at:new Date().toISOString()}, {onConflict:'id'});
+  if (error) { toast('Could not save celebration state: '+error.message, 'err'); return; }
+  await _celebChannel.send({type:'broadcast', event:'season-done', payload:{show:false}});
+  hideCelebration();
+});
+
 async function teamControlListClickHandler(e) {
   const btn = e.target.closest('[data-action]'); if (!btn) return;
   const {action, team} = btn.dataset;
@@ -2331,6 +2315,7 @@ async function boot() {
   await loadTeamsState();
   await loadCaptainCount();
   await checkAdmin();
+  await loadCelebState();
   subscribeRealtime();
   await refreshMyAppStatus();
   setInterval(refreshMyAppStatus, 15000);
