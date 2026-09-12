@@ -228,7 +228,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
   display:flex;align-items:center;justify-content:center;
   font-family:'Anton',sans-serif;font-size:20px;
   box-shadow:0 10px 24px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.15);
-  overflow:hidden;position:relative;
+  overflow:visible;position:relative;
 }
 .stage-badge::after{content:'';position:absolute;inset:0;background:linear-gradient(155deg,rgba(255,255,255,.22) 0%,transparent 45%);pointer-events:none;}
 .stage-badge img{width:100%;height:100%;object-fit:cover;position:relative;}
@@ -335,11 +335,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 @keyframes _soldCardIn{0%{box-shadow:0 0 0 0 rgba(var(--gold-rgb),0);transform:scale(.97)}60%{box-shadow:0 14px 40px -10px rgba(var(--gold-rgb),.7);transform:scale(1.01)}100%{transform:scale(1)}}
 .team-card.sold .tc-topstrip{background:linear-gradient(90deg,transparent,var(--gold-pale) 15%,var(--gold) 40%,var(--gold) 60%,var(--gold-pale) 85%,transparent)!important;box-shadow:0 0 8px rgba(var(--gold-rgb),.6);}
 .tc-topstrip{height:2px;position:absolute;top:0;left:0;right:0;border-radius:16px 16px 0 0;}
-.tc-badge-row{display:flex;align-items:center;gap:11px;margin-top:4px;}
-.tc-badge{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:13px;overflow:hidden;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.14);}
+.tc-badge-row{display:flex;align-items:center;gap:9px;margin-top:4px;}
+.tc-badge{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:11px;overflow:visible;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.14);}
 .tc-badge img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
-.tc-abbr{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.04em;line-height:1;}
-.tc-name{font-size:11px;color:var(--ink-dim);margin-top:2px;line-height:1.2;}
+.tc-abbr{font-family:'Anton',sans-serif;font-size:16px;letter-spacing:.04em;line-height:1;}
+.tc-name{font-size:10.5px;color:var(--ink-dim);margin-top:1px;line-height:1.2;}
 .tc-divider{height:1px;background:var(--line);margin:10px 0;}
 .tc-bid-row{display:flex;align-items:center;justify-content:space-between;gap:4px;}
 .tc-price{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--gold);}
@@ -517,7 +517,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 
 /* Badge */
 .pop-badge-wrap{position:relative;width:88px;height:88px;margin:28px auto 0;z-index:2;}
-.pop-badge{width:88px;height:88px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:24px;box-shadow:0 14px 30px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.2);overflow:hidden;position:relative;z-index:2;border:2px solid rgba(var(--gold-rgb),.5);}
+.pop-badge{width:88px;height:88px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:24px;box-shadow:0 14px 30px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.2);overflow:visible;position:relative;z-index:2;border:2px solid rgba(var(--gold-rgb),.5);}
 .pop-badge img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
 .pop-badge-glow{position:absolute;inset:-12px;border-radius:50%;background:rgba(var(--gold-rgb),.2);animation:_badgeGlow 1.2s ease-in-out infinite alternate;z-index:1;}
 @keyframes _badgeGlow{from{transform:scale(.9);opacity:.5}to{transform:scale(1.1);opacity:1}}
@@ -593,7 +593,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 }
 .open-pop-bg.show .open-pop-card{transform:scale(1) translateY(0);opacity:1;}
 .open-pop-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--live) 30%,rgba(var(--live-rgb),.6) 50%,var(--live) 70%,transparent);}
-.open-pop-badge-wrap{margin:0 auto 14px;width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:22px;box-shadow:0 12px 28px -8px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.18);overflow:hidden;border:2px solid rgba(var(--live-rgb),.5);}
+.open-pop-badge-wrap{margin:0 auto 14px;width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:22px;box-shadow:0 12px 28px -8px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.18);overflow:visible;border:2px solid rgba(var(--live-rgb),.5);}
 .open-pop-badge{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .open-pop-badge img{width:100%;height:100%;object-fit:cover;}
 .open-pop-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--live);animation:_blink 1s ease-in-out infinite;}
@@ -1269,7 +1269,7 @@ function renderTeamsGrid() {
       ${isSold ? '<div class="sold-ribbon sr-sm"><span class="sr-ico">🏆</span>SOLD</div>' : ''}
       ${openNowBanner}
       <div class="tc-badge-row">
-        <div class="tc-badge" style="background:color-mix(in srgb,${t.color} 20%,transparent);border:1.5px solid ${t.color}55;">${badgeHTML(id, 40)}</div>
+        <div class="tc-badge" style="background:color-mix(in srgb,${t.color} 20%,transparent);border:1.5px solid ${t.color}55;">${badgeHTML(id, 60)}</div>
         <div>
           <div class="tc-abbr" style="color:${t.color};">${id}</div>
           <div class="tc-name">${t.name}</div>
@@ -1467,7 +1467,7 @@ function renderStage() {
   body.innerHTML = `
     ${isSold ? '<div class="sold-ribbon">SOLD</div>' : ''}
     <div class="stage-team-row">
-      <div class="stage-badge" style="background:color-mix(in srgb,${t.color} 20%,transparent);border:1.5px solid ${t.color}66;">${badgeHTML(featuredId, 52)}</div>
+      <div class="stage-badge" style="background:color-mix(in srgb,${t.color} 20%,transparent);border:1.5px solid ${t.color}66;">${badgeHTML(featuredId, 108)}</div>
       <div class="stage-details">
         <div class="stage-team-name">${t.name}</div>
         <div class="stage-price-block">
@@ -1510,7 +1510,7 @@ function showSoldPopup(teamId, winnerName, amount) {
 
   // Badge
   const b = $('soldPopBadge');
-  b.innerHTML = badgeHTML(teamId, 44);
+  b.innerHTML = badgeHTML(teamId, 66);
   b.style.background = `color-mix(in srgb,${t.color} 20%,transparent)`;
   b.style.borderColor = t.color + '99';
   $('soldPopBadgeGlow').style.background = `radial-gradient(circle,color-mix(in srgb,${t.color} 30%,transparent) 0%,transparent 70%)`;
@@ -1547,7 +1547,7 @@ function showSoldPopup(teamId, winnerName, amount) {
 function showOpenPopup(teamId) {
   const t = TEAM_META[teamId]; if (!t) return;
   const b = $('openPopBadge');
-  b.innerHTML = badgeHTML(teamId, 44);
+  b.innerHTML = badgeHTML(teamId, 62);
   b.style.background = `color-mix(in srgb,${t.color} 22%,transparent)`;
   $('openPopBadge').parentElement.style.background = `color-mix(in srgb,${t.color} 18%,transparent)`;
   $('openPopBadge').parentElement.style.borderColor = t.color + '88';
