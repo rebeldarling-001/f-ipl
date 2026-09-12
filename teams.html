@@ -2582,20 +2582,12 @@
         // ── LOCAL BUDGETS (admin editable, stored in Supabase) ──────────────
         const BUDGETS_KEY = 'xipl_s12_budgets';
         let budgets = {};  // { RCB: 350, CSK: 280, ... }
+        // Live captain names from the auction ("sold" franchises) — this is the
+        // SAME source home.html's "AUCTION CAPTAIN SYNC" script reads, so a
+        // captain sold in the auction shows here immediately too, not just
+        // after the full roster is finalized. Falls back to row.captain_name.
+        let auctionCaptains = {}; // { RCB: 'Some Name', ... }
         let teamsData = [];
-        let liveCaptains = {}; // { teamId: captain_name } — live from ffxipl_s12_teams, always wins over the frozen season_rosters snapshot
-
-        // Live captain names — ffxipl_s12_teams is written the instant a franchise
-        // sells on the franchise-auction page, whereas season_rosters.captain_name
-        // is only a one-time snapshot taken at finalize. This map keeps captain
-        // sales/corrections showing up here too, without waiting for a new finalize.
-        async function loadLiveCaptains() {
-            try {
-                const { data } = await sb.from('ffxipl_s12_teams').select('id,captain_name');
-                liveCaptains = {};
-                (data || []).forEach(r => { if (r.id) liveCaptains[String(r.id).toUpperCase()] = (r.captain_name || '').trim(); });
-            } catch (e) {}
-        }
         let isAdmin = false;
         let editingTeamId = null;
 
@@ -2677,6 +2669,22 @@
                 const { data } = await sb.from('ffxipl_s12_franchise_budgets').select('team_id,budget_cr').eq('season', 12);
                 if (data) data.forEach(r => { budgets[r.team_id] = r.budget_cr; });
             } catch (e) { }
+        }
+        // ── LIVE AUCTION CAPTAINS ─────────────────────────────────────────
+        // Reads sold captains from ffxipl_s12_franchise_teams — the same table
+        // and column home.html's captain-sync script uses — so this page never
+        // shows a captain that's out of sync with the home page.
+        async function loadAuctionCaptains() {
+            try {
+                const { data } = await sb
+                    .from('ffxipl_s12_franchise_teams')
+                    .select('team_id, sold_to_name, status')
+                    .eq('status', 'sold');
+                auctionCaptains = {};
+                (data || []).forEach(row => {
+                    if (row.sold_to_name) auctionCaptains[row.team_id] = row.sold_to_name;
+                });
+            } catch (e) { /* keep previous values on failure */ }
         }
         async function saveBudget(teamId, val) {
             await sb.from('ffxipl_s12_franchise_budgets').upsert({ season: 12, team_id: teamId, budget_cr: val }, { onConflict: 'season,team_id' });
@@ -2767,7 +2775,7 @@
                 const id = row.team_id;
                 const col = row.team_color || TEAM_META[id]?.color || '#888';
                 const fullName = row.team_name || TEAM_META[id]?.name || id;
-                const captain = liveCaptains[String(id).toUpperCase()] || row.captain_name || 'TBD';
+                const captain = auctionCaptains[id] || row.captain_name || 'TBD';
                 const spent = row.purse_spent || 0;
                 const remaining = row.purse_remaining != null ? row.purse_remaining : (100 - spent);
                 const pctSpent = Math.min(100, Math.round((spent / 100) * 100));
@@ -2904,7 +2912,7 @@
         async function boot() {
             await checkAdmin();
             await loadBudgets();
-            await loadLiveCaptains();
+            await loadAuctionCaptains();
 
             const { data, error } = await sb
                 .from('ffxipl_s12_season_rosters')
@@ -2953,12 +2961,12 @@
                 })
                 .subscribe();
 
-            // Realtime — a captain sale/correction on the franchise-auction page
-            // writes to ffxipl_s12_teams instantly; reflect it here immediately,
-            // no refresh and no waiting for the next finalize.
+            // Realtime — re-render whenever a captain is sold/updated in the
+            // auction, so this page stays in sync with home.html the instant
+            // it happens (not just once the roster is finalized).
             sb.channel('captains-realtime')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, async () => {
-                    await loadLiveCaptains();
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_franchise_teams' }, async () => {
+                    await loadAuctionCaptains();
                     renderAll();
                 })
                 .subscribe();
