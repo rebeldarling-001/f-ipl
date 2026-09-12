@@ -1147,15 +1147,22 @@ function buildCustomFixtures(){
   FIXTURES.sort((a,b)=>a.day-b.day||a.mi-b.mi);
 }
 
-// Live captain names from ffxipl_s12_teams — this is written the instant a
-// franchise sells in the franchise auction, whereas season_rosters.captain_name
-// is only a one-time snapshot taken at finalize. Reading this map means any
-// captain sale/correction shows up here too, not just on home.html.
+// Live captain names — merged from TWO sources, matching the same table
+// home.html and teams.html read from directly:
+//   1. ffxipl_s12_teams (captain_name) — written alongside the sale, but can
+//      go stale/out of sync if that particular upsert ever failed silently.
+//   2. ffxipl_s12_franchise_teams (sold_to_name, status='sold') — the same
+//      table home.html/teams.html sync from, confirmed correct there.
+// #2 wins on conflict since it's the source we've verified end-to-end.
 async function loadLiveCaptains(){
   try{
-    const {data}=await sb.from('ffxipl_s12_teams').select('id,captain_name');
+    const [teamsRes, franchiseRes] = await Promise.all([
+      sb.from('ffxipl_s12_teams').select('id,captain_name'),
+      sb.from('ffxipl_s12_franchise_teams').select('team_id,sold_to_name,status').eq('status','sold'),
+    ]);
     liveCaptains={};
-    (data||[]).forEach(r=>{ if(r.id) liveCaptains[String(r.id).toUpperCase()]=(r.captain_name||'').trim(); });
+    (teamsRes.data||[]).forEach(r=>{ if(r.id) liveCaptains[String(r.id).toUpperCase()]=(r.captain_name||'').trim(); });
+    (franchiseRes.data||[]).forEach(r=>{ if(r.team_id && r.sold_to_name) liveCaptains[String(r.team_id).toUpperCase()]=r.sold_to_name.trim(); });
   }catch(e){}
 }
 
@@ -1187,6 +1194,16 @@ async function loadRosters(){
         rosterData[r.team_id]=players;
       }catch(e){}
     });
+    // A team can have its captain sold in the franchise auction well before
+    // its full roster is finalized (season_rosters row doesn't exist yet, or
+    // is_finalized is still false) — without this, that team has NO row above
+    // at all, so even its captain never shows up here for kill entry. Seed a
+    // captain-only entry from liveCaptains for any team still missing one.
+    Object.keys(TEAM_META).forEach(teamId=>{
+      if(rosterData[teamId]) return; // already has a real roster row
+      const capName=(liveCaptains[teamId]||'').trim();
+      rosterData[teamId]=capName ? [{ign:capName,real_name:capName,kills_total:0,matches_played:0,mvp_count:0,isCaptain:true}] : [];
+    });
   }catch(e){}
 }
 
@@ -1202,6 +1219,15 @@ sb.channel('sched-rt').on('postgres_changes',{event:'*',schema:'public',table:'f
 // Realtime — a captain sale/correction on the franchise-auction page writes to
 // ffxipl_s12_teams instantly; reflect it here immediately, no refresh needed.
 sb.channel('sched-captain-rt').on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_teams'},async()=>{
+  await loadLiveCaptains();
+  await loadRosters();
+  renderAll();
+}).subscribe();
+
+// Same, but for the ffxipl_s12_franchise_teams table (the sale table
+// home.html/teams.html sync from) — covers a sale even if the ffxipl_s12_teams
+// mirror above ever falls out of sync.
+sb.channel('sched-captain-rt2').on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_franchise_teams'},async()=>{
   await loadLiveCaptains();
   await loadRosters();
   renderAll();
