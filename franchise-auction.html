@@ -115,32 +115,41 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 .crest{width:30px;height:30px;background:linear-gradient(145deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep));clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 100%,50% 76%,21% 100%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 3px 8px rgba(var(--gold-rgb),.45));}
 .brand-text{font-size:16px;letter-spacing:.06em;font-family:'Anton',sans-serif;}
 .brand-text b{color:var(--gold);}
-.h-right{display:flex;align-items:center;gap:7px;}
-.ico-btn{width:38px;height:38px;border-radius:9px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--gold);font-size:15px;cursor:pointer;transition:transform .15s;}
-.ico-btn:active{transform:scale(.92);}
+.header-actions{display:flex;align-items:center;gap:8px;}
+.menu-btn{width:38px;height:38px;border-radius:9px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--gold);font-size:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease;}
+.menu-btn:active{transform:scale(.92);}
+.theme-btn{font-size:15px;}
 
-/* ═══ NAV / THEME PANELS (same as leaderboard) ═══ */
-.ov{position:fixed;inset:0;z-index:90;max-width:480px;margin:0 auto;background:rgba(var(--bg-rgb),.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s;}
-.ov.show{opacity:1;pointer-events:auto;}
-.side-panel{position:fixed;z-index:95;top:62px;right:14px;left:14px;max-width:452px;margin:0 auto;background:linear-gradient(160deg,var(--nav-a),var(--nav-b) 80%);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.45);transform:translateY(-12px) scale(.97);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.9,.25,1),opacity .22s;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;}
-.side-panel.show{transform:none;opacity:1;pointer-events:auto;}
-.nav-drw{position:fixed;top:0;right:0;bottom:0;z-index:95;width:76%;max-width:300px;margin:0;background:linear-gradient(160deg,var(--nav-a),var(--nav-b) 80%);border:none;border-left:1px solid var(--line);border-radius:0;display:flex;flex-direction:column;padding:18px 16px 20px;transform:translateX(100%);transition:transform .36s cubic-bezier(.2,.9,.25,1);box-shadow:-20px 0 60px rgba(0,0,0,.5);opacity:1;pointer-events:none;max-height:none;overflow-y:auto;}
-.nav-drw.show{transform:translateX(0);pointer-events:auto;}
-.nav-drw-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);flex-shrink:0;}
-.panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--ink);border-bottom:1px solid var(--line);flex-shrink:0;}
-.close-x{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--gold);font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;overflow-y:auto;}
-.th-opt{display:flex;align-items:center;gap:8px;padding:9px;border-radius:11px;border:1px solid var(--line);background:rgba(var(--bg-rgb),.3);cursor:pointer;text-align:left;transition:border-color .18s,background .18s;}
-.th-opt.active{border-color:var(--gold);background:rgba(var(--gold-rgb),.1);}
-.th-sw{display:flex;width:24px;height:24px;border-radius:7px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,.1);}
-.th-sw i{flex:1;}
-.th-nm{font-size:11px;color:var(--ink-dim);}
-.th-opt.active .th-nm{color:var(--gold-pale);font-weight:700;}
-.nav-links{display:flex;flex-direction:column;padding:10px;overflow-y:auto;gap:3px;}
-.nav-lnk{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;color:var(--ink-dim);font-size:14px;font-weight:600;text-decoration:none;transition:background .18s,color .18s;}
-.nav-lnk:active,.nav-lnk.active{background:rgba(var(--gold-rgb),.1);color:var(--gold-pale);}
-.nav-lnk-ico{width:28px;height:28px;border-radius:8px;background:rgba(var(--gold-rgb),.08);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.nav-foot{padding:12px 14px;font-size:10px;color:var(--ink-faint);letter-spacing:.06em;border-top:1px solid var(--line);margin-top:4px;}
+/* ═══ THEME SWITCHER (same as home.html) ═══ */
+.theme-overlay{position:fixed;inset:0;z-index:90;max-width:480px;margin:0 auto;background:rgba(var(--bg-rgb),.5);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s ease;}
+.theme-overlay.show{opacity:1;pointer-events:auto;}
+.theme-panel{position:fixed;z-index:95;top:62px;right:14px;left:14px;max-width:452px;margin:0 auto;background:linear-gradient(165deg,var(--nav-a),var(--nav-b) 80%);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.45);transform:translateY(-14px) scale(.97);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.9,.25,1),opacity .24s ease;max-height:78vh;display:flex;flex-direction:column;overflow:hidden;}
+.theme-panel.show{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
+.theme-panel-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 12px;font-size:13px;font-weight:600;letter-spacing:.03em;color:var(--ink);border-bottom:1px solid var(--line);flex-shrink:0;}
+.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:12px;overflow-y:auto;}
+.theme-opt{display:flex;align-items:center;gap:8px;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(var(--bg-rgb),.35);cursor:pointer;text-align:left;transition:border-color .18s ease,background .18s ease,transform .15s ease;}
+.theme-opt:active{transform:scale(.96);}
+.theme-opt.active{border-color:var(--gold);background:rgba(var(--gold-rgb),.1);box-shadow:0 0 0 1px rgba(var(--gold-rgb),.35);}
+.theme-swatch{display:flex;flex-shrink:0;width:26px;height:26px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.12);}
+.theme-swatch i{flex:1;display:block;}
+.theme-opt-name{font-size:11.5px;letter-spacing:.02em;color:var(--ink-dim);line-height:1.3;}
+.theme-opt.active .theme-opt-name{color:var(--gold-pale);font-weight:600;}
+
+/* ═══ NAV DRAWER (same as home.html) ═══ */
+.nav-overlay{position:fixed;inset:0;z-index:90;max-width:480px;margin:0 auto;background:rgba(var(--bg-rgb),.62);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .32s ease;}
+.nav-overlay.show{opacity:1;pointer-events:auto;}
+.nav-drawer{position:fixed;top:0;right:0;bottom:0;z-index:95;width:76%;max-width:300px;background:linear-gradient(165deg,var(--nav-a),var(--nav-b) 75%);border-left:1px solid var(--line);display:flex;flex-direction:column;padding:18px 16px 20px;transform:translateX(100%);transition:transform .38s cubic-bezier(.2,.9,.25,1);box-shadow:-24px 0 60px rgba(0,0,0,.5);overflow-y:auto;}
+.nav-drawer.show{transform:translateX(0);}
+.nav-drawer-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line);}
+.nav-close{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--gold);font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-links{display:flex;flex-direction:column;gap:6px;margin-top:20px;}
+.nav-link{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:12px;color:var(--ink);font-size:14px;letter-spacing:.03em;text-decoration:none;border:1px solid transparent;transition:background .18s ease,border-color .18s ease;}
+.nav-link[aria-current="page"]{background:rgba(var(--gold-rgb),.1);border-color:rgba(var(--gold-rgb),.3);color:var(--gold-pale);}
+.nav-link:active{background:rgba(var(--gold-rgb),.08);border-color:var(--line);}
+.nav-link-primary{background:rgba(var(--gold-rgb),.1);border-color:var(--gold-deep);color:var(--gold-pale);font-weight:600;}
+.nav-link-primary .nav-link-icon{background:rgba(var(--gold-rgb),.18);color:var(--gold);}
+.nav-link-icon{width:30px;height:30px;border-radius:9px;flex-shrink:0;background:rgba(var(--gold-rgb),.08);display:flex;align-items:center;justify-content:center;font-size:13px;}
+.nav-drawer-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--line);font-size:9.5px;letter-spacing:.18em;color:var(--ink-faint);text-align:center;text-transform:uppercase;}
 
 /* ═══ FADE-UP ═══ */
 .fade-up{opacity:0;transform:translateY(18px);transition:.5s ease;}
@@ -751,55 +760,58 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
     <div class="crest"></div>
     <div class="brand-text">FREEFIRE<b>XIPL</b></div>
   </div>
-  <div class="h-right">
-    <button class="ico-btn" id="themeBtn" aria-label="Theme" aria-haspopup="true" aria-expanded="false">🎨</button>
-    <button class="ico-btn" id="menuBtn" aria-label="Menu">☰</button>
+  <div class="header-actions">
+    <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true" aria-expanded="false">🎨</button>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
   </div>
 </header>
 
-<!-- THEME OVERLAY + PANEL -->
-<div class="ov" id="themeOv"></div>
-<div class="side-panel" id="themePanel" role="menu">
-  <div class="panel-head"><span>🎨 Choose Theme</span><button class="close-x" id="themeClose">✕</button></div>
-  <div class="theme-grid">
-    <button class="th-opt" data-theme="golden-fire"><span class="th-sw"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i style="background:#b88f20"></i></span><span class="th-nm">Golden Fire 🔥</span></button>
-    <button class="th-opt" data-theme="og-bar"><span class="th-sw"><i style="background:#22a6df"></i><i style="background:#250505"></i><i style="background:#49310d"></i></span><span class="th-nm">Disco Blue ❤️</span></button>
-    <button class="th-opt" data-theme="neon-cyber"><span class="th-sw"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i style="background:#49199b"></i></span><span class="th-nm">Neon Cyber 💙</span></button>
-    <button class="th-opt" data-theme="royal-purple"><span class="th-sw"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i style="background:#911b73"></i></span><span class="th-nm">Royal Purple 💜</span></button>
-    <button class="th-opt" data-theme="emerald-forest"><span class="th-sw"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i style="background:#147749"></i></span><span class="th-nm">Emerald Forest 💚</span></button>
-    <button class="th-opt" data-theme="ocean-blue"><span class="th-sw"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i style="background:#147282"></i></span><span class="th-nm">Ocean Blue 🌊</span></button>
-    <button class="th-opt" data-theme="crystal-light"><span class="th-sw"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i style="background:#058ede"></i></span><span class="th-nm">Crystal Light ☀️</span></button>
-    <button class="th-opt" data-theme="midnight-black"><span class="th-sw"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i style="background:#a22222"></i></span><span class="th-nm">Midnight Black ⚫</span></button>
-    <button class="th-opt" data-theme="crimson-blood"><span class="th-sw"><i style="background:#1a0505"></i><i style="background:#e0304a"></i><i style="background:#ff8fa3"></i></span><span class="th-nm">Crimson Blood 🩸</span></button>
-    <button class="th-opt" data-theme="sunset-orange"><span class="th-sw"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i style="background:#d9481f"></i></span><span class="th-nm">Sunset Orange 🌅</span></button>
-    <button class="th-opt" data-theme="sakura-pink"><span class="th-sw"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i style="background:#e05a95"></i></span><span class="th-nm">Sakura Pink 🌸</span></button>
-    <button class="th-opt" data-theme="arena-pro"><span class="th-sw"><i style="background:#FEF5EF"></i><i style="background:#9D5C63"></i><i style="background:#584B53"></i></span><span class="th-nm">Arena Pro ⚔️</span></button>
+<!-- THEME SWITCHER -->
+<div class="theme-overlay" id="themeOverlay"></div>
+<div class="theme-panel" id="themePanel" role="menu" aria-label="Theme switcher">
+  <div class="theme-panel-head">
+    <span>🎨 Choose a Theme</span>
+    <button class="nav-close" id="themeClose" aria-label="Close theme menu">✕</button>
+  </div>
+  <div class="theme-grid" id="themeGrid">
+    <button class="theme-opt" data-theme="golden-fire" role="menuitemradio"><span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i style="background:#b88f20"></i></span><span class="theme-opt-name">Golden Fire <em>🔥</em></span></button>
+    <button class="theme-opt" data-theme="og-bar" role="menuitemradio"><span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i style="background:#49310d"></i></span><span class="theme-opt-name">Disco Blue <em>❤️</em></span></button>
+    <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio"><span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i style="background:#49199b"></i></span><span class="theme-opt-name">Neon Cyber <em>💙</em></span></button>
+    <button class="theme-opt" data-theme="royal-purple" role="menuitemradio"><span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i style="background:#911b73"></i></span><span class="theme-opt-name">Royal Purple <em>💜</em></span></button>
+    <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio"><span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i style="background:#147749"></i></span><span class="theme-opt-name">Emerald Forest <em>💚</em></span></button>
+    <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio"><span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i style="background:#824619"></i></span><span class="theme-opt-name">Sunset Orange <em>🧡</em></span></button>
+    <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio"><span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i style="background:#147282"></i></span><span class="theme-opt-name">Ocean Blue <em>🌊</em></span></button>
+    <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio"><span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i style="background:#97184f"></i></span><span class="theme-opt-name">Sakura Pink <em>🌸</em></span></button>
+    <button class="theme-opt" data-theme="midnight-black" role="menuitemradio"><span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i style="background:#a22222"></i></span><span class="theme-opt-name">Midnight Black <em>⚫</em></span></button>
+    <button class="theme-opt" data-theme="crystal-light" role="menuitemradio"><span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i style="background:#058ede"></i></span><span class="theme-opt-name">Crystal Light <em>☀️</em></span></button>
+    <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio"><span class="theme-swatch"><i style="background:#1a0505"></i><i style="background:#e0304a"></i><i style="background:#ff8fa3"></i></span><span class="theme-opt-name">Crimson Blood <em>🩸</em></span></button>
+    <button class="theme-opt" data-theme="arena-pro" role="menuitemradio"><span class="theme-swatch"><i style="background:#0b0b10"></i><i style="background:#ff8c00"></i><i style="background:#ffd36a"></i></span><span class="theme-opt-name">Arena Pro <em>⚔️</em></span></button>
   </div>
 </div>
 
-<!-- NAV OVERLAY + PANEL -->
-<div class="ov" id="navOv"></div>
-<div class="nav-drw" id="navPanel">
-  <div class="nav-drw-head">
+<!-- NAV DRAWER -->
+<div class="nav-overlay" id="navOverlay"></div>
+<nav class="nav-drawer" id="navDrawer">
+  <div class="nav-drawer-head">
     <div class="brand"><div class="crest" style="width:26px;height:26px"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
-    <button class="close-x" id="navClose">✕</button>
+    <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
   </div>
   <div class="nav-links">
-    <a href="home.html" class="nav-lnk"><span class="nav-lnk-ico">🔥</span> Home</a>
-    <a href="arena.html" class="nav-lnk"><span class="nav-lnk-ico">⚔️</span> Arena</a>
-    <a href="registration-center.html" class="nav-lnk"><span class="nav-lnk-ico">👤</span> Registration Center</a>
-    <a href="play-ins.html" class="nav-lnk"><span class="nav-lnk-ico">🎮</span> Play-Ins</a>
-    <a href="auction-center.html" class="nav-lnk"><span class="nav-lnk-ico">🔨</span> Auction Night</a>
-    <a href="franchise-auction.html" class="nav-lnk active" aria-current="page"><span class="nav-lnk-ico">🏟️</span> Franchise Auction</a>
-    <a href="teams.html" class="nav-lnk"><span class="nav-lnk-ico">🛡️</span> Teams</a>
-    <a href="schedule.html" class="nav-lnk"><span class="nav-lnk-ico">📅</span> Schedule</a>
-    <a href="leaderboard.html" class="nav-lnk"><span class="nav-lnk-ico">🏆</span> Leaderboard</a>
-    <a href="hall-of-fame.html" class="nav-lnk"><span class="nav-lnk-ico">👑</span> Hall of Fame</a>
-    <a href="rules.html" class="nav-lnk"><span class="nav-lnk-ico">📖</span> Rules</a>
-    <a href="about.html" class="nav-lnk"><span class="nav-lnk-ico">ℹ️</span> About</a>
+    <a href="home.html" class="nav-link"><span class="nav-link-icon">🔥</span> Home</a>
+    <a href="arena.html" class="nav-link"><span class="nav-link-icon">⚔️</span> Arena</a>
+    <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration Center</a>
+    <a href="play-ins.html" class="nav-link"><span class="nav-link-icon">🎮</span> Play-Ins</a>
+    <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction Night</a>
+    <a href="franchise-auction.html" class="nav-link nav-link-primary" aria-current="page"><span class="nav-link-icon">🏟️</span> Franchise Auction</a>
+    <a href="teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+    <a href="schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+    <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
+    <a href="hall-of-fame.html" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
+    <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+    <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
   </div>
-  <div class="nav-foot">FREEFIREXIPL · Season 12</div>
-</div>
+  <div class="nav-drawer-foot">FREEFIREXIPL · Season 12</div>
+</nav>
 
 <!-- TOAST STACK -->
 <div class="toast-stack" id="toastStack"></div>
@@ -1855,7 +1867,7 @@ $('bttBtn').addEventListener('click', () => window.scrollTo({top:0, behavior:'sm
 
 /* ═══ THEME ═══ */
 const THEME_KEY = 'xipl-theme', DEFAULT_THEME = 'golden-fire';
-const themeOpts = document.querySelectorAll('.th-opt');
+const themeOpts = document.querySelectorAll('.theme-opt');
 function markTheme(t) { themeOpts.forEach(o => o.classList.toggle('active', o.dataset.theme===t)); }
 function applyTheme(t, persist) {
   document.documentElement.classList.add('theme-tr');
@@ -1867,16 +1879,16 @@ themeOpts.forEach(o => o.addEventListener('click', () => { applyTheme(o.dataset.
 markTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
 
 /* ═══ NAV / THEME PANELS ═══ */
-function openThemePanel() { closeNavPanel(); $('themePanel').classList.add('show'); $('themeOv').classList.add('show'); $('themeBtn').setAttribute('aria-expanded','true'); }
-function closeThemePanel() { $('themePanel').classList.remove('show'); $('themeOv').classList.remove('show'); $('themeBtn').setAttribute('aria-expanded','false'); }
-function openNavPanel() { closeThemePanel(); $('navPanel').classList.add('show'); $('navOv').classList.add('show'); }
-function closeNavPanel() { $('navPanel').classList.remove('show'); $('navOv').classList.remove('show'); }
+function openThemePanel() { closeNavPanel(); $('themePanel').classList.add('show'); $('themeOverlay').classList.add('show'); $('themeBtn').setAttribute('aria-expanded','true'); }
+function closeThemePanel() { $('themePanel').classList.remove('show'); $('themeOverlay').classList.remove('show'); $('themeBtn').setAttribute('aria-expanded','false'); }
+function openNavPanel() { closeThemePanel(); $('navDrawer').classList.add('show'); $('navOverlay').classList.add('show'); }
+function closeNavPanel() { $('navDrawer').classList.remove('show'); $('navOverlay').classList.remove('show'); }
 $('themeBtn').addEventListener('click', () => $('themePanel').classList.contains('show') ? closeThemePanel() : openThemePanel());
 $('menuBtn').addEventListener('click', openNavPanel);
 $('themeClose').addEventListener('click', closeThemePanel);
 $('navClose').addEventListener('click', closeNavPanel);
-$('themeOv').addEventListener('click', closeThemePanel);
-$('navOv').addEventListener('click', closeNavPanel);
+$('themeOverlay').addEventListener('click', closeThemePanel);
+$('navOverlay').addEventListener('click', closeNavPanel);
 
 /* ═══ EMBERS ═══ */
 const ef = $('embers');

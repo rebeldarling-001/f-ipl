@@ -832,7 +832,7 @@
            Android GPUs — so it switches to a normal scrolling background
            under ~480px. Backdrop blur is one of the most expensive paint
            operations on those same devices, so under ~390px the sticky
-           header, theme/nav overlays, the notification popup, and the video
+           header, theme/nav overlays, and the video
            play buttons fall back to a slightly more opaque solid background
            instead of blurring what's behind them. The frosted-glass look is
            kept everywhere hardware can handle it; the !important here only
@@ -846,7 +846,6 @@
             header,
             .theme-overlay,
             .nav-overlay,
-            .notify-overlay,
             .clip-thumb .play {
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
@@ -854,7 +853,6 @@
             header { background: rgba(var(--bg-rgb), 0.95) !important; }
             .theme-overlay { background: rgba(var(--bg-rgb), 0.7) !important; }
             .nav-overlay { background: rgba(var(--bg-rgb), 0.8) !important; }
-            .notify-overlay { background: rgba(0, 0, 0, 0.85) !important; }
         }
 
         ::selection {
@@ -1754,232 +1752,6 @@
             letter-spacing: 0.03em;
         }
 
-        /* ============ NOTIFICATION POPUP (homepage only) ============ */
-        /* Driven by notify.js reading notifications.json — see that file to push a new notice. */
-        .notify-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9000;
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s ease;
-        }
-
-        .notify-overlay.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .notify-modal {
-            position: relative;
-            width: 100%;
-            max-width: 390px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
-            border: 1px solid rgba(var(--gold-rgb), 0.28);
-            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(var(--gold-rgb), 0.08);
-            transform: translateY(22px) scale(0.97);
-            transition: transform 0.38s cubic-bezier(.22, .9, .25, 1);
-        }
-
-        .notify-overlay.show .notify-modal {
-            transform: translateY(0) scale(1);
-        }
-
-        .notify-glow {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 260px;
-            height: 160px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--gold-rgb), 0.28), transparent 70%);
-            filter: blur(8px);
-            pointer-events: none;
-            animation: notifyHaloPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes notifyHaloPulse {
-
-            0%,
-            100% {
-                opacity: 0.7;
-            }
-
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .notify-shimmer {
-            position: absolute;
-            top: 0;
-            left: -60%;
-            width: 35%;
-            height: 100%;
-            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            animation: notifyShimmerSweep 5s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes notifyShimmerSweep {
-
-            0%,
-            100% {
-                left: -60%;
-            }
-
-            50% {
-                left: 120%;
-            }
-        }
-
-        .notify-close {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            z-index: 2;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--ink-faint);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .notify-top {
-            position: relative;
-            padding: 32px 24px 24px;
-            text-align: center;
-        }
-
-        .notify-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
-            border-radius: 100px;
-            border: 1px solid var(--gold-deep);
-            background: rgba(var(--gold-rgb), 0.08);
-            font-size: 9.5px;
-            letter-spacing: 0.2em;
-            color: var(--gold-pale);
-            text-transform: uppercase;
-        }
-
-        .notify-badge .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--live);
-            box-shadow: 0 0 6px var(--live);
-            animation: blink 1.2s ease-in-out infinite;
-        }
-
-        .notify-icon {
-            margin: 20px auto 0;
-            width: 62px;
-            height: 62px;
-            border-radius: 18px;
-            background: linear-gradient(145deg, rgba(var(--gold-rgb), 0.18), rgba(var(--gold-rgb), 0.05));
-            border: 1px solid rgba(var(--gold-rgb), 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
-        .notify-title {
-            margin-top: 18px;
-            font-family: 'Anton', sans-serif;
-            font-size: 26px;
-            line-height: 1.08;
-            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 0.02em;
-        }
-
-        .notify-date {
-            margin-top: 8px;
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            color: var(--ink-faint);
-        }
-
-        .notify-msg {
-            margin-top: 14px;
-            font-size: 13.5px;
-            line-height: 1.6;
-            color: var(--ink-dim);
-            padding: 0 4px;
-        }
-
-        .notify-msg b {
-            color: var(--ink);
-        }
-
-        .notify-divider {
-            margin: 0 24px;
-            border: none;
-            border-top: 1px solid var(--line);
-        }
-
-        .notify-footer {
-            padding: 20px 24px 26px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notify-cta {
-            all: unset;
-            box-sizing: border-box;
-            display: block;
-            width: 100%;
-            padding: 14px;
-            border-radius: 14px;
-            text-align: center;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, var(--gold-deep), var(--gold), var(--gold-pale));
-            color: var(--on-accent);
-            box-shadow: 0 4px 22px rgba(var(--gold-rgb), 0.35);
-            transition: opacity 0.2s, transform 0.15s;
-        }
-
-        .notify-cta:active {
-            transform: scale(0.97);
-            opacity: 0.88;
-        }
-
-        .notify-timer {
-            font-size: 11px;
-            color: var(--ink-faint);
-            letter-spacing: 0.06em;
-            font-family: 'Space Mono', monospace;
-        }
     </style>
     <style>
         /* ============ HERO ============ */
@@ -4392,7 +4164,6 @@ if (backToTopBtn) {
 }
 
     </script>
-    <script src="notify.js"></script>
     <script>
         // ====== REGISTRATION STATUS ======
         // Flip this one flag when you open or close registrations for the season.
