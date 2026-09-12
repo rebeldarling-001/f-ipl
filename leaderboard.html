@@ -786,6 +786,18 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 // ═══════════════════════════════════════════
 let isAdmin=false;
 let teamsRosters={};   // teamId -> full players array as stored in DB (uncut)
+let liveCaptains={};   // { teamId: captain_name } — live from ffxipl_s12_teams, always wins over the frozen season_rosters snapshot
+
+// Live captain names — ffxipl_s12_teams is written the instant a franchise
+// sells (or a captain is corrected) on the franchise-auction page, whereas
+// season_rosters.captain_name is only a one-time snapshot taken at finalize.
+async function loadLiveCaptains(){
+  try{
+    const {data}=await sb.from('ffxipl_s12_teams').select('id,captain_name');
+    liveCaptains={};
+    (data||[]).forEach(r=>{ if(r.id) liveCaptains[String(r.id).toUpperCase()]=(r.captain_name||'').trim(); });
+  }catch(e){}
+}
 let editingPlayer=null; // {teamId, idx}
 function showToast(msg,err=false){
   const t=$('toast');t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');
@@ -936,6 +948,7 @@ $('adminPill').addEventListener('click',async()=>{
 //  DATA LOAD
 // ═══════════════════════════════════════════
 async function loadLeaderboard(){
+  await loadLiveCaptains();
   // Fetch all team rosters
   const {data,error}=await sb
     .from('ffxipl_s12_season_rosters')
@@ -960,7 +973,7 @@ async function loadLeaderboard(){
     // Captain isn't auctioned, so they're never in players_json on their
     // own — they're the separate captain_name column. Inject them so their
     // kills count on the leaderboard too, once they have any recorded.
-    const capName=(row.captain_name||'').trim();
+    const capName=(liveCaptains[String(row.team_id).toUpperCase()] || row.captain_name || '').trim();
     if(capName){
       const already=players.some(p=>(p.ign||'').trim().toLowerCase()===capName.toLowerCase());
       if(!already){
@@ -1016,6 +1029,13 @@ function subscribeRealtime(){
   _lbRtSubscribed=true;
   sb.channel('lb-rt')
     .on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_season_rosters'},()=>loadLeaderboard())
+    .subscribe();
+
+  // Captain sales/corrections on the franchise-auction page write to
+  // ffxipl_s12_teams instantly — season_rosters alone only snapshots this
+  // once at finalize, so subscribe separately to catch that too.
+  sb.channel('lb-captain-rt')
+    .on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_teams'},()=>loadLeaderboard())
     .subscribe();
 }
 

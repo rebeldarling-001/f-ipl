@@ -984,6 +984,7 @@ function fmtDate(base,offset){
 let isAdmin=false;
 let matchData={};   // { matchId: { status, scoreA, scoreB, winner, time, holiday, playerScores, locked } }
 let rosterData={};  // { teamId: [{ ign, kills_total },...] }
+let liveCaptains={}; // { teamId: captain_name } — live from ffxipl_s12_teams, always wins over the frozen roster snapshot
 let editingMatchId=null;
 let curStatus='upcoming';
 let curDType='matches';
@@ -1146,6 +1147,18 @@ function buildCustomFixtures(){
   FIXTURES.sort((a,b)=>a.day-b.day||a.mi-b.mi);
 }
 
+// Live captain names from ffxipl_s12_teams — this is written the instant a
+// franchise sells in the franchise auction, whereas season_rosters.captain_name
+// is only a one-time snapshot taken at finalize. Reading this map means any
+// captain sale/correction shows up here too, not just on home.html.
+async function loadLiveCaptains(){
+  try{
+    const {data}=await sb.from('ffxipl_s12_teams').select('id,captain_name');
+    liveCaptains={};
+    (data||[]).forEach(r=>{ if(r.id) liveCaptains[String(r.id).toUpperCase()]=(r.captain_name||'').trim(); });
+  }catch(e){}
+}
+
 async function loadRosters(){
   try{
     const {data}=await sb.from('ffxipl_s12_season_rosters')
@@ -1162,7 +1175,9 @@ async function loadRosters(){
         // 6th player (the captain) would never show up as selectable for
         // match kill entry. Inject them once; after their first save they
         // become a normal players_json entry like everyone else.
-        const capName=(r.captain_name||'').trim();
+        // liveCaptains (from ffxipl_s12_teams) always takes priority over the
+        // frozen snapshot on the roster row itself, since it's kept live.
+        const capName=(liveCaptains[String(r.team_id).toUpperCase()] || r.captain_name || '').trim();
         if(capName){
           const already=players.some(p=>(p.ign||'').trim().toLowerCase()===capName.toLowerCase());
           if(!already){
@@ -1183,6 +1198,14 @@ function scheduleRealtimeRefresh(){
   _rtDebounce=setTimeout(()=>{ loadMatchData().then(renderAll); },250);
 }
 sb.channel('sched-rt').on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_schedule'},scheduleRealtimeRefresh).subscribe();
+
+// Realtime — a captain sale/correction on the franchise-auction page writes to
+// ffxipl_s12_teams instantly; reflect it here immediately, no refresh needed.
+sb.channel('sched-captain-rt').on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_teams'},async()=>{
+  await loadLiveCaptains();
+  await loadRosters();
+  renderAll();
+}).subscribe();
 
 // ════════════════════════════════════════════════
 //  LEAGUE SCHEDULE (in-memory, augmented by DB)
@@ -2128,6 +2151,7 @@ menuBtn.addEventListener('click',()=>{navDrw.classList.add('show');navOv.classLi
 if('scrollRestoration' in history) history.scrollRestoration='manual';
 window.scrollTo(0,0);
 (async()=>{
+  await loadLiveCaptains();
   await Promise.all([checkAdmin(),loadMatchData(),loadRosters()]);
   renderAll();
 })();
