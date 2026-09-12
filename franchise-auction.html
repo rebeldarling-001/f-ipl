@@ -1727,8 +1727,9 @@ async function loadApps() {
 }
 function renderApps() {
   const list = $('appsList');
-  if (!allApps.length) { list.innerHTML = '<div class="admin-empty">No applications yet.</div>'; return; }
-  list.innerHTML = allApps.map(app => `
+  const visibleApps = allApps.filter(app => app.status !== 'kicked');
+  if (!visibleApps.length) { list.innerHTML = '<div class="admin-empty">No applications yet.</div>'; return; }
+  list.innerHTML = visibleApps.map(app => `
     <div class="app-card" data-id="${app.id}">
       <div class="app-card-top">
         <div><div class="app-name">${app.name}</div><div class="app-phone">${app.phone}</div></div>
@@ -1736,7 +1737,7 @@ function renderApps() {
       </div>
       <div class="app-actions">
         ${app.status !== 'approved' ? `<button class="app-btn approve" data-action="approve" data-id="${app.id}">✅ Approve</button>` : ''}
-        ${app.status !== 'kicked' ? `<button class="app-btn kick" data-action="kick" data-id="${app.id}">⛔ Kick</button>` : ''}
+        <button class="app-btn kick" data-action="kick" data-id="${app.id}">⛔ Kick</button>
         ${app.status !== 'rejected' ? `<button class="app-btn" data-action="reject" data-id="${app.id}">❌ Reject</button>` : ''}
       </div>
     </div>`).join('');
