@@ -2052,9 +2052,7 @@ function buildCelebRankList() {
 let _celebOn = false;
 function showCelebration() {
   if (_celebOn) return; _celebOn = true;
-  // Hide the entire app section (CTA + status pill + logout) for everyone when season is done
-  const appSection = $('appSection');
-  if (appSection) appSection.style.display = 'none';
+  // Hide the captain CTA (Want to own a franchise) for everyone
   const ctaBox = $('captainCtaBox');
   if (ctaBox) ctaBox.style.display = 'none';
   // Hide the live stats (Bidders/Active/Highest) + the on-stage card — redundant
@@ -2083,10 +2081,7 @@ function hideCelebration() {
   celebConfettiStop();
   const liveBlock = $('liveBiddingBlock');
   if (liveBlock) liveBlock.style.display = '';
-  // Restore the app section
-  const appSection = $('appSection');
-  if (appSection) appSection.style.display = '';
-  // Restore CTA only if user hasn't applied
+  // Restore CTA if user hasn't applied
   if (!myApp) { const ctaBox = $('captainCtaBox'); if (ctaBox) ctaBox.style.display = 'flex'; }
 }
 
@@ -2219,28 +2214,44 @@ function subscribeRealtime() {
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'ffxipl_s12_franchise_teams'}, payload => {
       handleTeamChange(payload.new, null);
     })
-    .on('postgres_changes', {event:'UPDATE', schema:'public', table:'ffxipl_s12_franchise_teams'}, payload => {
-      handleTeamChange(payload.new, teamsCache[payload.new.team_id] || null);
+    .on('postgres_changes', {event:'UPDATE', schema:'public', table:'ffxipl_s12_franchise_teams'}, async payload => {
+      // Capture oldRow BEFORE refreshing cache — cache may be stale or empty
+      // (race on boot), which caused the stage to stay blank for viewers.
+      const oldRow = teamsCache[payload.new.team_id] || null;
+      // Always pull full fresh state so every field (featured, status, sold_to_name…)
+      // is up to date before we render — the payload only has the changed row.
+      await loadTeamsState();
+      handleTeamChange(payload.new, oldRow);
     })
     .subscribe(status => {
-      if (status === 'SUBSCRIBED') console.log('[XIPL] Realtime connected — zero delay active');
+      if (status === 'SUBSCRIBED') {
+        console.log('[XIPL] Realtime connected — zero delay active');
+      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        // Realtime dropped — do an immediate state refresh so viewers
+        // don't miss a "put on stage" that happened while disconnected.
+        console.warn('[XIPL] Realtime issue:', status, '— refreshing state now');
+        loadTeamsState();
+        loadBids();
+      }
     });
 }
 function handleTeamChange(row, oldRow) {
   const wasSold = oldRow && oldRow.status === 'sold';
-  const wasNotFeatured = oldRow && !oldRow.featured;
+  const wasNotFeatured = !oldRow || !oldRow.featured;
   const nowSold = row.status === 'sold';
   const nowFeatured = !!row.featured && !nowSold;
 
-  // Update cache BEFORE rendering
-  teamsCache[row.team_id] = {...defaultTeamState(), ...row};
+  // Only update cache if not already refreshed by loadTeamsState() above
+  if (!teamsCache[row.team_id] || teamsCache[row.team_id].updated_at <= row.updated_at) {
+    teamsCache[row.team_id] = {...defaultTeamState(), ...row};
+  }
 
   if (nowSold && !wasSold) {
     // Grand SOLD celebration for everyone
     showSoldPopup(row.team_id, row.sold_to_name, row.sold_amount);
     pushWire(`🔨 <b>${TEAM_META[row.team_id]?.name||row.team_id}</b> SOLD to <b>${row.sold_to_name}</b> for ${fmtRs(row.sold_amount)}`);
-  } else if (nowFeatured && (wasNotFeatured || !oldRow)) {
-    // Team just put on stage — announce to everyone
+  } else if (nowFeatured && wasNotFeatured) {
+    // Team just put on stage — announce to everyone (including those with empty cache on boot)
     showOpenPopup(row.team_id);
     pushWire(`🏟️ <b>${TEAM_META[row.team_id]?.name||row.team_id}</b> is now open for bidding!`);
   }
@@ -2318,7 +2329,7 @@ async function boot() {
   await refreshMyAppStatus();
   setInterval(refreshMyAppStatus, 15000);
   setInterval(loadCaptainCount, 15000);
-  setInterval(loadTeamsState, 20000);
+  setInterval(loadTeamsState, 5000); // 5s poll — fast fallback if realtime drops
 }
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0,0);
