@@ -4368,7 +4368,7 @@ if (backToTopBtn) {
          No manual HTML edits needed after each auction sale. -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        (function () {
+        (async () => {
             const SUPABASE_URL  = 'https://ndioutmihxodqknvgfju.supabase.co';
             const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
             const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -4385,51 +4385,62 @@ if (backToTopBtn) {
                 SRH:  { color: '#ffab7a', bg: '#f2652226' },
             };
 
-            // Reads directly from ffxipl_s12_teams — written the instant a
-            // franchise sells (or a captain is corrected) on the franchise-auction
-            // page. Using this table (not franchise_teams/season_rosters) is what
-            // keeps this in sync with teams.html and schedule.html.
-            function applyCaptain(teamId, captainName) {
-                if (!teamId || !captainName) return;
-                const cards = document.querySelectorAll('.team-card');
-                const card = [...cards].find(c => {
-                    const img = c.querySelector('img');
-                    return img && img.alt.toUpperCase().startsWith(teamId);
-                });
-                if (!card) return;
-
-                const nameEl = card.querySelector('.cap-info b');
-                const avatar = card.querySelector('.cap-avatar');
-
-                if (nameEl) nameEl.textContent = captainName;
-                if (avatar) {
-                    avatar.textContent = captainName.charAt(0).toUpperCase();
-                    const s = TEAM_STYLE[teamId];
-                    if (s) {
-                        avatar.style.background = s.bg;
-                        avatar.style.color = s.color;
-                    }
-                }
-            }
-
-            async function loadCaptains() {
+            // Pulls sold captains from Supabase and updates the cards. Called once
+            // on load, then again on every realtime change — a one-shot run left
+            // the page stuck on whatever the demo placeholder names were until
+            // someone hard-refreshed, even after the real auction result changed.
+            async function syncCaptains() {
                 const { data, error } = await sb
-                    .from('ffxipl_s12_teams')
-                    .select('id, captain_name');
-                if (error || !data) return;
-                data.forEach(row => applyCaptain((row.id || '').toUpperCase(), row.captain_name));
+                    .from('ffxipl_s12_franchise_teams')
+                    .select('team_id, sold_to_name, status')
+                    .eq('status', 'sold');
+
+                if (error) { console.error('Captain sync fetch failed:', error.message); return; }
+                if (!data || !data.length) return;
+
+                // All team cards on the page
+                const cards = document.querySelectorAll('.team-card');
+
+                data.forEach(row => {
+                    try {
+                        if (!row.sold_to_name) return;
+                        // Normalize case/whitespace — a mismatch here (e.g. "Rcb" vs
+                        // "RCB") is exactly the kind of thing that silently fails the
+                        // find() below and leaves the old placeholder name showing.
+                        const tid = (row.team_id || '').trim().toUpperCase();
+
+                        // Match card by its logo <img> alt text (e.g. "RR team logo")
+                        const card = [...cards].find(c => {
+                            const img = c.querySelector('img');
+                            return img && img.alt.toUpperCase().startsWith(tid);
+                        });
+                        if (!card) { console.warn('Captain sync: no card matched team_id', row.team_id); return; }
+
+                        const nameEl = card.querySelector('.cap-info b');
+                        const avatar = card.querySelector('.cap-avatar');
+
+                        // Update the captain name
+                        if (nameEl) nameEl.textContent = row.sold_to_name;
+
+                        // Update the avatar letter and colour
+                        if (avatar) {
+                            avatar.textContent = row.sold_to_name.charAt(0).toUpperCase();
+                            const s = TEAM_STYLE[tid];
+                            if (s) {
+                                avatar.style.background = s.bg;
+                                avatar.style.color = s.color;
+                            }
+                        }
+                    } catch (e) { console.error('Captain sync row failed:', row.team_id, e); }
+                });
             }
 
-            loadCaptains();
+            await syncCaptains();
 
-            // Realtime — previously this was a one-time fetch on page load only,
-            // so a captain sale/correction never showed up unless you reloaded the
-            // page. This subscription pushes the update instantly, no refresh.
-            sb.channel('home-captain-sync')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, payload => {
-                    const row = payload.new || {};
-                    applyCaptain((row.id || '').toUpperCase(), row.captain_name);
-                })
+            // Realtime — re-sync the instant a captain is sold/updated/reset in
+            // the auction, so this page never sits on stale data again.
+            sb.channel('home-captains-realtime')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_franchise_teams' }, syncCaptains)
                 .subscribe();
         })();
     </script>
