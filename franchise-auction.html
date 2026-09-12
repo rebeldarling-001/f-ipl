@@ -109,7 +109,7 @@ body::after{
 .sp-prog-fill.team-hue{background:linear-gradient(90deg,rgba(var(--tt-rgb),.6),rgb(var(--tt-rgb)),rgba(var(--tt-rgb),.6));box-shadow:0 0 8px rgba(var(--tt-rgb),.6);}
 
 /* ═══ HEADER ═══ */
-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:rgba(var(--bg-rgb),.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(var(--gold-rgb),0.14);box-shadow:0 2px 20px rgba(0,0,0,0.35),0 1px 0 rgba(255,255,255,.03) inset;max-width:480px;margin:0 auto;}
+header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:rgba(var(--bg-rgb),.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(var(--gold-rgb),0.14);box-shadow:0 2px 20px rgba(0,0,0,0.35),0 1px 0 rgba(255,255,255,.03) inset;max-width:480px;margin:0 auto;}
 header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--tt-rgb,var(--gold-rgb)),.7) 50%,transparent);transition:background 1s ease;}
 .brand{display:flex;align-items:center;gap:9px;}
 .crest{width:30px;height:30px;background:linear-gradient(145deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep));clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 100%,50% 76%,21% 100%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 3px 8px rgba(var(--gold-rgb),.45));}
@@ -249,6 +249,8 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .stage-outer.sold .stage-price{background:linear-gradient(135deg,var(--gold-pale) 10%,var(--gold) 55%,var(--gold-deep) 90%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .stage-outer.team-live .stage-price{background:linear-gradient(135deg,#fff 8%,rgba(var(--tt-rgb,240,185,61),.85) 50%,rgb(var(--tt-rgb,240,185,61)) 90%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stage-price.bump{display:inline-block;animation:_priceBump .55s cubic-bezier(.2,1.4,.4,1);transform-origin:left center;}
+@keyframes _priceBump{0%{transform:scale(1.3);filter:brightness(1.7) saturate(1.4);}55%{transform:scale(.95);}100%{transform:scale(1);filter:brightness(1) saturate(1);}}
 .stage-price-tag{font-size:9px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;}
 .stage-leader-line{margin-top:5px;font-size:12px;color:var(--ink-dim);}
 .stage-leader-line b{color:var(--ink);}
@@ -356,8 +358,8 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 }
 .team-card.live{
   border-color:rgba(var(--card-team-rgb,255,68,51),.6);
-  box-shadow:0 0 0 1px rgba(var(--card-team-rgb,255,68,51),.2),0 8px 24px -10px rgba(var(--card-team-rgb,255,68,51),.5);
-  animation:_pulseCard 1.8s ease-in-out infinite;
+  box-shadow:0 0 0 1.5px rgba(var(--card-team-rgb,255,68,51),.5),0 8px 24px -10px rgba(var(--card-team-rgb,255,68,51),.5);
+  animation:_pulseCard 2.2s ease-in-out infinite;will-change:box-shadow;
 }
 @keyframes _pulseCard{0%,100%{box-shadow:0 0 0 1.5px rgba(var(--card-team-rgb,255,68,51),.5),0 8px 24px -10px rgba(var(--card-team-rgb,255,68,51),.5)}50%{box-shadow:0 0 0 3px rgba(var(--card-team-rgb,255,68,51),.15),0 8px 24px -10px rgba(var(--card-team-rgb,255,68,51),.35)}}
 .team-card.sold{
@@ -385,7 +387,8 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 .tc-divider{height:1px;margin:11px 0;background:linear-gradient(90deg,transparent,var(--line) 50%,transparent);}
 .tc-bid-row{display:flex;align-items:flex-end;justify-content:space-between;gap:4px;}
 .tc-price-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px;}
-.tc-price{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--gold);}
+.tc-price{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--gold);display:inline-block;}
+.tc-price.bump{animation:_priceBump .55s cubic-bezier(.2,1.4,.4,1);transform-origin:left center;}
 .tc-price.sold-price{
   background:linear-gradient(135deg,var(--gold-pale) 10%,var(--gold) 55%,var(--gold-deep) 90%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -529,8 +532,10 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 /* ═══ POPUPS & MODALS ═══ */
 /* Bid toast (compact) */
 .bid-toast-wrap{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:300;width:100%;max-width:440px;padding:0 14px;pointer-events:none;}
-.bid-toast{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:15px;background:linear-gradient(155deg,var(--card-a),var(--card-b) 88%);border:1px solid rgba(var(--live-rgb),.5);box-shadow:0 12px 28px -10px rgba(var(--live-rgb),.5),0 4px 14px rgba(0,0,0,.4);transform:translateY(-140%);opacity:0;pointer-events:auto;cursor:pointer;transition:transform .4s cubic-bezier(.2,.9,.25,1),opacity .3s;}
-.bid-toast-wrap.show .bid-toast{transform:translateY(0);opacity:1;}
+.bid-toast{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:15px;background:linear-gradient(155deg,var(--card-a),var(--card-b) 88%);border:1px solid rgba(var(--live-rgb),.5);box-shadow:0 12px 28px -10px rgba(var(--live-rgb),.5),0 4px 14px rgba(0,0,0,.4);transform:translateY(-140%) scale(.92);opacity:0;pointer-events:auto;cursor:pointer;transition:transform .4s cubic-bezier(.2,1.15,.3,1),opacity .3s;}
+.bid-toast-wrap.show .bid-toast{transform:translateY(0) scale(1);opacity:1;}
+.bt-arrow{display:inline-block;color:var(--live);font-size:9px;margin-right:1px;animation:_arrowUp .6s ease-in-out infinite;}
+@keyframes _arrowUp{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-3px);opacity:.55}}
 .bt-badge{width:38px;height:38px;border-radius:10px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:11px;}
 .bt-badge img{width:100%;height:100%;object-fit:cover;}
 .bt-info{flex:1;min-width:0;}
@@ -560,12 +565,21 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 .confetti-piece{position:absolute;top:-10%;width:8px;height:13px;opacity:.95;animation:_confettiFall linear forwards;}
 @keyframes _confettiFall{to{transform:translateY(500px) rotate(720deg);opacity:0;}}
 
+/* Screen flash — fires once when the popup opens, like a camera flash / gavel impact */
+.pop-flash{position:fixed;inset:0;z-index:401;max-width:480px;margin:0 auto;background:#fff;opacity:0;pointer-events:none;mix-blend-mode:overlay;}
+.pop-flash.fire{animation:_flashOut .5s ease-out forwards;}
+@keyframes _flashOut{0%{opacity:.85}100%{opacity:0}}
+
 /* Badge */
 .pop-badge-wrap{position:relative;width:88px;height:88px;margin:28px auto 0;z-index:2;}
 .pop-badge{width:88px;height:88px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:24px;box-shadow:0 14px 30px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.2);overflow:visible;position:relative;z-index:2;border:2px solid rgba(var(--gold-rgb),.5);}
 .pop-badge img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
 .pop-badge-glow{position:absolute;inset:-12px;border-radius:50%;background:rgba(var(--gold-rgb),.2);animation:_badgeGlow 1.2s ease-in-out infinite alternate;z-index:1;}
 @keyframes _badgeGlow{from{transform:scale(.9);opacity:.5}to{transform:scale(1.1);opacity:1}}
+/* Shockwave ring — bursts outward from the badge once, on open */
+.pop-badge-wrap::after{content:'';position:absolute;inset:-4px;border-radius:26px;border:2px solid rgba(var(--gold-rgb),.85);opacity:0;z-index:1;pointer-events:none;}
+.big-pop-bg.show .pop-badge-wrap::after{animation:_ringBurst .8s ease-out .05s both;}
+@keyframes _ringBurst{0%{transform:scale(.7);opacity:.9;}100%{transform:scale(1.9);opacity:0;}}
 
 /* Text content */
 .pop-eyebrow-txt{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-top:16px;position:relative;z-index:2;}
@@ -824,13 +838,14 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
     <div class="bt-badge" id="btBadge">—</div>
     <div class="bt-info">
       <div class="bt-label"><span class="bt-pdot"></span>New Bid</div>
-      <div class="bt-line"><b id="btTeam">—</b> · <span id="btAmount">₹0</span></div>
+      <div class="bt-line"><b id="btTeam">—</b> · <span class="bt-arrow">▲</span><span id="btAmount">₹0</span></div>
       <div class="bt-sub" id="btSub">—</div>
     </div>
   </div>
 </div>
 
 <!-- SOLD POPUP — Grand Celebration -->
+<div class="pop-flash" id="popFlash"></div>
 <div class="big-pop-bg" id="soldPopBg">
   <div class="sold-pop-card" id="soldPopCard">
     <div class="pop-confetti-zone" id="popConfettiZone"></div>
@@ -1140,9 +1155,27 @@ function setTeamAmbient(id) {
 let myApp = null, bidsCache = {}, wireEvents = [], bidModalTeam = null, bidAmount = MIN_BID;
 let isAdmin = false, currentAdminUser = null, allApps = [], teamsCache = {}, lastPopSig = '';
 let liveSince = Date.now(), featuredTimer = null;
+let _bumpTeamId = null, _bumpFrom = {};
 
 const $ = id => document.getElementById(id);
 const fmtRs = n => `₹${Number(n).toFixed(0)}`;
+
+/* ═══ ANIMATED NUMBER COUNT-UP — gives bids a "climbing" premium feel ═══ */
+function animateCount(el, to, duration, from) {
+  if (!el) return;
+  from = (typeof from === 'number' && !isNaN(from)) ? from : 0;
+  if (from === to) { el.textContent = fmtRs(to); return; }
+  const startTime = performance.now();
+  cancelAnimationFrame(el._countRaf);
+  function step(now) {
+    const p = Math.min(1, (now - startTime) / (duration || 500));
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmtRs(Math.round(from + (to - from) * eased));
+    if (p < 1) el._countRaf = requestAnimationFrame(step);
+    else el.textContent = fmtRs(to);
+  }
+  el._countRaf = requestAnimationFrame(step);
+}
 
 /* ═══ BADGE HTML ═══ */
 function badgeHTML(id, size) {
@@ -1314,6 +1347,8 @@ function renderTeamsGrid() {
       </div>` : '';
 
     const idxBadge = !isSold ? `<div class="tc-index" style="color:${t.color};">N°${String(TEAM_IDS.indexOf(id)+1).padStart(2,'0')}</div>` : '';
+    const doBump = isOpen && id === _bumpTeamId && bid;
+    const priceId = doBump ? ` id="tcPriceVal-${id}"` : '';
 
     card.innerHTML = `
       <div class="tc-topstrip" style="background:${t.color};"></div>
@@ -1331,7 +1366,7 @@ function renderTeamsGrid() {
       <div class="tc-bid-row">
         <div>
           <div class="tc-price-label">${priceLabel}</div>
-          <span class="tc-price ${priceClass}" style="${priceStyle}">${priceDisplay}</span>
+          <span class="tc-price ${priceClass}${doBump ? ' bump' : ''}"${priceId} style="${priceStyle}">${doBump ? '' : priceDisplay}</span>
         </div>
         ${statusPill}
       </div>
@@ -1344,6 +1379,7 @@ function renderTeamsGrid() {
       card.style.cursor = 'pointer';
     }
     grid.appendChild(card);
+    if (doBump) animateCount($(`tcPriceVal-${id}`), bid.amount, 500, _bumpFrom[id]);
   });
   $('statTopBid').textContent = topBid > MIN_BID ? fmtRs(topBid) : '₹100';
 }
@@ -1393,18 +1429,27 @@ $('bidConfirmBtn').addEventListener('click', async () => {
 });
 
 /* ═══ LOAD BIDS ═══ */
+let _bidsReconcileTimer = null;
+function scheduleBidsReconcile() {
+  clearTimeout(_bidsReconcileTimer);
+  _bidsReconcileTimer = setTimeout(loadBids, 2500);
+}
 async function loadBids() {
   const {data, error} = await sb.from('ffxipl_s12_franchise_bids').select('*').order('amount', {ascending:false});
   if (error) { console.error(error); return; }
-  bidsCache = {}; const counts = {};
+  const newBidsCache = {}; const counts = {};
   (data||[]).forEach(row => {
     counts[row.team_id] = (counts[row.team_id]||0)+1;
-    if (!bidsCache[row.team_id]) bidsCache[row.team_id] = {...row, total_bids:0};
+    if (!newBidsCache[row.team_id]) newBidsCache[row.team_id] = {...row, total_bids:0};
   });
-  Object.keys(bidsCache).forEach(tid => { bidsCache[tid].total_bids = counts[tid]||1; });
+  Object.keys(newBidsCache).forEach(tid => { newBidsCache[tid].total_bids = counts[tid]||1; });
+  // Skip the (expensive) full grid rebuild if reconciling didn't actually change anything —
+  // this is what runs after every bid, so a no-op check here matters a lot for smoothness.
+  const changed = JSON.stringify(newBidsCache) !== JSON.stringify(bidsCache);
+  bidsCache = newBidsCache;
   const bidders = new Set((data||[]).map(r => r.bidder_phone)).size;
   $('statBidders').textContent = bidders;
-  renderTeamsGrid();
+  if (changed) renderTeamsGrid();
 }
 
 /* ═══ TEAM STATE ═══ */
@@ -1412,10 +1457,16 @@ function defaultTeamState() { return {status:'open', sold_to_name:'', sold_to_ph
 async function loadTeamsState() {
   const {data, error} = await sb.from('ffxipl_s12_franchise_teams').select('*');
   if (error) { console.error(error); return; }
-  teamsCache = {}; TEAM_IDS.forEach(id => teamsCache[id] = defaultTeamState());
-  (data||[]).forEach(row => { teamsCache[row.team_id] = {...defaultTeamState(), ...row}; });
-  renderStage(); renderTeamsGrid();
-  if (isAdmin) renderTeamControlList();
+  const newCache = {}; TEAM_IDS.forEach(id => newCache[id] = defaultTeamState());
+  (data||[]).forEach(row => { newCache[row.team_id] = {...defaultTeamState(), ...row}; });
+  // This runs on a 20s poll as a safety net alongside realtime — skip the rebuild when
+  // nothing actually changed so it doesn't cause a periodic stutter while someone's scrolling.
+  const changed = JSON.stringify(newCache) !== JSON.stringify(teamsCache);
+  teamsCache = newCache;
+  if (changed) {
+    renderStage(); renderTeamsGrid();
+    if (isAdmin) renderTeamControlList();
+  }
 }
 
 /* ═══ TIMER ═══ */
@@ -1522,6 +1573,8 @@ function renderStage() {
     ? `🏆 Owned by <span class="owner-chip">${ts.sold_to_name}</span>`
     : (bid ? `Leading: <b>${bid.bidder_name}</b>` : 'No bids yet — be the first!');
 
+  const doBump = !isSold && featuredId === _bumpTeamId && bid;
+
   body.innerHTML = `
     ${isSold ? '<div class="sold-ribbon">SOLD</div>' : ''}
     <div class="stage-team-row">
@@ -1529,13 +1582,17 @@ function renderStage() {
       <div class="stage-details">
         <div class="stage-team-name">${t.name}</div>
         <div class="stage-price-block">
-          <span class="stage-price">${priceDisplay}</span>
+          <span class="stage-price${doBump ? ' bump' : ''}" id="stagePriceVal">${doBump ? '' : priceDisplay}</span>
           <span class="stage-price-tag">${priceTag}</span>
         </div>
         <div class="stage-leader-line">${leaderDisplay}</div>
       </div>
     </div>
     <div class="stage-action">${actionHtml}</div>`;
+
+  if (doBump) {
+    animateCount($('stagePriceVal'), bid.amount, 500, _bumpFrom[featuredId]);
+  }
 
   $('stageBidBtn')?.addEventListener('click', () => openBidModal(featuredId));
   $('stageCapBtn')?.addEventListener('click', () => openCaptainModal());
@@ -1551,14 +1608,15 @@ function launchConfetti(container, count) {
     container.appendChild(p); setTimeout(() => p.remove(), 2600);
   }
 }
-function showBidToast(teamId, bidderName, amount) {
+function showBidToast(teamId, bidderName, amount, fromAmount) {
   const sig = `${teamId}:${bidderName}:${amount}`;
   if (sig === lastPopSig) return; lastPopSig = sig;
   const t = TEAM_META[teamId]; if (!t) return;
   const b = $('btBadge'); b.innerHTML = badgeHTML(teamId, 22);
   b.style.background = `color-mix(in srgb,${t.color} 20%,transparent)`;
   b.style.border = `1.5px solid ${t.color}88`;
-  $('btTeam').textContent = t.name; $('btAmount').textContent = fmtRs(amount);
+  $('btTeam').textContent = t.name;
+  animateCount($('btAmount'), amount, 420, fromAmount);
   $('btSub').innerHTML = `<b>${bidderName}</b> just placed a bid`;
   const w = $('bidToastWrap'); w.classList.add('show');
   clearTimeout(showBidToast._t); showBidToast._t = setTimeout(() => w.classList.remove('show'), 2600);
@@ -1575,7 +1633,6 @@ function showSoldPopup(teamId, winnerName, amount) {
 
   // Team name and amount
   $('soldPopTeam').textContent = t.name;
-  $('soldPopAmount').textContent = fmtRs(amount);
 
   // Winner name
   $('soldPopWinnerName').textContent = winnerName;
@@ -1590,9 +1647,15 @@ function showSoldPopup(teamId, winnerName, amount) {
     ? `You're now the proud owner of <b>${t.name}</b>! 🎉`
     : `Congratulations to the new owner! 🏆`;
 
-  // Show popup
+  // Camera-flash impact, then show popup
+  const fl = $('popFlash');
+  fl.classList.remove('fire'); void fl.offsetWidth; fl.classList.add('fire');
   const bg = $('soldPopBg');
   bg.classList.add('show');
+
+  // Price rolls up dramatically from the previous leading bid to the final price
+  const startFrom = bidsCache[teamId] ? bidsCache[teamId].amount : Math.max(MIN_BID, amount - BID_STEP);
+  animateCount($('soldPopAmount'), amount, 900, startFrom);
 
   // Heavy confetti for sold
   launchConfetti($('popConfettiZone'), 54);
@@ -1843,15 +1906,21 @@ function subscribeRealtime() {
       const r = payload.new;
       // Immediately update local cache — no wait for loadBids()
       const prev = bidsCache[r.team_id];
-      if (!prev || r.amount >= prev.amount) {
+      const isNewHigh = !prev || r.amount >= prev.amount;
+      if (isNewHigh) {
+        _bumpFrom[r.team_id] = prev ? prev.amount : MIN_BID;
         bidsCache[r.team_id] = {...r, total_bids: (prev?.total_bids || 0) + 1};
+        _bumpTeamId = r.team_id;
       }
       pushWire(`<b>${r.bidder_name}</b> bid ${fmtRs(r.amount)} on <b>${TEAM_META[r.team_id]?.name || r.team_id}</b>`);
-      showBidToast(r.team_id, r.bidder_name, r.amount);
-      // Render immediately, then do a background refresh for consistency
+      showBidToast(r.team_id, r.bidder_name, r.amount, isNewHigh ? _bumpFrom[r.team_id] : undefined);
+      // Render immediately (with the climbing-price animation), then reconcile in the background
       renderStage(); renderTeamsGrid();
+      _bumpTeamId = null;
       if (isAdmin) renderTeamControlList();
-      loadBids();
+      // Debounced background refresh — avoids a full DB refetch + grid rebuild on every single
+      // bid during a rapid bidding war, which is what was making the page feel stuck.
+      scheduleBidsReconcile();
     })
     .on('postgres_changes', {event:'DELETE', schema:'public', table:'ffxipl_s12_franchise_bids'}, async () => {
       // A bid (or all bids for a team) got deleted — e.g. admin's Reset Bids.
