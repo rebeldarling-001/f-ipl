@@ -1807,8 +1807,14 @@ async function teamControlListClickHandler(e) {
   } else if (action === 'reset-bids') {
     const ok = await askConfirm('Reset Bids?', `This will permanently delete every bid placed on ${TEAM_META[team]?.name}, bringing the current bid back to ₹0. Sold status is untouched.`, {icon:'🗑', okLabel:'Reset Bids'});
     if (!ok) return;
-    const {error} = await sb.from('ffxipl_s12_franchise_bids').delete().eq('team_id', team);
-    if (error) toast(error.message, 'err'); else { toast(`🗑 Bids cleared for ${TEAM_META[team]?.name}.`, 'success'); await loadBids(); renderTeamControlList(); }
+    const {data, error} = await sb.from('ffxipl_s12_franchise_bids').delete().eq('team_id', team).select();
+    if (error) { toast(error.message, 'err'); return; }
+    if (!data || data.length === 0) {
+      toast(`⚠️ Nothing was deleted — Supabase is likely blocking DELETE on ffxipl_s12_franchise_bids via Row Level Security. Add a DELETE policy for admins on that table.`, 'err');
+      return;
+    }
+    toast(`🗑 ${data.length} bid${data.length===1?'':'s'} cleared for ${TEAM_META[team]?.name}.`, 'success');
+    await loadBids(); renderStage(); renderTeamControlList();
   }
 }
 
@@ -1828,6 +1834,14 @@ function subscribeRealtime() {
       renderStage(); renderTeamsGrid();
       if (isAdmin) renderTeamControlList();
       loadBids();
+    })
+    .on('postgres_changes', {event:'DELETE', schema:'public', table:'ffxipl_s12_franchise_bids'}, async () => {
+      // A bid (or all bids for a team) got deleted — e.g. admin's Reset Bids.
+      // Reload the full bid cache so the current-bid display drops back down
+      // for everyone watching, not just the admin who clicked the button.
+      await loadBids();
+      renderStage();
+      if (isAdmin) renderTeamControlList();
     })
     .on('postgres_changes', {event:'UPDATE', schema:'public', table:'ffxipl_s12_franchise_apps'}, () => {
       refreshMyAppStatus(); loadCaptainCount();
