@@ -3318,6 +3318,7 @@
         @keyframes pageFadeOut { to { opacity: 0; } }
         @media (prefers-reduced-motion: reduce) { body.page-leaving { animation: none !important; } }
     </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -3630,7 +3631,7 @@
         <p class="sec-desc">Eight franchises, one battleground — swipe to meet every squad chasing the Season 12 crown.
         </p>
         <div class="teams-scroll" id="teamsScroll">
-            <div class="foil-frame team-foil fade-up" data-team-id="RR" style="--foil:#e03db2;">
+            <div class="foil-frame team-foil fade-up" style="--foil:#e03db2;">
                 <div class="team-card">
                     <img src="rr.png" class="team-logo" alt="RR team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -3648,7 +3649,7 @@
                 </div>
             </div>
 
-            <div class="foil-frame team-foil fade-up d1" data-team-id="CSK" style="--foil:#f5c518;">
+            <div class="foil-frame team-foil fade-up d1" style="--foil:#f5c518;">
                 <div class="team-card">
                     <img src="csk.png" class="team-logo" alt="CSK team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -3665,7 +3666,7 @@
                     </div>
                 </div>
             </div>
-            <div class="foil-frame team-foil fade-up d2" data-team-id="PBKS" style="--foil:#e2394a;">
+            <div class="foil-frame team-foil fade-up d2" style="--foil:#e2394a;">
                 <div class="team-card">
                     <img src="pbks.png" class="team-logo" alt="PBKS team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -3682,7 +3683,7 @@
                     </div>
                 </div>
             </div>
-            <div class="foil-frame team-foil fade-up d3" data-team-id="KKR" style="--foil:#7d4bb0;">
+            <div class="foil-frame team-foil fade-up d3" style="--foil:#7d4bb0;">
                 <div class="team-card">
                     <img src="kkr.png" class="team-logo" alt="KKR team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -3699,7 +3700,7 @@
                     </div>
                 </div>
             </div>
-            <div class="foil-frame team-foil fade-up d4" data-team-id="DC" style="--foil:#1f5fc4;">
+            <div class="foil-frame team-foil fade-up d4" style="--foil:#1f5fc4;">
                 <div class="team-card">
                     <img src="dc.png" class="team-logo" alt="DC team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -3716,7 +3717,7 @@
                     </div>
                 </div>
             </div>
-            <div class="foil-frame team-foil fade-up" data-team-id="MI" style="--foil:#045d9e;">
+            <div class="foil-frame team-foil fade-up" style="--foil:#045d9e;">
                 <div class="team-card">
                     <img src="mi.png" class="team-logo" alt="MI team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -3733,7 +3734,7 @@
                     </div>
                 </div>
             </div>
-            <div class="foil-frame team-foil fade-up" data-team-id="RCB" style="--foil:#c31d1d;">
+            <div class="foil-frame team-foil fade-up" style="--foil:#c31d1d;">
                 <div class="team-card">
                     <img src="rcb.png" class="team-logo" alt="RCB team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -3750,7 +3751,7 @@
                     </div>
                 </div>
             </div>
-            <div class="foil-frame team-foil fade-up d2" data-team-id="SRH" style="--foil:#f26522;">
+            <div class="foil-frame team-foil fade-up d2" style="--foil:#f26522;">
                 <div class="team-card">
                     <img src="srh.png" class="team-logo" alt="SRH team logo" loading="lazy" decoding="async">
                     <span class="team-index"></span>
@@ -4349,6 +4350,48 @@ if (backToTopBtn) {
     </script>
     
     <script>
+        /* ── LIVE CAPTAIN SYNC ──
+           Pulls the real captain for each franchise straight from the Franchise
+           Auction's table (ffxipl_s12_teams.captain_name) and keeps it live via
+           realtime. This ONLY touches the "Captain <name>" line on these 8 cards —
+           nothing else on this page reads from Supabase. Once a sale is marked
+           "Sold" on franchise-auction.html, it appears here within a second or
+           two, automatically — no separate submit step needed for this page. */
+        (function () {
+            if (!window.supabase) return;
+            const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
+            const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+            const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+            // Map each franchise card by its abbreviation (RCB, MI, CSK, DC, SRH, KKR, PBKS, RR)
+            const capEls = {};
+            document.querySelectorAll('#teamsScroll .team-card').forEach(card => {
+                const abbrEl = card.querySelector('.team-abbr');
+                const capB = card.querySelector('.cap-info b');
+                if (abbrEl && capB) capEls[abbrEl.textContent.trim()] = capB;
+            });
+
+            function applyCaptain(teamId, name) {
+                const el = capEls[teamId];
+                if (el) el.textContent = (name && name.trim()) ? name.trim() : 'TBD';
+            }
+
+            async function loadCaptains() {
+                const { data, error } = await sb.from('ffxipl_s12_teams').select('id, captain_name');
+                if (error || !data) return;
+                data.forEach(row => applyCaptain(row.id, row.captain_name));
+            }
+            loadCaptains();
+
+            sb.channel('home-captain-sync')
+              .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'ffxipl_s12_teams' }, payload => {
+                  applyCaptain(payload.new.id, payload.new.captain_name);
+              })
+              .subscribe();
+        })();
+    </script>
+
+    <script>
         /* ── SMOOTH PAGE TRANSITIONS ── */
         (function () {
             document.addEventListener('click', function (e) {
@@ -4360,48 +4403,6 @@ if (backToTopBtn) {
                 document.body.classList.add('page-leaving');
                 setTimeout(function () { window.location.href = href; }, 200);
             });
-        })();
-    </script>
-
-    <!-- LIVE CAPTAINS — pulls captain_name from ffxipl_s12_teams (same table
-         franchise-auction writes to on Confirm Sale) and keeps every team
-         card in sync in real time, no page refresh needed. -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        (function () {
-            const SUPABASE_URL  = 'https://ndioutmihxodqknvgfju.supabase.co';
-            const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
-            const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {realtime:{heartbeatIntervalMs:5000}});
-
-            function applyCaptain(teamId, name) {
-                const card = document.querySelector(`.team-foil[data-team-id="${teamId}"]`);
-                if (!card) return;
-                const nameEl = card.querySelector('.cap-info b');
-                const avatarEl = card.querySelector('.cap-avatar');
-                const clean = (name || '').trim();
-                if (nameEl) nameEl.textContent = clean || 'TBA';
-                if (avatarEl) avatarEl.textContent = clean ? clean[0].toUpperCase() : '—';
-            }
-
-            async function loadCaptains() {
-                const { data, error } = await sb.from('ffxipl_s12_teams').select('id,captain_name');
-                if (error) { console.error('Captain load failed:', error.message); return; }
-                (data || []).forEach(row => applyCaptain(row.id, row.captain_name));
-            }
-
-            function subscribeCaptains() {
-                sb.channel('home-captains-realtime')
-                    .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_teams' }, payload => {
-                        applyCaptain(payload.new.id, payload.new.captain_name);
-                    })
-                    .subscribe();
-            }
-
-            loadCaptains();
-            subscribeCaptains();
-            // Safety-net poll in case a realtime event is ever missed (matches
-            // the fallback pattern used on the auction/franchise pages).
-            setInterval(loadCaptains, 15000);
         })();
     </script>
 </body>
