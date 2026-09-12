@@ -1660,8 +1660,13 @@ $('sellConfirmBtn').addEventListener('click', async () => {
   if (!amount || amount < 1) { $('sellError').textContent = 'Enter a valid final price.'; $('sellError').style.display = 'block'; return; }
   $('sellConfirmBtn').disabled = true; $('sellConfirmBtn').textContent = 'Saving…';
   const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:sellModalTeamId, status:'sold', sold_to_name:name, sold_amount:amount, featured:true, updated_at:new Date().toISOString()},{onConflict:'team_id'});
-  if (error) { $('sellError').textContent = error.message; $('sellError').style.display = 'block'; }
-  else { $('sellBg').classList.remove('show'); toast(`🔨 ${TEAM_META[sellModalTeamId]?.name} sold to ${name}!`, 'success'); await loadTeamsState(); }
+  if (error) { $('sellError').textContent = error.message; $('sellError').style.display = 'block'; $('sellConfirmBtn').disabled = false; $('sellConfirmBtn').textContent = '🔨 Confirm Sale'; return; }
+  // Push the confirmed captain into the live team record (ffxipl_s12_teams) so every
+  // other page — auction-center, teams, home — picks it up instantly via realtime,
+  // without needing anyone to manually re-enter the name later.
+  const {error: teamsErr} = await sb.from('ffxipl_s12_teams').update({captain_name:name}).eq('id', sellModalTeamId);
+  if (teamsErr) console.error('Captain sync to ffxipl_s12_teams failed:', teamsErr.message);
+  $('sellBg').classList.remove('show'); toast(`🔨 ${TEAM_META[sellModalTeamId]?.name} sold to ${name}!`, 'success'); await loadTeamsState();
   $('sellConfirmBtn').disabled = false; $('sellConfirmBtn').textContent = '🔨 Confirm Sale';
 });
 
