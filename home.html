@@ -3318,7 +3318,6 @@
         @keyframes pageFadeOut { to { opacity: 0; } }
         @media (prefers-reduced-motion: reduce) { body.page-leaving { animation: none !important; } }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -4350,48 +4349,6 @@ if (backToTopBtn) {
     </script>
     
     <script>
-        /* ── LIVE CAPTAIN SYNC ──
-           Pulls the real captain for each franchise straight from the Franchise
-           Auction's table (ffxipl_s12_teams.captain_name) and keeps it live via
-           realtime. This ONLY touches the "Captain <name>" line on these 8 cards —
-           nothing else on this page reads from Supabase. Once a sale is marked
-           "Sold" on franchise-auction.html, it appears here within a second or
-           two, automatically — no separate submit step needed for this page. */
-        (function () {
-            if (!window.supabase) return;
-            const SUPABASE_URL = 'https://ndioutmihxodqknvgfju.supabase.co';
-            const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
-            const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-            // Map each franchise card by its abbreviation (RCB, MI, CSK, DC, SRH, KKR, PBKS, RR)
-            const capEls = {};
-            document.querySelectorAll('#teamsScroll .team-card').forEach(card => {
-                const abbrEl = card.querySelector('.team-abbr');
-                const capB = card.querySelector('.cap-info b');
-                if (abbrEl && capB) capEls[abbrEl.textContent.trim()] = capB;
-            });
-
-            function applyCaptain(teamId, name) {
-                const el = capEls[teamId];
-                if (el) el.textContent = (name && name.trim()) ? name.trim() : 'TBD';
-            }
-
-            async function loadCaptains() {
-                const { data, error } = await sb.from('ffxipl_s12_teams').select('id, captain_name');
-                if (error || !data) return;
-                data.forEach(row => applyCaptain(row.id, row.captain_name));
-            }
-            loadCaptains();
-
-            sb.channel('home-captain-sync')
-              .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'ffxipl_s12_teams' }, payload => {
-                  applyCaptain(payload.new.id, payload.new.captain_name);
-              })
-              .subscribe();
-        })();
-    </script>
-
-    <script>
         /* ── SMOOTH PAGE TRANSITIONS ── */
         (function () {
             document.addEventListener('click', function (e) {
@@ -4402,6 +4359,68 @@ if (backToTopBtn) {
                 e.preventDefault();
                 document.body.classList.add('page-leaving');
                 setTimeout(function () { window.location.href = href; }, 200);
+            });
+        })();
+    </script>
+
+    <!-- ── AUCTION CAPTAIN SYNC ── Reads live auction winners from Supabase
+         and updates captain names on the team cards automatically.
+         No manual HTML edits needed after each auction sale. -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        (async () => {
+            const SUPABASE_URL  = 'https://ndioutmihxodqknvgfju.supabase.co';
+            const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
+            const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+            // Team accent colours — used to style the avatar letter
+            const TEAM_STYLE = {
+                RR:   { color: '#e03daf', bg: '#8d316826' },
+                CSK:  { color: '#f5c518', bg: '#f5c51826' },
+                PBKS: { color: '#f07a86', bg: '#e2394a26' },
+                KKR:  { color: '#b98fe8', bg: '#7d4bb026' },
+                DC:   { color: '#6fa0ea', bg: '#1f5fc426' },
+                MI:   { color: '#6fc6ea', bg: '#045d9e26' },
+                RCB:  { color: '#ea6f6f', bg: '#9e040426' },
+                SRH:  { color: '#ffab7a', bg: '#f2652226' },
+            };
+
+            // Fetch all teams that have been sold in the auction
+            const { data, error } = await sb
+                .from('ffxipl_s12_franchise_teams')
+                .select('team_id, sold_to_name, status')
+                .eq('status', 'sold');
+
+            if (error || !data || !data.length) return;
+
+            // All team cards on the page
+            const cards = document.querySelectorAll('.team-card');
+
+            data.forEach(row => {
+                if (!row.sold_to_name) return;
+
+                // Match card by its logo <img> alt text (e.g. "RR team logo")
+                const card = [...cards].find(c => {
+                    const img = c.querySelector('img');
+                    return img && img.alt.toUpperCase().startsWith(row.team_id);
+                });
+                if (!card) return;
+
+                const nameEl = card.querySelector('.cap-info b');
+                const avatar = card.querySelector('.cap-avatar');
+
+                // Update the captain name
+                if (nameEl) nameEl.textContent = row.sold_to_name;
+
+                // Update the avatar letter and colour
+                if (avatar) {
+                    avatar.textContent = row.sold_to_name.charAt(0).toUpperCase();
+                    const s = TEAM_STYLE[row.team_id];
+                    if (s) {
+                        avatar.style.background = s.bg;
+                        avatar.style.color = s.color;
+                    }
+                }
             });
         })();
     </script>

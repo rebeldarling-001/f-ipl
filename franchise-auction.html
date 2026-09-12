@@ -1121,6 +1121,8 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
         <div class="how-step"><div class="how-num">3</div><div><b>Mark Sold</b><span>Confirm the winner — triggers the SOLD popup for everyone.</span></div></div>
       </div>
       <div class="apps-list" id="teamControlList"></div>
+      <button class="submit-btn" id="resyncCaptainsBtn" style="margin-top:12px;background:var(--surface-2);color:var(--gold-pale);box-shadow:none;border:1px solid rgba(var(--gold-rgb),.3);">🔄 Resync Captains to Home/Teams Pages</button>
+      <div style="font-size:10.5px;color:var(--ink-faint);margin-top:6px;line-height:1.4;">One-time fix for teams sold before this update — pushes every already-sold captain into the shared table other pages read from. New sales sync automatically, this isn't needed again.</div>
     </div>
   </div>
 </div>
@@ -1764,9 +1766,12 @@ $('sellConfirmBtn').addEventListener('click', async () => {
   const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:sellModalTeamId, status:'sold', sold_to_name:name, sold_amount:amount, featured:true, updated_at:new Date().toISOString()},{onConflict:'team_id'});
   if (error) { $('sellError').textContent = error.message; $('sellError').style.display = 'block'; $('sellConfirmBtn').disabled = false; $('sellConfirmBtn').textContent = '🔨 Confirm Sale'; return; }
   // Push the confirmed captain into the live team record (ffxipl_s12_teams) so every
-  // other page — auction-center, teams, home — picks it up instantly via realtime,
+  // other page — auction-center, home, teams — picks it up instantly via realtime,
   // without needing anyone to manually re-enter the name later.
-  const {error: teamsErr} = await sb.from('ffxipl_s12_teams').update({captain_name:name}).eq('id', sellModalTeamId);
+  // NOTE: upsert (not update) — update() silently does nothing if a row for this
+  // team doesn't exist yet in ffxipl_s12_teams, which was why captains never
+  // synced to home.html for teams whose row hadn't been created there before.
+  const {error: teamsErr} = await sb.from('ffxipl_s12_teams').upsert({id:sellModalTeamId, captain_name:name}, {onConflict:'id'});
   if (teamsErr) console.error('Captain sync to ffxipl_s12_teams failed:', teamsErr.message);
   $('sellBg').classList.remove('show'); toast(`🔨 ${TEAM_META[sellModalTeamId]?.name} sold to ${name}!`, 'success'); await loadTeamsState();
   $('sellConfirmBtn').disabled = false; $('sellConfirmBtn').textContent = '🔨 Confirm Sale';
@@ -1917,6 +1922,18 @@ function renderTeamControlList() {
     list.appendChild(row);
   });
 }
+
+/* ═══ RESYNC CAPTAINS — one-time backfill for teams sold before the upsert fix ═══ */
+$('resyncCaptainsBtn').addEventListener('click', async () => {
+  const soldIds = TEAM_IDS.filter(id => teamsCache[id]?.status === 'sold' && teamsCache[id]?.sold_to_name);
+  if (!soldIds.length) { toast('No sold franchises to sync yet.', 'err'); return; }
+  const btn = $('resyncCaptainsBtn'); btn.disabled = true; btn.textContent = 'Syncing…';
+  const rows = soldIds.map(id => ({id, captain_name: teamsCache[id].sold_to_name}));
+  const {error} = await sb.from('ffxipl_s12_teams').upsert(rows, {onConflict:'id'});
+  btn.disabled = false; btn.textContent = '🔄 Resync Captains to Home/Teams Pages';
+  if (error) toast(error.message || 'Resync failed.', 'err');
+  else toast(`✅ Synced ${soldIds.length} captain${soldIds.length===1?'':'s'} — check the home page.`, 'success');
+});
 async function teamControlListClickHandler(e) {
   const btn = e.target.closest('[data-action]'); if (!btn) return;
   const {action, team} = btn.dataset;
@@ -1945,7 +1962,7 @@ async function teamControlListClickHandler(e) {
     const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:team, status:'open', featured:false, sold_to_name:'', sold_to_phone:'', sold_amount:0, updated_at:new Date().toISOString()},{onConflict:'team_id'});
     if (error) { toast(error.message, 'err'); return; }
     // Undo the captain sync too, so home / auction-center / teams stop showing the old winner.
-    const {error: teamsErr} = await sb.from('ffxipl_s12_teams').update({captain_name:null}).eq('id', team);
+    const {error: teamsErr} = await sb.from('ffxipl_s12_teams').upsert({id:team, captain_name:null}, {onConflict:'id'});
     if (teamsErr) console.error('Captain un-sync on reset failed:', teamsErr.message);
     toast(`↺ ${TEAM_META[team]?.name} reset.`, 'success'); await loadTeamsState();
   } else if (action === 'reset-bids') {
