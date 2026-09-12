@@ -482,6 +482,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 .admin-subtabs{display:flex;gap:7px;margin-top:14px;}
 .admin-subtab{flex:1;text-align:center;padding:9px 4px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink-dim);font-size:10.5px;font-weight:700;cursor:pointer;}
 .admin-subtab.active{border-color:var(--gold);background:rgba(var(--gold-rgb),.1);color:var(--gold-pale);}
+.subtab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;margin-left:5px;border-radius:8px;background:var(--live);color:#fff;font-size:9px;font-weight:800;vertical-align:middle;}
 .admin-subpanel{display:none;}
 .admin-subpanel.active{display:block;}
 
@@ -1051,7 +1052,7 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
   </div>
   <div class="role-panel" id="panel-admin">
     <div class="admin-subtabs fade-up">
-      <div class="admin-subtab active" data-sub="apps">📋 Applications</div>
+      <div class="admin-subtab active" data-sub="apps">📋 Applications<span class="subtab-badge" id="appsBadge" style="display:none;"></span></div>
       <div class="admin-subtab" data-sub="auction">🔨 Auction Control</div>
     </div>
     <div class="admin-subpanel active" id="sub-apps">
@@ -1714,8 +1715,25 @@ document.querySelectorAll('.admin-subtab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.admin-subtab').forEach(t => t.classList.toggle('active', t === tab));
     document.querySelectorAll('.admin-subpanel').forEach(p => p.classList.toggle('active', p.id === 'sub-'+tab.dataset.sub));
+    if (tab.dataset.sub === 'apps') clearAppsBadge();
   });
 });
+let unseenAppsCount = 0;
+function bumpAppsBadge() {
+  // Only badge it up if admin isn't already looking at the Applications tab.
+  const appsTab = document.querySelector('.admin-subtab[data-sub="apps"]');
+  const appsPanelOpen = appsTab?.classList.contains('active') && $('panel-admin')?.classList.contains('active');
+  if (appsPanelOpen) return;
+  unseenAppsCount++;
+  const badge = $('appsBadge');
+  badge.textContent = unseenAppsCount > 9 ? '9+' : unseenAppsCount;
+  badge.style.display = 'inline-flex';
+}
+function clearAppsBadge() {
+  unseenAppsCount = 0;
+  const badge = $('appsBadge');
+  if (badge) badge.style.display = 'none';
+}
 
 /* ═══ LOAD APPS (admin) ═══ */
 async function loadApps() {
@@ -1847,14 +1865,19 @@ function subscribeRealtime() {
       refreshMyAppStatus(); loadCaptainCount();
       if (isAdmin) loadApps();
     })
-    .on('postgres_changes', {event:'INSERT', schema:'public', table:'ffxipl_s12_franchise_apps'}, () => {
-      loadCaptainCount(); if (isAdmin) loadApps();
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'ffxipl_s12_franchise_apps'}, payload => {
+      loadCaptainCount();
+      if (isAdmin) {
+        loadApps();
+        toast(`📋 New application from ${payload.new.name || 'someone'}`, 'success');
+        bumpAppsBadge();
+      }
     })
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'ffxipl_s12_franchise_teams'}, payload => {
       handleTeamChange(payload.new, null);
     })
     .on('postgres_changes', {event:'UPDATE', schema:'public', table:'ffxipl_s12_franchise_teams'}, payload => {
-      handleTeamChange(payload.new, payload.old);
+      handleTeamChange(payload.new, teamsCache[payload.new.team_id] || null);
     })
     .subscribe(status => {
       if (status === 'SUBSCRIBED') console.log('[XIPL] Realtime connected — zero delay active');
