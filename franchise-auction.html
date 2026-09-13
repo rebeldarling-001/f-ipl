@@ -4798,7 +4798,10 @@
             flex-shrink: 0;
         }
 
-        .sh-surpass-body {}
+        .sh-surpass-body {
+            flex: 1;
+            min-width: 0;
+        }
 
         .sh-surpass-tag {
             font-family: 'Space Mono', monospace;
@@ -6392,7 +6395,7 @@
             if (error) { console.error(error); return; }
             const newCache = {}; TEAM_IDS.forEach(id => newCache[id] = defaultTeamState());
             (data || []).forEach(row => { newCache[row.team_id] = { ...defaultTeamState(), ...row }; });
-            // This runs on a 20s poll as a safety net alongside realtime — skip the rebuild when
+            // This runs on a 5s poll as a safety net alongside realtime — skip the rebuild when
             // nothing actually changed so it doesn't cause a periodic stutter while someone's scrolling.
             const changed = JSON.stringify(newCache) !== JSON.stringify(teamsCache);
             teamsCache = newCache;
@@ -7507,20 +7510,32 @@
         const io = new IntersectionObserver(entries => { entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: .12 });
         document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
-        /* ═══ SPLASH DISMISS ═══ */
-        setTimeout(() => {
+        /* ═══ SPLASH DISMISS — tied to real data readiness instead of a blind
+           3.2s timer. A blind timer means on a slow connection the splash
+           disappears before boot() has actually loaded anything, revealing an
+           empty/broken-looking page — exactly the "stuck" feeling to avoid.
+           A floor keeps the brand moment visible even on a fast connection;
+           a ceiling stops the splash hanging forever if a request stalls. ═══ */
+        function dismissSplash() {
             const s = $('splash');
+            if (!s || s.dataset.dismissed) return;
+            s.dataset.dismissed = '1';
             s.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(1.1)' }], { duration: 500, easing: 'ease-in', fill: 'forwards' });
             setTimeout(() => s.style.display = 'none', 480);
-        }, 3200);
+        }
+        const splashFloor = new Promise(res => setTimeout(res, 1400));
+        const splashCeiling = new Promise(res => setTimeout(res, 6000));
 
-        /* ═══ BOOT ═══ */
+        /* ═══ BOOT — independent reads now run in parallel instead of one long
+           chain of sequential awaits, so first paint of real data arrives in
+           roughly the time of the single slowest call instead of the sum of
+           all five. loadTeamsState needs bidsCache from loadBids first, and
+           loadCelebState needs teamsCache from loadTeamsState first — those
+           two dependencies are preserved; everything else runs concurrently. ═══ */
         async function boot() {
             loadSavedApp();
-            await loadBids();
-            await loadTeamsState();
-            await loadCaptainCount();
-            await checkAdmin();
+            const core = loadBids().then(loadTeamsState);
+            await Promise.all([core, loadCaptainCount(), checkAdmin()]);
             await loadCelebState();
             subscribeRealtime();
             await refreshMyAppStatus();
@@ -7531,7 +7546,10 @@
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         window.scrollTo(0, 0);
         window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
-        boot();
+        Promise.all([
+            Promise.race([boot().catch(err => console.error('Boot error:', err)), splashCeiling]),
+            splashFloor
+        ]).then(dismissSplash);
     </script>
 </body>
 
