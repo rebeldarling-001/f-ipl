@@ -3050,6 +3050,167 @@
             background: linear-gradient(165deg, rgba(var(--gold-rgb), .1), rgba(var(--gold-rgb), .03));
         }
 
+        /* ═══ DEV TOOLS — premium card, distinct from the live auction console ═══ */
+        .devtools-card {
+            margin-top: 16px;
+            border: 1px solid rgba(var(--live-rgb), .22);
+            border-radius: 16px;
+            background: linear-gradient(165deg, rgba(var(--live-rgb), .07), var(--surface) 65%);
+            padding: 14px 14px 16px;
+        }
+        .devtools-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .devtools-ic {
+            flex: none;
+            width: 34px; height: 34px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            background: rgba(var(--live-rgb), .14);
+            border: 1px solid rgba(var(--live-rgb), .3);
+        }
+        .devtools-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            letter-spacing: .06em;
+            color: var(--live);
+            text-transform: uppercase;
+        }
+        .devtools-sub {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        .devtools-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: linear-gradient(165deg, var(--surface-2), var(--surface) 90%);
+            cursor: pointer;
+            transition: transform .12s ease, border-color .2s ease, background .2s ease;
+            text-align: left;
+        }
+        .devtools-btn + .devtools-btn { margin-top: 8px; }
+        .devtools-btn:active { transform: scale(.98); }
+        .devtools-btn:disabled { opacity: .55; pointer-events: none; }
+        .devtools-btn:hover { border-color: rgba(var(--live-rgb), .4); }
+        .dt-ic {
+            flex: none;
+            width: 30px; height: 30px;
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            background: rgba(var(--live-rgb), .12);
+        }
+        .dt-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .dt-txt b {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: .01em;
+        }
+        .dt-txt span {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            line-height: 1.3;
+        }
+        .dt-arrow { flex: none; color: var(--ink-faint); font-size: 15px; }
+        .devtools-msg {
+            display: none;
+            align-items: center;
+            gap: 7px;
+            margin-top: 8px;
+            padding: 8px 10px;
+            border-radius: 9px;
+            font-size: 11px;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+        .devtools-msg.show { display: flex; }
+        .devtools-msg.ok { background: rgba(70, 200, 130, .12); color: #6bdc9e; border: 1px solid rgba(70, 200, 130, .3); }
+        .devtools-msg.err { background: rgba(var(--live-rgb), .12); color: var(--live); border: 1px solid rgba(var(--live-rgb), .3); }
+        .devtools-msg.info { background: rgba(var(--gold-rgb), .1); color: var(--gold); border: 1px solid rgba(var(--gold-rgb), .3); }
+
+        /* ═══ PREMIUM CONFIRM MODAL — replaces native confirm() everywhere ═══ */
+        .app-confirm-overlay {
+            position: fixed; inset: 0; z-index: 100010;
+            background: rgba(0,0,0,.78);
+            backdrop-filter: blur(9px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 22px;
+            animation: appConfirmFade .16s ease;
+        }
+        @keyframes appConfirmFade { from { opacity: 0; } to { opacity: 1; } }
+        .app-confirm-box {
+            width: 100%; max-width: 350px;
+            background: linear-gradient(150deg, var(--surface-2), var(--surface));
+            border: 1.5px solid rgba(var(--confirm-rgb, var(--live-rgb)), .35);
+            border-radius: 20px;
+            padding: 26px 22px 20px;
+            text-align: center;
+            box-shadow: 0 0 54px rgba(var(--confirm-rgb, var(--live-rgb)), .16), 0 20px 40px rgba(0,0,0,.4);
+            transform: translateY(6px) scale(.98);
+            animation: appConfirmPop .18s cubic-bezier(.2,.8,.3,1.2) forwards;
+        }
+        @keyframes appConfirmPop { to { transform: translateY(0) scale(1); } }
+        .app-confirm-ic {
+            width: 52px; height: 52px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            background: rgba(var(--confirm-rgb, var(--live-rgb)), .14);
+            border: 1px solid rgba(var(--confirm-rgb, var(--live-rgb)), .35);
+        }
+        .app-confirm-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 19px;
+            letter-spacing: .05em;
+            color: var(--ink);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .app-confirm-msg {
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .app-confirm-msg b { color: var(--ink); }
+        .app-confirm-actions { display: flex; gap: 10px; }
+        .app-confirm-cancel, .app-confirm-yes {
+            flex: 1;
+            padding: 13px;
+            border-radius: 11px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: .02em;
+        }
+        .app-confirm-cancel {
+            border: 1px solid rgba(var(--gold-rgb), .2);
+            background: transparent;
+            color: var(--ink-dim);
+        }
+        .app-confirm-yes {
+            border: none;
+            color: #fff;
+            background: linear-gradient(135deg, color-mix(in srgb, rgb(var(--confirm-rgb, var(--live-rgb))) 85%, white 15%), rgb(var(--confirm-rgb, var(--live-rgb))));
+            box-shadow: 0 8px 22px rgba(var(--confirm-rgb, var(--live-rgb)), .3);
+        }
+        .app-confirm-yes:active, .app-confirm-cancel:active { transform: scale(.96); }
+
         /* ═══ ROUND TIMER — 8 lots per round, auto-tracked ═══ */
         .round-progress-note {
             font-size: 10.5px;
@@ -5067,6 +5228,28 @@
             <div class="console-title" style="margin-bottom:8px;">ROUNDS <span class="console-title-note">— 8 lots per round, then the next round opens</span></div>
             <div class="round-progress-note" id="roundControlNote">Round 1 — 0/8 decided</div>
             <button class="btn btn-primary" id="btnStartNextRound" style="width:100%;margin-top:8px;">▶ Start Round 1</button>
+            <div class="console-divider" style="height:1px;background:var(--line);margin:16px 0 14px;"></div>
+            <div class="devtools-card">
+                <div class="devtools-head">
+                    <span class="devtools-ic">🛠️</span>
+                    <div>
+                        <div class="devtools-title">Dev Tools</div>
+                        <div class="devtools-sub">Fixes for leftover test data — for use before the real auction goes live</div>
+                    </div>
+                </div>
+                <button class="devtools-btn" id="btnResetAllSales">
+                    <span class="dt-ic">🧹</span>
+                    <span class="dt-txt"><b>Undo All Sales</b><span>Returns every sold player back to the pool</span></span>
+                    <span class="dt-arrow">›</span>
+                </button>
+                <div class="devtools-msg" id="resetSalesMsg"></div>
+                <button class="devtools-btn" id="btnResetPurses">
+                    <span class="dt-ic">💰</span>
+                    <span class="dt-txt"><b>Reset Team Purses</b><span>Sets every team back to ₹100Cr and 0 players</span></span>
+                    <span class="dt-arrow">›</span>
+                </button>
+                <div class="devtools-msg" id="resetPursesMsg"></div>
+            </div>
         </div>
 
 
@@ -6244,6 +6427,38 @@
             renderCaptainPanel();
         }
 
+        /* ---------- PREMIUM CONFIRM MODAL — replaces native confirm() everywhere ----------
+           opts: { icon, title, message, confirmText, color: 'live'|'gold', onConfirm } */
+        function showAppConfirm(opts) {
+            const prev = document.getElementById('_appConfirm');
+            if (prev) prev.remove();
+            const rgbVar = opts.color === 'gold' ? 'var(--gold-rgb)' : 'var(--live-rgb)';
+            const ov = document.createElement('div');
+            ov.id = '_appConfirm';
+            ov.className = 'app-confirm-overlay';
+            ov.style.setProperty('--confirm-rgb', rgbVar);
+            ov.innerHTML = `
+                <div class="app-confirm-box">
+                    <div class="app-confirm-ic">${opts.icon || '⚠️'}</div>
+                    <div class="app-confirm-title">${opts.title || 'Are you sure?'}</div>
+                    <div class="app-confirm-msg">${opts.message || ''}</div>
+                    <div class="app-confirm-actions">
+                        <button class="app-confirm-cancel" id="_appConfirmCancel">Cancel</button>
+                        <button class="app-confirm-yes" id="_appConfirmYes">${opts.confirmText || 'Yes, continue'}</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(ov);
+            const close = () => ov.remove();
+            ov.addEventListener('click', e => { if (e.target === ov) close(); });
+            ov.querySelector('#_appConfirmCancel').onclick = close;
+            ov.querySelector('#_appConfirmYes').onclick = () => { close(); opts.onConfirm?.(); };
+        }
+        function showDevToolsMsg(el, text, kind) {
+            if (!el) return;
+            el.textContent = (kind === 'ok' ? '✓ ' : kind === 'err' ? '⚠ ' : 'ℹ ') + text;
+            el.className = 'devtools-msg show ' + kind;
+        }
+
         /* ---------- ADMIN ACTIONS ---------- */
         async function callAdminRpc(name, params) {
             if (!isAdmin) { toast('Admin sign-in required.', 'error'); return false; }
@@ -6360,6 +6575,75 @@
                 if (ok) broadcastToast(`↩ ${p.ign || p.real_name}'s sale was undone — back in the pool.`, null);
             };
         }
+
+        // ---------- ADMIN: UNDO ALL SALES (dev tool — wipes every sold player back
+        // to the pool and zeroes every team's purse, one ffxipl_s12_undo_sale call
+        // per sold player, same RPC the single-player Undo button already uses) ----------
+        $('btnResetAllSales')?.addEventListener('click', () => {
+            const btn = $('btnResetAllSales');
+            const msgEl = $('resetSalesMsg');
+            const sold = Object.values(playersCache).filter(p => p.team_id);
+            if (!sold.length) {
+                showDevToolsMsg(msgEl, 'No sold players — nothing to undo.', 'info');
+                return;
+            }
+            showAppConfirm({
+                icon: '↩️', color: 'live', title: 'Undo All Sales?',
+                message: `This returns all <b>${sold.length}</b> sold player(s) to the pool and restores every team's purse. This can't be undone in bulk.`,
+                confirmText: 'Yes, undo all',
+                onConfirm: async () => {
+                    btn.disabled = true;
+                    showDevToolsMsg(msgEl, `Undoing 0/${sold.length}…`, 'info');
+                    let ok = 0, failed = 0;
+                    for (const p of sold) {
+                        showDevToolsMsg(msgEl, `Undoing ${ok + failed + 1}/${sold.length}…`, 'info');
+                        const success = await callAdminRpc('ffxipl_s12_undo_sale', { p_player_id: p.id });
+                        if (success) ok++; else failed++;
+                    }
+                    await loadTeams(); await loadPlayers();
+                    showDevToolsMsg(msgEl, `Undone ${ok} sale(s)${failed ? `, ${failed} failed` : ''}. Teams now show ₹100Cr.`, failed && !ok ? 'err' : 'ok');
+                    btn.disabled = false;
+                }
+            });
+        });
+
+        // ---------- ADMIN: RESET TEAM PURSES (dev tool — writes purse_spent=0 and
+        // players_bought=0 directly onto every row of ffxipl_s12_teams. Use this
+        // when a team shows money spent with no matching sold player — e.g. after
+        // registrations were wiped separately from the teams table, leaving the
+        // purse numbers orphaned with nothing for "Undo All Sales" to find. ----------
+        $('btnResetPurses')?.addEventListener('click', () => {
+            const btn = $('btnResetPurses');
+            const msgEl = $('resetPursesMsg');
+            const teamIds = Object.keys(TEAM_META);
+            showAppConfirm({
+                icon: '💰', color: 'live', title: 'Reset Team Purses?',
+                message: `This sets all <b>${teamIds.length}</b> teams' purses back to <b>₹100Cr</b> and <b>0 players bought</b>. Player sale records are not touched.`,
+                confirmText: 'Yes, reset',
+                onConfirm: async () => {
+                    btn.disabled = true;
+                    showDevToolsMsg(msgEl, 'Resetting…', 'info');
+                    let ok = 0, blocked = [];
+                    for (const id of teamIds) {
+                        // Goes through the ffxipl_s12_reset_team_purse RPC (SECURITY DEFINER,
+                        // same pattern as ffxipl_s12_undo_sale) instead of a raw table
+                        // update — a raw update was silently no-op'd by RLS with no error,
+                        // which is why an earlier version falsely reported "success".
+                        const { error } = await sb.rpc('ffxipl_s12_reset_team_purse', { p_team_id: id });
+                        if (error) { console.error('Reset purse failed for', id, error); blocked.push(id); }
+                        else ok++;
+                    }
+                    await loadTeams();
+                    if (blocked.length) {
+                        showDevToolsMsg(msgEl, `Reset ${ok} team(s). Failed for: ${blocked.join(', ')} — check console. If the error mentions "function does not exist", the reset_team_purse SQL hasn't been run in Supabase yet.`, 'err');
+                    } else {
+                        showDevToolsMsg(msgEl, `All ${ok} teams reset to ₹100Cr / 0 players.`, 'ok');
+                    }
+                    btn.disabled = false;
+                }
+            });
+        });
+
         $('btnStartNextRound')?.addEventListener('click', async () => {
             const btn = $('btnStartNextRound');
             const roundNum = parseInt(btn.dataset.round, 10);
