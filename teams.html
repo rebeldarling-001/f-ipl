@@ -2428,9 +2428,9 @@
     <div class="budget-edit-modal" id="budgetEditModal">
         <div class="budget-edit-card">
             <button class="nav-close" id="budgetEditClose" style="position:absolute;top:14px;right:16px;">✕</button>
-            <div class="budget-edit-title" id="budgetEditTitle">Set Franchise Budget</div>
-            <div style="font-size:13px;color:var(--ink-dim);margin-bottom:14px;">Enter the total franchise budget in
-                Crores. This determines team ranking order.</div>
+            <div class="budget-edit-title" id="budgetEditTitle">Set Player Budget</div>
+            <div style="font-size:13px;color:var(--ink-dim);margin-bottom:14px;">Enter this team's total budget (in
+                Crores) for buying players — separate from what the captain paid to own the franchise.</div>
             <input class="budget-input" id="budgetInput" type="number" min="0" max="9999" placeholder="e.g. 350">
             <div class="budget-btns">
                 <button class="btn btn-ghost" id="budgetCancelBtn" style="flex:1;padding:12px;">Cancel</button>
@@ -2451,7 +2451,7 @@
             <div class="stats-strip fade-up d1" id="statsStrip">
                 <div class="stat-cell">
                     <div class="stat-val" id="statSpent">—</div>
-                    <div class="stat-lbl">Total Spent</div>
+                    <div class="stat-lbl">Total Franchise Spend</div>
                 </div>
                 <div class="stat-cell">
                     <div class="stat-val" id="statPlayers">—</div>
@@ -2459,7 +2459,7 @@
                 </div>
                 <div class="stat-cell">
                     <div class="stat-val" id="statTopBid">—</div>
-                    <div class="stat-lbl">Highest Bid</div>
+                    <div class="stat-lbl">Highest Player Bid</div>
                 </div>
             </div>
         </section>
@@ -2467,13 +2467,13 @@
         <!-- FRANCHISE RANKING -->
         <section class="fade-up d2">
             <div class="eyebrow">FRANCHISE RANKING</div>
-            <h2 class="sec-title">Teams by <b>Budget</b></h2>
-            <p class="sec-desc">Ranked by franchise budget. Admin can set each team's budget — teams auto-sort highest
-                to lowest.</p>
+            <h2 class="sec-title">Teams by <b>Amount Spent</b></h2>
+            <p class="sec-desc">Ranked by how much each captain actually paid to own their franchise — highest to
+                lowest, live from the auction.</p>
             <div class="franchise-strip fade-up">
                 <div class="franchise-strip-head">
                     <span>Franchise</span>
-                    <span>Budget</span>
+                    <span>Owned</span>
                 </div>
                 <div id="franchiseList">
                     <div class="skeleton skel-card" style="height:48px;margin:0;border-radius:0;"></div>
@@ -2588,6 +2588,7 @@
         // after the full roster is finalized. Falls back to row.captain_name.
         let auctionCaptains = {}; // { RCB: 'Some Name', ... }
         let auctionCaptainShots = {}; // { RCB: 'https://...public-url', ... }
+        let auctionOwnedAmounts = {}; // { RCB: 10, ... } — real ₹ the captain paid to own the franchise
         let teamsData = [];
         let isAdmin = false;
         let editingTeamId = null;
@@ -2679,15 +2680,17 @@
             try {
                 const { data } = await sb
                     .from('ffxipl_s12_franchise_teams')
-                    .select('team_id, sold_to_name, sold_to_screenshot_path, status')
+                    .select('team_id, sold_to_name, sold_to_screenshot_path, sold_amount, status')
                     .eq('status', 'sold');
                 auctionCaptains = {};
                 auctionCaptainShots = {};
+                auctionOwnedAmounts = {};
                 (data || []).forEach(row => {
                     if (row.sold_to_name) auctionCaptains[row.team_id] = row.sold_to_name;
                     if (row.sold_to_screenshot_path) {
                         auctionCaptainShots[row.team_id] = publicUrlForProfile(row.sold_to_screenshot_path);
                     }
+                    auctionOwnedAmounts[row.team_id] = row.sold_amount || 0;
                 });
             } catch (e) { /* keep previous values on failure */ }
         }
@@ -2714,7 +2717,7 @@
         function openBudgetEdit(teamId) {
             if (!isAdmin) return;
             editingTeamId = teamId;
-            $('budgetEditTitle').textContent = 'Set Budget — ' + teamId;
+            $('budgetEditTitle').textContent = 'Set Player Budget — ' + teamId;
             $('budgetInput').value = budgets[teamId] || '';
             $('budgetInput').style.borderColor = '';
             $('budgetEditModal').classList.add('show');
@@ -2728,12 +2731,12 @@
             // Stats
             let totalSpent = 0, totalPlayers = 0, topBid = 0;
             teamsData.forEach(row => {
-                totalSpent += (row.purse_spent || 0);
+                totalSpent += (auctionOwnedAmounts[row.team_id] || 0);
                 const ps = safeParseJson(row.players_json);
                 totalPlayers += ps.length;
                 ps.forEach(p => { if ((p.price || 0) > topBid) topBid = p.price; });
             });
-            $('statSpent').textContent = '₹' + totalSpent + 'Cr';
+            $('statSpent').textContent = '₹' + totalSpent;
             $('statPlayers').textContent = totalPlayers;
             $('statTopBid').textContent = topBid > 0 ? '₹' + topBid + 'Cr' : '—';
 
@@ -2746,11 +2749,11 @@
                 $('lockPill').textContent = '🔒 Season 12 Rosters Locked';
             }
 
-            // Sort teams by budget descending, then alphabetically
+            // Sort teams by real owned amount (auction sold_amount) descending, then alphabetically
             const sorted = [...teamsData].sort((a, b) => {
-                const ba = budgets[a.team_id] || 0;
-                const bb = budgets[b.team_id] || 0;
-                if (bb !== ba) return bb - ba;
+                const oa = auctionOwnedAmounts[a.team_id] || 0;
+                const ob = auctionOwnedAmounts[b.team_id] || 0;
+                if (ob !== oa) return ob - oa;
                 return a.team_id.localeCompare(b.team_id);
             });
 
@@ -2761,16 +2764,15 @@
         function renderFranchiseList(sorted) {
             $('franchiseList').innerHTML = sorted.map((row, i) => {
                 const col = row.team_color || TEAM_META[row.team_id]?.color || '#888';
-                const budget = budgets[row.team_id];
-                const budgetStr = budget != null ? '₹' + budget + 'Cr' : '';
-                return `<div class="franchise-row" ${isAdmin ? `onclick="openBudgetEdit('${row.team_id}')" title="Click to set budget"` : ''}>
+                const owned = auctionOwnedAmounts[row.team_id];
+                const ownedStr = owned != null && owned > 0 ? '₹' + owned : '';
+                return `<div class="franchise-row">
             <div class="franchise-rank">#${i + 1}</div>
             <div class="franchise-dot" style="background:${col}"></div>
             <div style="flex:1;min-width:0;">
                 <div class="franchise-name">${row.team_id} <span class="franchise-id">${row.team_name || TEAM_META[row.team_id]?.name || ''}</span></div>
-                ${isAdmin ? '<div class="franchise-edit-hint">Tap to edit budget</div>' : ''}
             </div>
-            <div class="${budget != null ? 'franchise-budget' : 'franchise-budget empty'}">${budgetStr || 'Not set'}</div>
+            <div class="${ownedStr ? 'franchise-budget' : 'franchise-budget empty'}">${ownedStr || 'Not sold yet'}</div>
         </div>`;
             }).join('');
         }
@@ -2784,6 +2786,9 @@
                 const spent = row.purse_spent || 0;
                 const remaining = row.purse_remaining != null ? row.purse_remaining : (100 - spent);
                 const pctSpent = Math.min(100, Math.round((spent / 100) * 100));
+                // Real amount the captain paid to own this franchise (live from the
+                // auction's sold_amount) — shown instead of the in-game "Spent" figure.
+                const owned = auctionOwnedAmounts[id] != null ? auctionOwnedAmounts[id] : 0;
                 const captainKey = (captain || '').trim().toLowerCase();
                 const players = safeParseJson(row.players_json)
                     .filter(p => ((p.ign || p.real_name || '').trim().toLowerCase()) !== captainKey)
@@ -2837,7 +2842,10 @@
                 const playerRows = captainRow + players.map(p => buildPlayerRow(p, false)).join('');
 
                 const squadFull = players.length >= 5 ? '<span class="squad-full-pill">Squad Full ✓</span>' : '';
-                const budgetTag = budget != null ? `<span class="team-budget-tag">Budget ₹${budget}Cr</span>` : '';
+                // This is the PLAYER-purchase budget (admin-set, separate from what the
+                // captain paid to own the franchise) — shown with how much of it has
+                // actually been used buying players, so it isn't confused with "Owned".
+                const budgetTag = budget != null ? `<span class="team-budget-tag">Player Budget ₹${spent}/${budget}Cr used</span>` : '';
 
                 return `<div class="team-card" id="tc-${id}">
             <div class="team-card-top-bar" style="background:${col}"></div>
@@ -2851,11 +2859,10 @@
                     <div class="team-captain">👑 ${escHtml(captain)}</div>
                 </div>
                 <div class="team-purse-col">
-                    <div class="team-purse-val">₹${spent}Cr</div>
-                    <div class="team-purse-lbl">Spent</div>
+                    <div class="team-purse-val">₹${owned}</div>
+                    <div class="team-purse-lbl">Owned</div>
                 </div>
             </div>
-            <div class="team-purse-bar"><div class="team-purse-bar-fill" style="width:${pctSpent}%"></div></div>
             <div class="team-meta-row">
                 <div class="team-player-count">👥 ${players.length + (captain && captain !== 'TBD' ? 1 : 0)}/6 players (incl. captain) ${squadFull}</div>
                 <div style="display:flex;align-items:center;gap:8px;">

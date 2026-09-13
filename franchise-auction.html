@@ -566,16 +566,52 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 .big-pop-bg{position:fixed;inset:0;z-index:400;max-width:480px;margin:0 auto;background:rgba(var(--bg-rgb),.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .big-pop-bg.show{opacity:1;pointer-events:auto;}
 .sold-pop-card{
-  width:100%;max-width:360px;border-radius:28px;padding:0 0 22px;text-align:center;position:relative;overflow:hidden;
+  width:100%;max-width:370px;border-radius:28px;padding:0 0 22px;text-align:center;position:relative;overflow:hidden;
   transform:scale(.65) translateY(30px);opacity:0;
   transition:transform .5s cubic-bezier(.15,1.5,.35,1),opacity .35s;
-  background:radial-gradient(ellipse at 50% 0%,rgba(var(--gold-rgb),.28) 0%,transparent 60%),
+  background:radial-gradient(ellipse at 50% 0%,rgba(var(--gold-rgb),.3) 0%,transparent 62%),
              linear-gradient(165deg,var(--card-a) 0%,var(--card-b) 100%);
-  border:2px solid rgba(var(--gold-rgb),.7);
-  box-shadow:0 0 0 1px rgba(var(--gold-rgb),.15),0 32px 90px rgba(var(--gold-rgb),.35),0 8px 24px rgba(0,0,0,.6);
+  border:2.5px solid rgba(var(--gold-rgb),.8);
+  box-shadow:0 0 0 1px rgba(var(--gold-rgb),.22),0 0 70px rgba(var(--gold-rgb),.3),0 32px 90px rgba(var(--gold-rgb),.4),0 8px 24px rgba(0,0,0,.65);
 }
 .big-pop-bg.show .sold-pop-card{transform:scale(1) translateY(0);opacity:1;}
-.sold-pop-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold-pale) 50%,var(--gold) 70%,transparent);}
+/* Glow ring — a separate absolutely-positioned layer that pulses via opacity/transform only
+   (cheap, GPU-composited) instead of animating box-shadow directly (expensive, forces repaint). */
+.sold-pop-card::before{
+  content:'';position:absolute;inset:-3px;border-radius:31px;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 20%,rgba(var(--gold-rgb),.55),transparent 70%);
+  opacity:.6;animation:_glowPulseFade 2.6s ease-in-out .5s infinite;
+}
+@keyframes _glowPulseFade{0%,100%{opacity:.4;transform:scale(1);}50%{opacity:.8;transform:scale(1.04);}}
+
+/* Ceremonial top ribbon — every sale gets the full red-carpet treatment */
+.pop-ribbon{
+  position:relative;z-index:3;width:100%;padding:8px 0;
+  background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold-pale) 50%,var(--gold) 80%,transparent);
+  font-family:'Anton',sans-serif;font-size:10px;letter-spacing:.36em;color:var(--on-accent);text-transform:uppercase;
+  box-shadow:0 2px 14px rgba(var(--gold-rgb),.4);
+}
+
+/* Rotating sunburst rays behind the badge */
+.pop-rays{
+  position:absolute;top:26px;left:50%;transform:translateX(-50%);
+  width:270px;height:270px;z-index:0;pointer-events:none;border-radius:50%;
+  background:repeating-conic-gradient(rgba(var(--gold-rgb),.32) 0deg 4deg, transparent 4deg 20deg);
+  animation:_raysSpin 16s linear infinite;
+  -webkit-mask:radial-gradient(circle,#000 34%,transparent 66%);
+  mask:radial-gradient(circle,#000 34%,transparent 66%);
+}
+@keyframes _raysSpin{to{transform:translateX(-50%) rotate(360deg);}}
+
+/* Shockwave rings bursting from the badge on open */
+.pop-shockwave{position:absolute;inset:0;border-radius:24px;border:2px solid rgba(var(--gold-rgb),.85);opacity:0;z-index:1;pointer-events:none;}
+.big-pop-bg.show .pop-shockwave-1{animation:_popWave .9s ease-out .1s both;}
+.big-pop-bg.show .pop-shockwave-2{animation:_popWave .9s ease-out .34s both;}
+@keyframes _popWave{0%{transform:scale(.7);opacity:.9}100%{transform:scale(2.8);opacity:0}}
+
+/* Floating gold sparkle stars drifting up through the whole card */
+.pop-stars{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+.pop-star{position:absolute;border-radius:50%;background:#ffd700;animation:_shStarFloat linear infinite;opacity:0;}
 
 /* Confetti zone */
 .pop-confetti-zone{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
@@ -588,8 +624,8 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 @keyframes _flashOut{0%{opacity:.85}100%{opacity:0}}
 
 /* Badge */
-.pop-badge-wrap{position:relative;width:88px;height:88px;margin:28px auto 0;z-index:2;}
-.pop-badge{width:88px;height:88px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:24px;box-shadow:0 14px 30px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.2);overflow:visible;position:relative;z-index:2;border:2px solid rgba(var(--gold-rgb),.5);}
+.pop-badge-wrap{position:relative;width:100px;height:100px;margin:26px auto 0;z-index:2;}
+.pop-badge{width:100px;height:100px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:26px;box-shadow:0 14px 34px -8px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.25);overflow:visible;position:relative;z-index:2;border:2.5px solid rgba(var(--gold-rgb),.6);}
 .pop-badge img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
 .pop-badge-glow{position:absolute;inset:-12px;border-radius:50%;background:rgba(var(--gold-rgb),.2);animation:_badgeGlow 1.2s ease-in-out infinite alternate;z-index:1;}
 @keyframes _badgeGlow{from{transform:scale(.9);opacity:.5}to{transform:scale(1.1);opacity:1}}
@@ -599,13 +635,16 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 @keyframes _ringBurst{0%{transform:scale(.7);opacity:.9;}100%{transform:scale(1.9);opacity:0;}}
 
 /* Text content */
-.pop-eyebrow-txt{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-top:16px;position:relative;z-index:2;}
+.pop-eyebrow-txt{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-top:14px;position:relative;z-index:2;}
+.pop-eyebrow-txt .pe-deco{opacity:.8;}
 .pop-headline{
-  font-family:'Anton',sans-serif;font-size:52px;letter-spacing:.04em;text-transform:uppercase;
+  font-family:'Anton',sans-serif;font-size:58px;letter-spacing:.04em;text-transform:uppercase;
   margin-top:2px;line-height:1;position:relative;z-index:2;
-  background:linear-gradient(135deg,var(--gold-pale) 0%,var(--gold) 45%,var(--gold-deep) 80%,#5c3f0f 100%);
+  background:linear-gradient(170deg,#fff 0%,var(--gold-pale) 26%,var(--gold) 55%,var(--gold-deep) 82%,#5c3f0f 100%);
+  background-size:200% 200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:_soldPulse .5s cubic-bezier(.2,1.4,.4,1) 1;
+  filter:drop-shadow(0 0 26px rgba(var(--gold-rgb),.6));
+  animation:_soldPulse .5s cubic-bezier(.2,1.4,.4,1) 1,_goldShimmer 2.8s linear .6s infinite;
 }
 @keyframes _soldPulse{0%{transform:scale(.6)}80%{transform:scale(1.08)}100%{transform:scale(1)}}
 .pop-team{margin-top:4px;font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.02em;color:var(--ink);position:relative;z-index:2;}
@@ -624,6 +663,12 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 }
 .pop-amount-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--on-accent);opacity:.75;position:relative;z-index:1;}
 .pop-amount{font-family:'Anton',sans-serif;font-size:38px;letter-spacing:.02em;color:var(--on-accent);line-height:1.1;margin-top:2px;text-shadow:0 1px 0 rgba(255,255,255,.3);position:relative;z-index:1;}
+
+/* Compare to the season's current highest sale — cross-team, not just this franchise */
+.pop-compare{margin:10px 20px 0;padding:10px 12px;border-radius:12px;position:relative;z-index:2;text-align:left;display:none;align-items:center;gap:9px;
+  background:rgba(var(--gold-rgb),.08);border:1px solid rgba(var(--gold-rgb),.3);font-size:11.5px;color:var(--ink-dim);line-height:1.4;}
+.pop-compare b{color:var(--gold);}
+.pop-compare .pc-ico{font-size:16px;flex-shrink:0;}
 
 /* Winner banner */
 .pop-winner-banner{
@@ -652,8 +697,14 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px
 
 .pop-sub{margin:10px 20px 0;font-size:12px;color:var(--ink-dim);line-height:1.5;position:relative;z-index:2;}
 .pop-sub b{color:var(--gold);}
-.pop-dismiss{margin:16px 20px 0;width:calc(100% - 40px);padding:13px;border:none;border-radius:13px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-dim);font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.04em;cursor:pointer;position:relative;z-index:2;}
-.pop-dismiss:active{opacity:.8;}
+.pop-dismiss{
+  margin:18px 20px 0;width:calc(100% - 40px);padding:14px;border-radius:14px;cursor:pointer;position:relative;z-index:2;
+  font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.06em;
+  background:linear-gradient(135deg,rgba(var(--gold-rgb),.18),rgba(var(--gold-rgb),.05));
+  border:1.5px solid rgba(var(--gold-rgb),.5);color:var(--gold-pale);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
+}
+.pop-dismiss:active{opacity:.8;transform:scale(.98);}
 
 /* ═══ OPEN FOR BIDDING POPUP ═══ */
 .open-pop-bg{position:fixed;inset:0;z-index:350;max-width:480px;margin:0 auto;background:rgba(var(--bg-rgb),.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -767,6 +818,330 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
 
 @keyframes _popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important;}}
+
+/* ═══ BID BATTLE — SURPASSING BANNER ═══ */
+#bidBattleBanner{
+  position:fixed;top:0;left:0;right:0;z-index:500;max-width:480px;margin:0 auto;
+  pointer-events:none;display:flex;justify-content:center;padding:0;
+}
+.bbb-card{
+  width:100%;border-radius:0 0 20px 20px;padding:0 16px;overflow:hidden;
+  transform:translateY(-100%);opacity:0;
+  transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .28s;
+  background:linear-gradient(135deg,rgba(var(--bbb-rgb,var(--gold-rgb)),.96),rgba(var(--bbb-rgb,var(--gold-rgb)),.80));
+  box-shadow:0 12px 40px -8px rgba(var(--bbb-rgb,var(--gold-rgb)),.6),0 4px 14px rgba(0,0,0,.4);
+  border:none;border-bottom:2.5px solid rgba(255,255,255,.3);
+}
+#bidBattleBanner.show .bbb-card{transform:translateY(0);opacity:1;}
+.bbb-inner{display:flex;align-items:center;gap:10px;padding:11px 0;}
+.bbb-icon{font-size:22px;flex-shrink:0;animation:_bbbPulse .7s ease-in-out infinite alternate;}
+@keyframes _bbbPulse{from{transform:scale(1)}to{transform:scale(1.2)}}
+.bbb-text{flex:1;min-width:0;}
+.bbb-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.6);font-weight:700;}
+.bbb-headline{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.03em;color:#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
+.bbb-headline b{color:rgba(0,0,0,.85);}
+.bbb-amount-col{flex-shrink:0;text-align:right;}
+.bbb-prev{font-family:'Space Mono',monospace;font-size:9px;text-decoration:line-through;color:rgba(0,0,0,.5);line-height:1;}
+.bbb-new{font-family:'Anton',sans-serif;font-size:24px;color:#000;line-height:1.05;letter-spacing:.02em;}
+.bbb-shimmer{position:absolute;top:0;left:-60%;width:35%;height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.45),transparent);
+  animation:_shimRun 2s ease-in-out infinite;pointer-events:none;}
+@keyframes _shimRun{0%{left:-60%}100%{left:120%}}
+
+/* ═══ STAGE — BID WAR PULSE ═══ */
+@keyframes _stageBidWar{
+  0%{box-shadow:0 0 0 0 rgba(var(--tt-rgb,var(--gold-rgb)),.8)}
+  40%{box-shadow:0 0 0 14px rgba(var(--tt-rgb,var(--gold-rgb)),0)}
+  100%{box-shadow:0 0 0 0 rgba(var(--tt-rgb,var(--gold-rgb)),0)}
+}
+.stage-outer.bid-war-pulse{animation:_stageBidWar .65s ease-out;}
+
+/* ═══ STAGE — LEADER CHANGE TAG ═══ */
+.stage-leader-line{position:relative;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.leader-change-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  padding:2px 6px;border-radius:6px;font-weight:700;
+  background:rgba(var(--tt-rgb,var(--gold-rgb)),.18);
+  color:rgb(var(--tt-rgb,var(--gold-rgb)));
+  border:1px solid rgba(var(--tt-rgb,var(--gold-rgb)),.4);
+  animation:_lcTagIn .4s cubic-bezier(.2,1.4,.4,1) both;
+}
+@keyframes _lcTagIn{from{transform:scale(0) translateX(-6px);opacity:0}to{transform:scale(1) translateX(0);opacity:1}}
+.leader-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:_blink 1s ease-in-out infinite;}
+
+/* ═══ STAGE — BID SURGE METER (live heat bar) ═══ */
+.bid-surge-bar{
+  margin-top:10px;background:rgba(255,255,255,.06);border-radius:99px;
+  height:4px;overflow:hidden;position:relative;
+}
+.bid-surge-fill{
+  height:100%;width:0%;border-radius:99px;
+  background:linear-gradient(90deg,rgba(var(--tt-rgb,var(--gold-rgb)),.6),rgb(var(--tt-rgb,var(--gold-rgb))));
+  box-shadow:0 0 8px rgba(var(--tt-rgb,var(--gold-rgb)),.7);
+  transition:width .6s cubic-bezier(.22,1,.36,1);
+}
+.bid-surge-label{display:flex;justify-content:space-between;margin-top:4px;}
+.bid-surge-txt{font-family:'Space Mono',monospace;font-size:8px;color:var(--ink-faint);letter-spacing:.1em;}
+.bid-surge-txt.hot{color:rgb(var(--tt-rgb,var(--gold-rgb)));animation:_blink .8s ease-in-out infinite;}
+
+/* ═══ STAGE — SURPASSED PILL on price ═══ */
+.stage-price.surpassed{
+  animation:_priceFlash .55s ease-out;
+}
+@keyframes _priceFlash{
+  0%{filter:brightness(3) drop-shadow(0 0 8px rgba(var(--tt-rgb,var(--gold-rgb)),1))}
+  100%{filter:brightness(1) drop-shadow(0 0 0 transparent)}
+}
+
+/* ═══ BID COUNT BADGE in stage ═══ */
+.stage-bid-count{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;
+  color:var(--ink-faint);margin-top:3px;
+}
+.stage-bid-count b{color:var(--ink-dim);}
+.bid-fire{color:var(--live);animation:_blink .9s ease-in-out infinite;}
+
+/* ═══ NEW HIGHEST BID screen-edge flash ═══ */
+#bidFlashEdge{
+  position:fixed;inset:0;z-index:490;max-width:480px;margin:0 auto;
+  pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse at 50% 50%,transparent 40%,rgba(var(--tt-rgb,var(--gold-rgb)),.45) 100%);
+}
+#bidFlashEdge.fire{animation:_edgeFlash .7s ease-out forwards;}
+@keyframes _edgeFlash{0%{opacity:1}100%{opacity:0}}
+
+/* ═══ HIGHEST BID floating chip ═══ */
+.highest-bid-chip{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(30px);
+  z-index:480;pointer-events:none;opacity:0;
+  background:linear-gradient(135deg,rgba(var(--tt-rgb,var(--gold-rgb)),.92),rgba(var(--tt-rgb,var(--gold-rgb)),.75));
+  color:#000;font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.04em;
+  padding:9px 18px;border-radius:99px;white-space:nowrap;
+  box-shadow:0 8px 28px -6px rgba(var(--tt-rgb,var(--gold-rgb)),.7);
+  transition:opacity .3s,transform .4s cubic-bezier(.16,1,.3,1);
+}
+.highest-bid-chip.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ═══ SEASON HIGH — CINEMATIC FULL-SCREEN TAKEOVER ═══ */
+
+/* Scanline overlay for the whole screen */
+@keyframes _shScanMove{0%{transform:translateY(0)}100%{transform:translateY(8px)}}
+
+#seasonHighBg{
+  position:fixed;inset:0;z-index:550;max-width:480px;margin:0 auto;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:stretch;
+  pointer-events:none;opacity:0;
+  transition:opacity .5s ease;
+  overflow:hidden;
+  /* Deep cinematic bg — always black/gold regardless of theme */
+  background:#000;
+}
+#seasonHighBg::before{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,215,0,.018) 3px,rgba(255,215,0,.018) 4px);
+  animation:_shScanMove .18s linear infinite;
+}
+#seasonHighBg.show{opacity:1;pointer-events:auto;}
+
+/* Radial light burst from center — the "stadium spotlight" */
+.sh-spotlight{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 38%,rgba(255,200,0,.22) 0%,transparent 72%),
+    radial-gradient(ellipse 110% 60% at 50% 100%,rgba(255,120,0,.14) 0%,transparent 65%);
+  opacity:0;animation:_shSpotIn 1s ease .05s forwards;
+}
+@keyframes _shSpotIn{to{opacity:1}}
+
+/* Particle / star field — small gold sparks */
+.sh-stars{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+.sh-star{
+  position:absolute;border-radius:50%;
+  background:#ffd700;
+  animation:_shStarFloat linear infinite;
+  opacity:0;
+}
+@keyframes _shStarFloat{
+  0%{opacity:0;transform:translateY(0) scale(0)}
+  10%{opacity:1}
+  90%{opacity:.4}
+  100%{opacity:0;transform:translateY(-100vh) scale(1.5)}
+}
+
+/* Horizontal light sweep lines */
+.sh-sweep{
+  position:absolute;left:0;right:0;height:1px;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,215,0,.7) 40%,rgba(255,255,255,.9) 50%,rgba(255,215,0,.7) 60%,transparent 100%);
+  opacity:0;
+}
+.sh-sweep-1{top:33%;animation:_shSweep .8s ease .25s both;}
+.sh-sweep-2{top:60%;animation:_shSweep .8s ease .38s both;}
+@keyframes _shSweep{0%{opacity:0;transform:scaleX(0)}40%{opacity:1}100%{opacity:0;transform:scaleX(1)}}
+
+/* Confetti zone */
+.sh-confetti-zone{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3;}
+
+/* ── CONTENT STACK — fills full screen ── */
+.sh-full{
+  position:relative;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100dvh;min-height:100vh;
+  padding:32px 24px 28px;
+  text-align:center;
+}
+
+/* Top ribbon */
+.sh-ribbon{
+  width:100%;padding:7px 0;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,.9) 25%,#fff 50%,rgba(255,215,0,.9) 75%,transparent);
+  font-family:'Anton',sans-serif;font-size:10px;letter-spacing:.4em;color:#000;text-transform:uppercase;
+  position:absolute;top:0;left:0;right:0;z-index:6;
+  opacity:0;animation:_shFadeUp .5s ease .1s both;
+}
+
+/* Team logo — BIG centrepiece */
+.sh-logo-wrap{
+  position:relative;margin-bottom:20px;
+  opacity:0;animation:_shLogoIn .7s cubic-bezier(.12,1.6,.3,1) .15s both;
+}
+@keyframes _shLogoIn{from{transform:scale(0) rotate(-12deg);opacity:0}60%{transform:scale(1.12) rotate(3deg)}to{transform:scale(1) rotate(0);opacity:1}}
+
+.sh-logo-ring-outer{
+  position:absolute;inset:-20px;border-radius:50%;
+  border:1.5px solid rgba(255,215,0,.35);
+  animation:_shRingSpin 10s linear infinite;
+}
+.sh-logo-ring-inner{
+  position:absolute;inset:-10px;border-radius:50%;
+  border:1px dashed rgba(255,215,0,.2);
+  animation:_shRingSpin 6s linear infinite reverse;
+}
+@keyframes _shRingSpin{to{transform:rotate(360deg)}}
+
+.sh-logo-glow{
+  position:absolute;inset:-28px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,200,0,.5) 0%,transparent 68%);
+  animation:_shGlowPulse 1.6s ease-in-out infinite alternate;
+}
+@keyframes _shGlowPulse{from{opacity:.5;transform:scale(.88)}to{opacity:1;transform:scale(1.08)}}
+
+.sh-logo-img{
+  width:110px;height:110px;border-radius:28px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:2;overflow:hidden;
+  border:3px solid rgba(255,215,0,.7);
+  box-shadow:0 0 0 6px rgba(255,200,0,.15),0 20px 50px -10px rgba(255,150,0,.8),inset 0 2px 0 rgba(255,255,255,.3);
+}
+.sh-logo-img img{width:100%;height:100%;object-fit:contain;}
+
+/* Shockwave rings on open */
+.sh-shockwave{
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid rgba(255,215,0,.8);
+  opacity:0;z-index:1;pointer-events:none;
+}
+#seasonHighBg.show .sh-shockwave-1{animation:_shWave .9s ease-out .2s both;}
+#seasonHighBg.show .sh-shockwave-2{animation:_shWave .9s ease-out .45s both;}
+#seasonHighBg.show .sh-shockwave-3{animation:_shWave .9s ease-out .7s both;}
+@keyframes _shWave{0%{transform:scale(.6);opacity:.9}100%{transform:scale(3.2);opacity:0}}
+
+/* Eyebrow */
+.sh-eyebrow{
+  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.38em;text-transform:uppercase;
+  color:rgba(255,215,0,.75);
+  opacity:0;animation:_shFadeUp .4s ease .4s both;
+}
+
+/* SEASON HIGH headline — massive */
+.sh-headline{
+  font-family:'Anton',sans-serif;font-size:58px;letter-spacing:.03em;text-transform:uppercase;
+  line-height:.95;margin-top:6px;
+  background:linear-gradient(170deg,#fff 0%,#ffe066 30%,#ffd700 55%,#ffaa00 75%,#ff6600 100%);
+  background-size:200% 200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(255,200,0,.6));
+  opacity:0;animation:_shHeadIn .55s cubic-bezier(.2,1.4,.3,1) .5s both,_goldShimmer 2.8s linear 1.1s infinite;
+}
+@keyframes _shHeadIn{from{transform:scale(.5) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+@keyframes _goldShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes _shFadeUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.sh-sub{
+  font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.45);margin-top:8px;
+  opacity:0;animation:_shFadeUp .4s ease .62s both;
+}
+
+/* THE NUMBER — centrepiece of the centrepiece */
+.sh-price-wrap{
+  margin:22px 0 0;width:100%;
+  opacity:0;animation:_shFadeUp .5s ease .7s both;
+}
+.sh-price-label{
+  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(255,215,0,.55);margin-bottom:4px;
+}
+.sh-price-val{
+  font-family:'Anton',sans-serif;font-size:76px;letter-spacing:-.01em;line-height:1;
+  background:linear-gradient(170deg,#fff 0%,#ffe566 40%,#ffd700 60%,#ffaa00 85%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 40px rgba(255,200,0,.7));
+  position:relative;
+}
+/* Underline glow */
+.sh-price-val::after{
+  content:'';position:absolute;bottom:-6px;left:10%;right:10%;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,.9) 30%,#fff 50%,rgba(255,215,0,.9) 70%,transparent);
+  border-radius:2px;animation:_shUnderPulse 1.6s ease-in-out infinite alternate;
+}
+@keyframes _shUnderPulse{from{opacity:.4;transform:scaleX(.8)}to{opacity:1;transform:scaleX(1)}}
+
+/* "Surpassed" context strip */
+.sh-surpass-strip{
+  margin-top:18px;padding:11px 16px;border-radius:14px;width:100%;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.18);
+  opacity:0;animation:_shFadeUp .45s ease .85s both;
+  display:flex;align-items:center;gap:10px;text-align:left;
+}
+.sh-surpass-icon{font-size:22px;flex-shrink:0;}
+.sh-surpass-body{}
+.sh-surpass-tag{
+  font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,215,0,.6);font-weight:700;
+}
+.sh-surpass-line{font-size:11.5px;color:rgba(255,255,255,.8);font-weight:600;line-height:1.4;margin-top:1px;}
+.sh-surpass-line b{color:#ffd700;}
+
+/* Team + Captain row */
+.sh-who-row{
+  margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;
+  opacity:0;animation:_shFadeUp .45s ease .95s both;
+  padding:10px 14px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  width:100%;
+}
+.sh-who-badge{
+  width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;overflow:hidden;border:2px solid rgba(255,215,0,.4);
+}
+.sh-who-badge img{width:100%;height:100%;object-fit:contain;}
+.sh-who-text{text-align:left;}
+.sh-who-team{font-family:'Anton',sans-serif;font-size:16px;letter-spacing:.02em;color:#fff;}
+.sh-who-cap{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;color:rgba(255,215,0,.65);margin-top:1px;}
+
+/* Dismiss */
+.sh-dismiss{
+  margin-top:20px;width:100%;padding:14px;border:none;border-radius:14px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.5);font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.08em;
+  cursor:pointer;
+  opacity:0;animation:_shFadeUp .4s ease 1.1s both;
+}
+.sh-dismiss:active{opacity:.6;}
+
 </style>
 </head>
 <body>
@@ -787,6 +1162,83 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
   <div class="sp-load"><div class="sp-load-fill"></div></div>
 </div>
 <div class="sp-flash" id="spFlash"></div>
+
+<!-- BID BATTLE BANNER — drops from top on every new highest bid -->
+<div id="bidBattleBanner">
+  <div class="bbb-card" style="position:relative;overflow:hidden;">
+    <div class="bbb-shimmer"></div>
+    <div class="bbb-inner">
+      <div class="bbb-icon" id="bbbIcon">🔥</div>
+      <div class="bbb-text">
+        <div class="bbb-label" id="bbbLabel">NEW HIGHEST BID</div>
+        <div class="bbb-headline" id="bbbHeadline">—</div>
+      </div>
+      <div class="bbb-amount-col">
+        <div class="bbb-prev" id="bbbPrev"></div>
+        <div class="bbb-new" id="bbbNew">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen edge glow flash on new highest bid -->
+<div id="bidFlashEdge"></div>
+
+<!-- Floating chip: "Highest Bid" label -->
+<div class="highest-bid-chip" id="highestBidChip">🏆 New Highest Bid!</div>
+
+<!-- SEASON HIGH — cinematic full-screen takeover -->
+<div id="seasonHighBg">
+  <div class="sh-spotlight"></div>
+  <div class="sh-sweep sh-sweep-1"></div>
+  <div class="sh-sweep sh-sweep-2"></div>
+  <div class="sh-stars" id="shStars"></div>
+  <div class="sh-confetti-zone" id="shConfettiZone"></div>
+  <div class="sh-ribbon" id="shRibbon">⚡ Season Record Broken · FREEFIRE XIPL S12 ⚡</div>
+
+  <div class="sh-full">
+    <!-- Team logo centrepiece -->
+    <div class="sh-logo-wrap" id="shLogoWrap">
+      <div class="sh-logo-glow" id="shLogoGlow"></div>
+      <div class="sh-logo-ring-outer"></div>
+      <div class="sh-logo-ring-inner"></div>
+      <div class="sh-shockwave sh-shockwave-1"></div>
+      <div class="sh-shockwave sh-shockwave-2"></div>
+      <div class="sh-shockwave sh-shockwave-3"></div>
+      <div class="sh-logo-img" id="shLogoImg">—</div>
+    </div>
+
+    <div class="sh-eyebrow">👑 NEW SEASON HIGH</div>
+    <div class="sh-headline" id="shHeadline">SEASON<br>HIGH!</div>
+    <div class="sh-sub">BIGGEST BID OF THE ENTIRE AUCTION</div>
+
+    <!-- The giant number -->
+    <div class="sh-price-wrap">
+      <div class="sh-price-label">New Record Bid</div>
+      <div class="sh-price-val" id="shPriceVal">₹0</div>
+    </div>
+
+    <!-- Surpassed context -->
+    <div class="sh-surpass-strip">
+      <span class="sh-surpass-icon">📈</span>
+      <div class="sh-surpass-body">
+        <div class="sh-surpass-tag">Previous season best</div>
+        <div class="sh-surpass-line" id="shSurpassLine">—</div>
+      </div>
+    </div>
+
+    <!-- Team + captain -->
+    <div class="sh-who-row">
+      <div class="sh-who-badge" id="shWhoBadge">—</div>
+      <div class="sh-who-text">
+        <div class="sh-who-team" id="shWhoTeam">—</div>
+        <div class="sh-who-cap" id="shWhoCap">—</div>
+      </div>
+    </div>
+
+    <button class="sh-dismiss" id="shDismiss">Continue watching the auction →</button>
+  </div>
+</div>
 
 <div class="embers" id="embers"></div>
 <div class="team-tint" id="teamTint"></div>
@@ -875,14 +1327,19 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
 <div class="pop-flash" id="popFlash"></div>
 <div class="big-pop-bg" id="soldPopBg">
   <div class="sold-pop-card" id="soldPopCard">
+    <div class="pop-ribbon">🎉 Grand Celebration 🎉</div>
     <div class="pop-confetti-zone" id="popConfettiZone"></div>
+    <div class="pop-stars" id="popStars"></div>
+    <div class="pop-rays"></div>
     <!-- Team badge -->
     <div class="pop-badge-wrap">
+      <div class="pop-shockwave pop-shockwave-1"></div>
+      <div class="pop-shockwave pop-shockwave-2"></div>
       <div class="pop-badge" id="soldPopBadge">—</div>
       <div class="pop-badge-glow" id="soldPopBadgeGlow"></div>
     </div>
     <!-- Eyebrow -->
-    <div class="pop-eyebrow-txt">🔨 FRANCHISE SOLD</div>
+    <div class="pop-eyebrow-txt"><span class="pe-deco">✦</span> FRANCHISE SOLD <span class="pe-deco">✦</span></div>
     <!-- Big SOLD text -->
     <div class="pop-headline">SOLD!</div>
     <!-- Team name -->
@@ -892,6 +1349,8 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
       <div class="pop-amount-label">Final Price</div>
       <div class="pop-amount" id="soldPopAmount">₹0</div>
     </div>
+    <!-- Compared to the season's highest team sale -->
+    <div class="pop-compare" id="soldPopCompare"></div>
     <!-- Winner banner -->
     <div class="pop-winner-banner" id="soldPopWinnerBanner">
       <span class="pop-winner-icon">🏆</span>
@@ -1031,12 +1490,22 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
 <!-- SEASON CELEBRATION PANEL — in-page, shows/hides in place, no separate screen -->
 <div class="sec" style="padding-bottom:0;">
   <div id="celebPanel">
+    <div class="celeb-stars" id="celebStars"></div>
+    <div class="celeb-ribbon">🏆 Grand Celebration 🏆</div>
     <div class="celeb-hero">
       <div class="celeb-eye">🎉 FREEFIRE XIPL · Season 12</div>
-      <span class="celeb-trophy">🏆</span>
+      <div class="celeb-trophy-wrap">
+        <div class="celeb-trophy-glow"></div>
+        <div class="celeb-trophy-ring-outer"></div>
+        <div class="celeb-trophy-ring-inner"></div>
+        <div class="celeb-trophy-wave celeb-trophy-wave-1"></div>
+        <div class="celeb-trophy-wave celeb-trophy-wave-2"></div>
+        <span class="celeb-trophy">🏆</span>
+      </div>
       <div class="celeb-hl">SEASON CAPTAINS<br>COMPLETED!</div>
       <div class="celeb-sub">All 8 franchises have their captain — ranked by final price</div>
     </div>
+    <div class="celeb-mvp" id="celebMvp" style="display:none;"></div>
     <div class="celeb-rank-list" id="celebRankList"></div>
     <button class="celeb-end-btn" id="celebEndBtn" style="display:none;">✕ End Celebration &amp; Resume Auction</button>
   </div>
@@ -1177,36 +1646,78 @@ footer{max-width:480px;margin:40px auto 0;padding:24px 20px;border-top:1px solid
 @keyframes _csweep{0%{transform:skewX(-16deg) translateX(-40%);opacity:0;}8%{opacity:1;}88%{opacity:1;}100%{transform:skewX(-16deg) translateX(260%);opacity:0;}}
 
 /* In-page panel — normal part of the page flow, sits right where it's inserted, no takeover */
-#celebPanel{display:none;margin:0 0 22px;border-radius:20px;padding:16px 14px 14px;position:relative;overflow:hidden;
-  background:linear-gradient(160deg,rgba(var(--gold-rgb),.14),rgba(0,0,0,.4));
-  border:1.5px solid rgba(var(--gold-rgb),.4);
-  box-shadow:0 10px 26px -8px rgba(0,0,0,.5),0 0 0 1px rgba(var(--gold-rgb),.08) inset;
+#celebPanel{display:none;margin:0 0 22px;border-radius:22px;padding:0 0 16px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,rgba(var(--gold-rgb),.16),rgba(0,0,0,.42));
+  border:2px solid rgba(var(--gold-rgb),.5);
+  box-shadow:0 0 0 1px rgba(var(--gold-rgb),.18),0 0 60px rgba(var(--gold-rgb),.22),0 14px 34px -8px rgba(0,0,0,.55);
 }
 #celebPanel.show{display:block;}
-.celeb-hero{position:relative;text-align:center;padding:2px 6px 14px;}
+/* Ceremonial top ribbon */
+.celeb-ribbon{
+  width:100%;padding:8px 0;text-align:center;
+  background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold-pale) 50%,var(--gold) 80%,transparent);
+  font-family:'Anton',sans-serif;font-size:10px;letter-spacing:.34em;color:var(--on-accent);text-transform:uppercase;
+  box-shadow:0 2px 14px rgba(var(--gold-rgb),.4);
+}
+.celeb-hero{position:relative;text-align:center;padding:16px 14px 14px;}
 .celeb-eye{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;animation:_ceyeblink 2s ease-in-out infinite;}
 @keyframes _ceyeblink{0%,100%{opacity:1}50%{opacity:.45}}
-.celeb-trophy{font-size:38px;display:block;margin:4px auto 2px;animation:_ctrophy 1.8s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(240,185,61,.7));}
-@keyframes _ctrophy{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(-7px) scale(1.06)}}
-.celeb-hl{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.03em;line-height:1.1;background:linear-gradient(135deg,#fff 0%,var(--gold-pale) 30%,var(--gold) 60%,#ff7a45 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:_cflow 3s linear infinite;}
+
+/* Grand trophy centrepiece — rings + shockwaves + glow, matching the season-high treatment */
+.celeb-trophy-wrap{position:relative;width:100px;height:100px;margin:12px auto 4px;}
+.celeb-trophy-glow{position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(circle,rgba(var(--gold-rgb),.5) 0%,transparent 68%);animation:_shGlowPulse 1.8s ease-in-out infinite alternate;}
+.celeb-trophy-ring-outer{position:absolute;inset:-18px;border-radius:50%;border:1.5px solid rgba(var(--gold-rgb),.35);animation:_shRingSpin 11s linear infinite;}
+.celeb-trophy-ring-inner{position:absolute;inset:-8px;border-radius:50%;border:1px dashed rgba(var(--gold-rgb),.25);animation:_shRingSpin 7s linear infinite reverse;}
+.celeb-trophy-wave{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(var(--gold-rgb),.8);opacity:0;}
+#celebPanel.show .celeb-trophy-wave-1{animation:_shWave 1.1s ease-out .1s infinite;}
+#celebPanel.show .celeb-trophy-wave-2{animation:_shWave 1.1s ease-out .55s infinite;}
+.celeb-trophy{font-size:44px;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;width:100%;height:100%;animation:_ctrophy 1.8s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(var(--gold-rgb),.8));}
+@keyframes _ctrophy{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(-7px) scale(1.08)}}
+.celeb-hl{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:.03em;line-height:1.1;margin-top:6px;background:linear-gradient(170deg,#fff 0%,var(--gold-pale) 28%,var(--gold) 58%,#ff7a45 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(var(--gold-rgb),.5));animation:_cflow 3s linear infinite;}
 @keyframes _cflow{0%{background-position:0% center}100%{background-position:200% center}}
-.celeb-sub{font-size:11px;color:var(--ink-dim);margin-top:4px;}
-.celeb-end-btn{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,68,51,.4);background:rgba(255,68,51,.08);color:#ff4433;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.06em;cursor:pointer;margin-top:12px;}
+.celeb-sub{font-size:11.5px;color:var(--ink-dim);margin-top:5px;}
+.celeb-end-btn{width:calc(100% - 28px);margin-left:14px;padding:10px;border-radius:12px;border:1px solid rgba(255,68,51,.4);background:rgba(255,68,51,.08);color:#ff4433;font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.06em;cursor:pointer;margin-top:14px;}
 .celeb-end-btn:active{background:rgba(255,68,51,.18);}
 
-/* Ranked leaderboard — highest final price to lowest */
-.celeb-rank-list{display:flex;flex-direction:column;gap:8px;}
+/* MVP callout — the single most expensive franchise of the season */
+.celeb-mvp{margin:0 14px 12px;padding:12px 14px;border-radius:15px;text-align:left;display:flex;align-items:center;gap:11px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--gold-pale) 0%,var(--gold) 50%,var(--gold-deep) 100%);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 10px 26px -8px rgba(var(--gold-rgb),.55),inset 0 1.5px 0 rgba(255,255,255,.5),inset 0 -3px 6px rgba(0,0,0,.22);
+  opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease;
+}
+.celeb-mvp.in{opacity:1;transform:translateY(0);}
+.celeb-mvp::after{content:'';position:absolute;top:0;left:-60%;width:35%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);animation:_ribbonShine 3.4s ease-in-out infinite;}
+.celeb-mvp-icon{font-size:24px;flex-shrink:0;position:relative;z-index:1;}
+.celeb-mvp-info{position:relative;z-index:1;min-width:0;}
+.celeb-mvp-label{font-family:'Space Mono',monospace;font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--on-accent);opacity:.75;}
+.celeb-mvp-name{font-family:'Anton',sans-serif;font-size:14px;color:var(--on-accent);margin-top:1px;text-shadow:0 1px 0 rgba(255,255,255,.3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.celeb-mvp-price{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--on-accent);margin-left:auto;flex-shrink:0;position:relative;z-index:1;}
+
+/* Ranked leaderboard — highest final price to lowest, podium treatment for the top 3 */
+.celeb-rank-list{display:flex;flex-direction:column;gap:8px;padding:0 14px;}
 .celeb-rank-row{display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:13px;background:var(--surface);border:1px solid var(--line);position:relative;overflow:hidden;
   opacity:0;transform:translateY(14px);transition:opacity .45s cubic-bezier(.2,1,.35,1),transform .45s cubic-bezier(.2,1,.35,1);}
 .celeb-rank-row.in{opacity:1;transform:translateY(0);}
 .celeb-rank-row::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:rgb(var(--cc,var(--gold-rgb)));}
-.celeb-rank-num{width:22px;flex-shrink:0;text-align:center;font-family:'Anton',sans-serif;font-size:14px;color:rgb(var(--cc,var(--gold-rgb)));}
+.celeb-rank-row.podium-1{padding:13px 12px;background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(255,215,0,.04));border-color:rgba(255,215,0,.5);box-shadow:0 8px 22px -6px rgba(255,215,0,.35);}
+.celeb-rank-row.podium-2{background:linear-gradient(135deg,rgba(200,200,210,.13),rgba(200,200,210,.03));border-color:rgba(200,200,210,.4);}
+.celeb-rank-row.podium-3{background:linear-gradient(135deg,rgba(205,127,50,.13),rgba(205,127,50,.03));border-color:rgba(205,127,50,.4);}
+.celeb-rank-num{width:24px;flex-shrink:0;text-align:center;font-family:'Anton',sans-serif;font-size:14px;color:rgb(var(--cc,var(--gold-rgb)));}
+.celeb-rank-row.podium-1 .celeb-rank-num{font-size:22px;}
 .celeb-rank-badge{width:36px;height:36px;flex-shrink:0;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:10px;}
+.celeb-rank-row.podium-1 .celeb-rank-badge{width:44px;height:44px;border-radius:12px;}
 .celeb-rank-badge img{width:100%;height:100%;object-fit:cover;border-radius:inherit;}
 .celeb-rank-info{flex:1;min-width:0;}
 .celeb-rank-name{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.celeb-rank-row.podium-1 .celeb-rank-name{font-size:14px;}
 .celeb-rank-sub{font-size:9.5px;color:var(--ink-faint);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .celeb-rank-price{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:rgb(var(--cc,var(--gold-rgb)));flex-shrink:0;}
+.celeb-rank-row.podium-1 .celeb-rank-price{font-size:14px;}
+
+/* Drifting gold stars across the whole celebration panel */
+.celeb-stars{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.celeb-star{position:absolute;border-radius:50%;background:#ffd700;animation:_shStarFloat linear infinite;opacity:0;}
 </style>
 
 <div id="celebFxLayer">
@@ -1588,6 +2099,11 @@ async function loadBids() {
   bidsCache = newBidsCache;
   const bidders = new Set((data||[]).map(r => r.bidder_phone)).size;
   $('statBidders').textContent = bidders;
+  // Update highest bid stat
+  const allAmounts = Object.values(newBidsCache).map(b => b.amount || 0);
+  const topBid = allAmounts.length ? Math.max(...allAmounts) : 0;
+  const topBidEl = $('statTopBid');
+  if (topBidEl) topBidEl.textContent = topBid > 0 ? fmtRs(topBid) : '₹100';
   if (changed) renderTeamsGrid();
 }
 
@@ -1706,6 +2222,23 @@ function renderStage() {
 
   const doBump = !isSold && featuredId === _bumpTeamId && bid;
 
+  // Surge meter — how "hot" is the bidding? based on total bids
+  const totalBids = bid ? (bid.total_bids || 1) : 0;
+  const surgePct = Math.min(100, totalBids * 12); // 100% at ~8+ bids
+  const surgeLabel = surgePct >= 80 ? 'BID WAR 🔥' : surgePct >= 50 ? 'HEATING UP' : surgePct >= 20 ? 'ACTIVE' : 'QUIET';
+  const isHot = surgePct >= 80;
+  const surgeHtml = !isSold ? `
+    <div class="bid-surge-bar" style="margin-top:8px;">
+      <div class="bid-surge-fill" id="surgeFill" style="width:${surgePct}%"></div>
+    </div>
+    <div class="bid-surge-label">
+      <span class="bid-surge-txt${isHot?' hot':''}">BID HEAT: ${surgeLabel}</span>
+      <span class="bid-surge-txt">${totalBids > 0 ? `${totalBids} bid${totalBids===1?'':'s'}` : 'no bids'}</span>
+    </div>` : '';
+
+  // Leader-change tag (only shown right after a new highest bid comes in)
+  const leaderChangeTag = doBump ? `<span class="leader-change-tag"><span class="leader-dot"></span>NEW LEADER</span>` : '';
+
   body.innerHTML = `
     ${isSold ? '<div class="sold-ribbon">SOLD</div>' : ''}
     <div class="stage-team-row">
@@ -1713,10 +2246,11 @@ function renderStage() {
       <div class="stage-details">
         <div class="stage-team-name">${t.name}</div>
         <div class="stage-price-block">
-          <span class="stage-price${doBump ? ' bump' : ''}" id="stagePriceVal">${doBump ? '' : priceDisplay}</span>
+          <span class="stage-price${doBump ? ' bump surpassed' : ''}" id="stagePriceVal">${doBump ? '' : priceDisplay}</span>
           <span class="stage-price-tag">${priceTag}</span>
         </div>
-        <div class="stage-leader-line">${leaderDisplay}</div>
+        <div class="stage-leader-line">${leaderDisplay}${leaderChangeTag}</div>
+        ${surgeHtml}
       </div>
     </div>
     <div class="stage-action">${actionHtml}</div>`;
@@ -1727,6 +2261,180 @@ function renderStage() {
 
   $('stageBidBtn')?.addEventListener('click', () => openBidModal(featuredId));
   $('stageCapBtn')?.addEventListener('click', () => openCaptainModal());
+}
+
+/* ═══ BID BATTLE ANIMATIONS ═══ */
+let _bbbTimer = null, _chipTimer = null, _shTimer = null;
+
+/* Returns the highest bid amount across ALL teams except the given one (or 0) */
+function getOtherTeamsBestBid(excludeTeamId) {
+  let best = 0;
+  let bestTeamId = null;
+  TEAM_IDS.forEach(id => {
+    if (id === excludeTeamId) return;
+    const b = bidsCache[id];
+    const ts = teamsCache[id];
+    // Count sold amounts too — they represent the real price paid
+    const soldAmt = (ts && ts.status === 'sold') ? (ts.sold_amount || 0) : 0;
+    const bidAmt  = b ? (b.amount || 0) : 0;
+    const highest = Math.max(soldAmt, bidAmt);
+    if (highest > best) { best = highest; bestTeamId = id; }
+  });
+  return { amount: best, teamId: bestTeamId };
+}
+
+function spawnShStars() {
+  const zone = $('shStars'); if (!zone) return;
+  zone.innerHTML = '';
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement('div');
+    s.className = 'sh-star';
+    const size = 1.5 + Math.random() * 3;
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      bottom:${-10 + Math.random()*30}%;
+      width:${size}px;height:${size}px;
+      animation-duration:${3 + Math.random()*5}s;
+      animation-delay:${Math.random()*3}s;
+      box-shadow:0 0 ${size*2}px rgba(255,215,0,.9);
+    `;
+    zone.appendChild(s);
+  }
+}
+
+function spawnPopStars() {
+  const zone = $('popStars'); if (!zone) return;
+  zone.innerHTML = '';
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('div');
+    s.className = 'pop-star';
+    const size = 1.5 + Math.random() * 3;
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      bottom:${-10 + Math.random()*30}%;
+      width:${size}px;height:${size}px;
+      animation-duration:${3 + Math.random()*5}s;
+      animation-delay:${Math.random()*3}s;
+      box-shadow:0 0 ${size*2}px rgba(255,215,0,.9);
+    `;
+    zone.appendChild(s);
+  }
+}
+
+function showSeasonHighPopup(teamId, bidderName, newAmount, prevBest, prevBestTeamId, isSeasonRecord) {
+  const t = TEAM_META[teamId]; if (!t) return;
+  const rgb = hexToRgbTriplet(t.color);
+
+  // Logo centrepiece
+  const logoImg = $('shLogoImg');
+  logoImg.innerHTML = `<img src="${t.logo}" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentNode.textContent='${teamId}'">`;
+  logoImg.style.background = `color-mix(in srgb,${t.color} 25%,#111)`;
+  logoImg.style.borderColor = t.color;
+  logoImg.style.boxShadow = `0 0 0 6px rgba(${rgb},.18),0 20px 50px -10px rgba(${rgb},.8),inset 0 2px 0 rgba(255,255,255,.3)`;
+
+  // Glow uses team color
+  $('shLogoGlow').style.background = `radial-gradient(circle,rgba(${rgb},.65) 0%,transparent 68%)`;
+
+  // Headline & ribbon text
+  $('shRibbon').textContent = isSeasonRecord
+    ? `⚡ Season Record Broken · FREEFIRE XIPL S12 ⚡`
+    : `🔥 New Highest Bid · ${t.name} · FREEFIRE XIPL S12 🔥`;
+  $('shHeadline').innerHTML = isSeasonRecord ? `SEASON<br>HIGH!` : `TOP<br>BID!`;
+
+  // Price counter — rolls up dramatically
+  const priceEl = $('shPriceVal');
+  priceEl.textContent = fmtRs(prevBest || 0);
+  animateCount(priceEl, newAmount, 1100, prevBest || 0);
+
+  // Surpassed context
+  if (isSeasonRecord && prevBest > 0 && prevBestTeamId) {
+    const prevTeam = TEAM_META[prevBestTeamId];
+    $('shSurpassLine').innerHTML = `Smashed <b>${fmtRs(prevBest)}</b> set by <b>${prevTeam?.name || prevBestTeamId}</b> — new season record!`;
+  } else if (!isSeasonRecord && prevBest > 0) {
+    $('shSurpassLine').innerHTML = `Up from <b>${fmtRs(prevBest)}</b> — highest bid on <b>${t.name}</b> so far!`;
+  } else {
+    $('shSurpassLine').innerHTML = `The bar has been set — first bid of the auction!`;
+  }
+
+  // Who row
+  const badge = $('shWhoBadge');
+  badge.style.background = `color-mix(in srgb,${t.color} 22%,#111)`;
+  badge.style.borderColor = t.color;
+  badge.innerHTML = `<img src="${t.logo}" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none'">`;
+  $('shWhoTeam').textContent = t.name;
+  $('shWhoCap').textContent = isSeasonRecord ? `👑 ${bidderName} — Season High Bidder` : `🔥 ${bidderName} leads the bid`;
+
+  // Eyebrow + sub adapt to mode
+  document.querySelector('.sh-eyebrow').textContent = isSeasonRecord ? '👑 NEW SEASON HIGH' : '🔥 NEW HIGHEST BID';
+  document.querySelector('.sh-sub').textContent = isSeasonRecord
+    ? 'BIGGEST BID OF THE ENTIRE AUCTION'
+    : `LEADS THE BIDDING ON ${t.name.toUpperCase()}`;
+
+  // Spawn stars, confetti, screen flash
+  spawnShStars();
+  launchConfetti($('shConfettiZone'), isSeasonRecord ? 80 : 52);
+  const fl = $('popFlash');
+  fl.classList.remove('fire'); void fl.offsetWidth; fl.classList.add('fire');
+
+  // Show
+  const bg = $('seasonHighBg');
+  bg.classList.add('show');
+  clearTimeout(_shTimer);
+  _shTimer = setTimeout(() => bg.classList.remove('show'), isSeasonRecord ? 10000 : 7000);
+}
+
+function showBidBattleBanner(teamId, bidderName, newAmount, prevAmount) {
+  const t = TEAM_META[teamId]; if (!t) return;
+  const rgb = hexToRgbTriplet(t.color);
+  const banner = $('bidBattleBanner');
+  const card = banner.querySelector('.bbb-card');
+
+  // Color
+  card.style.background = `linear-gradient(135deg,rgba(${rgb},.96),rgba(${rgb},.78))`;
+  card.style.boxShadow = `0 12px 40px -8px rgba(${rgb},.65),0 4px 14px rgba(0,0,0,.4)`;
+
+  // Text
+  const isFirst = !prevAmount || prevAmount <= 0;
+  $('bbbLabel').textContent = isFirst ? '🎯 FIRST BID PLACED' : '🔥 SURPASSING PREVIOUS HIGHEST';
+  $('bbbIcon').textContent = isFirst ? '🎯' : '🔥';
+
+  const teamBadge = `<img src="${t.logo}" style="width:14px;height:14px;vertical-align:middle;border-radius:3px;margin-right:3px;" onerror="this.style.display='none'"> `;
+  $('bbbHeadline').innerHTML = `<b>${bidderName}</b> now leads ${teamBadge}${t.name}`;
+
+  if (!isFirst && prevAmount > 0) {
+    $('bbbPrev').textContent = fmtRs(prevAmount);
+  } else {
+    $('bbbPrev').textContent = '';
+  }
+
+  // Animate amount counter
+  const newEl = $('bbbNew');
+  newEl.textContent = fmtRs(isFirst ? 0 : prevAmount);
+  animateCount(newEl, newAmount, 500, isFirst ? 0 : prevAmount);
+
+  // Show banner
+  banner.classList.add('show');
+  clearTimeout(_bbbTimer);
+  _bbbTimer = setTimeout(() => banner.classList.remove('show'), 2800);
+
+  // Edge glow flash
+  const flash = $('bidFlashEdge');
+  flash.style.setProperty('--tt-rgb', rgb);
+  flash.classList.remove('fire'); void flash.offsetWidth; flash.classList.add('fire');
+
+  // Floating chip
+  const chip = $('highestBidChip');
+  chip.style.background = `linear-gradient(135deg,rgba(${rgb},.92),rgba(${rgb},.72))`;
+  chip.textContent = isFirst ? `🎯 First Bid — ${fmtRs(newAmount)}!` : `🏆 New Highest — ${fmtRs(newAmount)}!`;
+  chip.classList.add('show');
+  clearTimeout(_chipTimer);
+  _chipTimer = setTimeout(() => chip.classList.remove('show'), 2400);
+}
+
+function pulseStageBidWar() {
+  const el = $('stageOuter'); if (!el) return;
+  el.classList.remove('bid-war-pulse'); void el.offsetWidth;
+  el.classList.add('bid-war-pulse');
 }
 
 /* ═══ POPUPS ═══ */
@@ -1783,6 +2491,28 @@ function showSoldPopup(teamId, winnerName, amount) {
     ? `You're now the proud owner of <b>${t.name}</b>! 🎉`
     : `Congratulations to the new owner! 🏆`;
 
+  // Compare against every other sold franchise this season — where does this sale rank?
+  const compareBox = $('soldPopCompare');
+  if (compareBox) {
+    const soldList = TEAM_IDS
+      .map(id => ({id, t:TEAM_META[id], ts:teamsCache[id] || defaultTeamState()}))
+      .filter(r => r.ts.status === 'sold' && Number(r.ts.sold_amount) > 0)
+      .sort((a,b) => Number(b.ts.sold_amount) - Number(a.ts.sold_amount));
+    const myRank = soldList.findIndex(r => r.id === teamId);
+    if (soldList.length > 1 && myRank === 0) {
+      const prevTop = soldList[1]; // the team this sale just overtook
+      compareBox.style.display = 'flex';
+      compareBox.innerHTML = `<span class="pc-ico">👑</span><span>Surpassed <b>${prevTop.t.name}</b>'s ${fmtRs(prevTop.ts.sold_amount)} — <b>new season high!</b></span>`;
+    } else if (myRank > 0) {
+      const top = soldList[0];
+      const gap = Number(top.ts.sold_amount) - Number(amount);
+      compareBox.style.display = 'flex';
+      compareBox.innerHTML = `<span class="pc-ico">📊</span><span><b>#${myRank+1}</b> highest this season — ${fmtRs(gap)} behind <b>${top.t.name}</b> (${fmtRs(top.ts.sold_amount)})</span>`;
+    } else {
+      compareBox.style.display = 'none';
+    }
+  }
+
   // Camera-flash impact, then show popup
   const fl = $('popFlash');
   fl.classList.remove('fire'); void fl.offsetWidth; fl.classList.add('fire');
@@ -1793,12 +2523,13 @@ function showSoldPopup(teamId, winnerName, amount) {
   const startFrom = bidsCache[teamId] ? bidsCache[teamId].amount : Math.max(MIN_BID, amount - BID_STEP);
   animateCount($('soldPopAmount'), amount, 900, startFrom);
 
-  // Heavy confetti for sold
-  launchConfetti($('popConfettiZone'), 54);
+  // Heavy confetti + drifting gold stars — every sale gets the full grand treatment
+  launchConfetti($('popConfettiZone'), 46);
+  spawnPopStars();
 
-  // Auto-dismiss after 7s
+  // Auto-dismiss after 8s
   clearTimeout(showSoldPopup._t);
-  showSoldPopup._t = setTimeout(() => bg.classList.remove('show'), 7000);
+  showSoldPopup._t = setTimeout(() => bg.classList.remove('show'), 8000);
 }
 
 function showOpenPopup(teamId) {
@@ -1819,6 +2550,8 @@ function showOpenPopup(teamId) {
 $('soldPopDismiss').addEventListener('click', () => $('soldPopBg').classList.remove('show'));
 $('openPopDismiss').addEventListener('click', () => $('openPopBg').classList.remove('show'));
 $('openPopBg').addEventListener('click', e => { if (e.target === $('openPopBg')) $('openPopBg').classList.remove('show'); });
+$('shDismiss').addEventListener('click', () => { clearTimeout(_shTimer); $('seasonHighBg').classList.remove('show'); });
+$('seasonHighBg').addEventListener('click', e => { if (e.target === $('seasonHighBg')) { clearTimeout(_shTimer); $('seasonHighBg').classList.remove('show'); } });
 
 /* ═══ CONFIRM MODAL ═══ */
 function askConfirm(title, text, opts) {
@@ -1843,7 +2576,9 @@ $('confirmBg').addEventListener('click', e => { if (e.target === $('confirmBg'))
 
 /* ═══ STALE CAPTAIN CLEANUP ═══
    When a team's captain changes (new sale, or a reset), any leftover entry for
-   the OLD captain inside that team's players_json (ffxipl_s12_teams) becomes an
+   the OLD captain inside that team's players_json — stored in
+   ffxipl_s12_season_rosters (season 12, keyed by team_id), which is the table
+   teams.html actually reads players_json/captain_name from — becomes an
    orphan: teams.html only hides a players_json row that matches the CURRENT
    captain name, so once the captain changes, the old captain's name resurfaces
    as a regular "player" with a stray ₹0Cr bid. This strips any players_json
@@ -1853,12 +2588,12 @@ async function cleanStaleCaptainFromPlayersJson(teamId, oldCaptainName, newCapta
   const namesToStrip = [oldCaptainName, newCaptainName]
     .filter(Boolean).map(n => n.trim().toLowerCase()).filter(Boolean);
   if (!namesToStrip.length) return;
-  const { data: teamRow, error } = await sb.from('ffxipl_s12_teams')
-    .select('players_json').eq('id', teamId).maybeSingle();
-  if (error || !teamRow || !teamRow.players_json) return;
+  const { data: rosterRow, error } = await sb.from('ffxipl_s12_season_rosters')
+    .select('players_json').eq('team_id', teamId).eq('season', 12).maybeSingle();
+  if (error || !rosterRow || !rosterRow.players_json) return;
   let players;
   try {
-    players = typeof teamRow.players_json === 'string' ? JSON.parse(teamRow.players_json) : teamRow.players_json;
+    players = typeof rosterRow.players_json === 'string' ? JSON.parse(rosterRow.players_json) : rosterRow.players_json;
   } catch (e) { return; }
   if (!Array.isArray(players) || !players.length) return;
   const cleaned = players.filter(p => {
@@ -1866,8 +2601,9 @@ async function cleanStaleCaptainFromPlayersJson(teamId, oldCaptainName, newCapta
     return !namesToStrip.includes(pname);
   });
   if (cleaned.length !== players.length) {
-    const { error: cleanErr } = await sb.from('ffxipl_s12_teams')
-      .upsert({ id: teamId, players_json: JSON.stringify(cleaned) }, { onConflict: 'id' });
+    const { error: cleanErr } = await sb.from('ffxipl_s12_season_rosters')
+      .update({ players_json: JSON.stringify(cleaned) })
+      .eq('team_id', teamId).eq('season', 12);
     if (cleanErr) console.error('Stale captain cleanup failed:', cleanErr.message);
   }
 }
@@ -2099,7 +2835,7 @@ function celebConfettiStart() {
   const ctx = CELEB_CVS.getContext('2d');
   const COLS = ['#f0b93d','#fbe4a6','#ff4433','#29d3ff','#fff','#ff7a45','#5fd97e','#e03daf','#b98fe8','#f5c518'];
   // "little confetti, infinitely" — a light, continuous rain (fewer pieces, keeps looping forever until stopped)
-  const pieces = Array.from({length:70}, () => ({
+  const pieces = Array.from({length:45}, () => ({
     x:Math.random()*W, y:Math.random()*H - H,
     w:4+Math.random()*5, h:7+Math.random()*7,
     color:COLS[~~(Math.random()*COLS.length)],
@@ -2127,27 +2863,67 @@ function celebConfettiStop() {
   cancelAnimationFrame(_cRaf); _cRaf = null;
 }
 
+const CELEB_MEDALS = ['🥇','🥈','🥉'];
 function buildCelebRankList() {
   CELEB_RANK.innerHTML = '';
   const ranked = TEAM_IDS
     .map(id => ({id, t:TEAM_META[id], ts:teamsCache[id] || defaultTeamState()}))
     .filter(r => r.ts.status === 'sold')
     .sort((a,b) => Number(b.ts.sold_amount) - Number(a.ts.sold_amount));
+
+  // MVP callout — the single most expensive franchise of the season, called out on its own
+  const mvpBox = $('celebMvp');
+  if (mvpBox) {
+    if (ranked.length) {
+      const top = ranked[0];
+      mvpBox.style.display = 'flex';
+      mvpBox.innerHTML = `<span class="celeb-mvp-icon">👑</span>
+        <div class="celeb-mvp-info">
+          <div class="celeb-mvp-label">Most Expensive Franchise</div>
+          <div class="celeb-mvp-name">${top.t.name} · ${top.ts.sold_to_name}</div>
+        </div>
+        <div class="celeb-mvp-price">${fmtRs(top.ts.sold_amount)}</div>`;
+      setTimeout(() => mvpBox.classList.add('in'), 60);
+    } else {
+      mvpBox.style.display = 'none';
+    }
+  }
+
   ranked.forEach((r, idx) => {
     const rgb = hexToRgbTriplet(r.t.color);
     const row = document.createElement('div');
-    row.className = 'celeb-rank-row';
+    row.className = 'celeb-rank-row' + (idx < 3 ? ` podium-${idx+1}` : '');
     row.style.setProperty('--cc', rgb);
-    row.innerHTML = `<div class="celeb-rank-num">#${idx+1}</div>
-      <div class="celeb-rank-badge" style="background:color-mix(in srgb,${r.t.color} 20%,transparent);border:1.5px solid ${r.t.color}55;">${badgeHTML(r.id, 36)}</div>
+    const numDisplay = idx < 3 ? CELEB_MEDALS[idx] : `#${idx+1}`;
+    row.innerHTML = `<div class="celeb-rank-num">${numDisplay}</div>
+      <div class="celeb-rank-badge" style="background:color-mix(in srgb,${r.t.color} 20%,transparent);border:1.5px solid ${r.t.color}55;">${badgeHTML(r.id, idx===0?44:36)}</div>
       <div class="celeb-rank-info">
         <div class="celeb-rank-name">${r.t.name}</div>
         <div class="celeb-rank-sub">🏆 ${r.ts.sold_to_name}</div>
       </div>
       <div class="celeb-rank-price">${fmtRs(r.ts.sold_amount)}</div>`;
     CELEB_RANK.appendChild(row);
-    setTimeout(() => row.classList.add('in'), 120 + idx * 90);
+    setTimeout(() => row.classList.add('in'), 220 + idx * 90);
   });
+}
+
+function spawnCelebStars() {
+  const zone = $('celebStars'); if (!zone) return;
+  zone.innerHTML = '';
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('div');
+    s.className = 'celeb-star';
+    const size = 1.5 + Math.random() * 3;
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      bottom:${-10 + Math.random()*30}%;
+      width:${size}px;height:${size}px;
+      animation-duration:${3 + Math.random()*5}s;
+      animation-delay:${Math.random()*3}s;
+      box-shadow:0 0 ${size*2}px rgba(255,215,0,.9);
+    `;
+    zone.appendChild(s);
+  }
 }
 
 let _celebOn = false;
@@ -2161,6 +2937,7 @@ function showCelebration() {
   const liveBlock = $('liveBiddingBlock');
   if (liveBlock) liveBlock.style.display = 'none';
   buildCelebRankList();
+  spawnCelebStars();
   CELEB_PANEL.classList.add('show');
   CELEB_FX.classList.add('show');
   // TV-style highlight — flash + light sweep across the whole screen, for everyone
@@ -2316,6 +3093,26 @@ function subscribeRealtime() {
       }
       pushWire(`<b>${r.bidder_name}</b> bid ${fmtRs(r.amount)} on <b>${TEAM_META[r.team_id]?.name || r.team_id}</b>`);
       showBidToast(r.team_id, r.bidder_name, r.amount, isNewHigh ? _bumpFrom[r.team_id] : undefined);
+      if (isNewHigh) {
+        const { amount: otherBest, teamId: otherBestTeam } = getOtherTeamsBestBid(r.team_id);
+        const isSeasonRecord = r.amount > otherBest;
+
+        if (isSeasonRecord) {
+          // 👑 Grand full-screen takeover — reserved ONLY for a genuine season record,
+          // i.e. this bid now beats every other team's bid/sold price. A normal bid,
+          // even on the team currently live on stage, is not a record and gets the
+          // smaller banner below instead.
+          showSeasonHighPopup(
+            r.team_id, r.bidder_name, r.amount,
+            otherBest, otherBestTeam,
+            true
+          );
+        } else {
+          // 🔥 Smaller banner for every other bid — live team or not
+          showBidBattleBanner(r.team_id, r.bidder_name, r.amount, _bumpFrom[r.team_id] || 0);
+        }
+        pulseStageBidWar();
+      }
       if (iGotOutbid) toast(`🔺 You've been outbid on ${TEAM_META[r.team_id]?.name || r.team_id} — now ${fmtRs(r.amount)}!`, 'err');
       // Render immediately (with the climbing-price animation), then reconcile in the background
       renderStage(); renderTeamsGrid();
