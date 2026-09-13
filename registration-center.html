@@ -271,7 +271,7 @@
         .display { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; text-transform: uppercase; }
         .mono { font-family: 'Space Mono', monospace; }
 
-        #splash { position: fixed; inset: 0; z-index: 999; background: radial-gradient(ellipse at 50% 40%, var(--splash-a) 0%, var(--splash-b) 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 480px; margin: 0 auto; transition: opacity 0.7s ease, visibility 0.7s ease; will-change: mask-image; }
+        #splash { position: fixed; inset: 0; z-index: 999; background: radial-gradient(ellipse at 50% 40%, var(--splash-a) 0%, var(--splash-b) 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 480px; margin: 0 auto; transition: opacity 0.7s ease, visibility 0.7s ease; will-change: mask-image; pointer-events: none; }
         .ignite-wrap { position: relative; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; }
         .ignite-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid var(--gold-deep); opacity: 0; animation: ringPulse 1.8s ease-out infinite; }
         .ignite-ring.r2 { animation-delay: 0.4s; }
@@ -631,6 +631,32 @@
         .admin-btn.reject { background: rgba(var(--live-rgb), 0.16); color: var(--live); }
         .admin-btn:disabled { opacity: .4; pointer-events: none; }
 
+        /* Admin danger zone (clear-all / undo) */
+        .admin-danger-zone { margin: 22px 20px 6px; padding: 16px; border-radius: 16px; border: 1px solid rgba(var(--live-rgb), 0.35); background: rgba(var(--live-rgb), 0.06); }
+        .admin-danger-actions { display: flex; gap: 10px; margin-top: 12px; }
+        .admin-danger-actions .btn { flex: 1; padding: 12px 0; font-size: 12px; }
+        .admin-danger-actions .btn:disabled { opacity: .4; pointer-events: none; }
+
+        /* Generic confirm modal */
+        .confirm-overlay { position: fixed; inset: 0; z-index: 120; max-width: 480px; margin: 0 auto; background: rgba(var(--bg-rgb), 0.66); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .confirm-overlay.show { opacity: 1; pointer-events: auto; }
+        .confirm-box { width: 100%; max-width: 340px; background: linear-gradient(165deg, var(--nav-a), var(--nav-b) 80%); border: 1px solid var(--line); border-radius: 18px; padding: 22px 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: translateY(8px) scale(0.97); transition: transform 0.25s cubic-bezier(.2,.9,.25,1); }
+        .confirm-overlay.show .confirm-box { transform: translateY(0) scale(1); }
+        .confirm-icon { font-size: 30px; margin-bottom: 6px; }
+        .confirm-title { font-size: 17px; color: var(--ink); margin-bottom: 8px; }
+        .confirm-desc { font-size: 12.5px; color: var(--ink-dim); line-height: 1.5; }
+        .confirm-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .confirm-actions .btn { flex: 1; padding: 12px 0; font-size: 12px; }
+
+        /* How-to-register guide panel */
+        .guide-steps { display: flex; flex-direction: column; gap: 14px; padding: 18px 20px 0; }
+        .guide-step { display: flex; gap: 12px; border: 1px solid var(--line); border-radius: 16px; padding: 14px; background: var(--surface); }
+        .guide-step-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 9px; background: rgba(var(--gold-rgb), 0.14); color: var(--gold); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        .guide-step-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+        .guide-step-desc { font-size: 12px; color: var(--ink-dim); line-height: 1.5; }
+        .guide-step-img { margin-top: 10px; width: 100%; max-width: 220px; border-radius: 12px; border: 1px solid var(--line); display: block; }
+        .guide-note { margin: 18px 20px 4px; padding: 14px; border-radius: 14px; border: 1px solid rgba(var(--gold-rgb), 0.3); background: rgba(var(--gold-rgb), 0.08); font-size: 12.5px; color: var(--ink-dim); line-height: 1.5; }
+
         .loader { text-align: center; padding: 24px 16px; color: var(--ink-faint); font-size: 12px; }
         .spin { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(var(--gold-rgb), 0.2); border-top-color: var(--gold); border-radius: 50%; animation: spinRot 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
         @keyframes spinRot { to { transform: rotate(360deg); } }
@@ -729,7 +755,7 @@
 
     <header>
         <div class="header-flex">
-            <div class="brand"><div class="crest"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
+            <div class="brand" id="brandCrest" style="cursor:pointer;"><div class="crest"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
         </div>
         <div class="header-actions">
             <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true" aria-expanded="false">🎨</button>
@@ -803,7 +829,8 @@
     <div class="rc-tabs fade-up">
         <div class="rc-tab active" data-panel="register">Register</div>
         <div class="rc-tab" data-panel="players">Registered Players</div>
-        <div class="rc-tab" data-panel="admin">Admin</div>
+        <div class="rc-tab" data-panel="guide">How to Register</div>
+        <div class="rc-tab" data-panel="admin" id="adminTab" style="display:none;">Admin</div>
     </div>
 
     <!-- ===================== REGISTER PANEL ===================== -->
@@ -968,6 +995,70 @@
         <div class="players-grid" id="playersGrid"></div>
     </section>
 
+    <!-- ===================== HOW-TO-REGISTER / TEST RUN PANEL ===================== -->
+    <!-- Sample walkthrough of everything a player needs before submitting. Drop two
+         example screenshots into this folder (same convention as the team logo PNGs)
+         named "sample-profile-shot.png" and "sample-payment-shot.png" to show real
+         examples instead of the placeholder icons below. -->
+    <section id="panel-guide" class="rc-panel" style="padding-top:16px;">
+        <div style="padding:0 20px;">
+            <div class="eyebrow">TEST RUN</div>
+            <h2 class="sec-title">What you need to <b>register</b></h2>
+            <p class="sec-desc">A quick walkthrough of everything required before you submit — the same checklist applies to every one of the 40 registration slots, whether you're player #1 or player #40.</p>
+        </div>
+
+        <div class="guide-steps">
+            <div class="guide-step">
+                <div class="guide-step-num">1</div>
+                <div class="guide-step-body">
+                    <div class="guide-step-title">Real name, IGN &amp; UID</div>
+                    <div class="guide-step-desc">Your real name, your in-game name (IGN), and your Free Fire UID — all exactly as they appear in-game.</div>
+                </div>
+            </div>
+            <div class="guide-step">
+                <div class="guide-step-num">2</div>
+                <div class="guide-step-body">
+                    <div class="guide-step-title">Free Fire Level 50+</div>
+                    <div class="guide-step-desc">Minimum Level 50 is required to register. Anything below that will be rejected.</div>
+                </div>
+            </div>
+            <div class="guide-step">
+                <div class="guide-step-num">3</div>
+                <div class="guide-step-body">
+                    <div class="guide-step-title">WhatsApp number</div>
+                    <div class="guide-step-desc">A 10-digit WhatsApp number the team can reach you on for Play-In updates.</div>
+                </div>
+            </div>
+            <div class="guide-step">
+                <div class="guide-step-num">4</div>
+                <div class="guide-step-body">
+                    <div class="guide-step-title">Profile screenshot</div>
+                    <div class="guide-step-desc">A clear screenshot of your Free Fire profile page showing your name, UID and level.</div>
+                    <img class="guide-step-img" src="sample-profile-shot.png" alt="Example profile screenshot" onerror="this.style.display='none'">
+                </div>
+            </div>
+            <div class="guide-step">
+                <div class="guide-step-num">5</div>
+                <div class="guide-step-body">
+                    <div class="guide-step-title">Pay ₹12 &amp; screenshot the payment</div>
+                    <div class="guide-step-desc">Pay the ₹12 entry fee via GPay / PhonePe / Paytm, then upload a screenshot of the successful payment.</div>
+                    <img class="guide-step-img" src="sample-payment-shot.png" alt="Example payment screenshot" onerror="this.style.display='none'">
+                </div>
+            </div>
+            <div class="guide-step">
+                <div class="guide-step-num">6</div>
+                <div class="guide-step-body">
+                    <div class="guide-step-title">Submit &amp; wait for approval</div>
+                    <div class="guide-step-desc">Once submitted, your registration is Pending until an admin reviews and approves it — then you'll appear on the Registered Players tab.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-note">
+            <b>Only 40 slots total.</b> Registrations close automatically once 40 players are approved — every player follows this exact same checklist, no matter when they register.
+        </div>
+    </section>
+
     <!-- ===================== ADMIN PANEL ===================== -->
     <section id="panel-admin" class="rc-panel" style="padding-top:16px; padding-left:0; padding-right:0;">
         <div id="adminGateWrap">
@@ -1000,8 +1091,39 @@
                 <div class="admin-filter" data-status="all">All</div>
             </div>
             <div class="admin-list" id="adminList"></div>
+
+            <div class="admin-danger-zone" style="border-color:rgba(var(--gold-rgb),0.35);">
+                <div class="eyebrow" style="color:var(--gold);">DEV TOOLS</div>
+                <div class="admin-danger-actions">
+                    <button class="btn" id="seedTestBtn" style="background:rgba(var(--gold-rgb),0.16); color:var(--gold); border:1px solid var(--gold);">🧪 Run Test Workflow</button>
+                </div>
+                <div class="submit-msg" id="seedMsg"></div>
+            </div>
+
+            <div class="admin-danger-zone">
+                <div class="eyebrow" style="color:var(--live);">DANGER ZONE</div>
+                <p class="sec-desc" style="margin-top:4px;">Permanently remove every registration record — pending, approved and rejected. Payment/profile screenshots already uploaded to storage are not deleted.</p>
+                <div class="admin-danger-actions">
+                    <button class="btn" id="clearAllBtn" style="background:rgba(var(--live-rgb),0.16); color:var(--live); border:1px solid var(--live);">🧹 Clean Up All Registrations</button>
+                    <button class="btn btn-ghost" id="undoClearBtn" disabled>↩ Undo Last Clean Up</button>
+                </div>
+                <div class="submit-msg" id="clearMsg"></div>
+            </div>
         </div>
     </section>
+
+    <!-- Confirmation modal for the clean-up action -->
+    <div class="confirm-overlay" id="clearConfirmOverlay">
+        <div class="confirm-box">
+            <div class="confirm-icon">⚠️</div>
+            <h3 class="confirm-title">Delete all registrations?</h3>
+            <p class="confirm-desc">This will permanently remove <b id="clearConfirmCount">0</b> registration record(s) — pending, approved and rejected. You can undo this right after, until you clear again or close the tab.</p>
+            <div class="confirm-actions">
+                <button class="btn btn-ghost" id="clearConfirmCancel">Cancel</button>
+                <button class="btn" id="clearConfirmYes" style="background:var(--live); color:#fff;">Yes, Delete All</button>
+            </div>
+        </div>
+    </div>
 
     <div class="cta-band fade-up" style="margin:24px 20px 0;">
         <h3 class="display">NEXT STOP: PLAY-INS</h3>
@@ -1077,6 +1199,7 @@
 
         setTimeout(() => {
             const splash = document.getElementById('splash');
+            splash.style.pointerEvents = "none";
             splash.animate([{ transform: "scale(1)", opacity: 1 }, { transform: "scale(2.5)", opacity: 0 }], { duration: 1600, easing: "cubic-bezier(.2,.8,.2,1)" });
             setTimeout(() => splash.style.display = "none", 600);
         }, 2100);
@@ -1478,7 +1601,7 @@
 
         // ====== TABS ======
         const tabs = document.querySelectorAll('.rc-tab');
-        const panels = { register: document.getElementById('panel-register'), players: document.getElementById('panel-players'), admin: document.getElementById('panel-admin') };
+        const panels = { register: document.getElementById('panel-register'), players: document.getElementById('panel-players'), guide: document.getElementById('panel-guide'), admin: document.getElementById('panel-admin') };
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 tabs.forEach(t => t.classList.remove('active'));
@@ -2137,6 +2260,362 @@ setTimeout(() => {
                 });
             });
         }
+
+        // ====== SECRET ADMIN UNLOCK (tap the logo 5x within 3s) ======
+        // The Admin tab is hidden from the tab strip by default. Tapping the
+        // crest logo 5 times in quick succession reveals it — the admin login
+        // gate still requires a real Supabase admin account, so this is just
+        // a way to keep the tab out of sight, not a security boundary.
+        (function setupSecretAdminUnlock() {
+            const crest = document.getElementById('brandCrest');
+            const adminTab = document.getElementById('adminTab');
+            if (!crest || !adminTab) return;
+            const TAP_COUNT_NEEDED = 5;
+            const TAP_WINDOW_MS = 3000;
+            let taps = [];
+            crest.addEventListener('click', () => {
+                const now = Date.now();
+                taps.push(now);
+                taps = taps.filter(t => now - t <= TAP_WINDOW_MS);
+                if (taps.length >= TAP_COUNT_NEEDED) {
+                    taps = [];
+                    if (adminTab.style.display === 'none') {
+                        adminTab.style.display = '';
+                        adminTab.classList.add('fade-up', 'in');
+                    }
+                }
+            });
+        })();
+
+        // ====== ADMIN: SEED 40 TEST REGISTRATIONS (dev tool) ======
+        // This runs the REAL workflow, not a shortcut: for each fake player it
+        // generates a real profile-screenshot image and a real payment-screenshot
+        // image on a <canvas>, turns each into an actual File, uploads them through
+        // the exact same uploadProfileShot()/uploadPaymentShot() functions the live
+        // registration form uses (real Storage buckets, real object paths), then
+        // inserts the row with sb.from(TABLE).insert(...) — same table, same shape,
+        // same cap trigger a real submission would hit. Nothing is faked except the
+        // player identity itself.
+        (function setupSeedTestData() {
+            const seedBtn = document.getElementById('seedTestBtn');
+            const seedMsg = document.getElementById('seedMsg');
+            if (!seedBtn || !sb) return;
+
+            function showSeedMsg(text, kind) {
+                seedMsg.textContent = text;
+                seedMsg.className = 'submit-msg show ' + kind;
+            }
+
+            const FIRST_NAMES = ['Arjun', 'Rohit', 'Vikram', 'Aditya', 'Karan', 'Rahul', 'Sanjay', 'Nikhil', 'Aman', 'Yash',
+                'Priya', 'Neha', 'Ananya', 'Sneha', 'Divya', 'Pooja', 'Riya', 'Kavya', 'Ishita', 'Meera'];
+            const LAST_NAMES = ['Sharma', 'Verma', 'Patel', 'Reddy', 'Gupta', 'Singh', 'Nair', 'Kumar', 'Iyer', 'Chauhan'];
+            const IGN_PREFIX = ['Ghost', 'Reaper', 'Blaze', 'Phantom', 'Rogue', 'Sniper', 'Viper', 'Titan', 'Shadow', 'Storm'];
+            const UPI_APPS = ['UPI', 'BankPay', 'PayLink', 'QuickPay']; // generic — no real brand names/logos
+
+            function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+            function pick(arr) { return arr[randInt(0, arr.length - 1)]; }
+
+            function buildFakePlayer(i) {
+                const first = pick(FIRST_NAMES);
+                const last = pick(LAST_NAMES);
+                const ign = `${pick(IGN_PREFIX)}${randInt(10, 999)}`;
+                const uid = String(randInt(1000000000, 9999999999));
+                const whatsapp = '9' + String(randInt(100000000, 999999999));
+                return {
+                    real_name: `${first} ${last}`,
+                    ign,
+                    uid,
+                    level: randInt(50, 85),
+                    whatsapp
+                };
+            }
+
+            // ---- Canvas → File helper ----
+            function canvasToFile(canvas, filename) {
+                return new Promise((resolve, reject) => {
+                    canvas.toBlob(blob => {
+                        if (!blob) { reject(new Error('canvas.toBlob failed')); return; }
+                        resolve(new File([blob], filename, { type: 'image/png' }));
+                    }, 'image/png');
+                });
+            }
+
+            // ---- Generates a synthetic "profile screenshot" image, same as a real player would upload ----
+            function makeProfileScreenshot(player) {
+                const c = document.createElement('canvas');
+                c.width = 480; c.height = 480;
+                const ctx = c.getContext('2d');
+                const hue = randInt(0, 360);
+                const grad = ctx.createLinearGradient(0, 0, 480, 480);
+                grad.addColorStop(0, `hsl(${hue},55%,22%)`);
+                grad.addColorStop(1, `hsl(${(hue + 60) % 360},55%,10%)`);
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, 480, 480);
+
+                // avatar circle with initials
+                const initials = player.real_name.split(' ').map(s => s[0]).join('').slice(0, 2).toUpperCase();
+                ctx.beginPath();
+                ctx.arc(240, 170, 90, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${hue},70%,60%)`;
+                ctx.fill();
+                ctx.fillStyle = '#0a0a0a';
+                ctx.font = 'bold 72px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(initials, 240, 175);
+
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 30px sans-serif';
+                ctx.fillText(player.ign, 240, 305);
+                ctx.font = '20px sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.85)';
+                ctx.fillText(`UID: ${player.uid}`, 240, 340);
+                ctx.fillText(`Level ${player.level}`, 240, 370);
+                ctx.font = '14px sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.fillText('SEEDED TEST DATA — Free Fire Profile', 240, 440);
+                return canvasToFile(c, `profile_${player.uid}.png`);
+            }
+
+            // ---- Generates a synthetic "payment success" screenshot, same as a real player would upload ----
+            function makePaymentScreenshot(player) {
+                const c = document.createElement('canvas');
+                c.width = 480; c.height = 720;
+                const ctx = c.getContext('2d');
+                ctx.fillStyle = '#f4f6f8';
+                ctx.fillRect(0, 0, 480, 720);
+
+                ctx.fillStyle = '#1a9c4a';
+                ctx.beginPath();
+                ctx.arc(240, 160, 55, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.moveTo(210, 160); ctx.lineTo(232, 184); ctx.lineTo(272, 132);
+                ctx.stroke();
+
+                ctx.fillStyle = '#1a1a1a';
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 26px sans-serif';
+                ctx.fillText('Payment Successful', 240, 250);
+                ctx.font = 'bold 46px sans-serif';
+                ctx.fillText('₹12.00', 240, 310);
+
+                ctx.textAlign = 'left';
+                ctx.font = '16px sans-serif';
+                ctx.fillStyle = '#555';
+                const refId = 'TXN' + randInt(100000000000, 999999999999);
+                const rows = [
+                    ['Paid via', pick(UPI_APPS) + ' (test)'],
+                    ['To', 'Tournament Organizer'],
+                    ['From', player.real_name],
+                    ['Transaction ID', refId],
+                    ['Date', new Date().toLocaleString()],
+                    ['Status', 'SUCCESS']
+                ];
+                let y = 400;
+                rows.forEach(([label, val]) => {
+                    ctx.fillStyle = '#888';
+                    ctx.fillText(label, 60, y);
+                    ctx.fillStyle = '#1a1a1a';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(val, 420, y);
+                    ctx.textAlign = 'left';
+                    y += 40;
+                });
+                ctx.textAlign = 'center';
+                ctx.font = '13px sans-serif';
+                ctx.fillStyle = '#999';
+                ctx.fillText('SEEDED TEST DATA — not a real transaction', 240, 690);
+                return canvasToFile(c, `payment_${player.uid}.png`);
+            }
+
+            const SEED_COUNT = 40;
+
+            seedBtn.addEventListener('click', async () => {
+                seedBtn.disabled = true;
+                showSeedMsg('', '');
+
+                // Only runs on a clean slate — if any registration already exists
+                // (pending, approved or rejected) this refuses instead of mixing
+                // real and test data.
+                const { count: existingCount, error: countErr } = await sb.from(TABLE).select('id', { count: 'exact', head: true });
+                if (countErr) {
+                    showSeedMsg('Could not check existing registrations: ' + (countErr.message || countErr), 'err');
+                    seedBtn.disabled = false;
+                    return;
+                }
+                if ((existingCount || 0) > 0) {
+                    showSeedMsg('Registered players already has entries — clear all registrations first before running the test workflow.', 'err');
+                    seedBtn.disabled = false;
+                    return;
+                }
+
+                let ok = 0, failed = 0;
+                for (let i = 0; i < SEED_COUNT; i++) {
+                    seedBtn.textContent = `Running ${i + 1}/${SEED_COUNT}…`;
+                    const player = buildFakePlayer(i);
+                    try {
+                        const profileFile = await makeProfileScreenshot(player);
+                        const paymentFile = await makePaymentScreenshot(player);
+
+                        // Real upload calls — same functions, same buckets, same paths the live form uses.
+                        const profileUrl = await uploadProfileShot(profileFile);
+                        const paymentPath = await uploadPaymentShot(paymentFile);
+
+                        const payload = {
+                            real_name: player.real_name,
+                            ign: player.ign,
+                            uid: player.uid,
+                            level: player.level,
+                            whatsapp: player.whatsapp,
+                            profile_screenshot_url: profileUrl,
+                            payment_screenshot_path: paymentPath,
+                            status: 'approved'
+                        };
+                        const { error } = await sb.from(TABLE).insert(payload);
+                        if (error) throw error;
+                        ok++;
+                    } catch (err) {
+                        console.error('Seed row failed:', err);
+                        failed++;
+                        if (err && err.code === '23505') continue; // duplicate UID, just retry with next i
+                    }
+                    playersLoaded = false;
+                    if (i % 5 === 0) { refreshRegistrationCap(); loadAdminList(); }
+                }
+                refreshRegistrationCap();
+                loadAdminList();
+                playersLoaded = false;
+                loadRegisteredPlayers();
+                showSeedMsg(`${ok} test players are now live on Registered Players${failed ? ` (${failed} failed)` : ''}.`, failed && !ok ? 'err' : 'ok');
+                seedBtn.disabled = false;
+                seedBtn.textContent = '🧪 Run Test Workflow';
+            });
+        })();
+
+        // ====== ADMIN: CLEAN UP ALL REGISTRATIONS (with confirm + undo) ======
+        (function setupAdminCleanup() {
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            const undoClearBtn = document.getElementById('undoClearBtn');
+            const clearMsg = document.getElementById('clearMsg');
+            const clearConfirmOverlay = document.getElementById('clearConfirmOverlay');
+            const clearConfirmCount = document.getElementById('clearConfirmCount');
+            const clearConfirmCancel = document.getElementById('clearConfirmCancel');
+            const clearConfirmYes = document.getElementById('clearConfirmYes');
+            if (!clearAllBtn || !sb) return;
+
+            const BACKUP_KEY = 'ffxipl_s12_last_clear_backup';
+            let pendingRows = null; // rows fetched while the confirm modal is open
+
+            function showClearMsg(text, kind) {
+                clearMsg.textContent = text;
+                clearMsg.className = 'submit-msg show ' + kind;
+            }
+
+            function readBackup() {
+                try {
+                    const raw = localStorage.getItem(BACKUP_KEY);
+                    return raw ? JSON.parse(raw) : null;
+                } catch (e) { return null; }
+            }
+            function writeBackup(rows) {
+                try { localStorage.setItem(BACKUP_KEY, JSON.stringify({ rows, savedAt: Date.now() })); } catch (e) { }
+            }
+            function clearBackup() {
+                try { localStorage.removeItem(BACKUP_KEY); } catch (e) { }
+            }
+            function refreshUndoButtonState() {
+                const backup = readBackup();
+                undoClearBtn.disabled = !(backup && backup.rows && backup.rows.length);
+            }
+            refreshUndoButtonState();
+
+            function openConfirm() { clearConfirmOverlay.classList.add('show'); }
+            function closeConfirm() { clearConfirmOverlay.classList.remove('show'); pendingRows = null; }
+
+            clearAllBtn.addEventListener('click', async () => {
+                clearAllBtn.disabled = true;
+                clearMsg.className = 'submit-msg';
+                try {
+                    const { data, error } = await sb.from(TABLE).select('*');
+                    if (error) throw error;
+                    pendingRows = data || [];
+                    clearConfirmCount.textContent = pendingRows.length;
+                    if (!pendingRows.length) {
+                        showClearMsg('There are no registrations to clean up.', 'err');
+                        clearAllBtn.disabled = false;
+                        return;
+                    }
+                    openConfirm();
+                } catch (err) {
+                    console.error(err);
+                    showClearMsg('Could not load registrations to clean up: ' + (err.message || err), 'err');
+                } finally {
+                    clearAllBtn.disabled = false;
+                }
+            });
+
+            clearConfirmCancel.addEventListener('click', closeConfirm);
+            clearConfirmOverlay.addEventListener('click', (e) => { if (e.target === clearConfirmOverlay) closeConfirm(); });
+
+            clearConfirmYes.addEventListener('click', async () => {
+                if (!pendingRows) { closeConfirm(); return; }
+                clearConfirmYes.disabled = true;
+                clearConfirmYes.textContent = 'Deleting…';
+                try {
+                    // Every row has a created_at timestamp, so this filter matches
+                    // the whole table without needing to know the id column's type.
+                    // .select() forces PostgREST to return the deleted rows, so we can tell
+                    // a real delete apart from an RLS policy silently blocking it (0 rows, no error).
+                    const { data: deletedRows, error } = await sb.from(TABLE).delete().gte('created_at', '1970-01-01').select();
+                    if (error) throw error;
+                    if (!deletedRows || deletedRows.length === 0) {
+                        throw new Error('0 rows were deleted — your Supabase RLS policy is likely blocking DELETE for this admin account. Nothing was removed.');
+                    }
+                    writeBackup(pendingRows);
+                    refreshUndoButtonState();
+                    playersLoaded = false;
+                    refreshRegistrationCap();
+                    loadAdminList();
+                    showClearMsg(`Cleaned up ${pendingRows.length} registration(s). You can undo this below.`, 'ok');
+                } catch (err) {
+                    console.error(err);
+                    showClearMsg('Could not clean up registrations: ' + (err.message || err), 'err');
+                } finally {
+                    clearConfirmYes.disabled = false;
+                    clearConfirmYes.textContent = 'Yes, Delete All';
+                    closeConfirm();
+                }
+            });
+
+            undoClearBtn.addEventListener('click', async () => {
+                const backup = readBackup();
+                if (!backup || !backup.rows || !backup.rows.length) {
+                    showClearMsg('Nothing to undo.', 'err');
+                    return;
+                }
+                undoClearBtn.disabled = true;
+                undoClearBtn.textContent = 'Restoring…';
+                try {
+                    const { error } = await sb.from(TABLE).insert(backup.rows);
+                    if (error) throw error;
+                    clearBackup();
+                    playersLoaded = false;
+                    refreshRegistrationCap();
+                    loadAdminList();
+                    showClearMsg(`Restored ${backup.rows.length} registration(s).`, 'ok');
+                } catch (err) {
+                    console.error(err);
+                    showClearMsg('Could not undo: ' + (err.message || err), 'err');
+                } finally {
+                    undoClearBtn.textContent = '↩ Undo Last Clean Up';
+                    refreshUndoButtonState();
+                }
+            });
+        })();
     </script>
 
 
