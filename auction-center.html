@@ -3578,15 +3578,51 @@
 
         .tp-card {
             position: relative;
+            z-index: 0;
             cursor: pointer;
             border-radius: 16px;
-            padding: 13px 12px;
-            background: linear-gradient(155deg, color-mix(in srgb, var(--team-color, var(--gold)) 24%, var(--surface)) 0%, var(--surface) 72%);
-            border: 1px solid color-mix(in srgb, var(--team-color, var(--gold)) 40%, var(--line));
-            border-top: 4px solid var(--team-color, var(--gold));
-            box-shadow: 0 6px 18px -10px color-mix(in srgb, var(--team-color, var(--gold)) 70%, transparent);
+            padding: 15px 13px 13px;
             overflow: hidden;
-            transition: transform .15s ease;
+            border: 1.5px solid color-mix(in srgb, var(--team-color, var(--gold)) 55%, transparent);
+            background:
+                radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--team-color, var(--gold)) 32%, transparent), transparent 68%),
+                radial-gradient(ellipse at 0% 100%, color-mix(in srgb, var(--team-color, var(--gold)) 18%, transparent), transparent 62%),
+                linear-gradient(155deg, color-mix(in srgb, var(--team-color, var(--gold)) 20%, transparent), var(--card-a) 48%, var(--card-b) 100%);
+            box-shadow: 0 10px 22px -16px rgba(0, 0, 0, .6), 0 0 0 1px color-mix(in srgb, var(--team-color, var(--gold)) 12%, transparent) inset, inset 0 1px 0 rgba(255, 255, 255, .06);
+            transition: transform .15s ease, border-color .2s, box-shadow .2s;
+        }
+
+        .tp-card::after {
+            content: attr(data-abbr);
+            position: absolute;
+            z-index: -1;
+            right: -6px;
+            bottom: -16px;
+            font-family: 'Anton', sans-serif;
+            font-size: 64px;
+            line-height: 1;
+            letter-spacing: -.02em;
+            color: color-mix(in srgb, var(--team-color, var(--gold)) 14%, transparent);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .tp-topstrip {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--team-color, var(--gold)) 25%, var(--team-color, var(--gold)) 75%, transparent);
+            box-shadow: 0 0 8px color-mix(in srgb, var(--team-color, var(--gold)) 60%, transparent);
+        }
+
+        .tp-index {
+            position: absolute;
+            top: 12px; right: 13px;
+            z-index: 1;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: .16em;
+            opacity: .5;
         }
 
         .tp-card:active {
@@ -3594,23 +3630,41 @@
         }
 
         .tp-card.on-block {
-            box-shadow: 0 0 0 2px var(--team-color, var(--gold));
-            animation: tpOnBlockPulse 1.7s ease-in-out infinite;
+            border-color: color-mix(in srgb, var(--team-color, var(--gold)) 70%, transparent);
+            box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--team-color, var(--gold)) 55%, transparent), 0 8px 24px -10px color-mix(in srgb, var(--team-color, var(--gold)) 50%, transparent);
+            animation: tpOnBlockPulse 2.2s ease-in-out infinite;
+            will-change: box-shadow;
         }
 
         @keyframes tpOnBlockPulse {
 
             0%,
             100% {
-                box-shadow: 0 0 0 2px var(--team-color, var(--gold)), 0 10px 22px -6px color-mix(in srgb, var(--team-color, var(--gold)) 35%, transparent);
+                box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--team-color, var(--gold)) 55%, transparent), 0 8px 24px -10px color-mix(in srgb, var(--team-color, var(--gold)) 50%, transparent);
             }
 
             50% {
-                box-shadow: 0 0 0 3px var(--team-color, var(--gold)), 0 14px 34px -6px color-mix(in srgb, var(--team-color, var(--gold)) 65%, transparent);
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--team-color, var(--gold)) 20%, transparent), 0 8px 24px -10px color-mix(in srgb, var(--team-color, var(--gold)) 35%, transparent);
             }
         }
 
+        .tp-card.full {
+            border-color: color-mix(in srgb, var(--gold) 60%, transparent);
+            box-shadow:
+                0 14px 32px -14px rgba(var(--gold-rgb), .4),
+                0 2px 10px rgba(0, 0, 0, .3),
+                inset 0 1px 0 rgba(255, 255, 255, .08),
+                inset 0 0 0 1.5px rgba(var(--gold-rgb), .45);
+        }
+
+        .tp-card.full .tp-topstrip {
+            background: linear-gradient(90deg, transparent, var(--gold-pale) 15%, var(--gold) 40%, var(--gold) 60%, var(--gold-pale) 85%, transparent) !important;
+            box-shadow: 0 0 8px rgba(var(--gold-rgb), .6);
+        }
+
         .tp-head {
+            position: relative;
+            z-index: 1;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -3631,7 +3685,7 @@
             color: color-mix(in srgb, var(--team-color, var(--gold)) 88%, white 12%);
             background: color-mix(in srgb, var(--team-color, var(--gold)) 20%, transparent);
             border: 1.5px solid color-mix(in srgb, var(--team-color, var(--gold)) 45%, transparent);
-            box-shadow: 0 3px 10px -3px rgba(0,0,0,.5);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 3px 10px -3px rgba(0, 0, 0, .5);
         }
 
         .tp-abbr img {
@@ -3651,10 +3705,12 @@
         }
 
         .tp-purse-track {
-            margin-top: 9px;
+            position: relative;
+            z-index: 1;
+            margin-top: 10px;
             height: 6px;
             border-radius: 4px;
-            background: rgba(var(--gold-rgb), .09);
+            background: color-mix(in srgb, var(--team-color, var(--gold)) 10%, transparent);
             overflow: hidden;
         }
 
@@ -3662,10 +3718,13 @@
             height: 100%;
             border-radius: 4px;
             background: linear-gradient(90deg, var(--team-color, var(--gold-deep)), color-mix(in srgb, var(--team-color, var(--gold)) 55%, white));
+            box-shadow: 0 0 6px color-mix(in srgb, var(--team-color, var(--gold)) 55%, transparent);
             transition: width .5s ease;
         }
 
         .tp-nums {
+            position: relative;
+            z-index: 1;
             margin-top: 7px;
             display: flex;
             justify-content: space-between;
@@ -3679,6 +3738,8 @@
         }
 
         .tp-players {
+            position: relative;
+            z-index: 1;
             margin-top: 6px;
             font-size: 9px;
             color: var(--ink-faint);
@@ -3686,17 +3747,39 @@
 
         .tp-done {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 9px; right: 9px;
+            z-index: 2;
             font-size: 8px;
-            padding: 2px 6px;
-            border-radius: 100px;
-            background: rgba(95, 217, 126, .15);
-            color: #5fd97e;
+            font-weight: 700;
+            letter-spacing: .06em;
             text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 100px;
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), .32), rgba(var(--gold-rgb), .18) 55%, rgba(var(--gold-rgb), .24));
+            color: var(--gold-pale);
+            border: 1px solid rgba(var(--gold-rgb), .6);
+            box-shadow: 0 0 12px rgba(var(--gold-rgb), .35), inset 0 1px 0 rgba(255, 255, 255, .25);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .4);
+            overflow: hidden;
+        }
+
+        .tp-done::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -60%;
+            width: 35%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .55), transparent);
+            animation: _tpRibbonShine 3.6s ease-in-out infinite;
+        }
+
+        @keyframes _tpRibbonShine {
+            0% { left: -60%; }
+            100% { left: 130%; }
         }
 
         .tp-expand {
+            position: relative;
+            z-index: 1;
             display: none;
             margin-top: 10px;
             padding-top: 10px;
@@ -6241,15 +6324,16 @@
             const grid = $('teamsPurseGrid');
             const openIds = new Set(Array.from(grid.querySelectorAll('.tp-expand.open')).map(el => el.dataset.team));
             grid.innerHTML = '';
-            TEAM_IDS.forEach(id => {
+            TEAM_IDS.forEach((id, idx) => {
                 const t = teamsCache[id] || { purse_total: 100, purse_spent: 0, players_bought: 0 };
                 const remaining = (t.purse_total ?? 100) - (t.purse_spent ?? 0);
                 const pct = Math.min(100, ((t.purse_spent ?? 0) / (t.purse_total ?? 100)) * 100);
                 const done = (t.players_bought ?? 0) >= 5;
                 const roster = Object.values(playersCache).filter(p => p.team_id === id);
-                const el = document.createElement('div'); el.className = 'tp-card'; el.id = 'tp-' + id; el.style.setProperty('--team-color', TEAM_META[id].color);
+                const el = document.createElement('div'); el.className = 'tp-card' + (done ? ' full' : ''); el.id = 'tp-' + id; el.dataset.abbr = id; el.style.setProperty('--team-color', TEAM_META[id].color);
                 const rosterHtml = roster.length ? roster.map(p => `<div class="prow"><span>${p.ign || p.real_name}</span><span class="amt">${fmtCr(p.final_bid_price)}</span></div>`).join('') : '<div class="empty">No players purchased yet</div>';
-                el.innerHTML = `${done ? '<span class="tp-done">Squad Full</span>' : ''}
+                el.innerHTML = `<div class="tp-topstrip"></div>
+                    ${done ? '<span class="tp-done">Squad Full</span>' : `<div class="tp-index">N°${String(idx + 1).padStart(2, '0')}</div>`}
                     <div class="tp-head"><span class="tp-abbr display">${teamBadgeHTML(id)}</span><span class="tp-cap">Captain<br>${t.captain_name || '—'}</span></div>
                     <div class="tp-purse-track"><div class="tp-purse-fill" style="width:${pct}%"></div></div>
                     <div class="tp-nums"><span>Spent <b>${fmtCr(t.purse_spent ?? 0)}</b></span><span>Left <b>${fmtCr(remaining)}</b></span></div>
