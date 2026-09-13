@@ -1841,6 +1841,37 @@ function askConfirm(title, text, opts) {
 }
 $('confirmBg').addEventListener('click', e => { if (e.target === $('confirmBg')) $('confirmBg').classList.remove('show'); });
 
+/* ═══ STALE CAPTAIN CLEANUP ═══
+   When a team's captain changes (new sale, or a reset), any leftover entry for
+   the OLD captain inside that team's players_json (ffxipl_s12_teams) becomes an
+   orphan: teams.html only hides a players_json row that matches the CURRENT
+   captain name, so once the captain changes, the old captain's name resurfaces
+   as a regular "player" with a stray ₹0Cr bid. This strips any players_json
+   entry matching the old (or new, to avoid a duplicate) captain name whenever
+   the captain is (re)assigned or a team is reset. */
+async function cleanStaleCaptainFromPlayersJson(teamId, oldCaptainName, newCaptainName) {
+  const namesToStrip = [oldCaptainName, newCaptainName]
+    .filter(Boolean).map(n => n.trim().toLowerCase()).filter(Boolean);
+  if (!namesToStrip.length) return;
+  const { data: teamRow, error } = await sb.from('ffxipl_s12_teams')
+    .select('players_json').eq('id', teamId).maybeSingle();
+  if (error || !teamRow || !teamRow.players_json) return;
+  let players;
+  try {
+    players = typeof teamRow.players_json === 'string' ? JSON.parse(teamRow.players_json) : teamRow.players_json;
+  } catch (e) { return; }
+  if (!Array.isArray(players) || !players.length) return;
+  const cleaned = players.filter(p => {
+    const pname = ((p.ign || p.real_name || '') + '').trim().toLowerCase();
+    return !namesToStrip.includes(pname);
+  });
+  if (cleaned.length !== players.length) {
+    const { error: cleanErr } = await sb.from('ffxipl_s12_teams')
+      .upsert({ id: teamId, players_json: JSON.stringify(cleaned) }, { onConflict: 'id' });
+    if (cleanErr) console.error('Stale captain cleanup failed:', cleanErr.message);
+  }
+}
+
 /* ═══ SELL MODAL ═══ */
 let sellModalTeamId = null;
 function openSellModal(teamId) {
@@ -1870,6 +1901,10 @@ $('sellConfirmBtn').addEventListener('click', async () => {
       .order('created_at', { ascending: false }).limit(1).maybeSingle();
     screenshotPath = appRow?.profile_screenshot_path || '';
   }
+  // Grab the outgoing captain's name (if any) BEFORE we overwrite it, so we can
+  // strip their leftover players_json entry after the new captain is synced.
+  const { data: prevTeamRow } = await sb.from('ffxipl_s12_teams').select('captain_name').eq('id', sellModalTeamId).maybeSingle();
+  const prevCaptainName = prevTeamRow?.captain_name || '';
   const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:sellModalTeamId, status:'sold', sold_to_name:name, sold_to_phone:phone, sold_to_screenshot_path:screenshotPath, sold_amount:amount, featured:true, updated_at:new Date().toISOString()},{onConflict:'team_id'});
   if (error) { $('sellError').textContent = error.message; $('sellError').style.display = 'block'; $('sellConfirmBtn').disabled = false; $('sellConfirmBtn').textContent = '🔨 Confirm Sale'; return; }
   // Push the confirmed captain into the live team record (ffxipl_s12_teams) so every
@@ -1880,6 +1915,7 @@ $('sellConfirmBtn').addEventListener('click', async () => {
   // synced to home.html for teams whose row hadn't been created there before.
   const {error: teamsErr} = await sb.from('ffxipl_s12_teams').upsert({id:sellModalTeamId, captain_name:name}, {onConflict:'id'});
   if (teamsErr) console.error('Captain sync to ffxipl_s12_teams failed:', teamsErr.message);
+  else await cleanStaleCaptainFromPlayersJson(sellModalTeamId, prevCaptainName, name);
   // Broadcast sold event to ALL phones instantly
   await _stageChannel.send({type:'broadcast', event:'stage-update', payload:{
     action:'sold', team_id:sellModalTeamId, sold_to_name:name, sold_amount:amount
@@ -2238,11 +2274,16 @@ async function teamControlListClickHandler(e) {
   } else if (action === 'reset') {
     const ok = await askConfirm('Reset This Team?', `This will clear the sold status for ${TEAM_META[team]?.name}. Bids are kept.`, {icon:'↺', okLabel:'Reset'});
     if (!ok) return;
+    // Grab the outgoing captain's name BEFORE we clear it, so their leftover
+    // players_json entry can be stripped too (same fix as a fresh sale below).
+    const { data: prevTeamRowReset } = await sb.from('ffxipl_s12_teams').select('captain_name').eq('id', team).maybeSingle();
+    const prevCaptainNameReset = prevTeamRowReset?.captain_name || '';
     const {error} = await sb.from('ffxipl_s12_franchise_teams').upsert({team_id:team, status:'open', featured:false, sold_to_name:'', sold_to_phone:'', sold_to_screenshot_path:'', sold_amount:0, updated_at:new Date().toISOString()},{onConflict:'team_id'});
     if (error) { toast(error.message, 'err'); return; }
     // Undo the captain sync too, so home / auction-center / teams stop showing the old winner.
     const {error: teamsErr} = await sb.from('ffxipl_s12_teams').upsert({id:team, captain_name:null}, {onConflict:'id'});
     if (teamsErr) console.error('Captain un-sync on reset failed:', teamsErr.message);
+    else await cleanStaleCaptainFromPlayersJson(team, prevCaptainNameReset, '');
     toast(`↺ ${TEAM_META[team]?.name} reset.`, 'success'); await loadTeamsState();
   } else if (action === 'reset-bids') {
     const ok = await askConfirm('Reset Bids?', `This will permanently delete every bid placed on ${TEAM_META[team]?.name}, bringing the current bid back to ₹0. Sold status is untouched.`, {icon:'🗑', okLabel:'Reset Bids'});
