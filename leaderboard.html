@@ -788,14 +788,22 @@ let isAdmin=false;
 let teamsRosters={};   // teamId -> full players array as stored in DB (uncut)
 let liveCaptains={};   // { teamId: captain_name } — live from ffxipl_s12_teams, always wins over the frozen season_rosters snapshot
 
-// Live captain names — ffxipl_s12_teams is written the instant a franchise
-// sells (or a captain is corrected) on the franchise-auction page, whereas
-// season_rosters.captain_name is only a one-time snapshot taken at finalize.
+// Live captain names — merged from TWO sources, matching the same table
+// home.html and teams.html read from directly:
+//   1. ffxipl_s12_teams (captain_name) — written alongside the sale, but can
+//      go stale/out of sync if that particular upsert ever failed silently.
+//   2. ffxipl_s12_franchise_teams (sold_to_name, status='sold') — the same
+//      table home.html/teams.html sync from, confirmed correct there.
+// #2 wins on conflict since it's the source we've verified end-to-end.
 async function loadLiveCaptains(){
   try{
-    const {data}=await sb.from('ffxipl_s12_teams').select('id,captain_name');
+    const [teamsRes, franchiseRes] = await Promise.all([
+      sb.from('ffxipl_s12_teams').select('id,captain_name'),
+      sb.from('ffxipl_s12_franchise_teams').select('team_id,sold_to_name,status').eq('status','sold'),
+    ]);
     liveCaptains={};
-    (data||[]).forEach(r=>{ if(r.id) liveCaptains[String(r.id).toUpperCase()]=(r.captain_name||'').trim(); });
+    (teamsRes.data||[]).forEach(r=>{ if(r.id) liveCaptains[String(r.id).toUpperCase()]=(r.captain_name||'').trim(); });
+    (franchiseRes.data||[]).forEach(r=>{ if(r.team_id && r.sold_to_name) liveCaptains[String(r.team_id).toUpperCase()]=r.sold_to_name.trim(); });
   }catch(e){}
 }
 let editingPlayer=null; // {teamId, idx}
@@ -1037,6 +1045,13 @@ function subscribeRealtime(){
   sb.channel('lb-captain-rt')
     .on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_teams'},()=>loadLeaderboard())
     .subscribe();
+
+  // Same, but for the ffxipl_s12_franchise_teams table (the sale table
+  // home.html/teams.html sync from) — covers a sale even if the
+  // ffxipl_s12_teams mirror above ever falls out of sync.
+  sb.channel('lb-captain-rt2')
+    .on('postgres_changes',{event:'*',schema:'public',table:'ffxipl_s12_franchise_teams'},()=>loadLeaderboard())
+    .subscribe();
 }
 
 // ═══════════════════════════════════════════
@@ -1231,9 +1246,37 @@ function openEditPlayer(teamId,idx){
 $('pCancel').addEventListener('click',()=>$('playerModal').classList.remove('show'));
 $('playerModal').addEventListener('click',e=>{ if(e.target===$('playerModal'))$('playerModal').classList.remove('show'); });
 
-async function persistRoster(teamId){
-  const players=teamsRosters[teamId]||[];
-  // Matches the pattern used on the schedule page: update the existing roster row for this team.
+async function persistRoster(teamId,upsertPlayer,removeIgn){
+  // Re-fetch the CURRENT players_json fresh right before writing, instead of
+  // blindly overwriting with teamsRosters[teamId] as loaded at page-open.
+  // That cache can go stale — e.g. the schedule page writes kills into this
+  // same players_json column whenever a match is saved — and overwriting the
+  // whole array from a stale snapshot silently reverts whatever changed there
+  // in the meantime (exactly what causes a player's kills/matches to jump
+  // backwards after being correctly updated elsewhere).
+  // Plain select + order + limit(1) instead of maybeSingle(): maybeSingle
+  // THROWS if more than one row exists for this team/season (a leftover
+  // duplicate from an earlier bug) — which surfaced as "Save failed" here,
+  // or silently reverted numbers on the schedule page's own fetch. This
+  // never throws; it just always picks the most recently touched row.
+  const {data:freshRows,error:fetchErr}=await sb.from('ffxipl_s12_season_rosters')
+    .select('players_json,submitted_at').eq('season',12).eq('team_id',teamId)
+    .order('submitted_at',{ascending:false});
+  if(fetchErr) throw fetchErr;
+  if(freshRows&&freshRows.length>1) console.warn(`⚠ ${teamId} has ${freshRows.length} duplicate season_rosters rows — using the most recent one. Consider deleting the extras in Supabase.`);
+  const freshRow=freshRows&&freshRows[0];
+  let players=freshRow?JSON.parse(freshRow.players_json||'[]'):[];
+
+  if(removeIgn!==undefined){
+    players=players.filter(p=>(p.ign||'')!==removeIgn);
+  }else if(upsertPlayer){
+    const idx=players.findIndex(p=>(p.ign||'')===upsertPlayer.originalIgn);
+    const {originalIgn,...clean}=upsertPlayer;
+    if(idx>=0) players[idx]={...players[idx],...clean};
+    else players.push(clean);
+  }
+
+  teamsRosters[teamId]=players; // keep local cache in sync with what we just wrote
   const {data,error}=await sb.from('ffxipl_s12_season_rosters')
     .update({players_json:JSON.stringify(players)})
     .eq('season',12)
@@ -1256,18 +1299,17 @@ $('pSave').addEventListener('click',async()=>{
   if(!p) return;
   const ign=$('pIgn').value.trim();
   if(!ign){ showToast('IGN is required',true); return; }
-  roster[idx]={
-    ...p,
-    ign,
-    real_name:$('pRealName').value.trim(),
-    profile_url:$('pPhotoUrl').value.trim(),
-    kills_total:parseInt($('pKills').value)||0,
-    matches_played:parseInt($('pMatches').value)||0,
-    mvp_count:parseInt($('pMvps').value)||0,
-  };
   $('pSave').textContent='Saving…';$('pSave').disabled=true;
   try{
-    await persistRoster(teamId);
+    await persistRoster(teamId,{
+      originalIgn:p.ign||'',
+      ign,
+      real_name:$('pRealName').value.trim(),
+      profile_url:$('pPhotoUrl').value.trim(),
+      kills_total:parseInt($('pKills').value)||0,
+      matches_played:parseInt($('pMatches').value)||0,
+      mvp_count:parseInt($('pMvps').value)||0,
+    });
     showToast('✓ Player updated');
     $('playerModal').classList.remove('show');
     loadLeaderboard();
@@ -1282,11 +1324,11 @@ $('pDelete').addEventListener('click',async()=>{
   if(!editingPlayer) return;
   const {teamId,idx}=editingPlayer;
   const roster=teamsRosters[teamId]||[];
-  if(!roster[idx]) return;
+  const p=roster[idx];
+  if(!p) return;
   $('pDelete').textContent='Deleting…';$('pDelete').disabled=true;
   try{
-    roster.splice(idx,1);
-    await persistRoster(teamId);
+    await persistRoster(teamId,undefined,p.ign||'');
     showToast('Player removed');
     $('playerModal').classList.remove('show');
     loadLeaderboard();
@@ -1315,18 +1357,17 @@ $('apSave').addEventListener('click',async()=>{
   const teamId=$('apTeam').value;
   const ign=$('apIgn').value.trim();
   if(!ign){ showToast('IGN is required',true); return; }
-  if(!teamsRosters[teamId]) teamsRosters[teamId]=[];
-  teamsRosters[teamId].push({
-    ign,
-    real_name:$('apRealName').value.trim(),
-    profile_url:$('apPhotoUrl').value.trim(),
-    kills_total:parseInt($('apKills').value)||0,
-    matches_played:parseInt($('apMatches').value)||0,
-    mvp_count:parseInt($('apMvps').value)||0,
-  });
   $('apSave').textContent='Adding…';$('apSave').disabled=true;
   try{
-    await persistRoster(teamId);
+    await persistRoster(teamId,{
+      originalIgn:'', // won't match any existing player — always inserted as new
+      ign,
+      real_name:$('apRealName').value.trim(),
+      profile_url:$('apPhotoUrl').value.trim(),
+      kills_total:parseInt($('apKills').value)||0,
+      matches_played:parseInt($('apMatches').value)||0,
+      mvp_count:parseInt($('apMvps').value)||0,
+    });
     showToast('✓ Player added');
     $('addPlayerModal').classList.remove('show');
     loadLeaderboard();

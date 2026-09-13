@@ -1951,7 +1951,31 @@ $('mSave').addEventListener('click',async()=>{
     if(Object.keys(ps).length>0||Object.keys(oldPs).length>0){
       const teamsToUpdate=[...new Set([f.tA,f.tB])];
       for(const teamId of teamsToUpdate){
-        const players=rosterData[teamId]||[];
+        // Re-fetch the CURRENT players_json fresh right before writing, instead
+        // of trusting rosterData[teamId] as loaded at page-open. That cache can
+        // go stale — e.g. the leaderboard page's own "Edit Player" tool writes
+        // to this same players_json column — and blindly applying a delta on
+        // top of a stale base silently reverts whatever changed in between
+        // (exactly what causes a player's kills/matches to jump backwards).
+        let players;
+        try{
+          // Plain select + order + limit(1) instead of maybeSingle(): maybeSingle
+          // THROWS if more than one row exists for this team/season (a leftover
+          // duplicate from an earlier bug), which was being silently swallowed
+          // below and falling straight back to the stale cache — reproducing
+          // the exact revert bug this fetch exists to prevent. This never throws.
+          const {data:freshRows}=await sb.from('ffxipl_s12_season_rosters')
+            .select('players_json,captain_name,submitted_at')
+            .eq('season',12).eq('team_id',teamId)
+            .order('submitted_at',{ascending:false});
+          if(freshRows&&freshRows.length>1) console.warn(`⚠ ${teamId} has ${freshRows.length} duplicate season_rosters rows — using the most recent one. Consider deleting the extras in Supabase.`);
+          const freshRow=freshRows&&freshRows[0];
+          players=freshRow?JSON.parse(freshRow.players_json||'[]'):(rosterData[teamId]||[]);
+          const capName=(liveCaptains[teamId]||(freshRow&&freshRow.captain_name)||'').trim();
+          if(capName&&!players.some(p=>(p.ign||'').trim().toLowerCase()===capName.toLowerCase())){
+            players=[{ign:capName,real_name:capName,kills_total:0,matches_played:0,mvp_count:0,isCaptain:true},...players];
+          }
+        }catch(e){ console.error('Fresh roster fetch failed, falling back to cached copy:',teamId,e); players=rosterData[teamId]||[]; }
         if(!players.length) continue;
         const updated=players.map(p=>{
           const newK=ps[p.ign];
