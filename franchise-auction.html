@@ -5000,10 +5000,309 @@
         .sh-dismiss:active {
             opacity: .6;
         }
+        /* ═══ BRIGHTNESS BOOST — dark themes lifted so page feels rich, not cave-dark ═══ */
+        :root,[data-theme="golden-fire"]{--body-2:#1c1409;--body-3:#221a0d;}
+        [data-theme="og-bar"]{--body-2:#0e1830;--body-3:#121e38;}
+        [data-theme="neon-cyber"]{--body-2:#0d1330;--body-3:#101838;}
+        [data-theme="royal-purple"]{--body-2:#21133c;--body-3:#271848;}
+        [data-theme="emerald-forest"]{--body-2:#0d2820;--body-3:#103025;}
+        [data-theme="sunset-orange"]{--body-2:#311a0c;--body-3:#3a1e0e;}
+        [data-theme="ocean-blue"]{--body-2:#082840;--body-3:#0b3050;}
+        [data-theme="midnight-black"]{--body-2:#191919;--body-3:#1e1e1e;}
+        [data-theme="crimson-blood"]{--body-2:#2e0c0c;--body-3:#350f0f;}
+
+        /* ═══ PARTICLE CANVAS ═══ */
+        #premiumCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            opacity: .35;
+        }
+
+    </style>
+
+    <!-- ═══ ULTRA-PREMIUM HEADER + ADMIN LAYER — matches Schedule page exactly ═══ -->
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&display=swap');
+
+    /* ── HEADER PREMIUM ── */
+    header {
+        background: rgba(var(--bg-rgb), .75) !important;
+        backdrop-filter: blur(24px) saturate(1.6) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(1.6) !important;
+        border-bottom: 1px solid rgba(var(--gold-rgb), .14) !important;
+        box-shadow: 0 1px 0 rgba(var(--gold-rgb),.06), 0 8px 32px rgba(0,0,0,.28) !important;
+        padding: 12px 18px !important;
+    }
+    .crest {
+        background: linear-gradient(145deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep)) !important;
+        box-shadow: 0 0 0 2px rgba(var(--gold-rgb),.18), 0 4px 12px rgba(var(--gold-rgb),.22) !important;
+        transition: transform .2s, box-shadow .2s !important;
+        filter: none !important;
+    }
+    #brandTapZone { position: relative; cursor: default; user-select: none; -webkit-user-select: none; }
+    #brandTapZone:active .crest { transform: scale(.92); }
+    .crest.tapping {
+        box-shadow: 0 0 0 3px var(--gold), 0 0 18px rgba(var(--gold-rgb),.5) !important;
+        animation: _crestPulse .18s ease;
+    }
+    @keyframes _crestPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
+
+    /* Tap counter ring */
+    #crestTapRing {
+        position: absolute;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        border: 2px solid var(--gold);
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(.5);
+        transition: none;
+    }
+    #crestTapRing.fire { animation: _tapRing .45s cubic-bezier(.2,.8,.3,1) forwards; }
+    @keyframes _tapRing {
+        0%  { opacity:.9; transform:scale(.5); }
+        100%{ opacity:0;  transform:scale(1.9); }
+    }
+
+    /* Secret tap hint dots */
+    #tapDots {
+        display: none;
+        gap: 4px;
+        position: absolute;
+        bottom: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    #tapDots.show { display: flex; }
+    .tap-dot {
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        background: rgba(var(--gold-rgb),.25);
+        transition: background .15s;
+    }
+    .tap-dot.lit { background: var(--gold); box-shadow: 0 0 5px rgba(var(--gold-rgb),.6); }
+
+    /* ── MENU BTN PREMIUM ── */
+    .menu-btn {
+        background: rgba(var(--gold-rgb),.06) !important;
+        border: 1px solid rgba(var(--gold-rgb),.14) !important;
+        border-radius: 10px !important;
+        transition: transform .15s, background .15s, box-shadow .15s !important;
+    }
+    .menu-btn:active {
+        transform: scale(.88) !important;
+        background: rgba(var(--gold-rgb),.14) !important;
+    }
+
+    /* ── ADMIN PILL ── */
+    .admin-pill {
+        display: none;
+        align-items: center;
+        gap: 5px;
+        background: linear-gradient(135deg, rgba(var(--gold-rgb),.14), rgba(var(--gold-rgb),.06)) !important;
+        border: 1px solid rgba(var(--gold-rgb),.35) !important;
+        border-radius: 20px;
+        padding: 4px 11px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        color: var(--gold);
+        cursor: pointer;
+        box-shadow: 0 0 12px rgba(var(--gold-rgb),.12) !important;
+        animation: _pillGlow 3s ease-in-out infinite;
+        font-family: 'Rajdhani', sans-serif;
+    }
+    .admin-pill.show { display: flex; }
+    @keyframes _pillGlow {
+        0%,100%{box-shadow:0 0 8px rgba(var(--gold-rgb),.1)}
+        50%{box-shadow:0 0 18px rgba(var(--gold-rgb),.3)}
+    }
+    .adot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--live);
+        animation: _adot 1.2s ease-in-out infinite;
+    }
+    @keyframes _adot { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    /* Login key button — hidden by default, shown when no active session */
+    .login-key-btn {
+        width: 38px; height: 38px;
+        border-radius: 10px;
+        border: 1px solid rgba(var(--gold-rgb),.14);
+        background: rgba(var(--gold-rgb),.06);
+        color: var(--gold);
+        font-size: 15px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform .15s, background .15s;
+    }
+    .login-key-btn.show { display: flex; }
+    .login-key-btn:active { transform: scale(.88); background: rgba(var(--gold-rgb),.14); }
+
+    /* ── PREMIUM ADMIN COMMAND CENTER ── */
+    .admin-cmd {
+        display: none;
+        margin: 14px 16px 0;
+        max-width: 448px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .admin-cmd.show { display: block; animation: _cmdIn .4s cubic-bezier(.2,.9,.3,1) forwards; }
+    @keyframes _cmdIn { from{opacity:0;transform:translateY(-8px) scale(.98)} to{opacity:1;transform:none} }
+    .admin-cmd-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, rgba(var(--gold-rgb),.1), rgba(var(--gold-rgb),.04));
+        border: 1px solid rgba(var(--gold-rgb),.22);
+        border-radius: 16px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 24px rgba(var(--gold-rgb),.08), inset 0 1px 0 rgba(var(--gold-rgb),.12);
+    }
+    .admin-cmd-left { display: flex; align-items: center; gap: 11px; }
+    .admin-cmd-icon {
+        width: 36px; height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px;
+        box-shadow: 0 4px 12px rgba(var(--gold-rgb),.3);
+        animation: _spinCog 6s linear infinite;
+        flex-shrink: 0;
+    }
+    @keyframes _spinCog { to{transform:rotate(360deg)} }
+    .admin-cmd-title { font-size: 13px; font-weight: 700; color: var(--gold-pale); letter-spacing: .04em; }
+    .admin-cmd-sub { font-size: 10px; color: var(--ink-faint); letter-spacing: .1em; margin-top: 1px; text-transform: uppercase; }
+    .admin-cmd-actions { display: flex; gap: 8px; }
+    .admin-cmd-btn {
+        padding: 7px 14px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .06em;
+        border: 1px solid rgba(var(--gold-rgb),.28);
+        background: rgba(var(--gold-rgb),.08);
+        color: var(--gold);
+        cursor: pointer;
+        transition: all .15s;
+        font-family: 'Rajdhani', sans-serif;
+    }
+    .admin-cmd-btn:active { transform: scale(.93); background: rgba(var(--gold-rgb),.18); }
+    .admin-cmd-btn.accent {
+        background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+        color: var(--on-accent);
+        border-color: transparent;
+        box-shadow: 0 4px 14px rgba(var(--gold-rgb),.3);
+    }
+    .admin-cmd-btn.accent:active { transform: scale(.93); }
+
+    /* ── ADMIN LOGIN MODAL (secret tap to reveal) ── */
+    #adminLoginModal {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(var(--bg-rgb),.7);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .3s;
+        max-width: 480px;
+        margin: 0 auto;
+    }
+    #adminLoginModal.show { opacity: 1; pointer-events: auto; }
+    .admin-login-sheet {
+        width: 100%;
+        background: linear-gradient(160deg, var(--surface), var(--bg-alt) 80%);
+        border-top: 1px solid rgba(var(--gold-rgb),.25);
+        border-top-left-radius: 28px;
+        border-top-right-radius: 28px;
+        padding: 20px 20px 32px;
+        box-shadow: 0 -12px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(var(--gold-rgb),.14);
+        transform: translateY(30px);
+        transition: transform .35s cubic-bezier(.2,.9,.25,1);
+    }
+    #adminLoginModal.show .admin-login-sheet { transform: translateY(0); }
+    .al-handle {
+        width: 36px; height: 4px;
+        background: rgba(var(--gold-rgb),.25);
+        border-radius: 3px;
+        margin: 0 auto 18px;
+    }
+    .al-title {
+        font-family: 'Anton', sans-serif;
+        font-size: 22px;
+        color: var(--gold-pale);
+        letter-spacing: .04em;
+        text-align: center;
+        margin-bottom: 4px;
+    }
+    .al-sub {
+        font-size: 11px;
+        color: var(--ink-faint);
+        text-align: center;
+        letter-spacing: .08em;
+        margin-bottom: 18px;
+    }
+    .al-field { margin-bottom: 12px; }
+    .al-label { display: block; font-size: 11px; color: var(--ink-dim); letter-spacing: .08em; margin-bottom: 5px; }
+    .al-input {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(var(--bg-rgb),.7);
+        border: 1.5px solid rgba(var(--gold-rgb),.15);
+        border-radius: 13px;
+        color: var(--ink);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 14px;
+        transition: border-color .2s, box-shadow .2s;
+    }
+    .al-input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(var(--gold-rgb),.12);
+    }
+    .al-btn {
+        width: 100%;
+        padding: 13px;
+        margin-top: 8px;
+        border: none;
+        border-radius: 13px;
+        background: linear-gradient(135deg, var(--gold-pale) 0%, var(--gold) 55%, var(--gold-deep));
+        color: var(--on-accent);
+        font-family: 'Anton', sans-serif;
+        font-size: 14px;
+        letter-spacing: .06em;
+        cursor: pointer;
+        box-shadow: 0 4px 18px rgba(var(--gold-rgb),.35);
+    }
+    .al-btn:active { transform: scale(.96); }
+    .al-err { font-size: 11px; color: var(--live); text-align: center; margin-top: 8px; min-height: 16px; }
+    .al-cancel {
+        display: block;
+        text-align: center;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--ink-faint);
+        cursor: pointer;
+        letter-spacing: .04em;
+    }
     </style>
 </head>
 
 <body>
+
+    <canvas id="premiumCanvas"></canvas>
 
     <div class="sp-prog">
         <div class="sp-prog-fill" id="spProgFill"></div>
@@ -5111,15 +5410,54 @@
     <!-- HEADER -->
     <header>
         <div class="brand" id="brandTapZone">
-            <div class="crest"></div>
+            <div class="crest" id="crestEl"></div>
             <div class="brand-text">FREEFIRE<b>XIPL</b></div>
         </div>
         <div class="header-actions">
+            <div class="admin-pill" id="adminPill" title="Tap to sign out"><div class="adot"></div>ADMIN</div>
+            <button class="login-key-btn" id="loginKeyBtn" title="Admin Login">🔐</button>
             <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true"
                 aria-expanded="false">🎨</button>
             <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
         </div>
     </header>
+
+    <!-- PREMIUM ADMIN COMMAND CENTER -->
+    <div class="admin-cmd" id="adminBar">
+        <div class="admin-cmd-inner">
+            <div class="admin-cmd-left">
+                <div class="admin-cmd-icon">⚙</div>
+                <div>
+                    <div class="admin-cmd-title">Auction Control</div>
+                    <div class="admin-cmd-sub">Admin · Season 12</div>
+                </div>
+            </div>
+            <div class="admin-cmd-actions">
+                <button class="admin-cmd-btn" id="adminCmdApps">📋 Apps</button>
+                <button class="admin-cmd-btn accent" id="adminCmdAuction">🔨 Auction</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECRET ADMIN LOGIN MODAL -->
+    <div id="adminLoginModal">
+        <div class="admin-login-sheet">
+            <div class="al-handle"></div>
+            <div class="al-title">Admin Login</div>
+            <div class="al-sub">FRANCHISE AUCTION · SEASON 12</div>
+            <div class="al-field">
+                <label class="al-label">EMAIL</label>
+                <input class="al-input" type="email" id="alEmail" placeholder="admin@xipl.com" autocomplete="username">
+            </div>
+            <div class="al-field">
+                <label class="al-label">PASSWORD</label>
+                <input class="al-input" type="password" id="alPassword" placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <button class="al-btn" id="alSignInBtn">Sign In as Admin</button>
+            <div class="al-err" id="alError"></div>
+            <span class="al-cancel" id="alCancel">Cancel</span>
+        </div>
+    </div>
 
     <!-- THEME SWITCHER -->
     <div class="theme-overlay" id="themeOverlay"></div>
@@ -7076,6 +7414,10 @@
             const adminPanel = document.createElement('div'); adminPanel.className = 'role-tab'; adminPanel.dataset.role = 'admin'; adminPanel.textContent = '🛡 Admin';
             if (!$('roleTabs').querySelector('[data-role="admin"]')) $('roleTabs').appendChild(adminPanel);
             switchRole('admin');
+            // Premium header — show admin pill + command center
+            const pill = $('adminPill'); if (pill) pill.classList.add('show');
+            const bar = $('adminBar'); if (bar) bar.classList.add('show');
+            const keyBtn = $('loginKeyBtn'); if (keyBtn) keyBtn.style.display = 'none';
         }
         /* ═══ SECRET ADMIN UNLOCK — tap the header logo 7 times within 3s to
            reveal the Admin Login tab. Purely a UI decoy: it hides the entry
@@ -7720,6 +8062,191 @@
             Promise.race([boot().catch(err => console.error('Boot error:', err)), splashCeiling]),
             splashFloor
         ]).then(dismissSplash);
+
+        // ════════════════════════════════════════════════
+        //  PREMIUM HEADER — CREST TAP ANIMATION + SECRET ADMIN UNLOCK
+        //  Tap the logo 5× quickly to reveal the admin login sheet.
+        //  This is purely a UI decoy — the real gate is Supabase auth.
+        // ════════════════════════════════════════════════
+        (function secretAdminUnlock() {
+            const logo  = $('brandTapZone');
+            const crest = $('crestEl');
+            if (!logo || !crest) return;
+            const TAPS = 5, WINDOW_MS = 3500;
+            let count = 0, resetTimer = null;
+
+            // Tap-dot progress indicators under the crest
+            const tapDots = document.createElement('div');
+            tapDots.id = 'tapDots';
+            for (let i = 0; i < TAPS; i++) {
+                const d = document.createElement('div'); d.className = 'tap-dot'; tapDots.appendChild(d);
+            }
+            logo.appendChild(tapDots);
+
+            // Gold ripple ring on each tap
+            const ring = document.createElement('div');
+            ring.id = 'crestTapRing';
+            crest.style.position = 'relative';
+            crest.appendChild(ring);
+
+            function fireRing() {
+                ring.classList.remove('fire');
+                void ring.offsetWidth;
+                ring.classList.add('fire');
+                ring.addEventListener('animationend', () => ring.classList.remove('fire'), { once: true });
+            }
+            function lightDots(n) {
+                tapDots.querySelectorAll('.tap-dot').forEach((d, i) => d.classList.toggle('lit', i < n));
+            }
+
+            logo.addEventListener('click', e => {
+                e.preventDefault();
+                count++;
+                fireRing();
+                crest.classList.add('tapping');
+                setTimeout(() => crest.classList.remove('tapping'), 220);
+
+                if (count === 1) tapDots.classList.add('show');
+                lightDots(count);
+
+                clearTimeout(resetTimer);
+                resetTimer = setTimeout(() => {
+                    count = 0; tapDots.classList.remove('show'); lightDots(0);
+                }, WINDOW_MS);
+
+                if (count >= TAPS) {
+                    count = 0;
+                    clearTimeout(resetTimer);
+                    tapDots.classList.remove('show'); lightDots(0);
+                    // Dramatic gold flash then reveal login sheet
+                    const fl = document.createElement('div');
+                    fl.style.cssText = 'position:fixed;inset:0;z-index:9998;background:rgba(var(--gold-rgb),.18);pointer-events:none;max-width:480px;margin:0 auto;';
+                    document.body.appendChild(fl);
+                    fl.animate([{ opacity: 0 }, { opacity: 1 }, { opacity: 0 }], { duration: 380, easing: 'ease' }).onfinish = () => fl.remove();
+                    setTimeout(() => $('adminLoginModal').classList.add('show'), 200);
+                }
+            });
+        })();
+
+        // ── Admin login modal events ──
+        $('loginKeyBtn') && $('loginKeyBtn').addEventListener('click', () => $('adminLoginModal').classList.add('show'));
+        $('alCancel') && $('alCancel').addEventListener('click', () => $('adminLoginModal').classList.remove('show'));
+        $('adminLoginModal') && $('adminLoginModal').addEventListener('click', e => {
+            if (e.target === $('adminLoginModal')) $('adminLoginModal').classList.remove('show');
+        });
+
+        $('alSignInBtn') && $('alSignInBtn').addEventListener('click', async () => {
+            const email = ($('alEmail') || {}).value?.trim();
+            const password = ($('alPassword') || {}).value;
+            const errEl = $('alError');
+            if (!email || !password) { if (errEl) errEl.textContent = 'Enter email and password'; return; }
+            $('alSignInBtn').textContent = 'Signing in…'; $('alSignInBtn').disabled = true;
+            try {
+                const { error } = await sb.auth.signInWithPassword({ email, password });
+                if (error) {
+                    if (errEl) errEl.textContent = error.message || 'Login failed';
+                } else {
+                    await checkAdmin();
+                    if (isAdmin) {
+                        toast('✓ Signed in as admin', 'success');
+                        $('adminLoginModal').classList.remove('show');
+                        if ($('alEmail')) $('alEmail').value = '';
+                        if ($('alPassword')) $('alPassword').value = '';
+                        if (errEl) errEl.textContent = '';
+                    } else {
+                        if (errEl) errEl.textContent = 'This account is not an admin';
+                        await sb.auth.signOut();
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+                if (errEl) errEl.textContent = 'Login failed — check console';
+            }
+            $('alSignInBtn').textContent = 'Sign In as Admin'; $('alSignInBtn').disabled = false;
+        });
+
+        // ── Admin pill — tap to sign out ──
+        $('adminPill') && $('adminPill').addEventListener('click', async () => {
+            if (!isAdmin) return;
+            try { await sb.auth.signOut(); } catch (e) {}
+            isAdmin = false;
+            $('adminPill').classList.remove('show');
+            $('adminBar').classList.remove('show');
+            $('loginKeyBtn') && ($('loginKeyBtn').style.display = '');
+            toast('Signed out', 'success');
+        });
+
+        // ── Command bar quick-scroll buttons ──
+        $('adminCmdApps') && $('adminCmdApps').addEventListener('click', () => {
+            const sec = $('secretAdminSec'); if (!sec) return;
+            sec.style.display = 'block';
+            const appsTab = sec.querySelector('[data-sub="apps"]'); if (appsTab) appsTab.click();
+            sec.scrollIntoView({ behavior: 'smooth' });
+        });
+        $('adminCmdAuction') && $('adminCmdAuction').addEventListener('click', () => {
+            const sec = $('secretAdminSec'); if (!sec) return;
+            sec.style.display = 'block';
+            const aucTab = sec.querySelector('[data-sub="auction"]'); if (aucTab) aucTab.click();
+            sec.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // ════════════════════════════════════════════════
+        //  PREMIUM PARTICLE CANVAS — floating gold embers
+        // ════════════════════════════════════════════════
+        (function premiumParticles() {
+            const canvas = document.getElementById('premiumCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [];
+
+            function resize() {
+                W = canvas.width = Math.min(480, window.innerWidth);
+                H = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize, { passive: true });
+
+            function getGoldColor() {
+                const cs = getComputedStyle(document.documentElement);
+                const rgb = (cs.getPropertyValue('--gold-rgb') || '240,185,61').trim();
+                return `rgba(${rgb},`;
+            }
+
+            class Particle {
+                constructor() { this.reset(true); }
+                reset(init = false) {
+                    this.x = Math.random() * W;
+                    this.y = init ? Math.random() * H : H + 10;
+                    this.r = Math.random() * 1.8 + .4;
+                    this.speed = Math.random() * .4 + .12;
+                    this.alpha = Math.random() * .5 + .12;
+                    this.drift = (Math.random() - .5) * .25;
+                    this.pulse = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = Math.random() * .02 + .005;
+                }
+                update() {
+                    this.y -= this.speed; this.x += this.drift;
+                    this.pulse += this.pulseSpeed;
+                    this.alpha = (.18 + Math.sin(this.pulse) * .12);
+                    if (this.y < -10 || this.x < -10 || this.x > W + 10) this.reset();
+                }
+                draw() {
+                    const gold = getGoldColor();
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = gold + this.alpha + ')'; ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 55; i++) particles.push(new Particle());
+
+            function loop() {
+                ctx.clearRect(0, 0, W, H);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(loop);
+            }
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) loop(); });
+            loop();
+        })();
     </script>
 </body>
 
