@@ -2158,12 +2158,25 @@
             display: block;
         }
 
+        /* ═══ ADMIN LOGIN — premium gated card ═══ */
         .gate-box {
+            position: relative;
             margin-top: 14px;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 16px;
+            background: linear-gradient(155deg, rgba(var(--gold-rgb), .08), var(--card-a) 55%, var(--card-b));
+            border: 1.5px solid rgba(var(--gold-rgb), .22);
+            border-radius: 16px;
+            padding: 18px 16px;
+            box-shadow: 0 12px 28px -18px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .05);
+            overflow: hidden;
+        }
+
+        .gate-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+            box-shadow: 0 0 10px rgba(var(--gold-rgb), .5);
         }
 
         .gate-box label {
@@ -2178,19 +2191,20 @@
 
         .gate-input {
             width: 100%;
-            background: var(--bg);
-            border: 1.5px solid rgba(var(--gold-rgb), .16);
-            border-radius: 10px;
-            padding: 11px 13px;
+            background: rgba(0, 0, 0, .18);
+            border: 1.5px solid rgba(var(--gold-rgb), .18);
+            border-radius: 11px;
+            padding: 12px 14px;
             color: var(--ink);
             font-family: 'Space Mono', monospace;
             font-size: 13px;
             outline: none;
-            transition: border-color .2s;
+            transition: border-color .2s, box-shadow .2s;
         }
 
         .gate-input:focus {
             border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(var(--gold-rgb), .14);
         }
 
         .gate-error {
@@ -2200,29 +2214,36 @@
             display: none;
         }
 
+        /* ═══ ADMIN SUBTABS — premium segmented control ═══ */
         .admin-subtabs {
             display: flex;
-            gap: 7px;
+            gap: 6px;
             margin-top: 14px;
+            padding: 4px;
+            border-radius: 14px;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
         }
 
         .admin-subtab {
             flex: 1;
             text-align: center;
-            padding: 9px 4px;
+            padding: 10px 4px;
             border-radius: 10px;
-            border: 1px solid var(--line);
-            background: var(--surface);
-            color: var(--ink-dim);
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--ink-faint);
             font-size: 10.5px;
             font-weight: 700;
             cursor: pointer;
+            transition: background .2s, color .2s, box-shadow .2s;
         }
 
         .admin-subtab.active {
-            border-color: var(--gold);
-            background: rgba(var(--gold-rgb), .1);
+            border-color: rgba(var(--gold-rgb), .4);
+            background: linear-gradient(155deg, rgba(var(--gold-rgb), .22), rgba(var(--gold-rgb), .08));
             color: var(--gold-pale);
+            box-shadow: 0 4px 14px -6px rgba(var(--gold-rgb), .5), inset 0 1px 0 rgba(255, 255, 255, .1);
         }
 
         .subtab-badge {
@@ -2239,6 +2260,13 @@
             font-size: 9px;
             font-weight: 800;
             vertical-align: middle;
+            box-shadow: 0 0 8px rgba(var(--live-rgb), .6);
+            animation: subtabBadgePulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes subtabBadgePulse {
+            0%, 100% { box-shadow: 0 0 6px rgba(var(--live-rgb), .5); }
+            50% { box-shadow: 0 0 12px rgba(var(--live-rgb), .85); }
         }
 
         .admin-subpanel {
@@ -2260,22 +2288,24 @@
         .how-step {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 11px;
-            background: var(--surface);
+            gap: 11px;
+            padding: 11px 13px;
+            border-radius: 12px;
+            background: linear-gradient(155deg, var(--card-a), var(--card-b));
             border: 1px solid var(--line);
         }
 
         .how-num {
-            width: 22px;
-            height: 22px;
-            border-radius: 7px;
-            background: rgba(var(--gold-rgb), .14);
-            border: 1px solid rgba(var(--gold-rgb), .25);
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: linear-gradient(155deg, rgba(var(--gold-rgb), .28), rgba(var(--gold-rgb), .1));
+            border: 1px solid rgba(var(--gold-rgb), .35);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
             font-family: 'Space Mono', monospace;
             font-size: 10px;
-            color: var(--gold);
+            font-weight: 700;
+            color: var(--gold-pale);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2298,19 +2328,23 @@
             line-height: 1.4;
         }
 
-        /* Apps list */
+        /* ═══ APPLICATIONS LIST — premium cards ═══ */
         .apps-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 9px;
             margin-top: 14px;
         }
 
         .app-card {
-            background: var(--surface);
+            position: relative;
+            background: linear-gradient(155deg, var(--card-a), var(--card-b));
             border: 1px solid var(--line);
-            border-radius: 12px;
-            padding: 12px 13px;
+            border-left: 3px solid var(--app-accent, rgba(var(--gold-rgb), .4));
+            border-radius: 13px;
+            padding: 13px 14px;
+            box-shadow: 0 8px 18px -14px rgba(0, 0, 0, .6);
+            transition: border-color .2s, box-shadow .2s;
         }
 
         .app-card-top {
@@ -2334,105 +2368,144 @@
         }
 
         .app-badge {
-            display: inline-block;
-            padding: 3px 9px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
             border-radius: 100px;
             font-size: 9px;
             font-weight: 700;
             letter-spacing: .08em;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .app-badge.pending {
-            background: rgba(var(--gold-rgb), .12);
-            color: var(--gold);
-            border: 1px solid rgba(var(--gold-rgb), .25);
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), .24), rgba(var(--gold-rgb), .1));
+            color: var(--gold-pale);
+            border: 1px solid rgba(var(--gold-rgb), .38);
+            box-shadow: 0 0 10px rgba(var(--gold-rgb), .22);
         }
 
         .app-badge.approved {
-            background: rgba(95, 217, 126, .1);
-            color: #5fd97e;
-            border: 1px solid rgba(95, 217, 126, .3);
+            background: linear-gradient(135deg, rgba(95, 217, 126, .24), rgba(95, 217, 126, .1));
+            color: #8ef0ac;
+            border: 1px solid rgba(95, 217, 126, .4);
+            box-shadow: 0 0 10px rgba(95, 217, 126, .2);
         }
 
-        .app-badge.rejected {
-            background: rgba(var(--live-rgb), .08);
-            color: var(--live);
-            border: 1px solid rgba(var(--live-rgb), .25);
-        }
-
+        .app-badge.rejected,
         .app-badge.kicked {
-            background: rgba(var(--live-rgb), .08);
+            background: linear-gradient(135deg, rgba(var(--live-rgb), .2), rgba(var(--live-rgb), .07));
             color: var(--live);
-            border: 1px solid rgba(var(--live-rgb), .25);
+            border: 1px solid rgba(var(--live-rgb), .35);
         }
 
         .app-actions {
             display: flex;
-            gap: 6px;
-            margin-top: 9px;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
         }
 
         .app-btn {
-            padding: 6px 12px;
-            border-radius: 9px;
-            font-size: 10px;
+            flex: 1 1 calc(50% - 4px);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 40px;
+            padding: 0 10px;
+            border-radius: 11px;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: .04em;
+            letter-spacing: .01em;
             cursor: pointer;
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             background: var(--surface-2);
             color: var(--ink-dim);
+            transition: transform .12s ease, box-shadow .2s, filter .2s;
+        }
+
+        .app-btn:active {
+            transform: scale(.95);
+            filter: brightness(1.08);
         }
 
         .app-btn.approve {
-            border-color: rgba(95, 217, 126, .35);
-            color: #5fd97e;
-            background: rgba(95, 217, 126, .06);
+            flex-basis: 100%;
+            order: -1;
+            border-color: rgba(95, 217, 126, .5);
+            color: #123c22;
+            background: linear-gradient(135deg, #b6f5c8, #5fd97e);
+            box-shadow: 0 6px 16px -6px rgba(95, 217, 126, .55);
         }
 
         .app-btn.kick {
-            border-color: rgba(var(--live-rgb), .3);
+            border-color: rgba(var(--live-rgb), .35);
             color: var(--live);
-            background: rgba(var(--live-rgb), .05);
+            background: linear-gradient(135deg, rgba(var(--live-rgb), .14), rgba(var(--live-rgb), .04));
         }
 
         .admin-empty {
-            padding: 20px;
+            padding: 26px 16px;
             text-align: center;
             font-size: 12px;
             color: var(--ink-faint);
+            background: linear-gradient(155deg, var(--card-a), var(--card-b));
+            border: 1px dashed var(--line);
+            border-radius: 13px;
         }
 
-        /* Auction control list */
+        /* ═══ AUCTION CONTROL LIST — premium team-tinted rows ═══ */
         .tc-row {
+            position: relative;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 12px;
-            border-radius: 12px;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            margin-bottom: 8px;
+            flex-direction: column;
+            gap: 12px;
+            padding: 13px 14px;
+            border-radius: 14px;
+            background: linear-gradient(155deg, color-mix(in srgb, var(--row-color, var(--gold)) 10%, transparent), var(--card-a) 55%, var(--card-b));
+            border: 1px solid color-mix(in srgb, var(--row-color, var(--gold)) 28%, var(--line));
+            box-shadow: 0 8px 18px -14px rgba(0, 0, 0, .6);
+            margin-bottom: 10px;
+            transition: border-color .2s, box-shadow .2s;
         }
 
         .tc-row.featured {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), .2);
+            border-color: color-mix(in srgb, var(--row-color, var(--gold)) 65%, transparent);
+            box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--row-color, var(--gold)) 45%, transparent), 0 8px 22px -10px color-mix(in srgb, var(--row-color, var(--gold)) 45%, transparent);
+            animation: tcRowLivePulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes tcRowLivePulse {
+            0%, 100% { box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--row-color, var(--gold)) 40%, transparent), 0 8px 22px -10px color-mix(in srgb, var(--row-color, var(--gold)) 40%, transparent); }
+            50% { box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--row-color, var(--gold)) 65%, transparent), 0 8px 22px -10px color-mix(in srgb, var(--row-color, var(--gold)) 60%, transparent); }
+        }
+
+        .tc-row.sold {
+            border-color: rgba(var(--gold-rgb), .5);
+            box-shadow: 0 0 0 1px rgba(var(--gold-rgb), .28), 0 8px 20px -12px rgba(var(--gold-rgb), .35);
+        }
+
+        .tc-row-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .tc-row-badge {
-            width: 42px;
-            height: 42px;
+            width: 46px;
+            height: 46px;
             flex-shrink: 0;
-            border-radius: 11px;
+            border-radius: 12px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Anton', sans-serif;
             font-size: 11px;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 3px 10px -3px rgba(0, 0, 0, .5);
         }
 
         .tc-row-badge img {
@@ -2448,7 +2521,7 @@
         }
 
         .tc-row-name {
-            font-size: 12px;
+            font-size: 13.5px;
             font-weight: 700;
             color: var(--ink);
             white-space: nowrap;
@@ -2457,52 +2530,81 @@
         }
 
         .tc-row-sub {
-            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: .03em;
             color: var(--ink-faint);
-            margin-top: 2px;
+            margin-top: 5px;
+            padding: 3px 9px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, .04);
         }
 
+        .tc-row.featured .tc-row-sub {
+            color: var(--live);
+            background: rgba(var(--live-rgb), .12);
+        }
+
+        /* Full-width action row — real touch targets instead of a cramped column */
         .tc-btns {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
+            gap: 8px;
         }
 
         .tc-btn {
-            padding: 5px 10px;
-            border-radius: 8px;
-            border: 1px solid var(--line);
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 42px;
+            padding: 0 12px;
+            border-radius: 11px;
+            border: 1.5px solid var(--line);
             background: var(--surface-2);
             color: var(--ink-dim);
-            font-size: 9px;
+            font-size: 11.5px;
             font-weight: 700;
+            letter-spacing: .01em;
             cursor: pointer;
             white-space: nowrap;
+            transition: transform .12s ease, box-shadow .2s, filter .2s;
+        }
+
+        .tc-btn:active {
+            transform: scale(.95);
+            filter: brightness(1.08);
         }
 
         .tc-btn.feature {
-            border-color: rgba(var(--gold-rgb), .35);
+            flex: 2;
+            border-color: rgba(var(--gold-rgb), .4);
             color: var(--gold-pale);
-            background: rgba(var(--gold-rgb), .06);
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), .2), rgba(var(--gold-rgb), .07));
         }
 
         .tc-btn.feature.on {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold));
             color: var(--on-accent);
             border-color: var(--gold);
+            box-shadow: 0 6px 16px -6px rgba(var(--gold-rgb), .6);
         }
 
         .tc-btn.sold-btn {
-            border-color: rgba(var(--gold-rgb), .35);
-            color: var(--gold);
-            background: rgba(var(--gold-rgb), .06);
+            flex: 2;
+            border-color: rgba(var(--gold-rgb), .45);
+            color: var(--on-accent);
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold));
+            box-shadow: 0 6px 16px -6px rgba(var(--gold-rgb), .55);
         }
 
         .tc-btn.reset-btn {
-            border-color: rgba(var(--live-rgb), .25);
+            border-color: rgba(var(--live-rgb), .3);
             color: var(--live);
-            background: rgba(var(--live-rgb), .04);
+            background: linear-gradient(135deg, rgba(var(--live-rgb), .12), rgba(var(--live-rgb), .03));
         }
 
         .tc-btn.bids-reset-btn {
@@ -5008,7 +5110,7 @@
 
     <!-- HEADER -->
     <header>
-        <div class="brand">
+        <div class="brand" id="brandTapZone">
             <div class="crest"></div>
             <div class="brand-text">FREEFIRE<b>XIPL</b></div>
         </div>
@@ -5403,8 +5505,9 @@
         </div>
     </div>
 
-    <!-- ADMIN / SIGN IN -->
-    <div class="sec" style="padding-bottom:0;">
+    <!-- ADMIN / SIGN IN — hidden until the brand logo is tapped 7 times, so it
+         doesn't advertise that an admin login exists to ordinary visitors -->
+    <div class="sec" style="padding-bottom:0;display:none;" id="secretAdminSec">
         <div class="role-tabs fade-up" id="roleTabs">
             <div class="role-tab active" data-role="viewer">👁 View Only</div>
             <div class="role-tab" data-role="auth">🔐 Admin Login</div>
@@ -6965,6 +7068,7 @@
             if (!session && isAdmin && event === 'SIGNED_OUT') { isAdmin = false; currentAdminUser = null; }
         });
         function showAdminUI() {
+            $('secretAdminSec').style.display = 'block';
             $('adminLoggedLabel').textContent = `Signed in as ${currentAdminUser?.email || 'Admin'}`;
             $('adminLoginBox').style.display = 'none'; $('adminLoggedBox').style.display = 'block';
             const tabs = $('roleTabs').querySelectorAll('.role-tab');
@@ -6973,6 +7077,31 @@
             if (!$('roleTabs').querySelector('[data-role="admin"]')) $('roleTabs').appendChild(adminPanel);
             switchRole('admin');
         }
+        /* ═══ SECRET ADMIN UNLOCK — tap the header logo 7 times within 3s to
+           reveal the Admin Login tab. Purely a UI decoy: it hides the entry
+           point from casual visitors, it is NOT a security boundary — the
+           real gate is still the Supabase email/password sign-in. Resets the
+           counter if taps are too slow, so accidental taps don't add up. ═══ */
+        (function setupSecretAdminUnlock() {
+            const TAPS_NEEDED = 7;
+            const TAP_WINDOW_MS = 3000;
+            let taps = 0, firstTapAt = 0;
+            $('brandTapZone')?.addEventListener('click', () => {
+                const now = Date.now();
+                if (now - firstTapAt > TAP_WINDOW_MS) { taps = 0; firstTapAt = now; }
+                taps++;
+                if (taps >= TAPS_NEEDED) {
+                    taps = 0;
+                    const sec = $('secretAdminSec');
+                    if (sec.style.display === 'none') {
+                        sec.style.display = 'block';
+                        toast('🔓 Admin login unlocked.', 'success');
+                        sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        })();
+
         $('adminLoginBtn').addEventListener('click', async () => {
             const email = $('adminEmail').value.trim(), pass = $('adminPassword').value;
             $('adminError').style.display = 'none'; $('adminLoginBtn').textContent = 'Signing in…'; $('adminLoginBtn').disabled = true;
@@ -6986,6 +7115,7 @@
             $('adminLoginBox').style.display = 'block'; $('adminLoggedBox').style.display = 'none';
             const adminTab = $('roleTabs').querySelector('[data-role="admin"]'); if (adminTab) adminTab.remove();
             switchRole('viewer'); toast('Signed out.', 'success');
+            $('secretAdminSec').style.display = 'none';
         });
 
         /* ═══ ROLE TABS ═══ */
@@ -7035,8 +7165,9 @@
             const list = $('appsList');
             const visibleApps = allApps.filter(app => app.status !== 'kicked');
             if (!visibleApps.length) { list.innerHTML = '<div class="admin-empty">No applications yet.</div>'; return; }
+            const accentMap = { pending: 'rgba(var(--gold-rgb),.5)', approved: 'rgba(95,217,126,.5)', rejected: 'rgba(var(--live-rgb),.45)', kicked: 'rgba(var(--live-rgb),.45)' };
             list.innerHTML = visibleApps.map(app => `
-    <div class="app-card" data-id="${app.id}">
+    <div class="app-card" data-id="${app.id}" style="--app-accent:${accentMap[app.status] || 'rgba(var(--gold-rgb),.4)'}">
       <div class="app-card-top">
         <div><div class="app-name">${app.name}</div><div class="app-phone">${app.phone}</div></div>
         <span class="app-badge ${app.status}">${app.status}</span>
@@ -7088,12 +7219,15 @@
                 const t = TEAM_META[id], ts = teamsCache[id] || defaultTeamState();
                 const isFeatured = ts.featured && ts.status !== 'sold', isSold = ts.status === 'sold';
                 const row = document.createElement('div');
-                row.className = 'tc-row' + (isFeatured ? ' featured' : '');
+                row.className = 'tc-row' + (isFeatured ? ' featured' : '') + (isSold ? ' sold' : '');
+                row.style.setProperty('--row-color', t.color);
                 row.innerHTML = `
-      <div class="tc-row-badge" style="background:color-mix(in srgb,${t.color} 18%,transparent);border:1.5px solid ${t.color}55;">${badgeHTML(id, 26)}</div>
-      <div class="tc-row-info">
-        <div class="tc-row-name">${t.name}</div>
-        <div class="tc-row-sub">${isSold ? `🏆 Sold to ${ts.sold_to_name} · ${fmtRs(ts.sold_amount)}` : (isFeatured ? '🔴 On stage' : 'Upcoming')}</div>
+      <div class="tc-row-head">
+        <div class="tc-row-badge" style="background:color-mix(in srgb,${t.color} 18%,transparent);border:1.5px solid ${t.color}55;">${badgeHTML(id, 26)}</div>
+        <div class="tc-row-info">
+          <div class="tc-row-name">${t.name}</div>
+          <div class="tc-row-sub">${isSold ? `🏆 Sold to ${ts.sold_to_name} · ${fmtRs(ts.sold_amount)}` : (isFeatured ? '🔴 On stage' : '⏳ Upcoming')}</div>
+        </div>
       </div>
       <div class="tc-btns">
         ${!isSold ? `<button class="tc-btn feature ${isFeatured ? 'on' : ''}" data-action="feature" data-team="${id}">${isFeatured ? '🔴 On Stage' : '▶ Open'}</button>` : ''}
@@ -7287,13 +7421,49 @@
             if (data?.celebration_active) showCelebration();
         }
 
+        // Builds and finalizes ffxipl_s12_season_rosters straight from the live
+        // ffxipl_s12_public_players / ffxipl_s12_teams tables — independent of
+        // whether anyone has visited auction-center.html's separate "Lock &
+        // Submit" button. This is what teams.html actually gates on
+        // (is_finalized=true), so Season Done now unlocks it in one click.
+        async function finalizeSeasonRosters() {
+            const [{ data: players, error: pErr }, { data: teamsRows, error: tErr }] = await Promise.all([
+                sb.from('ffxipl_s12_public_players').select('*').not('team_id', 'is', null),
+                sb.from('ffxipl_s12_teams').select('*')
+            ]);
+            if (pErr || tErr) return { error: (pErr || tErr).message };
+            const teamRowById = Object.fromEntries((teamsRows || []).map(t => [t.id, t]));
+            const submittedAt = new Date().toISOString();
+            const rows = TEAM_IDS.map(id => ({
+                season: 12,
+                team_id: id,
+                team_name: TEAM_META[id].name || id,
+                team_color: TEAM_META[id].color,
+                captain_name: teamsCache[id]?.sold_to_name || teamRowById[id]?.captain_name || null,
+                purse_spent: teamRowById[id]?.purse_spent || 0,
+                purse_remaining: 100 - (teamRowById[id]?.purse_spent || 0),
+                is_finalized: true,
+                players_json: JSON.stringify((players || []).filter(p => p.team_id === id).map(p => ({
+                    id: p.id, ign: p.ign || p.real_name, real_name: p.real_name,
+                    level: p.level, tier: p.auction_tier, price: p.final_bid_price, round: p.auction_round
+                }))),
+                submitted_at: submittedAt
+            }));
+            const { error } = await sb.from('ffxipl_s12_season_rosters').upsert(rows, { onConflict: 'season,team_id' });
+            return { error: error?.message };
+        }
+
         $('seasonDoneBtn').addEventListener('click', async () => {
             const btn = $('seasonDoneBtn');
-            btn.disabled = true; btn.textContent = 'Sending…';
+            btn.disabled = true; btn.textContent = 'Finalizing rosters…';
+            const { error: rosterErr } = await finalizeSeasonRosters();
+            if (rosterErr) { toast('Could not finalize rosters: ' + rosterErr, 'err'); btn.disabled = false; btn.textContent = '🏆 Season Done — Show Captains!'; return; }
+            btn.textContent = 'Sending…';
             const { error } = await sb.from('ffxipl_s12_season_state').upsert({ id: 1, celebration_active: true, updated_at: new Date().toISOString() }, { onConflict: 'id' });
             if (error) { toast('Could not save celebration state: ' + error.message, 'err'); btn.disabled = false; btn.textContent = '🏆 Season Done — Show Captains!'; return; }
             await _celebChannel.send({ type: 'broadcast', event: 'season-done', payload: { show: true } });
             btn.disabled = false; btn.textContent = '🏆 Season Done — Show Captains!';
+            toast('🏆 Rosters finalized — Teams page is now live.', 'success');
             showCelebration(); // admin sees it too immediately
         });
 
