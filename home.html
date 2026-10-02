@@ -14,10 +14,20 @@
         })();
     </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <style id="critical">
+        html.splash-lock{overflow:hidden}
+        html{background:#0a0705}
+        #splash{position:fixed;inset:0;min-height:100vh;min-height:100dvh;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,var(--splash-a,#1c1206) 0%,var(--splash-b,#0a0705) 70%)}
+        #splash.splash-out{opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.04);transition:opacity .4s ease,transform .4s ease,visibility 0s linear .4s}
+    </style>
+    <noscript><style>#splash{display:none!important}html.splash-lock{overflow:auto}</style></noscript>
+    <script>
+        (function(){var d=document.documentElement;d.classList.add('splash-lock');
+        try{var c=navigator.connection||{},m=navigator.deviceMemory||8,k=navigator.hardwareConcurrency||8,
+        phone=Math.min(screen.width,screen.height)<700;
+        if(c.saveData||(phone&&(m<=4||k<=4)))d.classList.add('lite');}catch(e){}})();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>FREEFIRE XIPL — Season 12</title>
     <meta name="description"
         content="FREEFIREXIPL — the Free Fire tournaments platform for Free Fire players. Fixtures, standings, team rosters, prize pool and every clutch moment of the season.">
@@ -34,11 +44,11 @@
     <link rel="canonical" href="https://rebeldarling-001.github.io/f-ipl/home.html">
     <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
+    <link rel="preload" as="image" href="trophy.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"></noscript>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -717,9 +727,7 @@
             color: #8F9491;
         }
 
-        [data-theme="arena-pro"] * {
-            transition: .35s ease;
-        }
+        
 
         @keyframes rgbHue {
             from {
@@ -814,7 +822,7 @@
                 40px 40px,
                 auto;
 
-            background-attachment: fixed;
+            background-attachment: scroll;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -887,9 +895,7 @@
             transition: opacity 0.7s ease, visibility 0.7s ease;
         }
 
-        #splash {
-            will-change: mask-image;
-        }
+        
 
         .ignite-wrap {
             position: relative;
@@ -1427,7 +1433,7 @@
            Cuts main-thread work on first load and during scroll on long pages. */
         section:not(.hero) {
             content-visibility: auto;
-            contain-intrinsic-size: 1px 900px;
+            contain-intrinsic-size: auto 900px;
         }
 
 /* ---------- 3. UTILITY: scroll-reveal animation ---------- */
@@ -1614,10 +1620,12 @@
 
         .scroll-progress-fill {
             height: 100%;
-            width: 0%;
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: left center;
+            will-change: transform;
             background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
             box-shadow: 0 0 8px rgba(var(--gold-rgb), 0.6);
-            transition: width 0.05s linear;
         }
 
 /* ---------- 9. CHROME: back-to-top button ---------- */
@@ -3318,6 +3326,115 @@
         @keyframes pageFadeOut { to { opacity: 0; } }
         @media (prefers-reduced-motion: reduce) { body.page-leaving { animation: none !important; } }
     </style>
+
+    <style>
+/* ===== PERFORMANCE + RESPONSIVE OVERRIDES ===== */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 72px; }
+img { max-width: 100%; height: auto; }
+button, a { touch-action: manipulation; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+/* Full-width chrome (was capped at 480px, so desktop splash/overlays were cut off) */
+#splash, .embers, .theme-overlay, .nav-overlay, .scroll-progress { max-width: none; }
+#splash { will-change: opacity, transform; }
+header { padding-top: calc(14px + env(safe-area-inset-top, 0px)); padding-left: max(18px, env(safe-area-inset-left, 0px), calc((100% - 1120px) / 2)); padding-right: max(18px, env(safe-area-inset-right, 0px), calc((100% - 1120px) / 2)); }
+section:not(.hero), .hero { width: 100%; max-width: 1120px; margin-inline: auto; }
+footer { max-width: 1120px; margin-inline: auto; }
+.nav-drawer { padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); overscroll-behavior: contain; overflow-y: auto; }
+.theme-panel { overscroll-behavior: contain; }
+
+/* The carousel used touch-action: pan-x, which blocked vertical page scrolling when a swipe began on a card */
+.teams-scroll, .team-card, .team-foil { touch-action: pan-x pan-y; }
+.teams-scroll { overscroll-behavior-x: contain; scroll-behavior: smooth; }
+
+/* Heavy repaint animation, replaced by a static grid */
+.hero::before { animation: none; }
+
+/* Offscreen sections stop animating (toggled by IntersectionObserver) */
+section.is-offscreen *, section.is-offscreen *::before, section.is-offscreen *::after { animation-play-state: paused !important; }
+body.tab-hidden *, body.tab-hidden *::before, body.tab-hidden *::after { animation-play-state: paused !important; }
+
+
+/* ===== SMOOTHNESS PASS 2: compositor-only animations, no blur on scroll ===== */
+/* 1. Shimmer swept via `left` (forces layout every frame). Now transform only. */
+@keyframes shimmerTeam { 0% { transform: translate3d(0,0,0); } 55%,100% { transform: translate3d(422%,0,0); } }
+@keyframes shimmerCd   { 0% { transform: translate3d(0,0,0); } 55%,100% { transform: translate3d(514%,0,0); } }
+.team-card::after { animation-name: shimmerTeam; will-change: transform; }
+.countdown-card::after { animation-name: shimmerCd; will-change: transform; }
+
+/* 2. crestPulse animated box-shadow (repaints every frame). Now an opacity fade of a static shadow. */
+@keyframes crestFade { 0%,100% { opacity: 0; } 50% { opacity: 1; } }
+.team-crest::after { box-shadow: 0 0 16px 2px rgba(var(--gold-rgb), 0.22); animation-name: crestFade; opacity: 0; }
+
+/* 3. coreGlow animated filter. Static glow plus an opacity breathe instead. */
+@keyframes coreGlow { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
+.ignite-core, .cd-ring-crest { filter: drop-shadow(0 0 16px rgba(var(--gold-rgb), 0.7)); }
+
+/* 4. Blur layers re-computed on every scroll frame. Header is already ~94% opaque, so blur is invisible. */
+header, [data-theme="arena-pro"] header, .theme-overlay, .nav-overlay, .clip-thumb .play {
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+}
+header { background: rgba(var(--bg-rgb), 0.97); contain: layout paint style; transform: translateZ(0); }
+[data-theme="arena-pro"] header { background: rgba(254, 245, 239, .97); }
+
+/* 5. content-visibility caused scroll-height jumps and jitter on a 560-node page. Not needed. */
+section { content-visibility: visible !important; contain-intrinsic-size: none !important; }
+
+/* 6. Spinning foil frames and sweeps only run for cards actually on screen. */
+.foil-frame::before, .team-card::after, .team-crest::after { animation-play-state: paused; }
+.team-foil.in-view .foil-frame::before,
+.team-foil.in-view .team-card::after,
+.team-foil.in-view .team-crest::after { animation-play-state: running; }
+.foil-frame::before { will-change: transform; inset: -45%; }
+.team-foil { contain: layout paint; }
+
+/* 7. Cheaper static glow on small screens */
+@media (max-width: 599px) {
+    .team-logo { filter: none !important; }
+    .hero-title { filter: none !important; }
+}
+body { overflow-x: clip; }
+.nav-drawer, .theme-panel { will-change: transform; }
+
+@media (min-width: 600px) {
+    .theme-panel { left: auto; right: 18px; width: 420px; top: 66px; }
+    .hero, section { padding-left: 32px; padding-right: 32px; }
+}
+@media (min-width: 900px) {
+    .teams-scroll { display: grid; grid-template-columns: repeat(4, 1fr); overflow: visible; scroll-snap-type: none; gap: 16px; }
+    .teams-scroll .team-foil { flex: none; width: auto; min-width: 0; }
+    #teamsScroll + *, .teams-scroll-bar, .teams-scrollbar { display: none; }
+    .hero-title { font-size: clamp(64px, 9vw, 120px); }
+    .hero-trophy { right: 8%; width: 140px; top: 90px; }
+    .hero-desc { max-width: 560px; }
+}
+@media (min-width: 1200px) { .nav-drawer { max-width: 340px; } }
+@media (max-width: 360px) { .hero, section { padding-left: 14px; padding-right: 14px; } .hero-trophy { width: 70px; right: 24px; } }
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teams-scroll { scroll-behavior: auto; }
+    #splash .ignite-ring { animation: none; opacity: .4; }
+    #splash .splash-word, #splash .splash-sub { animation: none !important; opacity: 1 !important; transform: none !important; }
+    #splash .splash-bar-fill { animation: none !important; width: 100% !important; }
+}
+    </style>
+<style id="mobile-first">
+html{-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;min-height:100dvh}
+.menu-btn,.nav-close,.faq-q,.theme-opt,.btn{min-width:44px;min-height:44px}
+.nav-drawer,.theme-panel{will-change:auto}
+.splash-bar-fill{animation-duration:1s!important}
+@media (max-width:599px){
+  .foil-frame::before,.team-card::after,.countdown-card::after,.cd-glow,.podium-col.p1::before{animation:none!important}
+  .embers{contain:strict}
+  .ticker-track span,.sponsor-track{will-change:transform}
+}
+html.lite .embers{display:none}
+html.lite .foil-frame::before,html.lite .team-card::after,html.lite .countdown-card::after,html.lite .team-crest::after,
+html.lite .cd-glow,html.lite .podium-col.p1::before,html.lite .medal,html.lite .ignite-ring{animation:none!important}
+html.lite *{text-shadow:none!important}
+html:not(.ready) .hero .fade-up{animation-play-state:paused}
+</style>
 </head>
 
 <body>
@@ -3425,9 +3542,9 @@
             </button>
             <button class="theme-opt" data-theme="arena-pro" role="menuitemradio">
                 <span class="theme-swatch">
-                    <i style="background:#0b0b10"></i>
-                    <i style="background:#ff8c00"></i>
-                    <i style="background:#ffd36a"></i>
+                    <i style="background:#FEF5EF"></i>
+                    <i style="background:#9D5C63"></i>
+                    <i style="background:#584B53"></i>
                 </span>
                 <span class="theme-opt-name">Arena Pro <em>⚔️</em></span>
             </button>
@@ -3463,7 +3580,7 @@
 
     <!-- HERO -->
     <section class="hero" style="padding-top:34px;">
-        <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 12 · REGISTRATIONS OPEN</div>
+        <div class="season-tag fade-up d1"><span class="dot"></span> <span id="heroTagText">SEASON 12 · REGISTRATIONS OPEN</span></div>
         <h1 class="hero-title display fade-up d2"><span class="hero-pre">FREEFIRE</span>XIPL<span>ALL SQUADS. ONE
                 CROWN.</span></h1>
         <p class="hero-desc fade-up d3">Eight franchises. One battleground. Follow every drop, every clutch and every
@@ -4016,23 +4133,34 @@
         if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0, 0);
         window.addEventListener('pageshow', (event) => {
-            if (event.persisted) { window.location.reload(); }
+            if (event.persisted) { document.body.classList.remove('page-leaving'); window.scrollTo(0, 0); }
         });
 
 // ---------- Splash screen removal ----------
-        setTimeout(() => {
+        (function () {
             const splash = document.getElementById('splash');
-
-            splash.animate([
-                { transform: "scale(1)", opacity: 1 },
-                { transform: "scale(2.5)", opacity: 0 }
-            ], {
-                duration: 1600,
-                easing: "cubic-bezier(.2,.8,.2,1)"
-            });
-
-            setTimeout(() => splash.style.display = "none", 600);
-        }, 2100);
+            const root = document.documentElement;
+            if (!splash) { root.classList.remove('splash-lock'); return; }
+            let done = false, seen = false;
+            try { seen = sessionStorage.getItem('xipl-splash') === '1'; } catch (e) { }
+            const MIN = 1400, MAX = 3200;
+            function hide() {
+                if (done) return; done = true;
+                try { sessionStorage.setItem('xipl-splash', '1'); } catch (e) { }
+                root.classList.add('ready');
+                splash.classList.add('splash-out');
+                const rm = () => { splash.remove(); root.classList.remove('splash-lock'); };
+                splash.addEventListener('transitionend', rm, { once: true });
+                setTimeout(rm, 700);
+            }
+            const waits = [new Promise(r => setTimeout(r, MIN))];
+            waits.push(new Promise(r => document.readyState !== 'loading' ? r() : document.addEventListener('DOMContentLoaded', r, { once: true })));
+            if (document.fonts && document.fonts.ready) waits.push(document.fonts.ready.catch(() => { }));
+            const hero = document.querySelector('.hero-trophy');
+            if (hero && !hero.complete && hero.decode) waits.push(hero.decode().catch(() => { }));
+            Promise.all(waits).then(() => requestAnimationFrame(hide));
+            setTimeout(hide, MAX); // safety net
+        })();
 
 // ---------- Nav drawer ----------
         // Nav drawer
@@ -4040,8 +4168,9 @@
         const navDrawer = document.getElementById('navDrawer');
         const navOverlay = document.getElementById('navOverlay');
         const navClose = document.getElementById('navClose');
-        function openNav() { closeTheme(); navDrawer.classList.add('show'); navOverlay.classList.add('show'); }
-        function closeNav() { navDrawer.classList.remove('show'); navOverlay.classList.remove('show'); }
+        function openNav() { closeTheme(); navDrawer.classList.add('show'); navOverlay.classList.add('show'); menuBtn.setAttribute('aria-expanded', 'true'); }
+        function closeNav() { navDrawer.classList.remove('show'); navOverlay.classList.remove('show'); menuBtn.setAttribute('aria-expanded', 'false'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeNav(); closeTheme(); } });
         menuBtn.addEventListener('click', openNav);
         navClose.addEventListener('click', closeNav);
         navOverlay.addEventListener('click', closeNav);
@@ -4064,6 +4193,11 @@
         const themeClose = document.getElementById('themeClose');
         const themeOpts = document.querySelectorAll('.theme-opt');
 
+        function syncThemeColor() {
+            const m = document.querySelector('meta[name="theme-color"]');
+            const c = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+            if (m && c) m.setAttribute('content', c);
+        }
         function getSavedTheme() {
             try { return localStorage.getItem(THEME_KEY) || DEFAULT_THEME; }
             catch (e) { return DEFAULT_THEME; }
@@ -4077,6 +4211,7 @@
             document.documentElement.classList.add('theme-transitioning');
             document.documentElement.setAttribute('data-theme', theme);
             markActiveTheme(theme);
+            syncThemeColor();
             if (persist) {
                 try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable, theme still applies for this session */ }
             }
@@ -4111,12 +4246,14 @@
 
         // Initialize active swatch to whatever theme is currently applied (set pre-paint above, or default)
         markActiveTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
+        syncThemeColor();
 
 
 // ---------- Ambient ember particles ----------
         // Embers
         const emberField = document.getElementById('embers');
-        for (let i = 0; i < 14; i++) {
+        const EMBER_COUNT = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : (window.innerWidth < 600 ? 5 : 10);
+        for (let i = 0; i < EMBER_COUNT; i++) {
             const e = document.createElement('div');
             e.className = 'ember';
             e.style.left = Math.random() * 100 + '%';
@@ -4141,11 +4278,16 @@ const backToTopBtn = document.getElementById('backToTop');
 const bttFillEl = document.getElementById('bttFill');
 const BTT_C = 131.9; // 2 * PI * 21, matches the SVG circle radius
 
+let cachedMax = 0;
+function measureScrollMax() { const d = document.documentElement; cachedMax = d.scrollHeight - d.clientHeight; }
+measureScrollMax();
+window.addEventListener('resize', measureScrollMax, { passive: true });
+window.addEventListener('load', measureScrollMax);
+if ('ResizeObserver' in window) new ResizeObserver(measureScrollMax).observe(document.body);
 function updateScrollChrome() {
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
+    const max = cachedMax;
     const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
+    if (scrollFillEl) scrollFillEl.style.transform = 'scaleX(' + pct + ')';
     if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
     if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
 }
@@ -4172,6 +4314,8 @@ if (backToTopBtn) {
         const SLOTS_FILLED = 5;
         const SLOTS_TOTAL = 8;
 
+        const heroTagText = document.getElementById('heroTagText');
+        if (!REGISTRATIONS_OPEN && heroTagText) heroTagText.textContent = 'SEASON 12 · REGISTRATIONS CLOSED';
         const regBadge = document.getElementById('regBadge');
         const regDesc = document.getElementById('regDesc');
         const regBtn = document.getElementById('regBtn');
@@ -4190,6 +4334,7 @@ if (backToTopBtn) {
             regSlots.style.display = 'none';
             regBtn.textContent = 'Registrations Closed';
             regBtn.removeAttribute('href');
+            regBtn.setAttribute('aria-disabled', 'true');
             regBtn.classList.add('disabled');
             regNote.textContent = "We'll open the roster as soon as Season 12 dates are locked in.";
         }
@@ -4248,37 +4393,59 @@ if (backToTopBtn) {
         }, { threshold: 0.5 });
         counters.forEach(c => countIO.observe(c));
 
-        // Countdown timer — next season launch target, with a live progress ring
-        const cdTarget = new Date();
-        cdTarget.setMonth(cdTarget.getMonth() + 3);
-        cdTarget.setDate(15);
-        cdTarget.setHours(19, 30, 0, 0);
-        const cdStart = new Date();
+        // Countdown timer. Set COUNTDOWN_TARGET to a real ISO date, e.g. '2026-12-15T19:30:00+05:30'.
+        // While it is null, a target is created once and remembered, so it no longer resets on every visit.
+        const COUNTDOWN_TARGET = null;
+        let cdTarget, cdStart;
+        try {
+            const saved = JSON.parse(localStorage.getItem('xipl-cd') || 'null');
+            if (saved && saved.t > Date.now()) { cdTarget = new Date(saved.t); cdStart = new Date(saved.s); }
+        } catch (e) { }
+        if (COUNTDOWN_TARGET) { cdTarget = new Date(COUNTDOWN_TARGET); cdStart = new Date(Math.min(Date.now(), cdTarget - 1)); }
+        if (!cdTarget) {
+            cdStart = new Date();
+            cdTarget = new Date(cdStart);
+            cdTarget.setMonth(cdTarget.getMonth() + 3);
+            cdTarget.setDate(15);
+            cdTarget.setHours(19, 30, 0, 0);
+            try { localStorage.setItem('xipl-cd', JSON.stringify({ t: +cdTarget, s: +cdStart })); } catch (e) { }
+        }
         const cdTotalMs = Math.max(1, cdTarget - cdStart);
         const cdRingFill = document.getElementById('cdRingFill');
-        const RING_C = 371; // 2 * PI * 59, matches the SVG circle radius
+        const RING_C = 371; // 2 * PI * 59
+        const cdEls = { d: document.getElementById('cd-d'), h: document.getElementById('cd-h'), m: document.getElementById('cd-m'), s: document.getElementById('cd-s') };
+        const pad2 = (n) => String(n).padStart(2, '0');
 
         function updateCountdown() {
-            const now = new Date();
-            let diff = Math.max(0, cdTarget - now);
+            const now = Date.now();
+            const left = Math.max(0, cdTarget - now);
+            let diff = left;
             const d = Math.floor(diff / 86400000); diff -= d * 86400000;
             const h = Math.floor(diff / 3600000); diff -= h * 3600000;
             const m = Math.floor(diff / 60000); diff -= m * 60000;
-            const s = Math.floor(diff / 1000);
-            document.getElementById('cd-d').textContent = String(d).padStart(2, '0');
-            document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
-            document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
-            const secEl = document.getElementById('cd-s');
-            secEl.textContent = String(s).padStart(2, '0');
-            secEl.classList.remove('tick');
-            void secEl.offsetWidth;
-            secEl.classList.add('tick');
-
-            const progress = 1 - (Math.max(0, cdTarget - now) / cdTotalMs);
+            const sec = Math.floor(diff / 1000);
+            cdEls.d.textContent = pad2(d);
+            cdEls.h.textContent = pad2(h);
+            cdEls.m.textContent = pad2(m);
+            cdEls.s.textContent = pad2(sec);
+            cdEls.s.classList.remove('tick');
+            requestAnimationFrame(() => cdEls.s.classList.add('tick'));
+            const progress = 1 - left / cdTotalMs;
             cdRingFill.style.strokeDashoffset = RING_C * (1 - Math.min(1, Math.max(0, progress)));
         }
         updateCountdown();
-        setInterval(updateCountdown, 1000);
+        let cdTimer = setInterval(updateCountdown, 1000);
+        document.addEventListener('visibilitychange', () => {
+            document.body.classList.toggle('tab-hidden', document.hidden);
+            clearInterval(cdTimer);
+            if (!document.hidden) { updateCountdown(); cdTimer = setInterval(updateCountdown, 1000); }
+        });
+
+        // Pause CSS animations in sections that are far offscreen
+        const animIO = new IntersectionObserver((entries) => {
+            entries.forEach(en => en.target.classList.toggle('is-offscreen', !en.isIntersecting));
+        }, { rootMargin: '200px 0px' });
+        document.querySelectorAll('section').forEach(sec => animIO.observe(sec));
         // Prize podium bars grow in on scroll
         const podiumBars = document.querySelectorAll('.podium-bar');
         const podiumIO = new IntersectionObserver((entries) => {
@@ -4326,16 +4493,30 @@ if (backToTopBtn) {
             teamsFill.style.width = thumbW + 'px';
             teamsFill.style.transform = `translateX(${pct * (trackW - thumbW)}px)`;
         }
-        teamsScroll.addEventListener('scroll', updateTeamsScrollbar, { passive: true });
+        // Run foil/shimmer animations only for team cards that are on screen (works for the horizontal carousel too)
+        const foilIO = new IntersectionObserver((entries) => {
+            entries.forEach(en => en.target.classList.toggle('in-view', en.isIntersecting));
+        }, { rootMargin: '0px 40px' });
+        document.querySelectorAll('.team-foil').forEach(f => foilIO.observe(f));
+
+        // Cache page height so the scroll handler never forces layout
+        let teamsTick = false;
+        teamsScroll.addEventListener('scroll', () => {
+            if (teamsTick) return; teamsTick = true;
+            requestAnimationFrame(() => { updateTeamsScrollbar(); teamsTick = false; });
+        }, { passive: true });
         window.addEventListener('load', updateTeamsScrollbar);
+        window.addEventListener('resize', updateTeamsScrollbar, { passive: true });
         updateTeamsScrollbar();
 
         // FAQ accordion — each item toggles independently
         document.querySelectorAll('.faq-item').forEach(item => {
             const q = item.querySelector('.faq-q');
             const a = item.querySelector('.faq-a');
+            q.setAttribute('aria-expanded', 'false');
             q.addEventListener('click', () => {
                 const opening = !item.classList.contains('open');
+                q.setAttribute('aria-expanded', String(opening));
                 if (opening) {
                     item.classList.add('open');
                     a.style.maxHeight = a.scrollHeight + 'px';
@@ -4345,20 +4526,24 @@ if (backToTopBtn) {
                 }
             });
         });
-        
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.faq-item.open .faq-a').forEach(a => { a.style.maxHeight = a.scrollHeight + 'px'; });
+        }, { passive: true });
     </script>
     
     <script>
         /* ── SMOOTH PAGE TRANSITIONS ── */
         (function () {
             document.addEventListener('click', function (e) {
+                if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
                 var a = e.target.closest('a[href]');
-                if (!a) return;
+                if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
                 var href = a.getAttribute('href');
-                if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel') || e.ctrlKey || e.metaKey || e.shiftKey) return;
+                if (!href || href.charAt(0) === '#' || /^(https?:|mailto:|tel:|javascript:)/i.test(href)) return;
+                if (a.pathname === location.pathname && a.search === location.search) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
                 e.preventDefault();
                 document.body.classList.add('page-leaving');
-                setTimeout(function () { window.location.href = href; }, 200);
+                setTimeout(function () { window.location.href = href; }, 150);
             });
         })();
     </script>
@@ -4366,9 +4551,19 @@ if (backToTopBtn) {
     <!-- ── AUCTION CAPTAIN SYNC ── Reads live auction winners from Supabase
          and updates captain names on the team cards automatically.
          No manual HTML edits needed after each auction sale. -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        (async () => {
+        function loadSupabase(cb) {
+            const sc = document.createElement('script');
+            sc.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+            sc.onload = cb;
+            sc.onerror = () => console.warn('Supabase failed to load; captain names left as-is.');
+            document.head.appendChild(sc);
+        }
+        window.addEventListener('load', () => {
+            (window.requestIdleCallback || ((f) => setTimeout(f, 1200)))(() => loadSupabase(runCaptainSync), { timeout: 3000 });
+        });
+        async function runCaptainSync() {
+            if (!window.supabase) { console.warn('Supabase failed to load; captain names left as-is.'); return; }
             const SUPABASE_URL  = 'https://ndioutmihxodqknvgfju.supabase.co';
             const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaW91dG1paHhvZHFrbnZnZmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwNTg2NDMsImV4cCI6MjA5ODYzNDY0M30.KeSyXI6DFvYnKbBxICmrmQ8t8eFIoxPn9Ln1aBU0OUk';
             const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -4435,14 +4630,16 @@ if (backToTopBtn) {
                 });
             }
 
-            await syncCaptains();
+            let syncTimer;
+            const syncSoon = () => { clearTimeout(syncTimer); syncTimer = setTimeout(syncCaptains, 300); };
+            try { await syncCaptains(); } catch (e) { console.error('Captain sync failed:', e); }
 
             // Realtime — re-sync the instant a captain is sold/updated/reset in
             // the auction, so this page never sits on stale data again.
             sb.channel('home-captains-realtime')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_franchise_teams' }, syncCaptains)
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_s12_franchise_teams' }, syncSoon)
                 .subscribe();
-        })();
+        }
     </script>
 </body>
 
