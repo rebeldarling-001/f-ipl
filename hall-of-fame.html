@@ -2971,6 +2971,312 @@
             .cp-window img { transition: none !important; }
             .hof-stat, .tl-card, .champ-actions button, .reaction-btn, .soc { transition: none !important; }
         }
+
+        /* =====================================================================
+           PREMIUM LAYER — team-coloured champion cards, season pennants, polish
+           ===================================================================== */
+        .team-rr  { --t1: #ff2e93; --t2: #2b4fd8; --t1-rgb: 255, 46, 147; --t2-rgb: 43, 79, 216; }
+        .team-dc  { --t1: #2d6bff; --t2: #ef1b23; --t1-rgb: 45, 107, 255; --t2-rgb: 239, 27, 35; }
+        .team-mi  { --t1: #00a3e0; --t2: #d1ab3e; --t1-rgb: 0, 163, 224;  --t2-rgb: 209, 171, 62; }
+        .team-rcb { --t1: #e8262b; --t2: #d5ae4b; --t1-rgb: 232, 38, 43;  --t2-rgb: 213, 174, 75; }
+
+        /* --- page head --- */
+        .page-head .sec-title { font-size: 38px; letter-spacing: .01em; }
+        .page-head .sec-title b {
+            background: linear-gradient(100deg, var(--gold-deep), var(--gold) 35%, var(--gold-pale) 50%, var(--gold) 65%, var(--gold-deep));
+            background-size: 240% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+            text-shadow: none; animation: hofShine 6s ease-in-out infinite;
+        }
+        @keyframes hofShine { 0%, 55% { background-position: 100% 0; } 100% { background-position: -40% 0; } }
+        .page-head .eyebrow { color: var(--gold); }
+        .updated-chip { border-color: rgba(var(--gold-rgb), .4); background: linear-gradient(135deg, rgba(var(--gold-rgb), .12), var(--surface)); color: var(--gold-pale); }
+
+        /* --- stat strip --- */
+        .hof-stat {
+            border: 1px solid transparent; border-radius: 18px;
+            background: linear-gradient(160deg, var(--surface-2), var(--surface)) padding-box,
+                        linear-gradient(160deg, rgba(var(--gold-rgb), .7), rgba(var(--gold-rgb), .08) 55%, rgba(var(--gold-rgb), .35)) border-box;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, .28);
+        }
+        .hof-stat::before { height: 1px; background: linear-gradient(90deg, transparent, var(--gold-pale), transparent); }
+        .hof-stat .num {
+            font-family: 'Anton', sans-serif; font-size: 30px; font-weight: 400; line-height: 1.1;
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .hof-stat .lbl { color: var(--ink-dim); letter-spacing: .12em; }
+
+        /* --- timeline heading + rail --- */
+        .tl-head { display: flex; align-items: center; gap: 12px; padding: 0 4px 22px; }
+        .tl-head span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), .6)); }
+        .tl-head span:last-child { background: linear-gradient(270deg, transparent, rgba(var(--gold-rgb), .6)); }
+        .tl-head b { font-family: 'Space Mono', monospace; font-weight: 400; font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold-pale); }
+        .timeline-wrap { padding-top: 34px; }
+        .timeline-rail { top: 78px; width: 3px; border-radius: 3px; margin-left: -.5px;
+            background: linear-gradient(180deg, rgba(var(--gold-rgb), .9), rgba(var(--gold-rgb), .35) 40%, rgba(var(--gold-rgb), .08)); box-shadow: 0 0 14px rgba(var(--gold-rgb), .35); }
+
+        /* --- champion cards in their team colours --- */
+        .tl-item.champion-season .tl-card {
+            padding: 1.5px;
+            background: conic-gradient(from 200deg at 50% 50%, var(--t1), var(--t2) 28%, rgba(255, 255, 255, .7) 42%, var(--t1) 58%, var(--t2) 82%, var(--t1));
+            box-shadow: 0 0 0 1px rgba(var(--t1-rgb), .15), 0 12px 34px rgba(var(--t1-rgb), .30), 0 0 40px rgba(var(--t2-rgb), .14);
+        }
+        .tl-item.latest-champion .tl-card { box-shadow: 0 0 0 1px rgba(var(--t1-rgb), .25), 0 14px 44px rgba(var(--t1-rgb), .45), 0 0 56px rgba(var(--t2-rgb), .25); }
+        .tl-item.champion-season .tl-card-inner {
+            border-radius: 19px; padding: 16px 16px 16px;
+            background:
+                radial-gradient(120% 85% at 100% 0%, rgba(var(--t1-rgb), .34), transparent 58%),
+                radial-gradient(90% 80% at 0% 100%, rgba(var(--t2-rgb), .26), transparent 62%),
+                linear-gradient(150deg, var(--cta-a), var(--cta-b) 72%);
+        }
+        .tl-item.champion-season .tl-card-inner::before {
+            content: attr(data-tn); position: absolute; right: 12px; bottom: -14px; z-index: 0; pointer-events: none;
+            font-family: 'Anton', sans-serif; font-size: 104px; line-height: 1; letter-spacing: .03em; white-space: nowrap;
+            color: rgba(var(--t1-rgb), .16);
+        }
+        .tl-item.champion-season .tl-card-inner::after {
+            background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, .07) 50%, transparent 62%);
+        }
+
+        .tl-top { position: relative; z-index: 1; display: flex; align-items: flex-start; min-height: 52px; padding: 5px 74px 0 0; }
+        .tl-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; line-height: 1.5;
+            color: color-mix(in srgb, var(--t1) 55%, #fff);
+        }
+        .tl-eyebrow::before { content: ''; width: 6px; height: 6px; transform: rotate(45deg); background: var(--t1); box-shadow: 0 0 8px var(--t1); }
+        .tl-item.champion-season .tl-champ-row { margin-top: 8px; }
+        .tl-item.champion-season .tl-crest {
+            border: 1.5px solid var(--t1); box-shadow: 0 0 0 3px rgba(var(--t1-rgb), .18), 0 0 24px rgba(var(--t1-rgb), .5);
+        }
+        .tl-item.champion-season .tl-champ-name { color: var(--ink); text-shadow: 0 0 20px rgba(var(--t1-rgb), .55); }
+        .tl-item.champion-season .tl-champ-sub { color: color-mix(in srgb, var(--t1) 40%, var(--ink-dim)); }
+        .tl-item.champion-season .tl-mini-stat { background: rgba(var(--t1-rgb), .14); border-color: rgba(var(--t1-rgb), .5); color: var(--ink); }
+        .tl-item.champion-season .tl-mini-stat b { color: color-mix(in srgb, var(--t1) 50%, #fff); }
+        .tl-item.champion-season .tl-share-btn { border-color: rgba(var(--t1-rgb), .5); background: rgba(var(--t1-rgb), .13); color: var(--ink); }
+        .tl-item.champion-season .tl-share-btn:hover { background: rgba(var(--t1-rgb), .25); }
+        .tl-item.champion-season .tl-dot { background: var(--t1); border-color: #fff;
+            box-shadow: 0 0 0 4px rgba(var(--t1-rgb), .22), 0 0 16px rgba(var(--t1-rgb), .85); }
+        .tl-item.champion-season .tl-dot::after { background: radial-gradient(circle, rgba(var(--t1-rgb), .6), transparent 72%); }
+
+        /* --- season pennant (replaces the old "Champion" tag) --- */
+        .sb { position: absolute; top: -1px; right: 16px; width: 58px; height: 70px; z-index: 3; pointer-events: none;
+              filter: drop-shadow(0 8px 9px rgba(0, 0, 0, .5)); }
+        .sb-o, .sb-i { position: absolute; clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%); }
+        .sb-o { inset: 0; background: linear-gradient(160deg, var(--gold-pale), var(--gold) 45%, var(--gold-deep)); }
+        .sb-i { inset: 1.5px; display: flex; flex-direction: column; align-items: center; padding-top: 8px;
+                background: linear-gradient(180deg, rgba(var(--t1-rgb), .95), rgba(var(--t2-rgb), .7) 120%), #0b0805; }
+        .sb-i::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255, 255, 255, .22), transparent 42%); }
+        .sb-l { position: relative; font-family: 'Space Mono', monospace; font-size: 6.5px; letter-spacing: .26em; padding-left: .26em; text-transform: uppercase; color: rgba(255, 255, 255, .9); }
+        .sb-n { position: relative; margin-top: 2px; font-family: 'Anton', sans-serif; font-size: 29px; line-height: 1; letter-spacing: .02em;
+                background: linear-gradient(180deg, #fff, var(--gold-pale) 55%, var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent;
+                filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .35)); }
+        .sb-s { position: relative; margin-top: 3px; font-size: 8px; line-height: 1; color: var(--gold-pale); }
+        .sb.ghost { opacity: .9; }
+        .sb.ghost .sb-o { background: linear-gradient(160deg, rgba(var(--gold-rgb), .7), rgba(var(--gold-rgb), .25)); }
+        .sb.ghost .sb-i { background: linear-gradient(180deg, rgba(var(--gold-rgb), .22), rgba(var(--bg-rgb), .95)); }
+        .sb.ghost .sb-n { background: none; color: var(--gold); -webkit-text-fill-color: var(--gold); animation: sbHype 1.8s ease-in-out infinite; }
+        @keyframes sbHype { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+        .tl-item.upcoming-season .tl-card { overflow: visible; border-color: rgba(var(--gold-rgb), .45); padding-top: 4px; }
+        .tl-item.upcoming-season .tl-top { padding-right: 74px; min-height: 54px; }
+        .tl-item.upcoming-season .tl-upcoming-tag { align-self: flex-start; margin-top: 4px; }
+
+        @media (max-width: 360px) { .sb { transform: scale(.9); transform-origin: top right; right: 12px; } }
+        @media print { .sb { display: none !important; } .tl-eyebrow { color: #333 !important; } }
+        @media (prefers-reduced-motion: reduce) { .page-head .sec-title b, .sb.ghost .sb-n { animation: none !important; } }
+
+        /* =====================================================================
+           SMOOTHNESS LAYER — fewer repaints, compositor-only motion, rests when idle
+           ===================================================================== */
+        html { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        button, a, .tl-card, .hof-stat, .reaction-btn { touch-action: manipulation; }
+
+        /* no live blur behind the fixed header / overlays (the single biggest scroll cost on phones) */
+        header, .nav-overlay, .theme-overlay, .poster-overlay, .share-sheet-overlay, .app-toast {
+            -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+        }
+        header { background: rgba(var(--bg-rgb), .97) !important; }
+        .nav-overlay, .theme-overlay, .poster-overlay, .share-sheet-overlay { background-color: rgba(0, 0, 0, .72); }
+
+        /* progress bar moves by transform, not width */
+        .scroll-progress-fill { width: 100% !important; transform: scaleX(0); transform-origin: 0 50%; will-change: transform; }
+
+        /* reveal: explicit properties, and no permanent 3D layer once shown */
+        .fade-up { transition: opacity .55s ease, transform .55s cubic-bezier(.2, .7, .2, 1); }
+        .fade-up.in { transform: none !important; }
+
+        /* embers: no glow blur per particle */
+        .ember { box-shadow: none; width: 4px; height: 4px; background: radial-gradient(circle, var(--gold) 0 35%, rgba(var(--gold-rgb), 0) 72%); }
+
+        /* lighter static shadows on the cards */
+        .tl-item.champion-season .tl-card { box-shadow: 0 8px 22px rgba(var(--t1-rgb), .26); }
+        .tl-item.latest-champion .tl-card { box-shadow: 0 10px 28px rgba(var(--t1-rgb), .40); }
+        .sb-n { filter: none; }
+        .notify-halo, [class*="notify"][class*="halo"] { filter: none !important; }
+        .page-head .sec-title b { animation: hofShine 3s ease .8s 1 both; }
+
+        /* ambient motion is lively on arrival, then settles — nothing loops forever on the main thread */
+        .tl-item.champion-season:not(.latest-champion) .tl-dot::after { animation: none; opacity: .6; transform: none; }
+        .tl-item.latest-champion .tl-dot::after { animation-iteration-count: 6; }
+        .notify-shimmer { animation-iteration-count: 4; }
+        .foil-frame::before { animation-iteration-count: 6; }
+        .sb.ghost .sb-n { animation-iteration-count: 12; }
+
+
+        /* =====================================================================
+           CHAMPION BANNER — appears right after the intro on every visit
+           ===================================================================== */
+        .champ-spotlight { margin-top: 20px; scroll-margin-top: 84px; transition: opacity .5s ease; }
+        html:not(.splash-done) .champ-spotlight { opacity: 0; }
+        html.splash-done .celebrate-line { animation: celebratePulse 2.4s ease-in-out infinite, bcFade .7s ease both; }
+        html.splash-done .banner-rig { animation: bcDrop 1s cubic-bezier(.2, .8, .2, 1) .1s both; }
+        html.splash-done .banner-crest { animation: bcPop .95s cubic-bezier(.2, .9, .3, 1.3) .45s both; }
+        @keyframes bcFade { from { opacity: 0; } }
+        @keyframes bcDrop { from { opacity: 0; transform: translate3d(0, -28px, 0); } to { opacity: 1; transform: none; } }
+        @keyframes bcPop  { from { opacity: 0; transform: scale(.35) rotate(-24deg); } to { opacity: 1; transform: none; } }
+        .banner-confetti { contain: strict; }
+        .banner-confetti canvas { display: block; }
+        @media (prefers-reduced-motion: reduce) {
+            html:not(.splash-done) .champ-spotlight { opacity: 1; }
+            html.splash-done .banner-rig, html.splash-done .banner-crest { animation: none; }
+        }
+
+        /* =====================================================================
+           CHAMPION BANNER — PREMIUM FINISH (gold-leaf frame, laurel medallion, enamel crest)
+           Built from plain gradients/boxes so "Save Banner" captures it faithfully.
+           ===================================================================== */
+        .celebrate-line { font-size: 11px; letter-spacing: .2em; white-space: nowrap; color: var(--gold-pale); text-shadow: 0 0 18px rgba(var(--gold-rgb), .45); margin-bottom: 18px; }
+        .cl-orn { display: inline-block; width: 6px; height: 6px; margin: 0 10px; vertical-align: middle; transform: rotate(45deg); background: var(--gold); box-shadow: 0 0 9px rgba(var(--gold-rgb), .9); }
+
+        .banner-rig { max-width: 332px; }
+        .banner-rig::before { content: ''; position: absolute; z-index: -1; inset: -70px -60px -50px; pointer-events: none;
+            background: radial-gradient(ellipse at 50% 32%, rgba(var(--t1-rgb), .26), rgba(var(--t2-rgb), .12) 46%, transparent 72%); }
+
+        /* gold rod, finials and braided cords */
+        .banner-rod { height: 6px; background: linear-gradient(180deg, var(--gold-pale), var(--gold) 45%, var(--gold-deep));
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .25) inset, 0 4px 9px rgba(0, 0, 0, .6); }
+        .banner-rod::before, .banner-rod::after { width: 13px; height: 13px; top: -3.5px;
+            background: radial-gradient(circle at 35% 30%, var(--gold-pale), var(--gold) 50%, var(--gold-deep) 100%); }
+        .banner-ropes span { width: 3px; background: repeating-linear-gradient(135deg, var(--gold-pale) 0 2px, var(--gold-deep) 2px 4px); }
+
+        /* the cloth: deep velvet, royal glow from the team colours, double gold line */
+        .banner-cloth {
+            padding: 36px 22px 28px;
+            background:
+                radial-gradient(120% 55% at 50% 0%, rgba(var(--t1-rgb), .22), transparent 62%),
+                radial-gradient(100% 45% at 50% 100%, rgba(var(--t2-rgb), .18), transparent 70%),
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, .022) 0 1px, transparent 1px 7px),
+                linear-gradient(160deg, #19110f 0%, #0b0709 58%, #050304 100%);
+            border: 2px solid var(--gold); border-bottom: none;
+            box-shadow: inset 0 0 0 4px #0a0707, inset 0 0 0 5px rgba(var(--gold-rgb), .55),
+                        0 34px 60px -22px rgba(0, 0, 0, .75), 0 0 64px -10px rgba(var(--t1-rgb), .38);
+        }
+        .banner-cloth::before { background: radial-gradient(ellipse at 50% 0%, rgba(var(--gold-rgb), .16), transparent 70%); }
+
+        .bn-corner { position: absolute; width: 22px; height: 22px; z-index: 1; pointer-events: none; }
+        .bn-corner::before { content: ''; position: absolute; width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px rgba(var(--gold-rgb), .8); }
+        .bn-corner.tl { top: 9px; left: 9px; } .bn-corner.tr { top: 9px; right: 9px; }
+        .bn-corner.bl { bottom: 9px; left: 9px; } .bn-corner.br { bottom: 9px; right: 9px; }
+        .bn-corner.tl::before { top: 0; left: 0; } .bn-corner.tr::before { top: 0; right: 0; }
+        .bn-corner.bl::before { bottom: 0; left: 0; } .bn-corner.br::before { bottom: 0; right: 0; }
+
+        /* light that glides across the foil every few seconds (transform-only) */
+        .bn-glint { position: absolute; top: -10%; bottom: -10%; left: 0; width: 34%; z-index: 4; pointer-events: none;
+            background: linear-gradient(100deg, transparent, rgba(255, 236, 170, .10), transparent);
+            transform: translate3d(-160%, 0, 0) skewX(-16deg); animation: bnGlint 7s ease-in-out 2.4s infinite; }
+        @keyframes bnGlint { 0%, 55% { transform: translate3d(-160%, 0, 0) skewX(-16deg); } 100% { transform: translate3d(430%, 0, 0) skewX(-16deg); } }
+
+        /* laurel medallion with enamel crest */
+        .bn-medal { position: relative; z-index: 2; width: 170px; height: 158px; margin: 0 auto 6px; }
+        .bn-aura { position: absolute; inset: -34px; border-radius: 50%; pointer-events: none;
+            background: radial-gradient(circle, rgba(var(--t1-rgb), .40), rgba(var(--t2-rgb), .18) 46%, transparent 70%);
+            animation: bnAura 4.2s ease-in-out infinite; }
+        @keyframes bnAura { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+        .bn-wreath { position: absolute; inset: 0; pointer-events: none; }
+        .bn-wreath i { position: absolute; width: 8px; height: 16px; border-radius: 100% 0 100% 0;
+            background: linear-gradient(160deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep)); }
+        .bn-wreath i.n { width: 7px; height: 13px; background: linear-gradient(160deg, var(--gold), var(--gold-deep)); opacity: .9; }
+        .bn-wreath.r i { border-radius: 0 100% 0 100%; }
+        .bn-topstar { position: absolute; left: 50%; top: -6px; margin-left: -8px; width: 16px; text-align: center; font-size: 15px; line-height: 1;
+            color: var(--gold-pale); text-shadow: 0 0 12px rgba(var(--gold-rgb), .9); z-index: 3; }
+        .bn-gem { position: absolute; left: 50%; bottom: 3px; width: 9px; height: 9px; margin-left: -4.5px; transform: rotate(45deg);
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold-deep)); box-shadow: 0 0 10px rgba(var(--gold-rgb), .8); }
+        .bn-ring { position: absolute; left: 50%; top: 50%; width: 114px; height: 114px; margin: -57px 0 0 -57px; border-radius: 50%; padding: 4px; z-index: 2;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 45%, var(--gold-deep));
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, .55), 0 12px 30px rgba(var(--gold-rgb), .35), 0 0 34px rgba(var(--t1-rgb), .35); }
+        .bn-ring .banner-crest { position: relative; width: 100%; height: 100%; margin: 0; border-radius: 50%; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at 34% 28%, #ffffff, #f3ede2 62%, #e3d9c5 100%);
+            box-shadow: inset 0 0 0 1.5px rgba(var(--t1-rgb), .55), inset 0 3px 10px rgba(0, 0, 0, .18); }
+        .bn-ring .banner-crest img { position: absolute; inset: 14%; width: 72%; height: 72%; object-fit: contain; filter: none; }
+        .bn-ring .banner-crest .code { font-family: 'Anton', sans-serif; font-size: 40px; letter-spacing: .04em; color: var(--t1); text-shadow: 0 2px 0 rgba(var(--t2-rgb), .35); }
+        .bn-ring .banner-crest.ok .code { display: none; }
+
+        /* typography */
+        .banner-kicker { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; font-size: 9px; letter-spacing: .2em; white-space: nowrap; color: var(--gold); }
+        .banner-kicker i { flex: 0 1 18px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+        .banner-kicker i:last-child { background: linear-gradient(270deg, transparent, var(--gold)); }
+        .banner-name { margin-top: 10px; font-size: clamp(32px, 10vw, 40px); line-height: 1.02; letter-spacing: .015em; color: var(--gold-pale);
+            -webkit-text-stroke: 0; text-shadow: 0 1px 0 #a97b1f, 0 2px 0 #7a5513, 0 3px 0 #54380a, 0 9px 16px rgba(0, 0, 0, .6), 0 0 28px rgba(var(--gold-rgb), .38); }
+        /* the "Champions" plaque */
+        .banner-champions { margin-top: 16px; padding: 6px 26px; border: 0; border-radius: 3px; font-size: 11px; letter-spacing: .34em; padding-left: calc(26px + .34em); color: #1b1206;
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 48%, var(--gold-deep));
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, .5), 0 0 0 3px rgba(var(--gold-rgb), .35), 0 8px 18px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .55); }
+        .banner-champions::before, .banner-champions::after { content: ''; position: absolute; top: 50%; width: 5px; height: 5px; margin-top: -2.5px; transform: rotate(45deg); background: #1b1206; opacity: .75; }
+        .banner-champions::before { left: 10px; } .banner-champions::after { right: 10px; }
+        .banner-tagline { margin-top: 18px; max-width: 250px; font-size: 12px; line-height: 1.65; color: var(--ink-dim); }
+
+        /* stat tiles */
+        .banner-stats { gap: 8px; margin-top: 22px; }
+        .banner-stats .st { flex: 1; padding: 10px 4px 9px; border: 1px solid rgba(var(--gold-rgb), .35); border-radius: 12px;
+            background: linear-gradient(180deg, rgba(var(--gold-rgb), .12), rgba(var(--gold-rgb), .03)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06); }
+        .banner-stats .st:last-child { border: 1px solid rgba(var(--gold-rgb), .35); }
+        .banner-stats .st b { font-size: 21px; line-height: 1.1; color: var(--gold-pale); text-shadow: 0 0 14px rgba(var(--gold-rgb), .45); }
+        .banner-stats .st span { margin-top: 4px; font-size: 8px; letter-spacing: .1em; color: var(--ink-dim); }
+
+        /* hem */
+        .banner-fringe { position: relative; background: linear-gradient(135deg, var(--gold) 50%, transparent 50%), linear-gradient(225deg, var(--gold) 50%, transparent 50%);
+            background-size: 15px 15px; background-repeat: repeat-x; }
+        .banner-fringe::before { content: ''; position: absolute; left: 0; right: 0; top: -3px; height: 3px; background: linear-gradient(90deg, var(--gold-deep), var(--gold-pale), var(--gold-deep)); }
+
+        /* poster frame */
+        .cp-frame { padding: 7px; border-radius: 16px; background: linear-gradient(155deg, var(--gold-pale), var(--gold) 42%, var(--gold-deep));
+            box-shadow: 0 20px 40px -14px rgba(0, 0, 0, .7), 0 0 0 1px rgba(0, 0, 0, .5); }
+        .cp-frame::before { content: ''; position: absolute; inset: 3px; border: 1px solid rgba(255, 255, 255, .38); border-radius: 13px; pointer-events: none; z-index: 2; }
+        .cp-window { border-radius: 10px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .65); }
+        .cp-placeholder .ic { font-size: 34px; color: var(--gold); text-shadow: 0 0 18px rgba(var(--gold-rgb), .6); }
+        .cp-placeholder .t1 { font-family: 'Anton', sans-serif; font-size: 19px; letter-spacing: .06em; font-weight: 400; color: var(--gold-pale); text-transform: uppercase; }
+        .cp-placeholder .t2 { margin-top: 4px; font-family: 'Space Mono', monospace; font-size: 9.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-dim); }
+        .cp-caption { margin-top: 12px; font-size: 10.5px; letter-spacing: .08em; }
+
+        /* note, reactions, actions */
+        .banner-note { margin-top: 20px; font-size: 11px; color: var(--ink-dim); }
+        .bn-live { display: inline-block; width: 7px; height: 7px; margin-right: 9px; border-radius: 50%; background: #5be37d; box-shadow: 0 0 10px #5be37d; vertical-align: middle; animation: bnLive 1.8s ease-in-out infinite; }
+        @keyframes bnLive { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+        .reaction-label { display: flex; align-items: center; gap: 12px; margin-top: 24px; font-size: 10px; letter-spacing: .2em; color: var(--gold); }
+        .reaction-label::before, .reaction-label::after { content: ''; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb), .7)); }
+        .reaction-label::after { background: linear-gradient(270deg, transparent, rgba(var(--gold-rgb), .7)); }
+        .reaction-btn { padding: 10px 18px; border-radius: 16px; border-color: rgba(var(--gold-rgb), .4);
+            background: linear-gradient(165deg, rgba(var(--gold-rgb), .16), rgba(var(--gold-rgb), .03)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 6px 14px rgba(0, 0, 0, .3); }
+        .reaction-btn.active { background: linear-gradient(165deg, rgba(var(--gold-rgb), .32), rgba(var(--gold-rgb), .08)); box-shadow: 0 0 18px rgba(var(--gold-rgb), .35); }
+        .champ-save, .champ-share { border-radius: 999px; padding: 13px 24px; font-weight: 700; letter-spacing: .03em; }
+        .champ-save { border: 0; color: #1b1206; background: linear-gradient(135deg, var(--gold-pale), var(--gold) 50%, var(--gold-deep)); box-shadow: 0 10px 22px rgba(var(--gold-rgb), .32), inset 0 1px 0 rgba(255, 255, 255, .5); }
+        .champ-share { color: var(--gold-pale); border: 1px solid rgba(var(--gold-rgb), .6); background: rgba(var(--gold-rgb), .09); }
+
+        /* staggered arrival after the intro (compositor-only) */
+        html.splash-done .banner-kicker, html.splash-done .banner-name, html.splash-done .banner-champions,
+        html.splash-done .banner-tagline, html.splash-done .banner-stats, html.splash-done .champ-poster { animation: bcUp .8s cubic-bezier(.2, .8, .2, 1) both; }
+        html.splash-done .banner-kicker { animation-delay: .7s; } html.splash-done .banner-name { animation-delay: .82s; }
+        html.splash-done .banner-champions { animation-delay: .96s; } html.splash-done .banner-tagline { animation-delay: 1.06s; }
+        html.splash-done .banner-stats { animation-delay: 1.16s; } html.splash-done .champ-poster { animation-delay: 1.3s; }
+        @keyframes bcUp { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: none; } }
+
+        /* Save Banner snapshot: freeze everything */
+        .banner-swing.capture-still *, .banner-swing.capture-still *::before, .banner-swing.capture-still *::after { animation: none !important; }
+        .banner-swing.capture-still .bn-glint { display: none; }
+
+        @media (prefers-reduced-motion: reduce) { .bn-glint, .bn-aura, .bn-live { animation: none !important; } .bn-glint { display: none; } }
     </style>
 
     <style>
@@ -3240,20 +3546,32 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
     </section>
 
     <!-- CHAMPION SPOTLIGHT — grand Season 11 announcement, holds the stage until Season 12 -->
-    <section class="champ-spotlight fade-up d3">
+    <section class="champ-spotlight team-rr" id="champSpotlight">
         <div class="banner-confetti" id="bannerConfetti"></div>
-        <div class="celebrate-line">🎉 Congratulations, Champions! 🎉</div>
+        <div class="celebrate-line"><i class="cl-orn"></i>Congratulations, Champions<i class="cl-orn"></i></div>
         <div class="banner-rig" id="bannerRig">
             <div class="banner-rod"></div>
             <div class="banner-swing">
                 <div class="banner-ropes"><span></span><span></span></div>
                 <div class="banner-cloth">
-                    <div class="banner-crest-ring"></div>
-                    <div class="banner-crest">
-                        <img src="rr.png" alt="Rajasthan Royals crest">
+                    <div class="bn-glint" aria-hidden="true"></div>
+                    <div class="bn-corner tl" aria-hidden="true"></div><div class="bn-corner tr" aria-hidden="true"></div>
+                    <div class="bn-corner bl" aria-hidden="true"></div><div class="bn-corner br" aria-hidden="true"></div>
+                    <div class="bn-medal">
+                        <div class="bn-aura" aria-hidden="true"></div>
+                        <div class="bn-wreath l" aria-hidden="true"><i class="o" style="left:62.9px;top:143.8px;transform:rotate(-106deg)"></i><i class="n" style="left:65.5px;top:133.1px;transform:rotate(-46deg)"></i><i class="o" style="left:42.4px;top:135.3px;transform:rotate(-89deg)"></i><i class="n" style="left:48.0px;top:125.9px;transform:rotate(-29deg)"></i><i class="o" style="left:25.3px;top:121.2px;transform:rotate(-72deg)"></i><i class="n" style="left:33.4px;top:113.8px;transform:rotate(-12deg)"></i><i class="o" style="left:13.0px;top:102.7px;transform:rotate(-55deg)"></i><i class="n" style="left:23.0px;top:98.0px;transform:rotate(5deg)"></i><i class="o" style="left:6.7px;top:81.4px;transform:rotate(-38deg)"></i><i class="n" style="left:17.6px;top:79.9px;transform:rotate(22deg)"></i><i class="o" style="left:6.9px;top:59.3px;transform:rotate(-21deg)"></i><i class="n" style="left:17.8px;top:61.0px;transform:rotate(39deg)"></i><i class="o" style="left:13.6px;top:38.1px;transform:rotate(-4deg)"></i><i class="n" style="left:23.5px;top:42.9px;transform:rotate(56deg)"></i><i class="o" style="left:26.1px;top:19.9px;transform:rotate(13deg)"></i><i class="n" style="left:34.2px;top:27.4px;transform:rotate(73deg)"></i><i class="o" style="left:43.5px;top:6.0px;transform:rotate(30deg)"></i><i class="n" style="left:49.0px;top:15.6px;transform:rotate(90deg)"></i></div>
+                        <div class="bn-wreath r" aria-hidden="true"><i class="o" style="left:99.1px;top:143.8px;transform:rotate(106deg)"></i><i class="n" style="left:96.5px;top:133.1px;transform:rotate(46deg)"></i><i class="o" style="left:119.6px;top:135.3px;transform:rotate(89deg)"></i><i class="n" style="left:114.0px;top:125.9px;transform:rotate(29deg)"></i><i class="o" style="left:136.7px;top:121.2px;transform:rotate(72deg)"></i><i class="n" style="left:128.6px;top:113.8px;transform:rotate(12deg)"></i><i class="o" style="left:149.0px;top:102.7px;transform:rotate(55deg)"></i><i class="n" style="left:139.0px;top:98.0px;transform:rotate(-5deg)"></i><i class="o" style="left:155.3px;top:81.4px;transform:rotate(38deg)"></i><i class="n" style="left:144.4px;top:79.9px;transform:rotate(-22deg)"></i><i class="o" style="left:155.1px;top:59.3px;transform:rotate(21deg)"></i><i class="n" style="left:144.2px;top:61.0px;transform:rotate(-39deg)"></i><i class="o" style="left:148.4px;top:38.1px;transform:rotate(4deg)"></i><i class="n" style="left:138.5px;top:42.9px;transform:rotate(-56deg)"></i><i class="o" style="left:135.9px;top:19.9px;transform:rotate(-13deg)"></i><i class="n" style="left:127.8px;top:27.4px;transform:rotate(-73deg)"></i><i class="o" style="left:118.5px;top:6.0px;transform:rotate(-30deg)"></i><i class="n" style="left:113.0px;top:15.6px;transform:rotate(-90deg)"></i></div>
+                        <span class="bn-topstar" aria-hidden="true">★</span>
+                        <div class="bn-ring">
+                            <div class="banner-crest">
+                                <span class="code">RR</span>
+                                <img src="rr.png" alt="Rajasthan Royals crest" onload="this.parentNode.classList.add('ok')" onerror="this.remove()">
+                            </div>
+                        </div>
+                        <span class="bn-gem" aria-hidden="true"></span>
                     </div>
 
-                    <div class="banner-kicker">Season XI · Grand Finale</div>
+                    <div class="banner-kicker"><i></i>Season XI · Grand Finale<i></i></div>
                     <div class="banner-name">RAJASTHAN<br>ROYALS</div>
                     <span class="banner-champions">Champions</span>
 
@@ -3279,10 +3597,10 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                                     onload="this.classList.add('loaded')"
                                     onerror="this.style.display='none'; document.getElementById('posterFallback').style.display='flex';">
                                 <div class="cp-placeholder" id="posterFallback" style="display:none;">
-                                    <span class="ic">🖼️</span>
-                                    <span class="t1">Add the Champions' Poster</span>
-                                    <span class="t2">Drop a team photo at
-                                        assets/champions/season-11-rajasthan-royals.jpg</span>
+                                    <span class="ic">★</span>
+                                    <span class="t1">Champions' Poster</span>
+                                    <span class="t2">Coming soon</span>
+                                    <!-- to enable: add your photo at assets/champions/season-11-rajasthan-royals.jpg (or rr.jpg) -->
                                 </div>
                                 <span class="cp-zoom-hint">🔍 Tap to enlarge</span>
                             </div>
@@ -3293,7 +3611,7 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                 <div class="banner-fringe"></div>
             </div>
         </div>
-        <div class="banner-note">Reigning Champions · <b>Season 12</b> coming soon</div>
+        <div class="banner-note"><i class="bn-live"></i>Reigning Champions · <b>Season 12</b> coming soon</div>
 
         <div class="reaction-label">Show your reaction</div>
         <div class="reaction-bar" id="reactionBar">
@@ -3356,16 +3674,15 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
 
     <!-- TIMELINE -->
     <section class="timeline-wrap">
+        <div class="tl-head fade-up"><span></span><b>Roll of Champions</b><span></span></div>
         <div class="timeline-rail"></div>
         <div class="timeline-list">
 
             <div class="tl-item upcoming-season fade-up">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-season-row">
-                        <span class="tl-season">Season 12</span>
-                        <span class="tl-upcoming-tag">⏳ Coming Soon</span>
-                    </div>
+                    <div class="tl-top"><span class="tl-upcoming-tag">⏳ Coming Soon</span></div>
+                    <div class="sb ghost" role="img" aria-label="Season 12"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">12</span><span class="sb-s">☆</span></div></div>
                     <div class="tl-champ-row">
                         <div class="tl-live-icon">🗓️</div>
                         <div>
@@ -3378,14 +3695,12 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                 </div>
             </div>
 
-            <div class="tl-item champion-season latest-champion fade-up" data-team="Rajasthan Royals" data-season="Season 11">
+            <div class="tl-item champion-season team-rr latest-champion fade-up" data-team="Rajasthan Royals" data-season="Season 11">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Back-to-Back Champions</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 11</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="11" data-tn="RR">
+                        <div class="tl-top"><span class="tl-eyebrow">Back-to-Back Champions</span></div>
+                        <div class="sb" role="img" aria-label="Season 11"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">11</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
@@ -3399,14 +3714,12 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 10">
+            <div class="tl-item champion-season team-rr fade-up" data-team="Rajasthan Royals" data-season="Season 10">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Five-Time Champions</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 10</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="10" data-tn="RR">
+                        <div class="tl-top"><span class="tl-eyebrow">Five-Time Champions</span></div>
+                        <div class="sb" role="img" aria-label="Season 10"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">10</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
@@ -3414,23 +3727,18 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                                 <div class="tl-champ-sub">5th title · Five-Time Champions</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat">Captain <b>@RATH0000</b></span>
-                        </div>
                         <p class="tl-blurb">Five-time champions. Rajasthan Royals broke new ground as the first franchise to reach a fifth XIPL title.</p>
                         <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 10" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Royal Challengers Bengaluru" data-season="Season 9">
+            <div class="tl-item champion-season team-rcb fade-up" data-team="Royal Challengers Bengaluru" data-season="Season 9">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Back-to-Back Champions</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 9</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="09" data-tn="RCB">
+                        <div class="tl-top"><span class="tl-eyebrow">Back-to-Back Champions</span></div>
+                        <div class="sb" role="img" aria-label="Season 9"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">09</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rcb.png" alt="Royal Challengers Bengaluru crest"></div>
                             <div>
@@ -3438,23 +3746,18 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                                 <div class="tl-champ-sub">2nd title · Back-to-Back Champions</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat">Captain <b>@DontMindMe_009</b></span>
-                        </div>
                         <p class="tl-blurb">Royal Challengers Bengaluru go back-to-back — a dominant Season 9 campaign that included a 13-wins-from-14 league record.</p>
                         <button class="tl-share-btn" data-team="Royal Challengers Bengaluru" data-season="Season 9" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Royal Challengers Bengaluru" data-season="Season 8">
+            <div class="tl-item champion-season team-rcb fade-up" data-team="Royal Challengers Bengaluru" data-season="Season 8">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 8</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="08" data-tn="RCB">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 8"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">08</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rcb.png" alt="Royal Challengers Bengaluru crest"></div>
                             <div>
@@ -3462,23 +3765,18 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                                 <div class="tl-champ-sub">1st title</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat">Captain <b>@SivaSravan18</b></span>
-                        </div>
                         <p class="tl-blurb">Royal Challengers Bengaluru claim their maiden XIPL title, kickstarting a run that would become back-to-back.</p>
                         <button class="tl-share-btn" data-team="Royal Challengers Bengaluru" data-season="Season 8" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 7">
+            <div class="tl-item champion-season team-rr fade-up" data-team="Rajasthan Royals" data-season="Season 7">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 7</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="07" data-tn="RR">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 7"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">07</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
@@ -3486,23 +3784,18 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                                 <div class="tl-champ-sub">4th title</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat">Captain <b>@DHFM9081975</b></span>
-                        </div>
                         <p class="tl-blurb">Rajasthan Royals reclaim the throne for a 4th title, setting records along the way.</p>
                         <button class="tl-share-btn" data-team="Rajasthan Royals" data-season="Season 7" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Mumbai Indians" data-season="Season 6">
+            <div class="tl-item champion-season team-mi fade-up" data-team="Mumbai Indians" data-season="Season 6">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 6</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="06" data-tn="MI">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 6"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">06</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="mi.png" alt="Mumbai Indians crest"></div>
                             <div>
@@ -3510,23 +3803,18 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                                 <div class="tl-champ-sub">2nd title</div>
                             </div>
                         </div>
-                        <div class="tl-stat-row">
-                            <span class="tl-mini-stat">Captain <b>@RebeL_Raisar_29</b></span>
-                        </div>
                         <p class="tl-blurb">Mumbai Indians lift their second XIPL trophy, proving Season 4 was no one-off.</p>
                         <button class="tl-share-btn" data-team="Mumbai Indians" data-season="Season 6" aria-label="Share this champion">📤 Share</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 5">
+            <div class="tl-item champion-season team-rr fade-up" data-team="Rajasthan Royals" data-season="Season 5">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 5</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="05" data-tn="RR">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 5"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">05</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
@@ -3540,14 +3828,12 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Mumbai Indians" data-season="Season 4">
+            <div class="tl-item champion-season team-mi fade-up" data-team="Mumbai Indians" data-season="Season 4">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 4</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="04" data-tn="MI">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 4"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">04</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="mi.png" alt="Mumbai Indians crest"></div>
                             <div>
@@ -3561,14 +3847,12 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 3">
+            <div class="tl-item champion-season team-rr fade-up" data-team="Rajasthan Royals" data-season="Season 3">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 3</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="03" data-tn="RR">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 3"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">03</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
@@ -3582,14 +3866,12 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Delhi Capitals" data-season="Season 2">
+            <div class="tl-item champion-season team-dc fade-up" data-team="Delhi Capitals" data-season="Season 2">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 2</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="02" data-tn="DC">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 2"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">02</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="dc.png" alt="Delhi Capitals crest"></div>
                             <div>
@@ -3603,14 +3885,12 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
                 </div>
             </div>
 
-            <div class="tl-item champion-season fade-up" data-team="Rajasthan Royals" data-season="Season 1">
+            <div class="tl-item champion-season team-rr fade-up" data-team="Rajasthan Royals" data-season="Season 1">
                 <div class="tl-node"><div class="tl-dot"></div></div>
                 <div class="tl-card">
-                    <div class="tl-card-inner">
-                        <span class="champ-ribbon">🏆 Champion</span>
-                        <div class="tl-season-row">
-                            <span class="tl-season">Season 1</span>
-                        </div>
+                    <div class="tl-card-inner" data-no="01" data-tn="RR">
+                        <div class="tl-top"><span class="tl-eyebrow">Champion</span></div>
+                        <div class="sb" role="img" aria-label="Season 1"><div class="sb-o"></div><div class="sb-i"><span class="sb-l">Season</span><span class="sb-n">01</span><span class="sb-s">★</span></div></div>
                         <div class="tl-champ-row">
                             <div class="tl-crest"><img src="rr.png" alt="Rajasthan Royals crest"></div>
                             <div>
@@ -3681,10 +3961,15 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
 // ---------- Splash screen removal ----------
         (function () {
             const splash = document.getElementById('splash');
-            if (!splash) return;
+            if (!splash) { document.documentElement.classList.add('splash-done'); return; }
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             let alive = true;
-            const hide = () => { alive = false; splash.style.display = 'none'; };
+            const embersEl = document.getElementById('embers');
+            if (embersEl) embersEl.style.visibility = 'hidden';   // embers rest while the intro plays
+            const hide = () => { alive = false; splash.classList.add('sp-done'); splash.style.display = 'none'; if (embersEl) embersEl.style.visibility = ''; };
+            const root = document.documentElement;
+            const reveal = () => { root.classList.add('splash-done'); if (window.__xiplShower) window.__xiplShower(); };
+            setTimeout(reveal, 9500);   // safety net
 
             // champions of seasons 1-11, in order
             const champs = ['Rajasthan Royals','Delhi Capitals','Rajasthan Royals','Mumbai Indians','Rajasthan Royals','Mumbai Indians','Rajasthan Royals','Royal Challengers Bengaluru','Royal Challengers Bengaluru','Rajasthan Royals','Rajasthan Royals'];
@@ -3744,6 +4029,7 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
 
             setTimeout(() => {
                 splash.style.pointerEvents = 'none';
+                reveal();   // congratulations card fires as the intro opens onto the page
                 if (reduce || !splash.animate) {
                     splash.style.transition = 'opacity .4s ease'; splash.style.opacity = '0';
                     setTimeout(hide, 450); return;
@@ -3838,7 +4124,8 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
 // ---------- Ambient ember particles ----------
         // Embers
         const emberField = document.getElementById('embers');
-        for (let i = 0; i < 22; i++) {
+        const EMBER_N = window.matchMedia('(max-width:700px)').matches ? 8 : 16;
+        for (let i = 0; i < EMBER_N; i++) {
             const e = document.createElement('div');
             e.className = 'ember';
             e.style.left = Math.random() * 100 + '%';
@@ -4004,17 +4291,73 @@ footer .foot-copy { margin: 10px auto 0; font-size: 10.5px; line-height: 1.7; le
         const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const bannerConfettiField = document.getElementById('bannerConfetti');
         if (bannerConfettiField && !reducedMotion) {
-            const confettiColors = ['var(--gold)', 'var(--gold-pale)', 'var(--gold-deep)', '#ffffff'];
-            for (let i = 0; i < 34; i++) {
-                const c = document.createElement('div');
-                c.className = 'confetti-bit' + (Math.random() > 0.5 ? ' round' : '');
-                c.style.left = Math.random() * 100 + '%';
-                c.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-                c.style.setProperty('--drift', (8 + Math.random() * 18) + 'px');
-                c.style.animationDuration = (1.2 + Math.random() * 1.1) + 's';
-                c.style.animationDelay = (Math.random() * 2) + 's';
-                bannerConfettiField.appendChild(c);
-            }
+            // endless confetti shower: a single <canvas>, ~50 pieces, time-based motion, paused whenever it's off-screen
+            const cv = document.createElement('canvas');
+            cv.setAttribute('aria-hidden', 'true');
+            cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none';
+            bannerConfettiField.appendChild(cv);
+            const ctx = cv.getContext('2d');
+            const host = bannerConfettiField.parentElement;
+            const root = document.documentElement;
+            let W = 1, H = 1, parts = [], raf = 0, last = 0, running = false, visible = false, ready = root.classList.contains('splash-done');
+            let pal = ['#e8b93d', '#fbe4a6', '#b3811f', '#ffffff'];
+            const readPal = () => {
+                const cs = getComputedStyle(host);
+                const g = ['--gold', '--gold-pale', '--gold-deep'].map(k => cs.getPropertyValue(k).trim());
+                if (g.every(Boolean)) pal = g.concat('#ffffff');
+            };
+            readPal();
+            new MutationObserver(readPal).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+            const R = Math.random;
+            const spawn = (anywhere) => ({
+                x: R() * W, y: anywhere ? R() * H : -(8 + R() * 60),
+                w: 5 + R() * 4, h: 8 + R() * 6, vy: 60 + R() * 75,
+                sway: 10 + R() * 22, sp: 1 + R() * 2, ph: R() * 6.283,
+                rot: R() * 6.283, vr: (R() - .5) * 5, fl: R() * 6.283, fs: 3 + R() * 4,
+                round: R() > .55, c: (R() * 4) | 0
+            });
+            const size = () => {
+                const dpr = Math.min(1.25, window.devicePixelRatio || 1);
+                const r = bannerConfettiField.getBoundingClientRect();
+                W = Math.max(1, r.width); H = Math.max(1, r.height);
+                cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const n = Math.round(Math.min(52, Math.max(24, W / 7)));
+                while (parts.length < n) parts.push(spawn(true));
+                parts.length = n;
+            };
+            const frame = (t) => {
+                const dt = Math.min(.05, (t - last) / 1000); last = t;
+                ctx.clearRect(0, 0, W, H);
+                for (let i = 0; i < parts.length; i++) {
+                    let p = parts[i];
+                    p.y += p.vy * dt; p.ph += p.sp * dt; p.rot += p.vr * dt; p.fl += p.fs * dt;
+                    if (p.y > H + 16) { p = parts[i] = spawn(false); }
+                    ctx.save();
+                    ctx.translate(p.x + Math.sin(p.ph) * p.sway, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.scale(1, Math.cos(p.fl));
+                    ctx.fillStyle = pal[p.c];
+                    ctx.globalAlpha = .92;
+                    if (p.round) { ctx.beginPath(); ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, 6.283); ctx.fill(); }
+                    else ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                }
+            };
+            const loop = (t) => { if (!running) return; frame(t); raf = requestAnimationFrame(loop); };
+            const update = () => {
+                const go = visible && ready && !document.hidden;
+                if (go && !running) { running = true; last = performance.now(); raf = requestAnimationFrame(loop); }
+                else if (!go && running) { running = false; cancelAnimationFrame(raf); }
+            };
+            size();
+            if ('ResizeObserver' in window) { let rq = 0; new ResizeObserver(() => { cancelAnimationFrame(rq); rq = requestAnimationFrame(size); }).observe(bannerConfettiField); }
+            if ('IntersectionObserver' in window) new IntersectionObserver((es) => { visible = es[0].isIntersecting; update(); }, { rootMargin: '120px' }).observe(host);
+            else visible = true;
+            document.addEventListener('visibilitychange', update);
+            window.__xiplShower = () => { ready = true; update(); };
+            update();
         }
 
 // ---------- Stat strip count-up ----------
@@ -4067,16 +4410,28 @@ const backToTopBtn = document.getElementById('backToTop');
 const bttFillEl = document.getElementById('bttFill');
 const BTT_C = 131.9; // 2 * PI * 21, matches the SVG circle radius
 
-function updateScrollChrome() {
+let scrollMax = 0, lastShow = null, scrollTick = false, scrollIdle;
+function measureScroll() {
     const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    const pct = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    if (scrollFillEl) scrollFillEl.style.width = (pct * 100) + '%';
-    if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
-    if (backToTopBtn) backToTopBtn.classList.toggle('show', window.scrollY > 400);
+    scrollMax = doc.scrollHeight - doc.clientHeight;
 }
-window.addEventListener('scroll', updateScrollChrome, { passive: true });
-window.addEventListener('load', updateScrollChrome);
+function updateScrollChrome() {
+    const pct = scrollMax > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollMax)) : 0;
+    if (scrollFillEl) scrollFillEl.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
+    if (bttFillEl) bttFillEl.style.strokeDashoffset = BTT_C * (1 - pct);
+    const show = window.scrollY > 400;
+    if (backToTopBtn && show !== lastShow) { lastShow = show; backToTopBtn.classList.toggle('show', show); }
+}
+function onScrollFrame() {
+    if (scrollTick) return;
+    scrollTick = true;
+    requestAnimationFrame(() => { updateScrollChrome(); scrollTick = false; });
+}
+window.addEventListener('scroll', onScrollFrame, { passive: true });
+window.addEventListener('resize', () => { measureScroll(); updateScrollChrome(); }, { passive: true });
+window.addEventListener('load', () => { measureScroll(); updateScrollChrome(); });
+if ('ResizeObserver' in window) new ResizeObserver(() => { measureScroll(); updateScrollChrome(); }).observe(document.body);
+measureScroll();
 updateScrollChrome();
 
 if (backToTopBtn) {
@@ -4146,6 +4501,14 @@ if (backToTopBtn) {
     watch.forEach(function (el) { mo.observe(el, { attributes: true, attributeFilter: ['class'] }); });
     syncLock();
 })();
+</script>
+<script>
+window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    var root = document.documentElement;
+    root.classList.remove('splash-done'); void root.offsetWidth;
+    requestAnimationFrame(function () { root.classList.add('splash-done'); if (window.__xiplShower) window.__xiplShower(); });
+});
 </script>
 </body>
 
